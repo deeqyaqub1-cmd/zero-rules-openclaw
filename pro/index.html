@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZeroRules Pro — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #08080a;
+    --surface: #0f0f12;
+    --surface-2: #16161b;
+    --surface-3: #1c1c22;
+    --border: #262630;
+    --border-hover: #3a3a48;
+    --text: #e8e8ec;
+    --text-mid: #b0b0c0;
+    --text-dim: #6e6e82;
+    --accent: #ff6b2b;
+    --accent-soft: #ff6b2b20;
+    --accent-med: #ff6b2b40;
+    --green: #22c55e;
+    --green-soft: #22c55e18;
+    --green-med: #22c55e30;
+    --blue: #3b82f6;
+    --blue-soft: #3b82f618;
+    --purple: #a855f7;
+    --purple-soft: #a855f718;
+    --yellow: #eab308;
+    --yellow-soft: #eab30818;
+    --cyan: #06b6d4;
+    --cyan-soft: #06b6d418;
+    --red: #ef4444;
+    --red-soft: #ef444418;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ─── LAYOUT ─── */
+  .app {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .sidebar-brand {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+
+  .sidebar-brand .logo {
+    font-family: var(--mono);
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sidebar-brand .sub {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .sidebar-brand .pro-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    font-weight: 800;
+    padding: 1px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+    vertical-align: middle;
+    margin-left: 6px;
+  }
+
+  .nav-section {
+    padding: 12px 12px 4px;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+  }
+
+  .nav-item:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+
+  .nav-item.active {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-left-color: var(--accent);
+  }
+
+  .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .sidebar-footer a {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+  .sidebar-footer a:hover { color: var(--text); }
+
+  /* ─── MAIN ─── */
+  .main {
+    padding: 32px 40px;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  .page-header h1 {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .page-header .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--green);
+  }
+
+  .page-header .status .dot {
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--green-med); }
+    50% { opacity: 0.6; box-shadow: 0 0 8px 2px var(--green-med); }
+  }
+
+  /* ─── STAT CARDS ─── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    transition: border-color 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--border-hover); }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .stat-label .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .stat-sub {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  .stat-sub .up { color: var(--green); }
+  .stat-sub .down { color: var(--red); }
+
+  /* ─── CHART PANELS ─── */
+  .panels-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+  }
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .panel-title {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .panel-action {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid var(--accent-med);
+    padding: 3px 10px;
+    border-radius: 3px;
+    transition: all 0.15s;
+  }
+
+  .panel-action:hover {
+    background: var(--accent-soft);
+  }
+
+  .chart-container {
+    position: relative;
+    height: 220px;
+  }
+
+  /* ─── RULE BREAKDOWN ─── */
+  .rule-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rule-bar:last-child { border-bottom: none; }
+
+  .rule-icon {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .rule-info { flex: 1; }
+
+  .rule-name {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .rule-progress {
+    height: 4px;
+    background: var(--surface-3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .rule-progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .rule-count {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    min-width: 40px;
+    text-align: right;
+  }
+
+  /* ─── CUSTOM RULES EDITOR ─── */
+  .custom-rules-section {
+    margin-bottom: 28px;
+  }
+
+  .rule-editor {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .rule-editor-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rule-editor-header .panel-title { margin: 0; }
+
+  .btn-add {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--bg);
+    background: var(--accent);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+
+  .btn-add:hover { background: #ff7f44; }
+
+  .custom-rule-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 100px 50px;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+
+  .custom-rule-row:last-child { border-bottom: none; }
+
+  .custom-rule-row .cr-name {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+
+  .custom-rule-row .cr-pattern {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    background: var(--surface-2);
+    padding: 4px 10px;
+    border-radius: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .custom-rule-row .cr-status {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .cr-status.active { color: var(--green); }
+  .cr-status.draft { color: var(--yellow); }
+
+  .cr-delete {
+    color: var(--text-dim);
+    cursor: pointer;
+    text-align: center;
+    font-size: 1rem;
+    transition: color 0.15s;
+  }
+  .cr-delete:hover { color: var(--red); }
+
+  .empty-state {
+    padding: 40px 24px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+
+  .empty-state .empty-icon { font-size: 2rem; margin-bottom: 12px; opacity: 0.5; }
+
+  /* ─── ADD RULE MODAL ─── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 500px;
+    max-width: 90vw;
+    padding: 28px;
+  }
+
+  .modal h3 {
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 60px; }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  .btn-cancel {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 8px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .btn-cancel:hover { border-color: var(--text-dim); color: var(--text); }
+
+  .btn-save {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    background: var(--accent);
+    border: none;
+    color: var(--bg);
+    padding: 8px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .btn-save:hover { background: #ff7f44; }
+
+  /* ─── SESSION HISTORY ─── */
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .history-table th {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+  }
+
+  .history-table td {
+    font-size: 0.82rem;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  .history-table tr:hover td { background: var(--surface-2); }
+
+  .rule-tag {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .rule-tag.math { background: var(--blue-soft); color: var(--blue); }
+  .rule-tag.time { background: var(--purple-soft); color: var(--purple); }
+  .rule-tag.currency { background: var(--green-soft); color: var(--green); }
+  .rule-tag.files { background: var(--yellow-soft); color: var(--yellow); }
+  .rule-tag.date { background: var(--cyan-soft); color: var(--cyan); }
+  .rule-tag.custom { background: var(--accent-soft); color: var(--accent); }
+
+  .tokens-saved {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--green);
+  }
+
+  .history-scroll {
+    max-height: 350px;
+    overflow-y: auto;
+  }
+
+  .history-scroll::-webkit-scrollbar { width: 4px; }
+  .history-scroll::-webkit-scrollbar-track { background: transparent; }
+  .history-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* ─── COMMUNITY RULES ─── */
+  .community-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .community-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+
+  .community-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .cc-name {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .cc-desc {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .cc-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cc-author {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+  }
+
+  .cc-installs {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--green);
+  }
+
+  .btn-install-sm {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-med);
+    padding: 3px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .btn-install-sm:hover { background: var(--accent-med); }
+
+  /* ─── WEEKLY REPORT ─── */
+  .report-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .report-item {
+    background: var(--surface-2);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+
+  .report-item .ri-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  .report-item .ri-value {
+    font-family: var(--mono);
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  /* ─── SECTIONS ─── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ─── PAYWALL GATE ─── */
+  .paywall-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .paywall-overlay.open { display: flex; }
+
+  .paywall-box {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 0 60px var(--accent-soft);
+    animation: paywall-in 0.3s ease;
+  }
+
+  @keyframes paywall-in {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .paywall-icon { font-size: 2.4rem; margin-bottom: 16px; }
+
+  .paywall-title {
+    font-family: var(--mono);
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .paywall-desc {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .paywall-price {
+    font-family: var(--mono);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .paywall-price-sub {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+
+  .paywall-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s;
+    margin-bottom: 12px;
+  }
+
+  .paywall-btn:hover { background: #ff7f44; box-shadow: 0 0 20px var(--accent-soft); }
+
+  .paywall-close {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    border: none;
+    background: none;
+    transition: color 0.15s;
+  }
+
+  .paywall-close:hover { color: var(--text); }
+
+  .paywall-features {
+    text-align: left;
+    margin-bottom: 24px;
+    list-style: none;
+  }
+
+  .paywall-features li {
+    font-size: 0.82rem;
+    color: var(--text-mid);
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .paywall-features li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.75rem;
+  }
+
+  /* Pro lock badges on buttons */
+  .pro-lock::after {
+    content: '🔒 PRO';
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    margin-left: 6px;
+    opacity: 0.7;
+  }
+
+  /* When unlocked, hide locks */
+  body.pro-unlocked .pro-lock::after { display: none; }
+
+  /* Pro banner for free users */
+  .pro-banner {
+    background: linear-gradient(135deg, var(--accent-soft), var(--surface-2));
+    border: 1px solid var(--accent-med);
+    border-radius: 8px;
+    padding: 16px 24px;
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pro-banner-text {
+    font-size: 0.85rem;
+    color: var(--text-mid);
+  }
+
+  .pro-banner-text strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .pro-banner-btn {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 7px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .pro-banner-btn:hover { background: #ff7f44; }
+
+  body.pro-unlocked .pro-banner { display: none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: 20px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .panels-row { grid-template-columns: 1fr; }
+    .community-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo">🔥 ZeroRules <span class="pro-badge">PRO</span></div>
+      <div class="sub">by CascadeAI</div>
+    </div>
+
+    <div class="nav-section">Dashboard</div>
+    <a class="nav-item active" data-section="overview" onclick="showSection('overview')">
+      <span class="icon">📊</span> Overview
+    </a>
+    <a class="nav-item" data-section="reports" onclick="proGate(function(){ showSection('reports') })">
+      <span class="icon">📈</span> Weekly Reports
+    </a>
+
+    <div class="nav-section">Rules</div>
+    <a class="nav-item" data-section="custom-rules" onclick="showSection('custom-rules')">
+      <span class="icon">⚙️</span> Custom Rules
+    </a>
+    <a class="nav-item" data-section="community" onclick="showSection('community')">
+      <span class="icon">🌐</span> Community Library
+    </a>
+
+    <div class="nav-section">Activity</div>
+    <a class="nav-item" data-section="history" onclick="showSection('history')">
+      <span class="icon">📋</span> Session History
+    </a>
+
+    <div class="sidebar-footer">
+      <a href="https://cascadeai.dev">cascadeai.dev</a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- ═══ OVERVIEW ═══ -->
+    <div class="section active" id="section-overview">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <div class="status"><div class="dot"></div> ZeroRules Active</div>
+      </div>
+
+      <!-- Pro upgrade banner (hidden when unlocked) -->
+      <div class="pro-banner" id="pro-banner">
+        <div class="pro-banner-text">
+          <strong>Preview Mode</strong> — You're viewing demo data. Upgrade to connect your live ZeroRules session.
+        </div>
+        <a href="https://buy.stripe.com/aFa7sLcXz5HedFL8yfeUU01" class="pro-banner-btn">Upgrade →</a>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label"><div class="dot" style="background:var(--green)"></div> Total Saved</div>
+          <div class="stat-value" style="color:var(--green)" id="stat-saved">$0.00</div>
+          <div class="stat-sub"><span class="up">↑ 23%</span> vs last week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><div class="dot" style="background:var(--accent)"></div> Queries Intercepted</div>
+          <div class="stat-value" style="color:var(--accent)" id="stat-intercepted">0</div>
+          <div class="stat-sub">across 5 rules</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><div class="dot" style="background:var(--blue)"></div> Tokens Saved</div>
+          <div class="stat-value" style="color:var(--blue)" id="stat-tokens">0</div>
+          <div class="stat-sub">~$0.008 per intercept</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><div class="dot" style="background:var(--purple)"></div> Avg Response</div>
+          <div class="stat-value" style="color:var(--purple)">2ms</div>
+          <div class="stat-sub">vs 3.2s LLM average</div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="panels-row">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Savings Over Time</div>
+            <span class="panel-action" onclick="proGate(function(){ showSection('reports') })">View Report →</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="savingsChart"></canvas>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Rule Breakdown</div>
+          </div>
+          <div id="rule-breakdown"></div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Recent Intercepts</div>
+          <span class="panel-action" onclick="showSection('history')">View All →</span>
+        </div>
+        <div class="history-scroll" id="recent-history" style="max-height:220px;"></div>
+      </div>
+    </div>
+
+    <!-- ═══ WEEKLY REPORTS ═══ -->
+    <div class="section" id="section-reports">
+      <div class="page-header">
+        <h1>Weekly Cost Report</h1>
+        <div class="status">Week of Feb 3 — Feb 9, 2026</div>
+      </div>
+
+      <div class="report-summary">
+        <div class="report-item">
+          <div class="ri-label">This Week Saved</div>
+          <div class="ri-value" style="color:var(--green)" id="report-week-saved">$0.00</div>
+        </div>
+        <div class="report-item">
+          <div class="ri-label">Projected Monthly</div>
+          <div class="ri-value" style="color:var(--accent)" id="report-monthly">$0.00</div>
+        </div>
+        <div class="report-item">
+          <div class="ri-label">ROI vs Pro Cost</div>
+          <div class="ri-value" style="color:var(--blue)" id="report-roi">0%</div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:20px;">
+        <div class="panel-header">
+          <div class="panel-title">Daily Savings — This Week</div>
+        </div>
+        <div class="chart-container" style="height:280px;">
+          <canvas id="weeklyChart"></canvas>
+        </div>
+      </div>
+
+      <div class="panels-row">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Cost Comparison</div>
+          </div>
+          <div class="chart-container" style="height:240px;">
+            <canvas id="comparisonChart"></canvas>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Token Distribution</div>
+          </div>
+          <div class="chart-container" style="height:240px;">
+            <canvas id="tokenDistChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CUSTOM RULES ═══ -->
+    <div class="section" id="section-custom-rules">
+      <div class="page-header">
+        <h1>Custom Rules</h1>
+        <div class="status">Unlimited with Pro</div>
+      </div>
+
+      <div class="rule-editor">
+        <div class="rule-editor-header">
+          <div class="panel-title">Your Rules</div>
+          <button class="btn-add pro-lock" onclick="proGate(openModal)">+ Add Rule</button>
+        </div>
+        <div id="custom-rules-list">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ COMMUNITY LIBRARY ═══ -->
+    <div class="section" id="section-community">
+      <div class="page-header">
+        <h1>Community Rule Library</h1>
+        <div class="status">12 rules available</div>
+      </div>
+
+      <div class="community-grid" id="community-list">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <!-- ═══ SESSION HISTORY ═══ -->
+    <div class="section" id="section-history">
+      <div class="page-header">
+        <h1>Session History</h1>
+        <div class="status" id="history-count">0 intercepts</div>
+      </div>
+
+      <div class="panel">
+        <div class="history-scroll" style="max-height:600px;" id="full-history"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADD RULE MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3>✦ New Custom Rule</h3>
+    <div class="form-group">
+      <label>Rule Name</label>
+      <input type="text" id="rule-name" placeholder="e.g., unit-converter">
+    </div>
+    <div class="form-group">
+      <label>Match Pattern (regex)</label>
+      <input type="text" id="rule-pattern" placeholder="e.g., (\d+)\s*(km|mi|lb|kg)\s+(?:to|in)\s+(km|mi|lb|kg)">
+    </div>
+    <div class="form-group">
+      <label>Response Template</label>
+      <textarea id="rule-template" placeholder="e.g., Converted {input} → {result}"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Estimated Tokens Saved</label>
+      <input type="number" id="rule-tokens" value="800" min="100" max="5000">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveRule()">Save Rule</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYWALL MODAL -->
+<div class="paywall-overlay" id="paywall">
+  <div class="paywall-box">
+    <div class="paywall-icon">🔥</div>
+    <div class="paywall-title">Unlock ZeroRules Pro</div>
+    <div class="paywall-desc">
+      You're viewing the dashboard in preview mode.<br>
+      Upgrade to unlock all Pro features.
+    </div>
+    <ul class="paywall-features">
+      <li>Unlimited custom rules</li>
+      <li>Install community rules</li>
+      <li>Persistent savings dashboard</li>
+      <li>Weekly cost reports via email</li>
+      <li>Priority support</li>
+    </ul>
+    <div class="paywall-price">$9<span style="font-size:0.9rem;color:var(--text-dim)">/mo</span></div>
+    <div class="paywall-price-sub">Cancel anytime</div>
+    <a href="https://buy.stripe.com/aFa7sLcXz5HedFL8yfeUU01" class="paywall-btn">Upgrade to Pro →</a>
+    <button class="paywall-close" onclick="closePaywall()">Maybe later</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// PRO STATE — Check if user has unlocked Pro
+// After Stripe payment, redirect to cascadeai.dev/pro?pro=unlocked
+// This sets a flag so the gate is removed for that browser
+// ═══════════════════════════════════════
+
+let isPro = false;
+
+function checkProStatus() {
+  // Check URL param from Stripe success redirect
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('pro') === 'unlocked' || params.get('session_id')) {
+    isPro = true;
+    try { localStorage.setItem('zerorules_pro', 'true'); } catch(e) {}
+  }
+  // Check localStorage for returning Pro users
+  try { if (localStorage.getItem('zerorules_pro') === 'true') isPro = true; } catch(e) {}
+
+  if (isPro) {
+    document.body.classList.add('pro-unlocked');
+  }
+}
+
+checkProStatus();
+
+// Gate function — shows paywall if not Pro, runs callback if Pro
+function proGate(callback) {
+  if (isPro) {
+    if (callback) callback();
+    return;
+  }
+  document.getElementById('paywall').classList.add('open');
+}
+
+function closePaywall() {
+  document.getElementById('paywall').classList.remove('open');
+}
+
+// Close paywall on overlay click
+document.getElementById('paywall').addEventListener('click', function(e) {
+  if (e.target === this) closePaywall();
+});
+
+// ═══════════════════════════════════════
+// DATA — Simulated session for demo
+// In production, this reads from ~/.zerorules-session.json
+// ═══════════════════════════════════════
+
+const SESSION = generateDemoData();
+
+function generateDemoData() {
+  const rules = ['math', 'time', 'currency', 'files', 'date'];
+  const weights = [0.45, 0.18, 0.15, 0.12, 0.10];
+  const tokenMap = { math: 850, time: 1200, currency: 1500, files: 900, date: 1000 };
+  const exampleQueries = {
+    math: ['247 × 18', '15% of 200', 'sqrt of 144', '1000 / 3', '2^10', '99 + 301', '500 - 128'],
+    time: ['time in Tokyo', 'time in London', 'time in NYC', 'time in LA', 'time in Paris'],
+    currency: ['$100 to EUR', '500 GBP to JPY', '€250 to USD', '1000 CAD to AUD'],
+    files: ['ls ~/', 'list files in /tmp', 'what\'s in ~/Documents', 'ls /var/log'],
+    date: ['what day is today', 'days until Christmas', 'tomorrow', 'days until New Year']
+  };
+
+  const history = [];
+  const now = Date.now();
+  const weekMs = 7 * 24 * 60 * 60 * 1000;
+
+  for (let i = 0; i < 340; i++) {
+    const rand = Math.random();
+    let cumulative = 0;
+    let rule = 'math';
+    for (let j = 0; j < rules.length; j++) {
+      cumulative += weights[j];
+      if (rand < cumulative) { rule = rules[j]; break; }
+    }
+    const queries = exampleQueries[rule];
+    const query = queries[Math.floor(Math.random() * queries.length)];
+    const timestamp = new Date(now - Math.random() * weekMs).toISOString();
+    history.push({ rule, query, tokens: tokenMap[rule], timestamp });
+  }
+
+  history.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  const totalTokens = history.reduce((s, h) => s + h.tokens, 0);
+  const totalCost = totalTokens * 0.000008;
+
+  return {
+    matches: history.length,
+    tokens_saved: totalTokens,
+    cost_saved: totalCost,
+    history
+  };
+}
+
+// ═══ CUSTOM RULES STATE ═══
+let customRules = [
+  { name: 'unit-converter', pattern: '(\\d+)\\s*(km|mi|lb|kg)\\s+to\\s+(km|mi|lb|kg)', tokens: 800, status: 'active' },
+  { name: 'hex-to-rgb', pattern: '#?([0-9a-f]{6})\\s+to\\s+rgb', tokens: 600, status: 'active' },
+  { name: 'word-count', pattern: 'count\\s+words\\s+in', tokens: 500, status: 'draft' },
+];
+
+// ═══ COMMUNITY RULES ═══
+const communityRules = [
+  { name: 'Roman Numerals', desc: 'Convert between roman and arabic numerals', author: '@numericist', installs: 287 },
+  { name: 'URL Parser', desc: 'Extract domain, path, params from URLs', author: '@webutils', installs: 194 },
+  { name: 'Base64 Codec', desc: 'Encode/decode base64 strings locally', author: '@cryptodev', installs: 342 },
+  { name: 'JSON Formatter', desc: 'Pretty-print and validate JSON strings', author: '@devtools', installs: 518 },
+  { name: 'IP Geolocation', desc: 'Map IPs to approximate city/country', author: '@netops', installs: 156 },
+  { name: 'Cron Parser', desc: 'Convert cron expressions to human-readable', author: '@sysadmin', installs: 223 },
+  { name: 'Color Converter', desc: 'HSL↔RGB↔HEX with alpha support', author: '@designsys', installs: 411 },
+  { name: 'Regex Tester', desc: 'Test patterns against strings locally', author: '@patterns', installs: 367 },
+  { name: 'UUID Generator', desc: 'Generate v4 UUIDs without API calls', author: '@idmaker', installs: 489 },
+  { name: 'Markdown Counter', desc: 'Count headings, links, images in .md', author: '@doctools', installs: 128 },
+  { name: 'Password Strength', desc: 'Score passwords locally — never sent to LLM', author: '@secops', installs: 265 },
+  { name: 'Timezone Diff', desc: 'Calculate hours between two timezones', author: '@clockwork', installs: 178 },
+];
+
+// ═══ NAVIGATION ═══
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  document.querySelector(`[data-section="${name}"]`).classList.add('active');
+
+  if (name === 'reports') initReportCharts();
+}
+
+// ═══ MODAL ═══
+function openModal() {
+  if (!isPro) { proGate(); return; }
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('rule-name').value = '';
+  document.getElementById('rule-pattern').value = '';
+  document.getElementById('rule-template').value = '';
+  document.getElementById('rule-tokens').value = 800;
+}
+
+function saveRule() {
+  const name = document.getElementById('rule-name').value.trim();
+  const pattern = document.getElementById('rule-pattern').value.trim();
+  const tokens = parseInt(document.getElementById('rule-tokens').value) || 800;
+  if (!name || !pattern) return;
+  customRules.push({ name, pattern, tokens, status: 'active' });
+  closeModal();
+  renderCustomRules();
+}
+
+function deleteRule(idx) {
+  customRules.splice(idx, 1);
+  renderCustomRules();
+}
+
+// ═══ RENDER FUNCTIONS ═══
+function renderStats() {
+  document.getElementById('stat-saved').textContent = '$' + SESSION.cost_saved.toFixed(2);
+  document.getElementById('stat-intercepted').textContent = SESSION.matches.toLocaleString();
+  document.getElementById('stat-tokens').textContent = SESSION.tokens_saved.toLocaleString();
+}
+
+function renderRuleBreakdown() {
+  const counts = {};
+  SESSION.history.forEach(h => { counts[h.rule] = (counts[h.rule] || 0) + 1; });
+  const total = SESSION.history.length;
+  const colors = { math: 'var(--blue)', time: 'var(--purple)', currency: 'var(--green)', files: 'var(--yellow)', date: 'var(--cyan)' };
+  const icons = { math: '🔢', time: '🕐', currency: '💱', files: '📁', date: '📅' };
+  const bgColors = { math: 'var(--blue-soft)', time: 'var(--purple-soft)', currency: 'var(--green-soft)', files: 'var(--yellow-soft)', date: 'var(--cyan-soft)' };
+
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const container = document.getElementById('rule-breakdown');
+  container.innerHTML = sorted.map(([rule, count]) => {
+    const pct = ((count / total) * 100).toFixed(0);
+    return `<div class="rule-bar">
+      <div class="rule-icon" style="background:${bgColors[rule]}">${icons[rule]}</div>
+      <div class="rule-info">
+        <div class="rule-name">${rule}</div>
+        <div class="rule-progress"><div class="rule-progress-fill" style="width:${pct}%;background:${colors[rule]}"></div></div>
+      </div>
+      <div class="rule-count">${pct}%</div>
+    </div>`;
+  }).join('');
+}
+
+function renderRecentHistory() {
+  const recent = SESSION.history.slice(0, 10);
+  document.getElementById('recent-history').innerHTML = buildHistoryTable(recent);
+}
+
+function renderFullHistory() {
+  document.getElementById('history-count').textContent = SESSION.history.length + ' intercepts';
+  document.getElementById('full-history').innerHTML = buildHistoryTable(SESSION.history);
+}
+
+function buildHistoryTable(items) {
+  return `<table class="history-table">
+    <thead><tr><th>Time</th><th>Rule</th><th>Query</th><th>Tokens</th><th>Saved</th></tr></thead>
+    <tbody>${items.map(h => {
+      const d = new Date(h.timestamp);
+      const time = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      const date = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      return `<tr>
+        <td style="font-family:var(--mono);font-size:0.75rem;color:var(--text-dim)">${date} ${time}</td>
+        <td><span class="rule-tag ${h.rule}">${h.rule}</span></td>
+        <td style="font-family:var(--mono);font-size:0.78rem">${h.query || '—'}</td>
+        <td style="font-family:var(--mono);font-size:0.78rem;color:var(--text-dim)">${h.tokens.toLocaleString()}</td>
+        <td class="tokens-saved">$${(h.tokens * 0.000008).toFixed(4)}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+function renderCustomRules() {
+  const container = document.getElementById('custom-rules-list');
+  if (customRules.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">⚙️</div>No custom rules yet. Click "+ Add Rule" to create one.</div>';
+    return;
+  }
+  container.innerHTML = customRules.map((r, i) => `
+    <div class="custom-rule-row">
+      <div class="cr-name">${r.name}</div>
+      <div class="cr-pattern">/${r.pattern}/i</div>
+      <div class="cr-status ${r.status}">${r.status === 'active' ? '● Active' : '◌ Draft'}</div>
+      <div class="cr-delete" onclick="deleteRule(${i})">✕</div>
+    </div>
+  `).join('');
+}
+
+function renderCommunity() {
+  document.getElementById('community-list').innerHTML = communityRules.map(r => `
+    <div class="community-card">
+      <div class="cc-name">${r.name}</div>
+      <div class="cc-desc">${r.desc}</div>
+      <div class="cc-meta">
+        <span class="cc-author">${r.author}</span>
+        <span class="cc-installs">▾ ${r.installs}</span>
+      </div>
+      <button class="btn-install-sm pro-lock" onclick="proGate()" style="margin-top:10px;width:100%;text-align:center;">+ Install Rule</button>
+    </div>
+  `).join('');
+}
+
+// ═══ CHARTS ═══
+function initOverviewChart() {
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const dailyData = days.map(() => +(Math.random() * 0.6 + 0.2).toFixed(2));
+
+  new Chart(document.getElementById('savingsChart'), {
+    type: 'line',
+    data: {
+      labels: days,
+      datasets: [{
+        label: 'Savings ($)',
+        data: dailyData,
+        borderColor: '#22c55e',
+        backgroundColor: 'rgba(34,197,94,0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: '#22c55e',
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: '#262630' }, ticks: { color: '#6e6e82', font: { family: 'JetBrains Mono', size: 10 } } },
+        y: {
+          grid: { color: '#262630' },
+          ticks: { color: '#6e6e82', font: { family: 'JetBrains Mono', size: 10 }, callback: v => '$' + v.toFixed(2) }
+        }
+      }
+    }
+  });
+}
+
+let reportChartsInit = false;
+function initReportCharts() {
+  if (reportChartsInit) return;
+  reportChartsInit = true;
+
+  const weekSaved = SESSION.cost_saved;
+  const monthly = weekSaved * 4.3;
+  const roi = ((monthly - 9) / 9 * 100);
+  document.getElementById('report-week-saved').textContent = '$' + weekSaved.toFixed(2);
+  document.getElementById('report-monthly').textContent = '$' + monthly.toFixed(2);
+  document.getElementById('report-roi').textContent = (roi > 0 ? '+' : '') + roi.toFixed(0) + '%';
+
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const dailySavings = days.map(() => +(Math.random() * 0.6 + 0.15).toFixed(2));
+
+  new Chart(document.getElementById('weeklyChart'), {
+    type: 'bar',
+    data: {
+      labels: days,
+      datasets: [{
+        label: 'Daily Savings ($)',
+        data: dailySavings,
+        backgroundColor: '#ff6b2b44',
+        borderColor: '#ff6b2b',
+        borderWidth: 1,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#6e6e82', font: { family: 'JetBrains Mono', size: 10 } } },
+        y: {
+          grid: { color: '#262630' },
+          ticks: { color: '#6e6e82', font: { family: 'JetBrains Mono', size: 10 }, callback: v => '$' + v.toFixed(2) }
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('comparisonChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Without ZeroRules', 'With ZeroRules'],
+      datasets: [{
+        data: [monthly + weekSaved * 4.3, monthly + weekSaved * 4.3 - weekSaved * 4.3],
+        backgroundColor: ['#ef444466', '#22c55e66'],
+        borderColor: ['#ef4444', '#22c55e'],
+        borderWidth: 1,
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: '#262630' }, ticks: { color: '#6e6e82', font: { family: 'JetBrains Mono', size: 10 }, callback: v => '$' + v } },
+        y: { grid: { display: false }, ticks: { color: '#e8e8ec', font: { family: 'JetBrains Mono', size: 11 } } }
+      }
+    }
+  });
+
+  const counts = {};
+  SESSION.history.forEach(h => counts[h.rule] = (counts[h.rule] || 0) + h.tokens);
+  new Chart(document.getElementById('tokenDistChart'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(counts),
+      datasets: [{
+        data: Object.values(counts),
+        backgroundColor: ['#3b82f6', '#a855f7', '#22c55e', '#eab308', '#06b6d4'],
+        borderColor: '#0f0f12',
+        borderWidth: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#8888a0', font: { family: 'JetBrains Mono', size: 10 }, padding: 12 } }
+      }
+    }
+  });
+}
+
+// ═══ INIT ═══
+renderStats();
+renderRuleBreakdown();
+renderRecentHistory();
+renderFullHistory();
+renderCustomRules();
+renderCommunity();
+initOverviewChart();
+</script>
+
+</body>
+</html>
