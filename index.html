@@ -557,6 +557,18 @@
     <p class="install-note">Click to copy. No dependencies. No API keys. Just Node.js.</p>
   </div>
 
+  <!-- ALSO BY CASCADEAI -->
+  <div style="margin-bottom:80px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#ff6b2b;margin-bottom:12px;">Also by CascadeAI</div>
+    <div style="background:#111113;border:1px solid #2a2a2e;border-radius:6px;padding:24px 32px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <h3 style="font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:600;margin-bottom:4px;">🛡️ SkillFence — Runtime Skill Monitor</h3>
+        <p style="font-size:0.85rem;color:#8888a0;">341 malicious skills found on ClawHub. Watch what your skills actually do — network calls, credential reads, process activity.</p>
+      </div>
+      <a href="/skillfence/" style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#ff6b2b;text-decoration:none;padding:8px 16px;border:1px solid #ff6b2b;border-radius:4px;white-space:nowrap;">View →</a>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer>
     <div class="left">ZeroRules © 2026 — <a href="https://cascadeai.dev" style="color:var(--text-dim);">CascadeAI</a></div>
@@ -567,7 +579,7 @@
     </div>
   </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Simulate the savings counter incrementing (for demo purposes)
   let matches = 0;
   let saved = 0;
@@ -585,10 +597,4 @@
   document.querySelectorAll('.install-cmd').forEach(function(el) {
     el.addEventListener('click', function() {
       navigator.clipboard.writeText('clawhub install zero-rules');
-      el.style.borderColor = 'var(--green)';
-      setTimeout(function() { el.style.borderColor = ''; }, 1500);
-    });
-  });
-</script>
-</body>
-</html>
+  
