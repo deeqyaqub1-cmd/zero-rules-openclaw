@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "zero-rules": {
+      "version": "1.0.0",
+      "installedAt": 1770551243269
+    },
+    "skillfence": {
+      "version": "1.0.1",
+      "installedAt": 1770567990327
+    }
+  }
+}
