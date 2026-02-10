@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HyperStack — Automatic Memory, 96% Cheaper | CascadeAI</title>
+<meta name="description" content="Drop-in replacement for MEMORY.md. Your AI agent remembers everything and it costs almost nothing. 87-95% token savings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --surface: #111113;
+    --surface-2: #1a1a1e;
+    --border: #2a2a2e;
+    --text: #e8e8ec;
+    --text-dim: #8888a0;
+    --accent: #ff6b2b;
+    --accent-glow: #ff6b2b33;
+    --green: #22c55e;
+    --green-dim: #22c55e22;
+    --red: #ef4444;
+    --red-dim: #ef444422;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+  .logo { font-family: var(--mono); font-weight: 800; font-size: 1.1rem; color: var(--accent); letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; text-decoration: none; }
+  .logo span { color: var(--text-dim); font-weight: 400; font-size: 0.85rem; }
+  nav a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; font-family: var(--mono); transition: color 0.2s; }
+  nav a:hover { color: var(--text); }
+
+  .hero { padding: 80px 0 60px; text-align: center; }
+  .badge { display: inline-block; font-family: var(--mono); font-size: 0.75rem; color: var(--green); background: var(--green-dim); border: 1px solid #22c55e44; padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; }
+  h1 { font-family: var(--mono); font-weight: 800; font-size: 3rem; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 20px; }
+  .highlight { color: var(--accent); }
+  .subtitle { font-size: 1.1rem; color: var(--text-dim); max-width: 600px; margin: 0 auto 40px; }
+  .savings-tag { display: inline-block; font-family: var(--mono); font-size: 0.85rem; color: var(--green); background: var(--green-dim); border: 1px solid #22c55e44; padding: 6px 16px; border-radius: 6px; margin-top: 10px; }
+
+  h2 { font-family: var(--mono); font-weight: 800; font-size: 1.6rem; letter-spacing: -0.03em; margin-bottom: 16px; color: var(--text); }
+  h3 { font-family: var(--mono); font-weight: 600; font-size: 1rem; color: var(--accent); margin-bottom: 8px; }
+
+  section { padding: 60px 0; }
+  .section-label { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+  .comp-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 28px; }
+  .comp-card.active { border-color: var(--accent); box-shadow: 0 0 30px var(--accent-glow); }
+  .comp-card h3 { font-size: 1rem; margin-bottom: 16px; }
+  .comp-card.active h3 { color: var(--accent); }
+  .comp-card .stat { font-family: var(--mono); font-size: 2.2rem; font-weight: 800; margin-bottom: 4px; }
+  .comp-card .stat-label { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 16px; }
+  .comp-card ul { list-style: none; }
+  .comp-card ul li { font-size: 0.9rem; padding: 5px 0; color: var(--text-dim); display: flex; align-items: center; gap: 8px; }
+  .comp-card ul li::before { content: '•'; color: var(--text-dim); }
+  .comp-card.active ul li::before { content: '✓'; color: var(--green); }
+  .red { color: var(--red); }
+
+  .features { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin: 30px 0; }
+  .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; }
+  .feature-icon { font-size: 1.5rem; margin-bottom: 12px; }
+  .feature-card p { font-size: 0.85rem; color: var(--text-dim); }
+
+  .code-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin: 20px 0; overflow-x: auto; }
+  .code-block pre { font-family: var(--mono); font-size: 0.8rem; color: var(--text-dim); line-height: 1.8; }
+  .code-block .comment { color: #555568; }
+  .code-block .keyword { color: var(--accent); }
+  .code-block .string { color: var(--green); }
+
+  .flow-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin: 30px 0; }
+  .flow-step { text-align: center; }
+  .flow-num { font-family: var(--mono); font-size: 2.5rem; font-weight: 800; color: var(--accent); opacity: 0.3; }
+  .flow-step h3 { color: var(--text); margin: 8px 0; }
+  .flow-step p { font-size: 0.85rem; color: var(--text-dim); }
+
+  .comp-table { width: 100%; border-collapse: collapse; margin: 30px 0; }
+  .comp-table th, .comp-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+  .comp-table th { font-family: var(--mono); font-weight: 600; color: var(--text-dim); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; background: var(--surface); }
+  .comp-table td { color: var(--text-dim); }
+  .comp-table td.hs { color: var(--text); font-weight: 500; }
+  .comp-table tr:hover td { background: var(--surface); }
+
+  .install-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 32px; margin: 30px 0; text-align: center; }
+  .install-cmd { font-family: var(--mono); font-size: 1.1rem; color: var(--accent); background: var(--bg); padding: 16px 24px; border-radius: 6px; border: 1px solid var(--border); display: inline-block; margin: 16px 0; letter-spacing: -0.02em; }
+
+  .trust-box { background: var(--surface); border-left: 3px solid var(--green); border-radius: 0 8px 8px 0; padding: 24px 28px; margin: 30px 0; }
+  .trust-box p { color: var(--text-dim); font-size: 0.95rem; }
+
+  .btn { display: inline-block; padding: 14px 28px; border: none; border-radius: 4px; font-family: var(--mono); font-size: 0.9rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.2s; }
+  .btn-primary { background: var(--accent); color: var(--bg); }
+  .btn-primary:hover { background: #ff7f44; box-shadow: 0 0 20px var(--accent-glow); }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--text-dim); background: var(--surface-2); }
+
+  footer { padding: 40px 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  footer .copy { font-family: var(--mono); font-size: 0.8rem; color: var(--text-dim); }
+  footer .links { display: flex; gap: 20px; }
+  footer a { font-family: var(--mono); font-size: 0.8rem; color: var(--text-dim); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+
+  @media (max-width: 700px) {
+    h1 { font-size: 2rem; }
+    .comparison, .features, .flow-steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="/" class="logo">🃏 HyperStack <span>by <a href="/" style="color:var(--text-dim);text-decoration:none;">CascadeAI</a></span></a>
+    <div style="display:flex;gap:24px;">
+      <a href="https://github.com/deeqyaqub1-cmd/hyperstack">GitHub</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#comparison">Compare</a>
+      <a href="/hyperstack/pricing.html">Pricing</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge">● OpenClaw Skill — Drop-in Replacement</div>
+    <h1>Your agent <span class="highlight">remembers everything</span><br>for 96% less</h1>
+    <p class="subtitle">
+      MEMORY.md loads thousands of tokens every message. HyperStack splits it into tiny cards
+      and loads only what matches the current query. Same memory, fraction of the cost.
+    </p>
+    <div class="savings-tag">✓ 87-95% token savings — verified on real 464-line MEMORY.md</div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section id="how-it-works">
+    <div class="section-label">The Problem → The Fix</div>
+    <h2>MEMORY.md is bleeding your wallet</h2>
+    <div class="comparison">
+      <div class="comp-card">
+        <h3 style="color:var(--red);">❌ Before (MEMORY.md)</h3>
+        <div class="stat red">~6,000</div>
+        <div class="stat-label">tokens loaded every message</div>
+        <ul>
+          <li>Everything loaded, always</li>
+          <li>Ask about database → your editor prefs load too</li>
+          <li>$270/month at Opus rates (100 msgs/day)</li>
+          <li>Manual maintenance</li>
+        </ul>
+      </div>
+      <div class="comp-card active">
+        <h3>✓ After (HyperStack)</h3>
+        <div class="stat" style="color:var(--green);">~350</div>
+        <div class="stat-label">tokens per message</div>
+        <ul>
+          <li>Only relevant card loaded</li>
+          <li>Ask about database → only DB card loads</li>
+          <li>$16/month at same usage</li>
+          <li>Fully automatic</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section>
+    <div class="section-label">Architecture</div>
+    <h2>Index + Cards. That's it.</h2>
+    <p style="color:var(--text-dim);max-width:640px;margin-bottom:24px;">
+      Instead of one massive file, HyperStack gives you a lightweight index (~200 tokens)
+      loaded every message, and individual topic cards (~100 tokens each) loaded on demand.
+    </p>
+    <div class="code-block">
+<pre><span class="comment"># Your workspace after migration</span>
+<span class="keyword">INDEX.md</span>              <span class="comment">← loaded every message (~200 tokens)</span>
+<span class="keyword">memory/</span>
+  <span class="keyword">cards/</span>              <span class="comment">← loaded on demand (~100 tokens each)</span>
+    <span class="string">project-webapp.md</span>
+    <span class="string">person-alice.md</span>
+    <span class="string">decision-auth.md</span>
+    <span class="string">preferences-editor.md</span>
+    <span class="keyword">ephemeral/</span>
+      <span class="string">debug-session.md</span>  <span class="comment">← auto-expires</span></pre>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="section-label">Setup</div>
+    <h2>One command. Zero config.</h2>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <h3>Install</h3>
+        <p>Copy the skill folder into your OpenClaw workspace. One command.</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <h3>Chat</h3>
+        <p>HyperStack auto-detects your MEMORY.md and migrates it into cards. Silently.</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <h3>Save</h3>
+        <p>Agent auto-captures new facts, auto-recalls relevant cards. 87-95% cheaper.</p>
+      </div>
+    </div>
+    <div class="install-block">
+      <p style="color:var(--text-dim);margin-bottom:8px;">Install in 5 seconds:</p>
+      <div class="install-cmd">cp -r hyperstack ~/.openclaw/skills/</div>
+      <p style="color:var(--text-dim);font-size:0.85rem;margin-top:12px;">That's it. Start chatting. HyperStack handles the rest.</p>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section>
+    <div class="section-label">Features</div>
+    <h2>What happens behind the scenes</h2>
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Auto-Recall</h3>
+        <p>Agent scans INDEX.md keywords against your query. Loads only the matching card. Most messages need zero cards.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💾</div>
+        <h3>Auto-Capture</h3>
+        <p>When you mention your tech stack, teammates, or decisions, the agent silently creates or updates a card.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Auto-Migrate</h3>
+        <p>Existing MEMORY.md? HyperStack splits it into cards on first run. Handles code blocks, unicode, BOM, CRLF.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👻</div>
+        <h3>Ephemeral Cards</h3>
+        <p>Debug sessions and PR reviews get temporary cards with TTL. Auto-cleaned on next session start.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <h3>Linked Cards</h3>
+        <p>Cards reference each other. Ask about auth → agent checks the related decision card too.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>Agent-First</h3>
+        <p>User task always comes first. Memory is background work. No forced per-message overhead.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section id="comparison">
+    <div class="section-label">Comparison</div>
+    <h2>vs. Alternatives</h2>
+    <table class="comp-table">
+      <thead>
+        <tr><th></th><th style="color:var(--accent);">HyperStack</th><th>Mem0</th><th>MemOS</th><th>Raw MEMORY.md</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Price</td><td class="hs">Free / $15 Pro</td><td>$19-249/mo</td><td>Free (self-host)</td><td>Free</td></tr>
+        <tr><td>Token savings</td><td class="hs" style="color:var(--green);">87-95%</td><td>~80%</td><td>~60%</td><td>0%</td></tr>
+        <tr><td>Data location</td><td class="hs">Your machine</td><td>Their cloud</td><td>Your infra</td><td>Your machine</td></tr>
+        <tr><td>Setup</td><td class="hs">Copy 1 folder</td><td>API key + SDK</td><td>Docker + Redis</td><td>Manual editing</td></tr>
+        <tr><td>Infrastructure</td><td class="hs">None</td><td>None (cloud)</td><td>Docker, Redis, Qdrant</td><td>None</td></tr>
+        <tr><td>Auto-capture</td><td class="hs" style="color:var(--green);">✓</td><td>✓</td><td>✓</td><td style="color:var(--red);">✗</td></tr>
+        <tr><td>Transparent files</td><td class="hs" style="color:var(--green);">✓ plain markdown</td><td style="color:var(--red);">✗ opaque</td><td style="color:var(--red);">✗ vector DB</td><td>✓</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- TRUST -->
+  <section>
+    <div class="section-label">Trust</div>
+    <h2>Your data never leaves your machine</h2>
+    <div class="trust-box">
+      <p>
+        Cards are plain markdown files on your disk. No cloud. No API calls for memory operations.
+        You can read them, edit them, version control them, or delete them. If you stop using
+        HyperStack, your data stays exactly where it is. No lock-in. No hostage data.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="text-align:center;padding:60px 0 80px;">
+    <h2>Ready to save 96% on memory tokens?</h2>
+    <p style="color:var(--text-dim);margin-bottom:24px;">One command. Zero config. Works with any OpenClaw agent.</p>
+    <div style="display:flex;gap:16px;justify-content:center;">
+      <a href="https://github.com/deeqyaqub1-cmd/hyperstack" class="btn btn-primary">Get HyperStack →</a>
+      <a href="/hyperstack/pricing.html" class="btn btn-outline">See Pricing</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="copy">© 2026 CascadeAI</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/hyperstack/">HyperStack</a>
+      <a href="https://github.com/deeqyaqub1-cmd">GitHub</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

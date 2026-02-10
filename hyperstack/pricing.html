@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HyperStack Pricing — CascadeAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --surface: #111113;
+    --surface-2: #1a1a1e;
+    --border: #2a2a2e;
+    --text: #e8e8ec;
+    --text-dim: #8888a0;
+    --accent: #ff6b2b;
+    --accent-glow: #ff6b2b33;
+    --green: #22c55e;
+    --green-dim: #22c55e22;
+    --red: #ef4444;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+  .logo { font-family: var(--mono); font-weight: 800; font-size: 1.1rem; color: var(--accent); letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; text-decoration: none; }
+  .logo span { color: var(--text-dim); font-weight: 400; font-size: 0.85rem; }
+  nav a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; font-family: var(--mono); transition: color 0.2s; }
+  nav a:hover { color: var(--text); }
+  h1 { font-family: var(--mono); font-weight: 800; font-size: 2.4rem; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 16px; text-align: center; }
+  .highlight { color: var(--accent); }
+  .subtitle { font-size: 1.05rem; color: var(--text-dim); max-width: 540px; margin: 0 auto 50px; text-align: center; }
+
+  .pricing { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 0 0 60px; }
+  .price-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 32px; }
+  .price-card.featured { border-color: var(--accent); box-shadow: 0 0 40px var(--accent-glow); position: relative; }
+  .price-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 0.7rem; font-weight: 600; color: var(--bg); background: var(--accent); padding: 3px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .price-name { font-family: var(--mono); font-weight: 600; font-size: 1.1rem; margin-bottom: 4px; }
+  .price-desc { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 20px; }
+  .price-amount { font-family: var(--mono); font-weight: 800; font-size: 3rem; letter-spacing: -0.04em; margin-bottom: 4px; }
+  .price-amount span { font-size: 1rem; font-weight: 400; color: var(--text-dim); }
+  .price-period { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 24px; }
+  .price-features { list-style: none; margin-bottom: 28px; }
+  .price-features li { font-size: 0.9rem; padding: 6px 0; color: var(--text-dim); display: flex; align-items: center; gap: 8px; }
+  .price-features li::before { content: '✓'; color: var(--green); font-weight: 700; font-size: 0.8rem; }
+  .btn { display: block; width: 100%; padding: 14px; border: none; border-radius: 4px; font-family: var(--mono); font-size: 0.9rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.2s; }
+  .btn-primary { background: var(--accent); color: var(--bg); }
+  .btn-primary:hover { background: #ff7f44; box-shadow: 0 0 20px var(--accent-glow); }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--text-dim); background: var(--surface-2); }
+
+  .savings-section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 32px; margin-bottom: 60px; }
+  .savings-section h2 { font-family: var(--mono); font-weight: 800; font-size: 1.3rem; margin-bottom: 20px; }
+  .savings-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .savings-item { text-align: center; }
+  .savings-item .big { font-family: var(--mono); font-size: 2rem; font-weight: 800; }
+  .savings-item .label { font-size: 0.8rem; color: var(--text-dim); margin-top: 4px; }
+
+  .faq { margin-bottom: 60px; }
+  .faq h2 { font-family: var(--mono); font-weight: 800; font-size: 1.3rem; margin-bottom: 20px; }
+  .faq-item { border-bottom: 1px solid var(--border); padding: 16px 0; }
+  .faq-q { font-family: var(--mono); font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .faq-a { font-size: 0.9rem; color: var(--text-dim); }
+
+  footer { padding: 40px 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  footer .copy { font-family: var(--mono); font-size: 0.8rem; color: var(--text-dim); }
+  footer .links { display: flex; gap: 20px; }
+  footer a { font-family: var(--mono); font-size: 0.8rem; color: var(--text-dim); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+
+  @media (max-width: 700px) {
+    .pricing { grid-template-columns: 1fr; }
+    .savings-grid { grid-template-columns: 1fr; gap: 16px; }
+    h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="/hyperstack/" class="logo">🃏 HyperStack <span>by CascadeAI</span></a>
+    <div style="display:flex;gap:24px;">
+      <a href="/hyperstack/">Product</a>
+      <a href="https://github.com/deeqyaqub1-cmd/hyperstack">GitHub</a>
+    </div>
+  </nav>
+
+  <section style="padding:60px 0 40px;">
+    <h1>Save <span class="highlight">$125-479/month</span><br>on memory tokens</h1>
+    <p class="subtitle">HyperStack Free works forever. Pro adds the dashboard with analytics, visual card management, and token reports.</p>
+  </section>
+
+  <div class="pricing">
+    <!-- FREE -->
+    <div class="price-card">
+      <div class="price-name">Free</div>
+      <div class="price-desc">Full memory engine. No limits on the skill.</div>
+      <div class="price-amount">$0</div>
+      <div class="price-period">forever</div>
+      <ul class="price-features">
+        <li>Unlimited cards locally</li>
+        <li>Auto-capture & auto-recall</li>
+        <li>MEMORY.md migration</li>
+        <li>Ephemeral cards with TTL</li>
+        <li>All 4 scripts included</li>
+        <li>87-95% token savings</li>
+      </ul>
+      <a href="https://github.com/deeqyaqub1-cmd/hyperstack" class="btn btn-outline">Get Free →</a>
+    </div>
+
+    <!-- PRO -->
+    <div class="price-card featured">
+      <div class="price-badge">Most Popular</div>
+      <div class="price-name" style="color:var(--accent);">Pro</div>
+      <div class="price-desc">Dashboard, analytics, visual management.</div>
+      <div class="price-amount">$15 <span>/month</span></div>
+      <div class="price-period">or $144/year (save 20%)</div>
+      <ul class="price-features">
+        <li>Everything in Free</li>
+        <li>Web dashboard at cascadeai.dev</li>
+        <li>Visual card browser & editor</li>
+        <li>Token savings reports</li>
+        <li>Cross-session analytics</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="#" class="btn btn-primary">Coming Soon</a>
+    </div>
+  </div>
+
+  <!-- REAL SAVINGS -->
+  <div class="savings-section">
+    <h2>Real savings from real MEMORY.md files</h2>
+    <p style="color:var(--text-dim);margin-bottom:24px;font-size:0.9rem;">Verified on a 464-line MEMORY.md with 8 projects, 15 team members, 5 decisions. Opus rates ($15/MTok), 100 messages/day.</p>
+    <div class="savings-grid">
+      <div class="savings-item">
+        <div class="big" style="color:var(--red);">$270</div>
+        <div class="label">Before (MEMORY.md)</div>
+      </div>
+      <div class="savings-item">
+        <div class="big" style="color:var(--green);">$16</div>
+        <div class="label">After (HyperStack)</div>
+      </div>
+      <div class="savings-item">
+        <div class="big" style="color:var(--accent);">$254</div>
+        <div class="label">Saved per month</div>
+      </div>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.85rem;margin-top:20px;text-align:center;">
+      At $15/month for Pro, that's a <strong style="color:var(--text);">17x return on investment</strong>.
+      HyperStack pays for itself in the first hour.
+    </p>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+      <div class="faq-q">What happens when I run out of cards on Free?</div>
+      <div class="faq-a">You don't. The skill runs locally with zero limits. Free tier limits only apply to the dashboard (web UI). Your agent creates unlimited cards forever.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do I need Pro to get the token savings?</div>
+      <div class="faq-a">No. Free gives you the full 87-95% savings. Pro adds visibility — dashboard, analytics, reports. The savings engine is identical.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Where is my data stored?</div>
+      <div class="faq-a">On your machine. Plain markdown files. No cloud, no API calls for memory. The dashboard (Pro) reads metadata only — your card content never leaves your disk.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I cancel anytime?</div>
+      <div class="faq-a">Yes. Cancel and your skill keeps working with all your cards. You just lose dashboard access. No data lost, no lock-in.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Why $15 and not $9?</div>
+      <div class="faq-a">HyperStack saves $125-479/month in real token costs. At $15, you get 8-32x ROI. It's cheaper than Mem0 ($19/mo) and delivers better savings (87-95% vs ~80%).</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="copy">© 2026 CascadeAI</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/hyperstack/">HyperStack</a>
+      <a href="https://github.com/deeqyaqub1-cmd">GitHub</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
