@@ -248,22 +248,22 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
       </div>
     </div>
 <pre id="code-curl"><span class="cm"># 1. Store a memory</span>
-<span class="kw">curl</span> -X POST <span class="str">"https://api.cascadeai.dev/api/cards?workspace=default"</span> \
+<span class="kw">curl</span> -X POST <span class="str">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \
   -H <span class="str">"X-API-Key: YOUR_KEY"</span> -H <span class="str">"Content-Type: application/json"</span> \
   -d <span class="str">'{"slug":"project-api","title":"API","stack":"projects",
        "keywords":["fastapi","python"],"body":"FastAPI 3.12 on AWS"}'</span>
 
 <span class="cm"># 2. Search memories</span>
-<span class="kw">curl</span> <span class="str">"https://api.cascadeai.dev/api/search?workspace=default&q=python"</span> \
+<span class="kw">curl</span> <span class="str">"https://hyperstack-cloud.vercel.app/api/search?workspace=default&q=python"</span> \
   -H <span class="str">"X-API-Key: YOUR_KEY"</span>
 
 <span class="cm"># 3. Get all cards</span>
-<span class="kw">curl</span> <span class="str">"https://api.cascadeai.dev/api/cards?workspace=default"</span> \
+<span class="kw">curl</span> <span class="str">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \
   -H <span class="str">"X-API-Key: YOUR_KEY"</span></pre>
 <pre id="code-python" class="hidden"><span class="cm"># pip install requests</span>
 <span class="kw">import</span> requests
 
-<span class="fn">API</span> = <span class="str">"https://api.cascadeai.dev"</span>
+<span class="fn">API</span> = <span class="str">"https://hyperstack-cloud.vercel.app"</span>
 <span class="fn">KEY</span> = <span class="str">"YOUR_KEY"</span>
 <span class="fn">h</span>   = {<span class="str">"X-API-Key"</span>: KEY, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>}
 
@@ -277,7 +277,7 @@ requests.<span class="fn">post</span>(f<span class="str">"{API}/api/cards?worksp
 r = requests.<span class="fn">get</span>(f<span class="str">"{API}/api/search?workspace=default&q=python"</span>, headers=h)
 print(r.json())</pre>
 <pre id="code-js" class="hidden"><span class="cm">// Node.js / Deno / Bun</span>
-<span class="kw">const</span> <span class="fn">API</span> = <span class="str">"https://api.cascadeai.dev"</span>
+<span class="kw">const</span> <span class="fn">API</span> = <span class="str">"https://hyperstack-cloud.vercel.app"</span>
 <span class="kw">const</span> <span class="fn">KEY</span> = <span class="str">"YOUR_KEY"</span>
 
 <span class="cm">// Store</span>
@@ -464,7 +464,7 @@ print(r.json())</pre>
 </div>
 
 <script>
-const A="https://api.cascadeai.dev";let U=null,T=null,DV="cards";
+const A="https://hyperstack-cloud.vercel.app";let U=null,T=null,DV="cards";
 const SC={projects:"#3b82f6",people:"#a855f7",decisions:"#ff6b2b",preferences:"#22c55e",workflows:"#eab308"};
 const SE={projects:"📦",people:"👤",decisions:"⚖️",preferences:"⚙️",workflows:"🔄",general:"📄"};
 const DEMO=[
@@ -541,7 +541,7 @@ function rKey(el){el.innerHTML=`<div class="dh"><div><h1>🔑 API Key</h1><p>Use
 HYPERSTACK_WORKSPACE=default</pre></div></div>
   <div class="akbox"><p style="color:var(--text);font-weight:500;margin-bottom:8px">Quick test</p>
     <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px">
-      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> <span style="color:var(--green)">"https://api.cascadeai.dev/api/cards?workspace=default"</span> \\
+      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> <span style="color:var(--green)">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \\
   -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span></pre></div></div>`}
 
 function rWs(el){const pro=U.plan==="PRO";
