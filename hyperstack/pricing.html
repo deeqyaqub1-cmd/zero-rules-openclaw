@@ -35,21 +35,24 @@
   .highlight { color: var(--accent); }
   .subtitle { font-size: 1.05rem; color: var(--text-dim); max-width: 540px; margin: 0 auto 50px; text-align: center; }
 
-  .pricing { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 0 0 60px; }
-  .price-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 32px; }
+  .pricing { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin: 0 0 60px; }
+  .price-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 28px; }
   .price-card.featured { border-color: var(--accent); box-shadow: 0 0 40px var(--accent-glow); position: relative; }
-  .price-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 0.7rem; font-weight: 600; color: var(--bg); background: var(--accent); padding: 3px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .price-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 0.7rem; font-weight: 600; color: var(--bg); background: var(--accent); padding: 3px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+  .save-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 0.7rem; font-weight: 600; color: var(--bg); background: var(--green); padding: 3px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
   .price-name { font-family: var(--mono); font-weight: 600; font-size: 1.1rem; margin-bottom: 4px; }
   .price-desc { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 20px; }
-  .price-amount { font-family: var(--mono); font-weight: 800; font-size: 3rem; letter-spacing: -0.04em; margin-bottom: 4px; }
+  .price-amount { font-family: var(--mono); font-weight: 800; font-size: 2.8rem; letter-spacing: -0.04em; margin-bottom: 4px; }
   .price-amount span { font-size: 1rem; font-weight: 400; color: var(--text-dim); }
   .price-period { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 24px; }
   .price-features { list-style: none; margin-bottom: 28px; }
-  .price-features li { font-size: 0.9rem; padding: 6px 0; color: var(--text-dim); display: flex; align-items: center; gap: 8px; }
+  .price-features li { font-size: 0.85rem; padding: 5px 0; color: var(--text-dim); display: flex; align-items: center; gap: 8px; }
   .price-features li::before { content: '✓'; color: var(--green); font-weight: 700; font-size: 0.8rem; }
   .btn { display: block; width: 100%; padding: 14px; border: none; border-radius: 4px; font-family: var(--mono); font-size: 0.9rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.2s; }
   .btn-primary { background: var(--accent); color: var(--bg); }
   .btn-primary:hover { background: #ff7f44; box-shadow: 0 0 20px var(--accent-glow); }
+  .btn-green { background: var(--green); color: var(--bg); }
+  .btn-green:hover { background: #2dd96e; box-shadow: 0 0 20px rgba(34,197,94,0.3); }
   .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
   .btn-outline:hover { border-color: var(--text-dim); background: var(--surface-2); }
 
@@ -98,7 +101,7 @@
     <!-- FREE -->
     <div class="price-card">
       <div class="price-name">Free</div>
-      <div class="price-desc">Full memory engine. No limits on the skill.</div>
+      <div class="price-desc">Full memory engine. No limits.</div>
       <div class="price-amount">$0</div>
       <div class="price-period">forever</div>
       <ul class="price-features">
@@ -112,22 +115,40 @@
       <a href="https://github.com/deeqyaqub1-cmd/hyperstack" class="btn btn-outline">Get Free →</a>
     </div>
 
-    <!-- PRO -->
+    <!-- PRO MONTHLY -->
     <div class="price-card featured">
       <div class="price-badge">Most Popular</div>
-      <div class="price-name" style="color:var(--accent);">Pro</div>
-      <div class="price-desc">Dashboard, analytics, visual management.</div>
-      <div class="price-amount">$15 <span>/month</span></div>
-      <div class="price-period">or $144/year (save 20%)</div>
+      <div class="price-name" style="color:var(--accent);">Pro Monthly</div>
+      <div class="price-desc">Dashboard + analytics. Cancel anytime.</div>
+      <div class="price-amount">$15 <span>/mo</span></div>
+      <div class="price-period">billed monthly</div>
       <ul class="price-features">
         <li>Everything in Free</li>
-        <li>Web dashboard at cascadeai.dev</li>
+        <li>Web dashboard</li>
         <li>Visual card browser & editor</li>
         <li>Token savings reports</li>
         <li>Cross-session analytics</li>
         <li>Priority support</li>
       </ul>
-      <a href="#" class="btn btn-primary">Coming Soon</a>
+      <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn btn-primary">Get Pro — $15/mo →</a>
+    </div>
+
+    <!-- PRO YEARLY -->
+    <div class="price-card" style="border-color:var(--green);position:relative;">
+      <div class="save-badge">Save 20%</div>
+      <div class="price-name" style="color:var(--green);">Pro Yearly</div>
+      <div class="price-desc">Best value. 2 months free.</div>
+      <div class="price-amount">$144 <span>/yr</span></div>
+      <div class="price-period">$12/mo — save $36/year</div>
+      <ul class="price-features">
+        <li>Everything in Pro</li>
+        <li>Web dashboard</li>
+        <li>Visual card browser & editor</li>
+        <li>Token savings reports</li>
+        <li>Cross-session analytics</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn btn-green">Get Pro — $144/yr →</a>
     </div>
   </div>
 

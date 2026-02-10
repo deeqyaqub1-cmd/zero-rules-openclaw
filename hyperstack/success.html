@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to HyperStack Pro — CascadeAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --surface: #111113;
+    --surface-2: #1a1a1e;
+    --border: #2a2a2e;
+    --text: #e8e8ec;
+    --text-dim: #8888a0;
+    --accent: #ff6b2b;
+    --accent-glow: #ff6b2b33;
+    --green: #22c55e;
+    --green-dim: #22c55e22;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+  .container { max-width: 700px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+  .logo { font-family: var(--mono); font-weight: 800; font-size: 1.1rem; color: var(--accent); letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; text-decoration: none; }
+  .logo span { color: var(--text-dim); font-weight: 400; font-size: 0.85rem; }
+  nav a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; font-family: var(--mono); transition: color 0.2s; }
+  nav a:hover { color: var(--text); }
+
+  .success { text-align: center; padding: 80px 0 40px; }
+  .check-circle { width: 80px; height: 80px; border-radius: 50%; background: var(--green-dim); border: 2px solid var(--green); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 2.5rem; }
+  h1 { font-family: var(--mono); font-weight: 800; font-size: 2rem; letter-spacing: -0.04em; margin-bottom: 12px; }
+  .highlight { color: var(--accent); }
+  .success p { color: var(--text-dim); font-size: 1.05rem; max-width: 480px; margin: 0 auto; }
+
+  .steps { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 32px; margin: 40px 0; }
+  .steps h2 { font-family: var(--mono); font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; }
+  .step { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: var(--mono); font-weight: 800; font-size: 1.2rem; color: var(--accent); min-width: 28px; }
+  .step-text { font-size: 0.95rem; color: var(--text-dim); }
+  .step-text strong { color: var(--text); }
+
+  .code-inline { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); background: var(--surface-2); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border); }
+
+  .support { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 20px 24px; margin: 30px 0; }
+  .support p { color: var(--text-dim); font-size: 0.9rem; }
+  .support a { color: var(--accent); }
+
+  .btn { display: inline-block; padding: 14px 28px; border: none; border-radius: 4px; font-family: var(--mono); font-size: 0.9rem; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.2s; }
+  .btn-primary { background: var(--accent); color: var(--bg); }
+  .btn-primary:hover { background: #ff7f44; box-shadow: 0 0 20px var(--accent-glow); }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--text-dim); background: var(--surface-2); }
+
+  footer { padding: 40px 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  footer .copy { font-family: var(--mono); font-size: 0.8rem; color: var(--text-dim); }
+  footer .links { display: flex; gap: 20px; }
+  footer a { font-family: var(--mono); font-size: 0.8rem; color: var(--text-dim); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="/hyperstack/" class="logo">🃏 HyperStack <span>by CascadeAI</span></a>
+    <div style="display:flex;gap:24px;">
+      <a href="/hyperstack/">Product</a>
+      <a href="https://github.com/deeqyaqub1-cmd/hyperstack">GitHub</a>
+    </div>
+  </nav>
+
+  <div class="success">
+    <div class="check-circle">✓</div>
+    <h1>Welcome to <span class="highlight">HyperStack Pro</span></h1>
+    <p>Your subscription is active. Here's how to get started.</p>
+  </div>
+
+  <div class="steps">
+    <h2>Get started in 2 minutes</h2>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Install the skill</strong> (if you haven't already):<br><span class="code-inline">cp -r hyperstack ~/.openclaw/skills/</span></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Start chatting.</strong> HyperStack will auto-detect your MEMORY.md and migrate it into cards. No commands needed.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Check your dashboard</strong> at <a href="https://cascadeai.dev/dashboard" style="color:var(--accent);">cascadeai.dev/dashboard</a> to see your cards, analytics, and token savings. (Dashboard coming soon — we'll email you when it's live.)</div>
+    </div>
+  </div>
+
+  <div class="support">
+    <p><strong style="color:var(--text);">Need help?</strong> Email <a href="mailto:support@cascadeai.dev">support@cascadeai.dev</a> — we respond within 24 hours. You can also manage your subscription anytime from Stripe's customer portal.</p>
+  </div>
+
+  <div style="text-align:center;padding:30px 0 60px;display:flex;gap:16px;justify-content:center;">
+    <a href="https://github.com/deeqyaqub1-cmd/hyperstack" class="btn btn-primary">Go to GitHub Repo →</a>
+    <a href="/hyperstack/" class="btn btn-outline">Back to HyperStack</a>
+  </div>
+
+  <footer>
+    <div class="copy">© 2026 CascadeAI</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/hyperstack/">HyperStack</a>
+      <a href="https://github.com/deeqyaqub1-cmd">GitHub</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
