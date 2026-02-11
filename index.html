@@ -30,6 +30,7 @@ nav{padding:14px 0;display:flex;justify-content:space-between;align-items:center
 .navr{display:flex;gap:16px;align-items:center}
 .navr a,.navr button{color:var(--dim);font-size:.82rem;font-family:var(--mono);background:none;border:none;cursor:pointer;transition:color .15s;text-decoration:none}
 .navr a:hover,.navr button:hover{color:var(--text);text-decoration:none}
+.nav-links{display:contents}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 22px;border:none;border-radius:6px;font-family:var(--mono);font-size:.85rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap}
@@ -52,7 +53,7 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 
 /* Inline Signup */
 .hero-signup{display:flex;gap:8px;max-width:440px;margin:28px auto 0;align-items:center}
-.hero-signup input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none}
+.hero-signup input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none;min-width:0}
 .hero-signup input:focus{border-color:var(--accent)}
 .hero-signup input::placeholder{color:var(--faint)}
 .hero-note{font-size:.78rem;color:var(--faint);margin-top:8px;text-align:center}
@@ -187,12 +188,83 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   .fgrid,.pgrid{grid-template-columns:1fr}
   .ba{grid-template-columns:1fr;gap:8px}.ba-arrow{transform:rotate(90deg);padding:8px 0}
   .sgrid{grid-template-columns:1fr 1fr}
-  .sb{display:none}.dc{margin-left:0;padding:16px}
-  .hero-signup{flex-direction:column}.hero-signup input{width:100%}
-  .sbar{gap:20px}
-  .ctable{font-size:.75rem}
-  .logos{gap:12px}
+  .hero{padding:50px 0 30px}
+  .hero-signup{flex-direction:column;max-width:100%}
+  .hero-signup input{width:100%}
+  .hero-signup .btn{width:100%}
+  .nav-links{display:none}
+  .navr{gap:8px}
+  .sb{display:none}.dc{margin-left:0;padding:16px 16px 80px}
+  .mob-nav{display:block}
+  .sbar{gap:16px;flex-wrap:wrap}.sbar .si{min-width:60px}
+  .ctable{font-size:.72rem}.ctable th,.ctable td{padding:6px 8px}
+  .logos{gap:8px}.logos span{font-size:.62rem}
+  .demo pre{font-size:.68rem;padding:14px}
+  .dh{flex-direction:column;align-items:flex-start;gap:8px}
+  .dh .sinput{width:100%}
+  .card-grid{grid-template-columns:1fr 1fr}
+  .ob-savings{grid-template-columns:1fr 1fr}
+  .ob-save-card .big{font-size:1.4rem}
 }
+@media(max-width:400px){
+  .card-grid{grid-template-columns:1fr}
+  .sbar{gap:12px}
+}
+/* ═══ COMPACT CARD GRID ═══ */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.cc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:all .2s;cursor:pointer;position:relative;overflow:hidden}
+.cc:hover{border-color:var(--accent);box-shadow:0 0 20px rgba(255,107,43,.05);transform:translateY(-1px)}
+.cc .cc-stripe{position:absolute;top:0;left:0;right:0;height:3px}
+.cc .cc-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.cc .cc-icon{font-size:16px;flex-shrink:0}
+.cc .cc-title{font-family:var(--mono);font-weight:700;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc .cc-body{font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px}
+.cc .cc-footer{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.cc .cc-tags{display:flex;gap:3px;flex-wrap:wrap;overflow:hidden;max-height:18px}
+.cc .cc-tag{padding:1px 6px;border-radius:8px;font-family:var(--mono);font-size:.58rem;font-weight:600}
+.cc .cc-meta{font-family:var(--mono);font-size:.58rem;color:var(--faint);white-space:nowrap}
+.cc .cc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--faint);cursor:pointer;font-size:11px;opacity:0;transition:opacity .15s;padding:2px 4px}
+.cc:hover .cc-del{opacity:1}
+.cc .cc-del:hover{color:var(--red)}
+
+/* Card expand overlay */
+.card-expand{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.card-expand-inner{background:var(--surface);border:1px solid var(--border);border-radius:12px;max-width:560px;width:100%;max-height:80vh;overflow-y:auto;padding:24px}
+
+/* ═══ ONBOARDING ═══ */
+.ob-savings{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.ob-save-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.ob-save-card .big{font-family:var(--mono);font-weight:800;font-size:1.8rem;letter-spacing:-.03em}
+.ob-save-card .lbl{font-size:.72rem;color:var(--dim);margin-top:2px}
+.ob-steps{display:flex;gap:0;margin:20px 0;position:relative}
+.ob-steps::before{content:'';position:absolute;top:16px;left:32px;right:32px;height:2px;background:var(--border);z-index:0}
+.ob-step{flex:1;text-align:center;position:relative;z-index:1}
+.ob-step .num{width:32px;height:32px;border-radius:50%;background:var(--surface);border:2px solid var(--border);color:var(--dim);font-family:var(--mono);font-size:.75rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px;transition:all .3s}
+.ob-step.done .num{background:var(--green);border-color:var(--green);color:#000}
+.ob-step.active .num{background:var(--accent);border-color:var(--accent);color:#000}
+.ob-step .stxt{font-family:var(--mono);font-size:.68rem;color:var(--dim)}
+.ob-step.active .stxt{color:var(--text)}
+.setup-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px}
+.setup-card h3{font-family:var(--mono);font-size:.88rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.key-display{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid rgba(255,107,43,.2);border-radius:8px;padding:10px 14px;margin:8px 0}
+.key-display code{font-family:var(--mono);font-size:.82rem;color:var(--accent);flex:1;overflow:hidden;text-overflow:ellipsis}
+.key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s}
+.key-display button:hover{background:var(--accent2)}
+.copied-btn{background:var(--green)!important}
+.plat-tabs{display:flex;gap:4px;margin:10px 0 12px;flex-wrap:wrap}
+.plat-tab{padding:5px 10px;border-radius:6px;font-family:var(--mono);font-size:.68rem;cursor:pointer;border:1px solid var(--border);color:var(--dim);background:transparent;transition:all .15s}
+.plat-tab:hover{color:var(--text);border-color:var(--dim)}
+.plat-tab.act{background:var(--glow);border-color:var(--accent);color:var(--accent);font-weight:600}
+.code-block{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;position:relative}
+.code-block pre{font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap;word-break:break-all}
+.code-block .cpbtn{position:absolute;top:6px;right:6px;background:var(--surface2);border:1px solid var(--border);color:var(--dim);border-radius:4px;padding:3px 8px;font-family:var(--mono);font-size:.62rem;cursor:pointer}
+.code-block .cpbtn:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ═══ MOBILE BOTTOM NAV ═══ */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(17,17,20,.95);border-top:1px solid var(--border);padding:6px 0 env(safe-area-inset-bottom,6px);z-index:100;backdrop-filter:blur(12px)}
+.mob-nav-inner{display:flex;justify-content:space-around;align-items:center}
+.mob-nav button{background:none;border:none;color:var(--dim);padding:6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--mono);font-size:.55rem;transition:color .15s}
+.mob-nav button.act{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -201,9 +273,9 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 <nav>
   <div class="logo" onclick="go('landing')"><span class="licon">🃏</span> HyperStack</div>
   <div class="navr">
-    <a href="#features">Features</a>
+    <span class="nav-links"><a href="#features">Features</a>
     <a href="#pricing">Pricing</a>
-    <a href="javascript:void(0)" onclick="go('docs')">Docs</a>
+    <a href="javascript:void(0)" onclick="go('docs')">Docs</a></span>
     <button onclick="go('login')" id="nl" class="btn bo bs">Sign In</button>
     <button onclick="go('dash')" id="nd" class="hidden btn bp bs">Dashboard</button>
     <button onclick="out()" id="no" class="hidden btn bo bs" style="color:var(--red)">Log Out</button>
@@ -557,6 +629,16 @@ print(r.json())</pre>
   </div>
   <div class="dc" id="dm"></div>
 </div>
+<!-- Mobile bottom nav -->
+<div class="mob-nav">
+  <div class="mob-nav-inner">
+    <button class="act" onclick="dt('start')" id="mt-start"><span style="font-size:16px">🚀</span><br>Start</button>
+    <button onclick="dt('cards')" id="mt-cards"><span style="font-size:16px">🃏</span><br>Cards</button>
+    <button onclick="dt('key')" id="mt-key"><span style="font-size:16px">🔑</span><br>Key</button>
+    <button onclick="dt('ws')" id="mt-ws"><span style="font-size:16px">📁</span><br>Spaces</button>
+    <button onclick="dt('stats')" id="mt-stats"><span style="font-size:16px">📊</span><br>Stats</button>
+  </div>
+</div>
 </div>
 
 <script>
@@ -601,150 +683,144 @@ async function doLogin(){const e=document.getElementById("li-e").value,p=documen
 function out(){U=null;T=null;localStorage.removeItem("hs_t");go("landing")}
 
 function dt(t){DV=t;document.querySelectorAll(".sbtn").forEach(b=>b.classList.remove("act"));
-  const b=document.getElementById("t-"+t);if(b)b.classList.add("act");renderD()}
+  const b=document.getElementById("t-"+t);if(b)b.classList.add("act");
+  document.querySelectorAll(".mob-nav button").forEach(b=>b.classList.remove("act"));
+  const mb=document.getElementById("mt-"+t);if(mb)mb.classList.add("act");
+  renderD()}
 
 function showCode(lang,btn){document.querySelectorAll('[id^="code-"]').forEach(e=>e.classList.add("hidden"));
   document.getElementById("code-"+lang).classList.remove("hidden");
   document.querySelectorAll('.demo-tab').forEach(t=>t.classList.remove("active"));btn.classList.add("active")}
 
 function showPlatform(p,btn){['openclaw','claude','python','js','curl'].forEach(id=>{
-  const el=document.getElementById('plat-'+id);if(el)el.classList.toggle('hidden',id!==p);
-  const pb=document.getElementById('pb-'+id);if(pb)pb.classList.toggle('act',id===p)})}
-
+  const el=document.getElementById('ob-plat-'+id);if(el)el.classList.toggle('hidden',id!==p);
+  // Also support old plat- prefix
+  const el2=document.getElementById('plat-'+id);if(el2)el2.classList.toggle('hidden',id!==p)});
+  document.querySelectorAll('.plat-tab').forEach(b=>b.classList.remove('act'));
+  if(btn)btn.classList.add('act');else if(event&&event.target)event.target.classList.add('act')}
 function renderD(){if(!U)return;
   document.getElementById("d-em").textContent=U.email;
   document.getElementById("d-pt").innerHTML=U.plan==="PRO"?'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>':'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>';
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
 
-function rStart(el){el.innerHTML=`<div style="margin-bottom:24px"><h1 style="font-family:var(--mono);font-size:1.4rem;font-weight:800">👋 Welcome to HyperStack!</h1><p style="color:var(--dim);margin-top:6px;font-size:.92rem">Your agent remembers everything now. Pick your platform — you'll be live in 30 seconds.</p></div>
-  <div class="onboard"><div class="steps">
-    <div class="step" onclick="dt('key')" style="cursor:pointer"><div class="num">1</div><br><strong>Copy API key</strong><p>Click API Key tab → Copy</p></div>
-    <div class="step" style="cursor:pointer" onclick="document.getElementById('platform-tabs').scrollIntoView({behavior:'smooth'})"><div class="num">2</div><br><strong>Pick your platform</strong><p>See setup guides below</p></div>
-    <div class="step" onclick="dt('cards')" style="cursor:pointer"><div class="num">3</div><br><strong>Done!</strong><p>Your agent now has memory</p></div>
-  </div></div>
+function rStart(el){el.innerHTML=`<div style="text-align:center;padding:16px 0 20px">
+    <h1 style="font-family:var(--mono);font-size:1.3rem;font-weight:800">🚀 You're saving money already</h1>
+    <p style="color:var(--dim);margin-top:6px;font-size:.88rem">Copy your key, paste into your agent, done.</p>
+  </div>
 
-  <div id="platform-tabs" style="margin-top:28px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:14px">🔌 Pick your platform:</h2>
-    <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
-      <button class="fb act" onclick="showPlatform('openclaw',this)" id="pb-openclaw">🐾 OpenClaw</button>
-      <button class="fb" onclick="showPlatform('claude',this)" id="pb-claude">🤖 Claude Code</button>
-      <button class="fb" onclick="showPlatform('python',this)" id="pb-python">🐍 Python</button>
-      <button class="fb" onclick="showPlatform('js',this)" id="pb-js">⚡ JavaScript</button>
-      <button class="fb" onclick="showPlatform('curl',this)" id="pb-curl">💻 cURL</button>
+  <div class="ob-savings">
+    <div class="ob-save-card" style="border-left:3px solid var(--red)">
+      <div class="big" style="color:var(--red)">$270<span style="font-size:.7rem;color:var(--dim)">/mo</span></div>
+      <div class="lbl">Without HyperStack</div>
     </div>
-
-    <div id="plat-openclaw" class="ci" style="border-left:3px solid var(--accent)">
-      <h3 style="font-family:var(--mono);font-size:.9rem;margin-bottom:10px">🐾 OpenClaw Skill — Fastest setup</h3>
-      <p style="color:var(--dim);font-size:.82rem;margin-bottom:12px">Add HyperStack as a skill in your OpenClaw agent. Your agent gets persistent memory automatically.</p>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px">
-        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--faint)"># Step 1: Download the skill file</span>
-<span style="color:var(--faint)"># Get SKILL.md from cascadeai.dev/hyperstack/SKILL.md</span>
-<span style="color:var(--faint)"># Place it in your agent's skills folder:</span>
-<span style="color:var(--accent)">mkdir</span> -p skills/hyperstack
-<span style="color:var(--accent)">cp</span> SKILL.md <span style="color:var(--green)">skills/hyperstack/SKILL.md</span>
-
-<span style="color:var(--faint)"># Step 2: Set your API key</span>
-<span style="color:var(--accent)">export</span> <span style="color:var(--green)">HYPERSTACK_API_KEY=${U.apiKey}</span>
-<span style="color:var(--accent)">export</span> <span style="color:var(--green)">HYPERSTACK_WORKSPACE=default</span>
-
-<span style="color:var(--faint)"># That's it! Your OpenClaw agent reads the skill</span>
-<span style="color:var(--faint)"># and handles cards automatically.</span></pre></div>
-      <p style="color:var(--faint);font-size:.75rem">The skill tells your agent how to create, search, and update cards. No extra code needed — the agent reads SKILL.md and does the rest.</p>
-    </div>
-
-    <div id="plat-claude" class="ci hidden" style="border-left:3px solid #a855f7">
-      <h3 style="font-family:var(--mono);font-size:.9rem;margin-bottom:10px">🤖 Claude Code — MCP or ENV</h3>
-      <p style="color:var(--dim);font-size:.82rem;margin-bottom:12px">Add your API key to Claude Code's environment. Claude will use it with the HyperStack API.</p>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--faint)"># Add to your project's .env or shell profile</span>
-<span style="color:var(--accent)">export</span> <span style="color:var(--green)">HYPERSTACK_API_KEY=${U.apiKey}</span>
-<span style="color:var(--accent)">export</span> <span style="color:var(--green)">HYPERSTACK_WORKSPACE=default</span>
-
-<span style="color:var(--faint)"># Then tell Claude: "Use HyperStack API to store/search memories"</span>
-<span style="color:var(--faint)"># API: https://hyperstack-cloud.vercel.app/api/cards</span></pre></div>
-    </div>
-
-    <div id="plat-python" class="ci hidden" style="border-left:3px solid #22c55e">
-      <h3 style="font-family:var(--mono);font-size:.9rem;margin-bottom:10px">🐍 Python — 3 lines</h3>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">import</span> requests
-
-h = {<span style="color:var(--green)">"X-API-Key"</span>: <span style="color:var(--green)">"${U.apiKey}"</span>}
-
-<span style="color:var(--faint)"># Store a memory</span>
-requests.post(<span style="color:var(--green)">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span>,
-  headers=h, json={<span style="color:var(--green)">"slug"</span>:<span style="color:var(--green)">"my-card"</span>, <span style="color:var(--green)">"title"</span>:<span style="color:var(--green)">"My Card"</span>,
-  <span style="color:var(--green)">"stack"</span>:<span style="color:var(--green)">"general"</span>, <span style="color:var(--green)">"body"</span>:<span style="color:var(--green)">"Content here"</span>})
-
-<span style="color:var(--faint)"># Search memories</span>
-r = requests.get(<span style="color:var(--green)">"https://hyperstack-cloud.vercel.app/api/search?workspace=default&q=my card"</span>, headers=h)
-print(r.json())</pre></div>
-    </div>
-
-    <div id="plat-js" class="ci hidden" style="border-left:3px solid #3b82f6">
-      <h3 style="font-family:var(--mono);font-size:.9rem;margin-bottom:10px">⚡ JavaScript — fetch API</h3>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">const</span> KEY = <span style="color:var(--green)">"${U.apiKey}"</span>
-<span style="color:var(--accent)">const</span> API = <span style="color:var(--green)">"https://hyperstack-cloud.vercel.app"</span>
-
-<span style="color:var(--faint)">// Store a memory</span>
-<span style="color:var(--accent)">await</span> fetch(\`\${API}/api/cards?workspace=default\`, {
-  method: <span style="color:var(--green)">"POST"</span>,
-  headers: { <span style="color:var(--green)">"X-API-Key"</span>: KEY, <span style="color:var(--green)">"Content-Type"</span>: <span style="color:var(--green)">"application/json"</span> },
-  body: JSON.stringify({ slug:<span style="color:var(--green)">"my-card"</span>, title:<span style="color:var(--green)">"My Card"</span>, stack:<span style="color:var(--green)">"general"</span>, body:<span style="color:var(--green)">"Content"</span> })
-})</pre></div>
-    </div>
-
-    <div id="plat-curl" class="ci hidden" style="border-left:3px solid var(--dim)">
-      <h3 style="font-family:var(--mono);font-size:.9rem;margin-bottom:10px">💻 cURL — universal</h3>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative">
-        <button class="btn bo bs" style="position:absolute;top:8px;right:8px" onclick="navigator.clipboard.writeText('curl -X POST \\'https://hyperstack-cloud.vercel.app/api/cards?workspace=default\\' -H \\'X-API-Key: ${U.apiKey}\\' -H \\'Content-Type: application/json\\' -d \\'{\\\\\\"slug\\\\\\":\\\\\\"test\\\\\\",\\\\\\"title\\\\\\":\\\\\\"Test\\\\\\",\\\\\\"stack\\\\\\":\\\\\\"general\\\\\\",\\\\\\"body\\\\\\":\\\\\\"Hello\\\\\\"}\\'' );this.textContent='✓ Copied'">Copy</button>
-        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> -X POST <span style="color:var(--green)">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \\
-  -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span> \\
-  -H <span style="color:var(--green)">"Content-Type: application/json"</span> \\
-  -d <span style="color:var(--green)">'{"slug":"test","title":"Test","stack":"general","body":"Hello"}'</span></pre></div>
+    <div class="ob-save-card" style="border-left:3px solid var(--green)">
+      <div class="big" style="color:var(--green)">$16<span style="font-size:.7rem;color:var(--dim)">/mo</span></div>
+      <div class="lbl">With HyperStack</div>
     </div>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px">
-    <div class="ci" style="text-align:center;cursor:pointer;border-color:rgba(59,130,246,.2)" onclick="dt('cards')"><span style="font-size:1.5rem">🃏</span><h3 style="font-family:var(--mono);font-size:.85rem;margin:8px 0 4px">View Cards</h3><p style="font-size:.75rem;color:var(--dim)">Browse your memory cards</p></div>
-    <div class="ci" style="text-align:center;cursor:pointer;border-color:rgba(34,197,94,.2)" onclick="go('docs')"><span style="font-size:1.5rem">📖</span><h3 style="font-family:var(--mono);font-size:.85rem;margin:8px 0 4px">Read Docs</h3><p style="font-size:.75rem;color:var(--dim)">Stacks, cards, API guide</p></div>
+  <div class="ob-steps">
+    <div class="ob-step done"><div class="num">✓</div><div class="stxt">Sign up</div></div>
+    <div class="ob-step active"><div class="num">2</div><div class="stxt">Copy key</div></div>
+    <div class="ob-step"><div class="num">3</div><div class="stxt">Paste & go</div></div>
+  </div>
+
+  <div class="setup-card">
+    <h3>🔑 Your API Key</h3>
+    <div class="key-display">
+      <code>${U.apiKey}</code>
+      <button onclick="cpKey(this)">Copy</button>
+    </div>
+    <p style="font-size:.72rem;color:var(--faint);margin-top:4px">Add to your agent env as <code style="color:var(--accent);font-family:var(--mono);font-size:.72rem">HYPERSTACK_API_KEY</code></p>
+  </div>
+
+  <div class="setup-card">
+    <h3>⚡ Quick setup</h3>
+    <div class="plat-tabs">
+      <button class="plat-tab act" onclick="showPlatform('openclaw',this)">🐾 OpenClaw</button>
+      <button class="plat-tab" onclick="showPlatform('claude',this)">🤖 Claude Code</button>
+      <button class="plat-tab" onclick="showPlatform('python',this)">🐍 Python</button>
+      <button class="plat-tab" onclick="showPlatform('js',this)">⚡ JS</button>
+      <button class="plat-tab" onclick="showPlatform('curl',this)">💻 cURL</button>
+    </div>
+
+    <div id="ob-plat-openclaw" class="code-block"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre><span style="color:var(--faint)"># Add skill + set env</span>
+mkdir -p skills/hyperstack
+export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
+export HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span>
+<span style="color:var(--faint)"># Your agent reads SKILL.md and handles the rest</span></pre></div>
+
+    <div id="ob-plat-claude" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre><span style="color:var(--faint)"># Add to .env or shell profile</span>
+export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
+export HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span>
+<span style="color:var(--faint)"># Tell Claude: "Use HyperStack API for memory"</span></pre></div>
+
+    <div id="ob-plat-python" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre>import requests
+h = {"X-API-Key": "<span style="color:var(--green)">${U.apiKey}</span>"}
+<span style="color:var(--faint)"># Store</span>
+requests.post("${A}/api/cards?workspace=default",
+  headers=h, json={"slug":"test","title":"Test",
+  "stack":"general","body":"It works!"})
+<span style="color:var(--faint)"># Search</span>
+r = requests.get("${A}/api/search?workspace=default&q=test", headers=h)</pre></div>
+
+    <div id="ob-plat-js" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre>const KEY = "<span style="color:var(--green)">${U.apiKey}</span>"
+await fetch("${A}/api/cards?workspace=default", {
+  method: "POST",
+  headers: {"X-API-Key": KEY, "Content-Type": "application/json"},
+  body: JSON.stringify({slug:"test",title:"Test",
+    stack:"general",body:"It works!"})
+})</pre></div>
+
+    <div id="ob-plat-curl" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre>curl -X POST "${A}/api/cards?workspace=default" \\
+  -H "X-API-Key: ${U.apiKey}" \\
+  -H "Content-Type: application/json" \\
+  -d '{"slug":"test","title":"Test","stack":"general","body":"It works!"}'</pre></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
+    <div class="setup-card" style="text-align:center;cursor:pointer;margin:0;padding:16px" onclick="dt('cards')">
+      <span style="font-size:1.3rem">🃏</span>
+      <div style="font-family:var(--mono);font-size:.78rem;font-weight:600;margin-top:4px">View Cards</div>
+    </div>
+    <div class="setup-card" style="text-align:center;cursor:pointer;margin:0;padding:16px" onclick="go('docs')">
+      <span style="font-size:1.3rem">📖</span>
+      <div style="font-family:var(--mono);font-size:.78rem;font-weight:600;margin-top:4px">Docs</div>
+    </div>
   </div>`}
 
-function rCards(el){el.innerHTML=`<div class="dh"><div><h1>🃏 Memory Cards</h1><p>Loading...</p></div><input class="sinput" placeholder="🔍 Search cards..." oninput="fCards(this.value)"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)">Loading cards from API...</div></div>`;
+function rCards(el){el.innerHTML=`<div class="dh"><div><h1>🃏 Memory Cards</h1><p>Loading...</p></div><input class="sinput" placeholder="🔍 Search..." oninput="fCards(this.value)"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)">Loading cards from API...</div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
-    document.querySelector('.dh p').textContent=cards.length+' cards · default workspace · '+d.plan+' plan ('+cards.length+'/'+d.limit+')';
+    document.querySelector('.dh p').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
     const cl=document.getElementById('cl');
     if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:40px">
       <span style="font-size:2.5rem">🃏</span>
       <h3 style="font-family:var(--mono);margin:12px 0 8px">No cards yet</h3>
-      <p style="color:var(--dim);font-size:.85rem;margin-bottom:16px">Create your first card using the API. Here's a quick example:</p>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:left;max-width:600px;margin:0 auto;position:relative">
-        <button class="btn bo bs" style="position:absolute;top:8px;right:8px" onclick="navigator.clipboard.writeText('curl -X POST \\'https://hyperstack-cloud.vercel.app/api/cards?workspace=default\\' -H \\'X-API-Key: ${U.apiKey}\\' -H \\'Content-Type: application/json\\' -d \\'{\\\\\\"slug\\\\\\":\\\\\\"my-project\\\\\\",\\\\\\"title\\\\\\":\\\\\\"My Project\\\\\\",\\\\\\"stack\\\\\\":\\\\\\"projects\\\\\\",\\\\\\"keywords\\\\\\":[\\\\\\"react\\\\\\"],\\\\\\"body\\\\\\":\\\\\\"React + Node.js app\\\\\\"}\\'' );this.textContent='✓ Copied'">Copy</button>
-        <pre style="font-family:var(--mono);font-size:.76rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> -X POST <span style="color:var(--green)">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \\
-  -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span> \\
-  -H <span style="color:var(--green)">"Content-Type: application/json"</span> \\
-  -d <span style="color:var(--green)">'{"slug":"my-project","title":"My Project","stack":"projects","keywords":["react"],"body":"React + Node.js app"}'</span></pre></div>
-      <button class="btn bp bs" style="margin-top:16px" onclick="rCards(document.getElementById('dm'))">🔄 Refresh</button>
+      <p style="color:var(--dim);font-size:.85rem;margin-bottom:16px">Your agent creates cards via the API. Go back to setup to get started.</p>
+      <button class="btn bp bs" onclick="dt('start')">← Setup</button>
+      <button class="btn bo bs" style="margin-left:6px" onclick="rCards(document.getElementById('dm'))">🔄 Refresh</button>
     </div>`;return}
-    // Build filter buttons from actual stacks
     const stacks=[...new Set(cards.map(c=>c.stack))];
     const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">🗂️ All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)">${SE[s]||'📄'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
-    // Build card HTML
-    const cardsHtml=cards.map(c=>{
-      const d=Math.floor((Date.now()-new Date(c.updatedAt))/864e5);
-      const fc=d<=7?"var(--green)":d<=30?"var(--blue)":d<=60?"var(--yellow)":"var(--red)";
-      const fl=d<=7?"🟢 Fresh":d<=30?"🔵 Current":d<=60?"🟡 Stale":"🔴 Old";
+    const cardsHtml=`<div class="card-grid">${cards.map(c=>{
       const bc=SC[c.stack]||'#555';
-      const kw=(c.keywords||[]);
-      return`<div class="ci" data-s="${c.stack}" data-q="${(c.title+' '+kw.join(' ')+' '+(c.body||'')).toLowerCase()}" style="border-left:3px solid ${bc}">
-        <div class="ci-top"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px;filter:drop-shadow(0 0 4px ${bc}50)">${SE[c.stack]||'📄'}</span><div><div class="ci-title">${c.title||c.slug}</div><div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">${kw.map(k=>`<span class="badge" style="background:${bc}15;color:${bc};border:1px solid ${bc}30;border-radius:10px;padding:2px 8px">#${k}</span>`).join('')}</div></div></div>
-        <span class="badge" style="background:${fc}15;color:${fc};border:1px solid ${fc}30;font-size:.7rem;padding:3px 8px">${fl}</span></div>
-        <div class="ci-body">${(c.body||'').replace(/</g,'&lt;')}</div>
-        <div class="ci-acts"><button onclick="if(confirm('Delete card: ${c.slug}?'))delCard('${c.slug}')">🗑️ Delete</button><span style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">${c.tokens||0} tokens</span><span class="date">${c.slug}</span></div></div>`}).join('');
-    cl.innerHTML=filtersHtml+cardsHtml+`<div style="text-align:center;margin-top:12px"><button class="btn bo bs" onclick="rCards(document.getElementById('dm'))">🔄 Refresh</button></div>`;
+      const kw=(c.keywords||[]).slice(0,3);
+      const body=(c.body||'').replace(/</g,'&lt;').substring(0,80);
+      return`<div class="cc" data-s="${c.stack}" data-q="${(c.title+' '+(c.keywords||[]).join(' ')+' '+(c.body||'')).toLowerCase()}" onclick="expandCard(${JSON.stringify(c).replace(/"/g,'&quot;')})">
+        <div class="cc-stripe" style="background:${bc}"></div>
+        <button class="cc-del" onclick="event.stopPropagation();if(confirm('Delete ${c.slug}?'))delCard('${c.slug}')" title="Delete">✕</button>
+        <div class="cc-head"><span class="cc-icon">${SE[c.stack]||'📄'}</span><span class="cc-title">${c.title||c.slug}</span></div>
+        <div class="cc-body">${body}</div>
+        <div class="cc-footer"><div class="cc-tags">${kw.map(k=>`<span class="cc-tag" style="background:${bc}15;color:${bc};border:1px solid ${bc}30">#${k}</span>`).join('')}</div><span class="cc-meta">${c.tokens||0}t</span></div>
+      </div>`}).join('')}</div>`;
+    cl.innerHTML=filtersHtml+cardsHtml+`<div style="text-align:center;margin-top:14px"><button class="btn bo bs" onclick="rCards(document.getElementById('dm'))">🔄 Refresh</button></div>`;
   }).catch(err=>{
     document.getElementById('cl').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red)">Failed to load cards: ${err.message}<br><button class="btn bo bs" style="margin-top:10px" onclick="rCards(document.getElementById('dm'))">Retry</button></div>`;
   })}
@@ -752,8 +828,36 @@ function rCards(el){el.innerHTML=`<div class="dh"><div><h1>🃏 Memory Cards</h1
 function delCard(slug){fetch(A+"/api/cards?workspace=default&id="+slug,{method:"DELETE",headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(()=>rCards(document.getElementById('dm'))).catch(err=>alert("Delete failed: "+err.message))}
 
 function fStack(s,b){document.querySelectorAll('.fb').forEach(x=>x.classList.remove('act'));b.classList.add('act');
-  document.querySelectorAll('.ci').forEach(e=>{e.style.display=(s==='all'||e.dataset.s===s)?'':'none'})}
-function fCards(q){const t=q.toLowerCase();document.querySelectorAll('.ci').forEach(e=>{e.style.display=e.dataset.q.includes(t)?'':'none'})}
+  document.querySelectorAll('.cc').forEach(e=>{e.style.display=(s==='all'||e.dataset.s===s)?'':'none'})}
+function fCards(q){const t=q.toLowerCase();document.querySelectorAll('.cc').forEach(e=>{e.style.display=e.dataset.q.includes(t)?'':'none'})}
+
+function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
+  const ov=document.createElement('div');ov.className='card-expand';ov.onclick=e=>{if(e.target===ov)ov.remove()};
+  ov.innerHTML=`<div class="card-expand-inner">
+    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:14px">
+      <div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:20px">${SE[c.stack]||'📄'}</span><span style="font-family:var(--mono);font-weight:700;font-size:1rem">${c.title||c.slug}</span></div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap">${kw.map(k=>`<span style="padding:2px 8px;border-radius:8px;font-family:var(--mono);font-size:.65rem;font-weight:600;background:${bc}15;color:${bc};border:1px solid ${bc}30">#${k}</span>`).join('')}</div></div>
+      <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;padding:4px">✕</button>
+    </div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px">
+      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap">${(c.body||'').replace(/</g,'&lt;')}</pre>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">${c.slug} · ${c.tokens||0} tokens · ${c.stack}</span>
+      <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3)" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">🗑️ Delete</button>
+    </div>
+  </div>`;
+  document.body.appendChild(ov)}
+
+function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='✓ Copied';btn.classList.add('copied-btn');
+  setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied-btn')},2000);
+  const steps=document.querySelectorAll('.ob-step');
+  if(steps[1]){steps[1].classList.add('done');steps[1].classList.remove('active')}
+  if(steps[2])steps[2].classList.add('active')}
+
+function cpBlock(btn){const pre=btn.parentElement.querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent);btn.textContent='✓ Copied';
+  setTimeout(()=>{btn.textContent='Copy'},2000)}
 
 function rKey(el){el.innerHTML=`<div class="dh"><div><h1>🔑 API Key</h1><p>Use this key in any agent</p></div></div>
   <div class="akbox"><p style="color:var(--text);font-weight:500;margin-bottom:4px">Your API Key</p>
