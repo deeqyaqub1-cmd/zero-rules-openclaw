@@ -93,7 +93,7 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 .fc p{font-size:.82rem;color:var(--dim);line-height:1.5}
 .fc .pro-tag{display:inline-block;padding:1px 6px;border-radius:3px;background:var(--glow);color:var(--accent);font-family:var(--mono);font-size:9px;font-weight:600;margin-left:4px}
 
-/* Comparison Table */
+/* Why HyperStack Table */
 .ctable{width:100%;border-collapse:collapse;margin:24px 0}
 .ctable th,.ctable td{padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);font-size:.82rem}
 .ctable th{font-family:var(--mono);font-weight:600;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;background:var(--surface)}
@@ -332,22 +332,23 @@ print(r.json())</pre>
 
 <section>
   <div style="text-align:center;margin-bottom:24px">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Comparison</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">HyperStack vs competitors</h2>
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Why HyperStack</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">Built different. Built better.</h2><p style="color:var(--dim);max-width:520px;margin:8px auto 0;font-size:.88rem">Other memory tools charge per operation, lock you into one platform, and need their own LLM calls. We don't.</p>
   </div>
   <table class="ctable">
-    <thead><tr><th></th><th class="hs">HyperStack</th><th>Mem0</th><th>Zep</th><th>Letta</th></tr></thead>
+    <thead><tr><th></th><th class="hs">HyperStack</th><th>Others</th></tr></thead>
     <tbody>
-      <tr><td>Free tier</td><td class="y">50 cards</td><td>10K memories</td><td>Limited</td><td>Open source</td></tr>
-      <tr><td>Setup time</td><td class="hs">30 seconds</td><td>60 seconds</td><td>Minutes</td><td>Minutes</td></tr>
-      <tr><td>Token savings</td><td class="hs">94%</td><td>~80%</td><td>Varies</td><td>Varies</td></tr>
-      <tr><td>SDK required</td><td class="y">No — REST API</td><td>Yes (Python)</td><td>Yes</td><td>Yes</td></tr>
-      <tr><td>Works with any agent</td><td class="y">✓</td><td>Limited</td><td>Limited</td><td>Own framework</td></tr>
-      <tr><td>Team memory</td><td class="y">✓ (Pro)</td><td class="n">✗</td><td>Enterprise</td><td class="n">✗</td></tr>
-      <tr><td>Multi-workspace</td><td class="y">✓ (Pro)</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td></tr>
-      <tr><td>Version history</td><td class="y">✓ (Pro)</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td></tr>
-      <tr><td>Data ownership</td><td class="y">Your database</td><td>Their cloud</td><td>Their cloud</td><td>Self-host option</td></tr>
-      <tr><td>Pro price</td><td class="hs">$15/mo</td><td>$99+/mo</td><td>Custom</td><td>Custom</td></tr>
+      <tr><td>Semantic + keyword search</td><td class="y">&#10004; Hybrid (pgvector)</td><td>Semantic only</td></tr>
+      <tr><td>LLM cost per memory op</td><td class="hs">$0 &mdash; zero</td><td>~$0.002/op (adds up fast)</td></tr>
+      <tr><td>Auto-capture &amp; auto-recall</td><td class="y">&#10004; Built-in</td><td>Varies</td></tr>
+      <tr><td>Works with</td><td class="y">MCP + SDK + REST + OpenClaw</td><td>Usually 1 platform</td></tr>
+      <tr><td>Team sharing</td><td class="y">&#10004; Up to 20 members</td><td>Rare / enterprise only</td></tr>
+      <tr><td>Structured cards</td><td class="y">&#10004; Slugs, stacks, keywords</td><td>Unstructured blobs</td></tr>
+      <tr><td>PII / secrets redaction</td><td class="y">&#10004; Built-in rules</td><td>Not enforced</td></tr>
+      <tr><td>Setup time</td><td class="hs">30 seconds</td><td>2&ndash;10 minutes</td></tr>
+      <tr><td>Free tier</td><td class="y">50 cards forever</td><td>Limited or paid only</td></tr>
+      <tr><td>Pro price</td><td class="hs">$15/mo flat</td><td>$99+/mo usage-based</td></tr>
+      <tr><td>Funding required</td><td class="hs">$0 &mdash; self-funded</td><td>$23M+ in VC</td></tr>
     </tbody>
   </table>
 </section>
@@ -442,11 +443,42 @@ print(r.json())</pre>
     <div class="fg"><label>Password</label><input type="password" id="li-p" placeholder="••••••••"></div>
     <div id="li-err" class="ferr hidden"></div>
     <button onclick="doLogin()" class="btn bp" style="width:100%;margin-top:6px">Sign In →</button>
-    <div class="aswitch">No account? <a onclick="go('signup')">Create one free</a></div>
+    <div class="aswitch">No account? <a onclick="go('signup')">Create one free</a></div><div class="aswitch" style="margin-top:4px"><a onclick="go('forgot')" style="cursor:pointer;color:var(--dim);font-size:.82rem">Forgot password?</a></div>
   </div>
 </div>
 </div>
 
+
+<!-- FORGOT PASSWORD -->
+<div id="p-forgot" class="hidden">
+<div class="w">
+  <div class="auth">
+    <h2>Reset password</h2>
+    <p style="color:var(--dim);font-size:.85rem;margin-bottom:12px">Enter your email to receive a reset code.</p>
+    <div class="fg"><label>Email</label><input type="email" id="fp-e" placeholder="you@example.com"></div>
+    <div id="fp-err" class="ferr hidden"></div>
+    <div id="fp-ok" class="hidden" style="color:var(--green);font-size:.85rem;margin:8px 0"></div>
+    <button onclick="doForgot()" class="btn bp" style="width:100%;margin-top:6px">Send Reset Code &#8594;</button>
+    <div class="aswitch" style="margin-top:8px"><a onclick="go('reset')">Already have a code?</a></div>
+    <div class="aswitch"><a onclick="go('login')">&#8592; Back to sign in</a></div>
+  </div>
+</div>
+</div>
+
+<!-- RESET PASSWORD -->
+<div id="p-reset" class="hidden">
+<div class="w">
+  <div class="auth">
+    <h2>Set new password</h2>
+    <div class="fg"><label>Reset Code</label><input type="text" id="rp-t" placeholder="Paste your reset code" style="font-family:var(--mono);font-size:.82rem"></div>
+    <div class="fg"><label>New Password (8+ chars)</label><input type="password" id="rp-p" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"></div>
+    <div id="rp-err" class="ferr hidden"></div>
+    <div id="rp-ok" class="hidden" style="color:var(--green);font-size:.85rem;margin:8px 0"></div>
+    <button onclick="doReset()" class="btn bp" style="width:100%;margin-top:6px">Reset Password &#8594;</button>
+    <div class="aswitch"><a onclick="go('login')">&#8592; Back to sign in</a></div>
+  </div>
+</div>
+</div>
 <!-- ════════════ DASHBOARD ════════════ -->
 <div id="p-dash" class="hidden">
 <div class="dash">
@@ -502,6 +534,23 @@ async function doLogin(){const e=document.getElementById("li-e").value,p=documen
     U=d.user;T=d.token;localStorage.setItem("hs_t",d.token);go("dash")}
   catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
 
+
+async function doForgot(){const e=document.getElementById("fp-e").value,er=document.getElementById("fp-err"),ok=document.getElementById("fp-ok");
+  er.classList.add("hidden");ok.classList.add("hidden");if(!e){er.textContent="Enter your email";er.classList.remove("hidden");return}
+  try{const r=await fetch(A+"/api/auth?action=request-reset",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e})});
+    const d=await r.json();ok.textContent="If that email exists, a reset code has been generated.";ok.classList.remove("hidden");
+    if(d._devToken){ok.innerHTML="Reset code:<br><code style=\"font-size:.75rem;word-break:break-all;color:var(--accent)\">"+d._devToken+"</code><br>Copy this and click \"Already have a code?\" below.";ok.classList.remove("hidden")}}
+  catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
+
+async function doReset(){const t=document.getElementById("rp-t").value,p=document.getElementById("rp-p").value,er=document.getElementById("rp-err"),ok=document.getElementById("rp-ok");
+  er.classList.add("hidden");ok.classList.add("hidden");
+  if(!t||!p){er.textContent="Fill in all fields";er.classList.remove("hidden");return}
+  if(p.length<8){er.textContent="Password: 8+ characters";er.classList.remove("hidden");return}
+  try{const r=await fetch(A+"/api/auth?action=reset-password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token:t,password:p})});
+    const d=await r.json();if(!r.ok){er.textContent=d.error||"Failed";er.classList.remove("hidden");return}
+    ok.textContent="Password reset! Redirecting to sign in...";ok.classList.remove("hidden");
+    setTimeout(()=>go("login"),2000)}
+  catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
 function out(){U=null;T=null;localStorage.removeItem("hs_t");go("landing")}
 
 function dt(t){DV=t;document.querySelectorAll(".sbtn").forEach(b=>b.classList.remove("act"));
