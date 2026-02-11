@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HyperStack â€” Cloud Memory for Any AI Agent</title>
+<title>HyperStack — Cloud Memory for Any AI Agent</title>
 <meta name="description" content="Give any AI agent persistent memory. 50 free cards. Works with any framework. 30 seconds to set up.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -24,13 +24,11 @@ a:hover{text-decoration:underline}
 
 /* Nav */
 nav{padding:14px 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,10,.85);backdrop-filter:blur(12px);z-index:100}
-.logo{font-family:var(--mono);font-weight:800;font-size:1.4rem;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:8px;text-shadow:0 0 20px rgba(255,107,43,.3);letter-spacing:-.02em}
-.logo span.licon{font-size:1.5rem;filter:drop-shadow(0 0 6px rgba(255,107,43,.4))}
+.logo{font-family:var(--mono);font-weight:800;font-size:1.05rem;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:6px}
 .logo small{color:var(--faint);font-weight:400;font-size:.75rem}
 .navr{display:flex;gap:16px;align-items:center}
 .navr a,.navr button{color:var(--dim);font-size:.82rem;font-family:var(--mono);background:none;border:none;cursor:pointer;transition:color .15s;text-decoration:none}
 .navr a:hover,.navr button:hover{color:var(--text);text-decoration:none}
-.nav-links{display:contents}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 22px;border:none;border-radius:6px;font-family:var(--mono);font-size:.85rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap}
@@ -53,7 +51,7 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 
 /* Inline Signup */
 .hero-signup{display:flex;gap:8px;max-width:440px;margin:28px auto 0;align-items:center}
-.hero-signup input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none;min-width:0}
+.hero-signup input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none}
 .hero-signup input:focus{border-color:var(--accent)}
 .hero-signup input::placeholder{color:var(--faint)}
 .hero-note{font-size:.78rem;color:var(--faint);margin-top:8px;text-align:center}
@@ -113,7 +111,7 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 .pc .per{font-size:.78rem;color:var(--dim);margin-bottom:14px}
 .pc ul{list-style:none;margin-bottom:18px}
 .pc ul li{font-size:.8rem;padding:3px 0;color:var(--dim)}
-.pc ul li::before{content:'âœ“ ';color:var(--green);font-weight:700}
+.pc ul li::before{content:'✓ ';color:var(--green);font-weight:700}
 .pc ul li.pro{color:var(--text)}.pc ul li.pro::before{color:var(--accent)}
 
 /* Auth */
@@ -127,55 +125,43 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 
 /* Dashboard */
 .dash{display:flex;min-height:100vh}
-.sb{width:200px;background:linear-gradient(180deg,var(--surface) 0%,#0d0d12 100%);border-right:1px solid var(--border);padding:14px 0;position:fixed;height:100vh;display:flex;flex-direction:column;z-index:50}
+.sb{width:190px;background:var(--surface);border-right:1px solid var(--border);padding:14px 0;position:fixed;height:100vh;display:flex;flex-direction:column;z-index:50}
 .sb .brand{padding:0 14px 14px;border-bottom:1px solid var(--border);margin-bottom:6px}
 .sb .brand p{font-family:var(--mono);font-size:.65rem;color:var(--faint);margin-top:2px}
-.sbtn{display:flex;align-items:center;gap:8px;padding:10px 16px;border:none;background:transparent;color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:.82rem;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent;border-radius:0 6px 6px 0;margin:1px 0}
-.sbtn:hover{color:var(--text);background:rgba(255,255,255,.03)}
-.sbtn.act{color:var(--accent);background:var(--glow);border-left-color:var(--accent);font-weight:600}
-.sb .bot{margin-top:auto;padding:12px 14px;border-top:1px solid var(--border)}
+.sbtn{display:flex;align-items:center;gap:8px;padding:9px 14px;border:none;background:transparent;color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:.82rem;width:100%;text-align:left;transition:all .12s;border-left:2px solid transparent}
+.sbtn:hover{color:var(--text);background:var(--surface2)}
+.sbtn.act{color:var(--text);background:var(--glow);border-left-color:var(--accent)}
+.sb .bot{margin-top:auto;padding:10px 14px;border-top:1px solid var(--border)}
 .sb .bot .em{font-family:var(--mono);font-size:.72rem;color:var(--text);overflow:hidden;text-overflow:ellipsis}
-.dc{margin-left:200px;flex:1;padding:24px 32px;max-width:900px}
+.dc{margin-left:190px;flex:1;padding:22px 28px}
 .dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800}
+.dh h1{font-family:var(--mono);font-size:1.2rem;font-weight:800}
 .dh p{font-family:var(--mono);font-size:.75rem;color:var(--dim);margin-top:2px}
 
-/* Onboarding banner */
-.onboard{background:linear-gradient(135deg,rgba(255,107,43,.08),rgba(59,130,246,.08));border:1px solid rgba(255,107,43,.2);border-radius:10px;padding:20px 24px;margin-bottom:20px}
-.onboard h3{font-family:var(--mono);font-size:.95rem;font-weight:700;margin-bottom:10px;color:var(--accent)}
-.onboard .steps{display:flex;gap:12px}
-.onboard .step{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;transition:all .2s}
-.onboard .step:hover{border-color:var(--accent);transform:translateY(-2px)}
-.onboard .step .num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-family:var(--mono);font-size:.7rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px}
-.onboard .step p{font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.4}
-.onboard .step strong{color:var(--text);font-size:.78rem}
-
-/* Cards - upgraded */
-.ci{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:10px;transition:all .2s;cursor:default}
-.ci:hover{border-color:var(--accent);box-shadow:0 0 20px rgba(255,107,43,.05);transform:translateY(-1px)}
-.ci-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-.ci-title{font-family:var(--mono);font-weight:700;font-size:.92rem}
-.ci-body{font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;white-space:pre-wrap;padding:10px 12px;background:var(--bg);border-radius:6px;border:1px solid var(--border)}
-.ci-acts{display:flex;gap:8px;margin-top:10px;align-items:center}
-.ci-acts button{background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;cursor:pointer;transition:all .15s}
-.ci-acts button:hover{border-color:var(--accent);color:var(--accent)}
+/* Cards */
+.ci{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:8px;transition:border .15s}
+.ci:hover{border-color:var(--border2)}
+.ci-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.ci-title{font-family:var(--mono);font-weight:700;font-size:.9rem}
+.ci-body{font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;white-space:pre-wrap}
+.ci-acts{display:flex;gap:6px;margin-top:8px;align-items:center}
+.ci-acts button{background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-family:var(--mono);font-size:.72rem;cursor:pointer}
 .ci-acts .date{font-family:var(--mono);font-size:.68rem;color:var(--faint);margin-left:auto}
-.filters{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.fb{background:var(--surface);border:1px solid var(--border);color:var(--dim);padding:5px 12px;border-radius:20px;font-family:var(--mono);font-size:.72rem;cursor:pointer;transition:all .15s}
-.fb:hover{color:var(--text);border-color:var(--dim)}.fb.act{background:var(--glow);border-color:var(--accent);color:var(--accent);font-weight:600}
-.sinput{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-family:var(--mono);font-size:.82rem;width:240px;outline:none;transition:border .15s}
-.sinput:focus{border-color:var(--accent);box-shadow:0 0 12px rgba(255,107,43,.1)}
+.filters{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.fb{background:transparent;border:1px solid transparent;color:var(--dim);padding:3px 8px;border-radius:4px;font-family:var(--mono);font-size:.72rem;cursor:pointer}
+.fb:hover{color:var(--text)}.fb.act{background:var(--surface2);border-color:var(--border2);color:var(--text)}
+.sinput{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:7px 12px;color:var(--text);font-family:var(--mono);font-size:.82rem;width:220px;outline:none}
+.sinput:focus{border-color:var(--accent)}
 
 /* Stats */
-.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.sc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;transition:all .2s}
-.sc:hover{border-color:var(--border2);transform:translateY(-1px)}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;text-align:center}
 .sc .n{font-family:var(--mono);font-size:1.6rem;font-weight:800}
-.sc .l{font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px}
+.sc .l{font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:2px}
 
 /* API Key */
-.akbox{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin:14px 0}
-.akbox .key{font-family:var(--mono);font-size:.88rem;color:var(--accent);background:var(--bg);padding:10px 16px;border-radius:6px;border:1px solid rgba(255,107,43,.2);display:inline-block;margin:6px 0}
+.akbox{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin:14px 0}
+.akbox .key{font-family:var(--mono);font-size:.88rem;color:var(--accent);background:var(--bg);padding:8px 14px;border-radius:4px;border:1px solid var(--border);display:inline-block;margin:6px 0}
 
 /* Footer */
 footer{padding:36px 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
@@ -188,94 +174,23 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   .fgrid,.pgrid{grid-template-columns:1fr}
   .ba{grid-template-columns:1fr;gap:8px}.ba-arrow{transform:rotate(90deg);padding:8px 0}
   .sgrid{grid-template-columns:1fr 1fr}
-  .hero{padding:50px 0 30px}
-  .hero-signup{flex-direction:column;max-width:100%}
-  .hero-signup input{width:100%}
-  .hero-signup .btn{width:100%}
-  .nav-links{display:none}
-  .navr{gap:8px}
-  .sb{display:none}.dc{margin-left:0;padding:16px 16px 80px}
-  .mob-nav{display:block}
-  .sbar{gap:16px;flex-wrap:wrap}.sbar .si{min-width:60px}
-  .ctable{font-size:.72rem}.ctable th,.ctable td{padding:6px 8px}
-  .logos{gap:8px}.logos span{font-size:.62rem}
-  .demo pre{font-size:.68rem;padding:14px}
-  .dh{flex-direction:column;align-items:flex-start;gap:8px}
-  .dh .sinput{width:100%}
-  .card-grid{grid-template-columns:1fr 1fr}
-  .ob-savings{grid-template-columns:1fr 1fr}
-  .ob-save-card .big{font-size:1.4rem}
+  .sb{display:none}.dc{margin-left:0}
+  .hero-signup{flex-direction:column}.hero-signup input{width:100%}
+  .sbar{gap:20px}
+  .ctable{font-size:.75rem}
+  .logos{gap:12px}
 }
-@media(max-width:400px){
-  .card-grid{grid-template-columns:1fr}
-  .sbar{gap:12px}
-}
-/* â•â•â• COMPACT CARD GRID â•â•â• */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
-.cc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:all .2s;cursor:pointer;position:relative;overflow:hidden}
-.cc:hover{border-color:var(--accent);box-shadow:0 0 20px rgba(255,107,43,.05);transform:translateY(-1px)}
-.cc .cc-stripe{position:absolute;top:0;left:0;right:0;height:3px}
-.cc .cc-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.cc .cc-icon{font-size:16px;flex-shrink:0}
-.cc .cc-title{font-family:var(--mono);font-weight:700;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cc .cc-body{font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px}
-.cc .cc-footer{display:flex;align-items:center;justify-content:space-between;gap:4px}
-.cc .cc-tags{display:flex;gap:3px;flex-wrap:wrap;overflow:hidden;max-height:18px}
-.cc .cc-tag{padding:1px 6px;border-radius:8px;font-family:var(--mono);font-size:.58rem;font-weight:600}
-.cc .cc-meta{font-family:var(--mono);font-size:.58rem;color:var(--faint);white-space:nowrap}
-.cc .cc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--faint);cursor:pointer;font-size:11px;opacity:0;transition:opacity .15s;padding:2px 4px}
-.cc:hover .cc-del{opacity:1}
-.cc .cc-del:hover{color:var(--red)}
-
-/* Card expand overlay */
-.card-expand{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
-.card-expand-inner{background:var(--surface);border:1px solid var(--border);border-radius:12px;max-width:560px;width:100%;max-height:80vh;overflow-y:auto;padding:24px}
-
-/* â•â•â• ONBOARDING â•â•â• */
-.ob-savings{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.ob-save-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
-.ob-save-card .big{font-family:var(--mono);font-weight:800;font-size:1.8rem;letter-spacing:-.03em}
-.ob-save-card .lbl{font-size:.72rem;color:var(--dim);margin-top:2px}
-.ob-steps{display:flex;gap:0;margin:20px 0;position:relative}
-.ob-steps::before{content:'';position:absolute;top:16px;left:32px;right:32px;height:2px;background:var(--border);z-index:0}
-.ob-step{flex:1;text-align:center;position:relative;z-index:1}
-.ob-step .num{width:32px;height:32px;border-radius:50%;background:var(--surface);border:2px solid var(--border);color:var(--dim);font-family:var(--mono);font-size:.75rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px;transition:all .3s}
-.ob-step.done .num{background:var(--green);border-color:var(--green);color:#000}
-.ob-step.active .num{background:var(--accent);border-color:var(--accent);color:#000}
-.ob-step .stxt{font-family:var(--mono);font-size:.68rem;color:var(--dim)}
-.ob-step.active .stxt{color:var(--text)}
-.setup-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px}
-.setup-card h3{font-family:var(--mono);font-size:.88rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.key-display{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid rgba(255,107,43,.2);border-radius:8px;padding:10px 14px;margin:8px 0}
-.key-display code{font-family:var(--mono);font-size:.82rem;color:var(--accent);flex:1;overflow:hidden;text-overflow:ellipsis}
-.key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s}
-.key-display button:hover{background:var(--accent2)}
-.copied-btn{background:var(--green)!important}
-.plat-tabs{display:flex;gap:4px;margin:10px 0 12px;flex-wrap:wrap}
-.plat-tab{padding:5px 10px;border-radius:6px;font-family:var(--mono);font-size:.68rem;cursor:pointer;border:1px solid var(--border);color:var(--dim);background:transparent;transition:all .15s}
-.plat-tab:hover{color:var(--text);border-color:var(--dim)}
-.plat-tab.act{background:var(--glow);border-color:var(--accent);color:var(--accent);font-weight:600}
-.code-block{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;position:relative}
-.code-block pre{font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap;word-break:break-all}
-.code-block .cpbtn{position:absolute;top:6px;right:6px;background:var(--surface2);border:1px solid var(--border);color:var(--dim);border-radius:4px;padding:3px 8px;font-family:var(--mono);font-size:.62rem;cursor:pointer}
-.code-block .cpbtn:hover{color:var(--accent);border-color:var(--accent)}
-
-/* â•â•â• MOBILE BOTTOM NAV â•â•â• */
-.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(17,17,20,.95);border-top:1px solid var(--border);padding:6px 0 env(safe-area-inset-bottom,6px);z-index:100;backdrop-filter:blur(12px)}
-.mob-nav-inner{display:flex;justify-content:space-around;align-items:center}
-.mob-nav button{background:none;border:none;color:var(--dim);padding:6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--mono);font-size:.55rem;transition:color .15s}
-.mob-nav button.act{color:var(--accent)}
 </style>
 </head>
 <body>
 
 <div class="w">
 <nav>
-  <div class="logo" onclick="go('landing')"><span class="licon">ðŸƒ</span> HyperStack</div>
+  <div class="logo" onclick="go('landing')">🃏 HyperStack</div>
   <div class="navr">
-    <span class="nav-links"><a href="#features">Features</a>
+    <a href="#features">Features</a>
     <a href="#pricing">Pricing</a>
-    <a href="javascript:void(0)" onclick="go('docs')">Docs</a></span>
+    <a href="https://github.com/deeqyaqub1-cmd/hyperstack">Docs</a>
     <button onclick="go('login')" id="nl" class="btn bo bs">Sign In</button>
     <button onclick="go('dash')" id="nd" class="hidden btn bp bs">Dashboard</button>
     <button onclick="out()" id="no" class="hidden btn bo bs" style="color:var(--red)">Log Out</button>
@@ -283,7 +198,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 </nav>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• LANDING â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ════════════ LANDING ════════════ -->
 <div id="p-landing">
 <div class="w">
 
@@ -294,20 +209,20 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 
   <div class="hero-signup">
     <input type="email" id="hero-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')heroSignup()">
-    <button class="btn bp" onclick="heroSignup()">Get Free Key â†’</button>
+    <button class="btn bp" onclick="heroSignup()">Get Free Key →</button>
   </div>
   <div class="hero-note" id="hero-note">No credit card. Takes 30 seconds. Cancel anytime.</div>
 </section>
 
 <div class="logos">
   <span>Works with:</span>
-  <span>OpenClaw</span><span>Â·</span>
-  <span>Claude Code</span><span>Â·</span>
-  <span>LangChain</span><span>Â·</span>
-  <span>CrewAI</span><span>Â·</span>
-  <span>AutoGPT</span><span>Â·</span>
-  <span>Python</span><span>Â·</span>
-  <span>Node.js</span><span>Â·</span>
+  <span>OpenClaw</span><span>·</span>
+  <span>Claude Code</span><span>·</span>
+  <span>LangChain</span><span>·</span>
+  <span>CrewAI</span><span>·</span>
+  <span>AutoGPT</span><span>·</span>
+  <span>Python</span><span>·</span>
+  <span>Node.js</span><span>·</span>
   <span>Any language</span>
 </div>
 
@@ -316,31 +231,6 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   <div class="si"><div class="sn">~350</div><div class="sl">tokens per message</div></div>
   <div class="si"><div class="sn" style="color:var(--accent)">$254</div><div class="sl">saved per month</div></div>
   <div class="si"><div class="sn">30s</div><div class="sl">setup time</div></div>
-</div>
-
-<!-- Social Proof -->
-<div style="padding:28px 0;text-align:center">
-  <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:16px">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;max-width:300px;text-align:left">
-      <p style="font-size:.82rem;color:var(--dim);line-height:1.6;margin-bottom:8px">"Plugged HyperStack into my Claude Code workflow. My agent remembers every project detail now â€” <strong style="color:var(--green)">saved me $200+/mo</strong> on context tokens."</p>
-      <div style="display:flex;align-items:center;gap:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;color:#000;font-weight:800">S</div><span style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">Solo developer, London</span></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;max-width:300px;text-align:left">
-      <p style="font-size:.82rem;color:var(--dim);line-height:1.6;margin-bottom:8px">"Setup was literally 30 seconds. <strong style="color:var(--green)">npx hyperstack-mcp</strong> + one key. Works with Cursor out the box. Way simpler than Mem0."</p>
-      <div style="display:flex;align-items:center;gap:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:800">A</div><span style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">AI engineer, startup</span></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;max-width:300px;text-align:left">
-      <p style="font-size:.82rem;color:var(--dim);line-height:1.6;margin-bottom:8px">"Finally my agents don't forget decisions between sessions. The MCP server is a game changer â€” <strong style="color:var(--green)">works with every tool</strong> I use."</p>
-      <div style="display:flex;align-items:center;gap:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:800">M</div><span style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">Full-stack dev, Berlin</span></div>
-    </div>
-  </div>
-  <div style="display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap">
-    <span style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Available on:</span>
-    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">ðŸ“¦ npm</span>
-    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">ðŸ PyPI</span>
-    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">ðŸ”Œ MCP</span>
-    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">ðŸŒ REST API</span>
-  </div>
 </div>
 
 <section>
@@ -415,12 +305,12 @@ print(r.json())</pre>
       <div class="sub">tokens every message</div>
       <div class="sub" style="margin-top:8px"><strong style="color:var(--red)">$270/mo</strong> wasted on context</div>
     </div>
-    <div class="ba-arrow">â†’</div>
+    <div class="ba-arrow">→</div>
     <div class="ba-card" style="border-color:rgba(34,197,94,.3)">
       <h3 style="color:var(--green)">With HyperStack</h3>
       <div class="num" style="color:var(--green)">~350</div>
       <div class="sub">tokens per message</div>
-      <div class="sub" style="margin-top:8px"><strong style="color:var(--green)">$16/mo</strong> â€” 94% less</div>
+      <div class="sub" style="margin-top:8px"><strong style="color:var(--green)">$16/mo</strong> — 94% less</div>
     </div>
   </div>
 </section>
@@ -428,38 +318,36 @@ print(r.json())</pre>
 <section id="features">
   <div style="text-align:center;margin-bottom:24px">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Features</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">Why teams switch to HyperStack</h2>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">Everything your agent's memory needs</h2>
   </div>
   <div class="fgrid">
-    <div class="fc" style="border-color:rgba(34,197,94,.2)"><div class="icon">ðŸ’°</div><h3>Save $254/month</h3><p>Your agent loads 6,000 tokens per message. HyperStack loads 350. That's 94% off your API bill â€” starting today.</p></div>
-    <div class="fc" style="border-color:rgba(59,130,246,.2)"><div class="icon">ðŸ”Œ</div><h3>Works with everything</h3><p>3 lines of code. Any language: Python, JS, Ruby, Go, Rust, curl. No SDK. No vendor lock-in. Just a REST API.</p></div>
-    <div class="fc" style="border-color:rgba(255,107,43,.2)"><div class="icon">âš¡</div><h3>Live in 30 seconds</h3><p>Enter email. Get API key. Paste into your agent. Done. No config files, no Docker, no dependencies.</p></div>
-    <div class="fc"><div class="icon">ðŸ“</div><h3>Organize by project <span class="pro-tag">PRO</span></h3><p>Separate workspaces for each project. Your agent only sees what's relevant. Zero cross-contamination.</p></div>
-    <div class="fc"><div class="icon">ðŸ‘¥</div><h3>Team-wide knowledge <span class="pro-tag">PRO</span></h3><p>When Alice's agent learns something, Bob's agent knows it too. Shared memory across your entire team.</p></div>
-    <div class="fc"><div class="icon">âª</div><h3>Never lose data <span class="pro-tag">PRO</span></h3><p>Every edit is versioned. Agent overwrote something critical? Roll back in one click. Full audit trail.</p></div>
+    <div class="fc"><div class="icon">⚡</div><h3>94% cheaper</h3><p>Only the relevant card loads per message. Your bill drops immediately.</p></div>
+    <div class="fc"><div class="icon">🔌</div><h3>Any agent, any language</h3><p>Simple REST API. Python, JavaScript, Ruby, Go, Rust, curl. If it can talk to the internet, it works.</p></div>
+    <div class="fc"><div class="icon">⏱️</div><h3>30 second setup</h3><p>Email → API key → paste into your agent. No SDK to install, no config files.</p></div>
+    <div class="fc"><div class="icon">🔄</div><h3>Multi-workspace sync <span class="pro-tag">PRO</span></h3><p>Multiple projects, one API key. Cards stay organized and synced automatically.</p></div>
+    <div class="fc"><div class="icon">👥</div><h3>Team memory <span class="pro-tag">PRO</span></h3><p>Share cards across teammates. Alice's agent learns from Bob's decisions instantly.</p></div>
+    <div class="fc"><div class="icon">⏪</div><h3>Version history <span class="pro-tag">PRO</span></h3><p>Every card edit is saved. Agent overwrote something important? One click to restore.</p></div>
   </div>
 </section>
 
 <section>
   <div style="text-align:center;margin-bottom:24px">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Why HyperStack</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">Built different. Built better.</h2>
-    <p style="color:var(--dim);max-width:520px;margin:8px auto 0;font-size:.88rem">Other memory tools charge per operation, lock you into one platform, and need their own LLM calls. We don’t.</p>
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Comparison</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">HyperStack vs competitors</h2>
   </div>
   <table class="ctable">
-    <thead><tr><th></th><th class="hs">HyperStack</th><th>Others</th></tr></thead>
+    <thead><tr><th></th><th class="hs">HyperStack</th><th>Mem0</th><th>Zep</th><th>Letta</th></tr></thead>
     <tbody>
-      <tr><td>Semantic + keyword search</td><td class="y">✔ Hybrid (pgvector)</td><td>Semantic only</td></tr>
-      <tr><td>LLM cost per memory op</td><td class="hs">$0 — zero</td><td>~$0.002/op (adds up fast)</td></tr>
-      <tr><td>Auto-capture &amp; auto-recall</td><td class="y">✔ Built-in</td><td>Varies</td></tr>
-      <tr><td>Works with</td><td class="y">MCP + SDK + REST + OpenClaw</td><td>Usually 1 platform</td></tr>
-      <tr><td>Team sharing</td><td class="y">✔ Up to 20 members</td><td>Rare / enterprise only</td></tr>
-      <tr><td>Structured cards</td><td class="y">✔ Slugs, stacks, keywords</td><td>Unstructured blobs</td></tr>
-      <tr><td>PII / secrets redaction</td><td class="y">✔ Built-in rules</td><td>Not enforced</td></tr>
-      <tr><td>Setup time</td><td class="hs">30 seconds</td><td>2–10 minutes</td></tr>
-      <tr><td>Free tier</td><td class="y">50 cards forever</td><td>Limited or paid only</td></tr>
-      <tr><td>Pro price</td><td class="hs">$15/mo flat</td><td>$99+/mo usage-based</td></tr>
-      <tr><td>Funding required</td><td class="hs">$0 — self-funded</td><td>$23M+ in VC</td></tr>
+      <tr><td>Free tier</td><td class="y">50 cards</td><td>10K memories</td><td>Limited</td><td>Open source</td></tr>
+      <tr><td>Setup time</td><td class="hs">30 seconds</td><td>60 seconds</td><td>Minutes</td><td>Minutes</td></tr>
+      <tr><td>Token savings</td><td class="hs">94%</td><td>~80%</td><td>Varies</td><td>Varies</td></tr>
+      <tr><td>SDK required</td><td class="y">No — REST API</td><td>Yes (Python)</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>Works with any agent</td><td class="y">✓</td><td>Limited</td><td>Limited</td><td>Own framework</td></tr>
+      <tr><td>Team memory</td><td class="y">✓ (Pro)</td><td class="n">✗</td><td>Enterprise</td><td class="n">✗</td></tr>
+      <tr><td>Multi-workspace</td><td class="y">✓ (Pro)</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td></tr>
+      <tr><td>Version history</td><td class="y">✓ (Pro)</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td></tr>
+      <tr><td>Data ownership</td><td class="y">Your database</td><td>Their cloud</td><td>Their cloud</td><td>Self-host option</td></tr>
+      <tr><td>Pro price</td><td class="hs">$15/mo</td><td>$99+/mo</td><td>Custom</td><td>Custom</td></tr>
     </tbody>
   </table>
 </section>
@@ -481,13 +369,13 @@ print(r.json())</pre>
         <li>94% token savings</li>
         <li>Any agent, any language</li>
       </ul>
-      <button onclick="go('signup')" class="btn bo" style="width:100%">Get Free Key â†’</button>
+      <button onclick="go('signup')" class="btn bo" style="width:100%">Get Free Key →</button>
     </div>
     <div class="pc feat">
       <div class="pc-badge">Most Popular</div>
       <h3 style="color:var(--accent)">Pro Monthly</h3>
       <div class="amt">$15 <span>/mo</span></div>
-      <div class="per">billed monthly Â· cancel anytime</div>
+      <div class="per">billed monthly · cancel anytime</div>
       <ul>
         <li>Everything in Free</li>
         <li class="pro">Unlimited cards</li>
@@ -497,13 +385,13 @@ print(r.json())</pre>
         <li class="pro">Analytics dashboard</li>
         <li class="pro">Priority support</li>
       </ul>
-      <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp" style="width:100%">Get Pro â†’</a>
+      <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp" style="width:100%">Get Pro →</a>
     </div>
     <div class="pc" style="border-color:var(--green)">
       <div class="pc-badge green">Save 20%</div>
       <h3 style="color:var(--green)">Pro Yearly</h3>
       <div class="amt">$144 <span>/yr</span></div>
-      <div class="per">$12/mo Â· save $36/year</div>
+      <div class="per">$12/mo · save $36/year</div>
       <ul>
         <li>Everything in Pro</li>
         <li class="pro">Unlimited cards</li>
@@ -513,7 +401,7 @@ print(r.json())</pre>
         <li class="pro">Analytics dashboard</li>
         <li class="pro">Priority support</li>
       </ul>
-      <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="width:100%">Get Pro Yearly â†’</a>
+      <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="width:100%">Get Pro Yearly →</a>
     </div>
   </div>
 </section>
@@ -523,191 +411,66 @@ print(r.json())</pre>
   <p style="color:var(--dim);margin-bottom:20px">50 cards free. No credit card. 30 seconds.</p>
   <div class="hero-signup" style="justify-content:center">
     <input type="email" id="bottom-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')bottomSignup()">
-    <button class="btn bp" onclick="bottomSignup()">Get Free Key â†’</button>
+    <button class="btn bp" onclick="bottomSignup()">Get Free Key →</button>
   </div>
 </section>
 
-<footer><div class="c">Â© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Join Discord</a></div></footer>
+<footer><div class="c">© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="https://github.com/deeqyaqub1-cmd/hyperstack">GitHub</a><a href="/cdn-cgi/l/email-protection#3058555c5c5f705351435351545551591e545546">Contact</a></div></footer>
 </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• SIGNUP â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ════════════ SIGNUP ════════════ -->
 <div id="p-signup" class="hidden">
 <div class="w">
   <div class="auth">
     <h2>Create your account</h2>
     <div class="fg"><label>Email</label><input type="email" id="su-e" placeholder="you@example.com"></div>
-    <div class="fg"><label>Password (8+ chars)</label><input type="password" id="su-p" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"></div>
+    <div class="fg"><label>Password (8+ chars)</label><input type="password" id="su-p" placeholder="••••••••"></div>
     <div id="su-err" class="ferr hidden"></div>
-    <button onclick="doSignup()" class="btn bp" style="width:100%;margin-top:6px">Create Account â†’</button>
+    <button onclick="doSignup()" class="btn bp" style="width:100%;margin-top:6px">Create Account →</button>
     <div class="aswitch">Have an account? <a onclick="go('login')">Sign in</a></div>
   </div>
 </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• LOGIN â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ════════════ LOGIN ════════════ -->
 <div id="p-login" class="hidden">
 <div class="w">
   <div class="auth">
     <h2>Sign in</h2>
     <div class="fg"><label>Email</label><input type="email" id="li-e" placeholder="you@example.com"></div>
-    <div class="fg"><label>Password</label><input type="password" id="li-p" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"></div>
+    <div class="fg"><label>Password</label><input type="password" id="li-p" placeholder="••••••••"></div>
     <div id="li-err" class="ferr hidden"></div>
-    <button onclick="doLogin()" class="btn bp" style="width:100%;margin-top:6px">Sign In â†’</button>
+    <button onclick="doLogin()" class="btn bp" style="width:100%;margin-top:6px">Sign In →</button>
     <div class="aswitch">No account? <a onclick="go('signup')">Create one free</a></div>
-    <div class="aswitch" style="margin-top:4px"><a onclick="go('forgot')" style="cursor:pointer;color:var(--dim);font-size:.82rem">Forgot password?</a></div>
   </div>
 </div>
 </div>
 
-<!-- FORGOT PASSWORD -->
-<div id="p-forgot" class="hidden">
-<div class="w">
-  <div class="auth">
-    <h2>Reset password</h2>
-    <p style="color:var(--dim);font-size:.85rem;margin-bottom:12px">Enter your email to receive a reset code.</p>
-    <div class="fg"><label>Email</label><input type="email" id="fp-e" placeholder="you@example.com"></div>
-    <div id="fp-err" class="ferr hidden"></div>
-    <div id="fp-ok" class="hidden" style="color:var(--green);font-size:.85rem;margin:8px 0"></div>
-    <button onclick="doForgot()" class="btn bp" style="width:100%;margin-top:6px">Send Reset Code &#8594;</button>
-    <div class="aswitch" style="margin-top:8px"><a onclick="go('reset')">Already have a code?</a></div>
-    <div class="aswitch"><a onclick="go('login')">&#8592; Back to sign in</a></div>
-  </div>
-</div>
-</div>
-
-<!-- RESET PASSWORD -->
-<div id="p-reset" class="hidden">
-<div class="w">
-  <div class="auth">
-    <h2>Set new password</h2>
-    <div class="fg"><label>Reset Code</label><input type="text" id="rp-t" placeholder="Paste your reset code" style="font-family:var(--mono);font-size:.82rem"></div>
-    <div class="fg"><label>New Password (8+ chars)</label><input type="password" id="rp-p" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"></div>
-    <div id="rp-err" class="ferr hidden"></div>
-    <div id="rp-ok" class="hidden" style="color:var(--green);font-size:.85rem;margin:8px 0"></div>
-    <button onclick="doReset()" class="btn bp" style="width:100%;margin-top:6px">Reset Password &#8594;</button>
-    <div class="aswitch"><a onclick="go('login')">&#8592; Back to sign in</a></div>
-  </div>
-</div>
-</div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• DOCS â•â•â•â•â•â•â•â•â•â•â•â• -->
-<div id="p-docs" class="hidden">
-<div class="w" style="max-width:760px;padding:40px 24px 80px">
-  <div style="margin-bottom:8px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">â† Back to home</a></div>
-  <h1 style="font-family:var(--mono);font-weight:800;font-size:1.6rem;margin-bottom:6px">ðŸ“– HyperStack Docs</h1>
-  <p style="color:var(--dim);margin-bottom:32px">Everything you need to give your AI agent persistent memory.</p>
-
-  <div class="ci" style="border-left:3px solid var(--accent);margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">ðŸƒ What are Cards?</h2>
-    <p style="color:var(--dim);font-size:.85rem;line-height:1.7">Cards are small chunks of knowledge your agent stores and retrieves. Think of them as sticky notes for your AI â€” project details, people info, decisions, preferences. Each card has a <strong style="color:var(--text)">slug</strong> (unique ID), <strong style="color:var(--text)">title</strong>, <strong style="color:var(--text)">body</strong> (the content), <strong style="color:var(--text)">keywords</strong> (for search), and a <strong style="color:var(--text)">stack</strong> (category).</p>
-  </div>
-
-  <div class="ci" style="border-left:3px solid #3b82f6;margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">ðŸ“ What are Stacks?</h2>
-    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:12px">Stacks are categories that organize your cards. They help your agent find the right memory fast. Use any name you want, but here are the recommended ones:</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #3b82f6"><strong style="font-family:var(--mono);font-size:.8rem">ðŸ“¦ projects</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Tech stacks, repos, architecture</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #a855f7"><strong style="font-family:var(--mono);font-size:.8rem">ðŸ‘¤ people</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Teammates, contacts, roles</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #ff6b2b"><strong style="font-family:var(--mono);font-size:.8rem">âš–ï¸ decisions</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Why you chose X over Y</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #22c55e"><strong style="font-family:var(--mono);font-size:.8rem">âš™ï¸ preferences</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Editor, tools, coding style</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #eab308"><strong style="font-family:var(--mono);font-size:.8rem">ðŸ”„ workflows</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Deploy steps, review processes</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #8585a0"><strong style="font-family:var(--mono);font-size:.8rem">ðŸ“„ general</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Everything else</p></div>
-    </div>
-  </div>
-
-  <div class="ci" style="border-left:3px solid #22c55e;margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">âš¡ API Reference</h2>
-    <div style="display:grid;gap:10px">
-      <div style="background:var(--bg);border-radius:8px;padding:14px">
-        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--greend);color:var(--green);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">POST</span> <span style="color:var(--text)">/api/cards?workspace=default</span></div>
-        <p style="font-size:.78rem;color:var(--dim)">Create or update a card. Send JSON body with: slug, title, body, stack, keywords (array)</p>
-      </div>
-      <div style="background:var(--bg);border-radius:8px;padding:14px">
-        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--blued);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">GET</span> <span style="color:var(--text)">/api/cards?workspace=default</span></div>
-        <p style="font-size:.78rem;color:var(--dim)">Get all cards in a workspace</p>
-      </div>
-      <div style="background:var(--bg);border-radius:8px;padding:14px">
-        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--blued);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">GET</span> <span style="color:var(--text)">/api/search?workspace=default&q=search term</span></div>
-        <p style="font-size:.78rem;color:var(--dim)">Search cards by keywords, title, or content</p>
-      </div>
-      <div style="background:var(--bg);border-radius:8px;padding:14px">
-        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--redd);color:var(--red);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">DEL</span> <span style="color:var(--text)">/api/cards?workspace=default&slug=card-slug</span></div>
-        <p style="font-size:.78rem;color:var(--dim)">Delete a card by slug</p>
-      </div>
-    </div>
-    <p style="font-size:.78rem;color:var(--faint);margin-top:10px">All endpoints require header: <code style="font-family:var(--mono);color:var(--accent)">X-API-Key: your_key</code></p>
-  </div>
-
-  <div class="ci" style="border-left:3px solid #a855f7;margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">ðŸ¾ Using with OpenClaw</h2>
-    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:10px">HyperStack works as an OpenClaw skill. Your agent reads the SKILL.md file and automatically knows how to create, search, and update cards.</p>
-    <div style="background:var(--bg);border-radius:8px;padding:14px">
-      <p style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8"><strong style="color:var(--text)">Setup:</strong><br>
-      1. Download SKILL.md from your dashboard (Get Started tab)<br>
-      2. Place in your project: <code style="color:var(--accent)">skills/hyperstack/SKILL.md</code><br>
-      3. Set env: <code style="color:var(--green)">HYPERSTACK_API_KEY=your_key</code><br>
-      4. Your agent now has memory â€” it reads the skill and handles everything</p>
-    </div>
-  </div>
-
-  <div class="ci" style="border-left:3px solid #eab308;margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">â“ FAQ &amp; Troubleshooting</h2>
-    <div style="display:grid;gap:12px">
-      <div><strong style="font-family:var(--mono);font-size:.85rem">How does my agent use HyperStack?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Your agent calls the REST API to store and search memories. Before responding, it searches for relevant cards. When it learns something new, it creates or updates a card. This means it never forgets.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What counts as a "card"?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Any piece of knowledge â€” a person's role, a project's tech stack, a decision rationale, your coding preferences. Cards are small (a few lines) and focused on one topic.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">I get "Unauthorized" when calling the API</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Make sure you're sending the header <code style="font-family:var(--mono);color:var(--accent)">X-API-Key: your_key</code> (not <code>Authorization</code>). Your key is in the API Key tab of your dashboard. It should start with <code style="color:var(--accent)">hs_</code>.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What fields does a card need?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Required: <code style="color:var(--accent)">slug</code> (unique ID, like "my-project"), <code style="color:var(--accent)">title</code>, <code style="color:var(--accent)">body</code>. Optional but recommended: <code style="color:var(--accent)">stack</code> (category), <code style="color:var(--accent)">keywords</code> (array of tags for search). If you POST the same slug again, it updates the existing card.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">How do I delete a card?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Send a DELETE request with the slug as the <code style="color:var(--accent)">id</code> parameter: <code style="font-family:var(--mono);font-size:.78rem;color:var(--dim)">DELETE /api/cards?workspace=default&amp;id=my-card-slug</code></p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">How do I save tokens?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Without memory, agents stuff everything into the prompt (6,000+ tokens). With HyperStack, the agent searches for only the relevant card (~350 tokens). That's 94% less.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What's a workspace?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">A workspace is a separate bucket of cards. Use "default" for everything, or create separate workspaces per project (Pro feature) so cards don't mix.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">Can I use any AI agent?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Yes. HyperStack is a REST API. If your agent can make HTTP requests, it works â€” OpenClaw, Claude Code, LangChain, CrewAI, AutoGPT, custom agents, or even a simple Python script.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">Is my data safe?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Your cards are stored in a secure PostgreSQL database. Only your API key can access your data. We don't read, sell, or share your cards.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What happens if I hit 50 cards on Free?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">You can still read and search cards, but you can't create new ones until you delete some or upgrade to Pro (unlimited cards).</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">PowerShell users: curl doesn't work!</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">PowerShell aliases <code>curl</code> to <code>Invoke-WebRequest</code>. Use <code style="color:var(--accent)">Invoke-RestMethod</code> instead, or run curl commands in Git Bash / WSL / CMD.</p></div>
-    </div>
-  </div>
-
-  <div style="text-align:center;padding:20px 0"><p style="color:var(--faint);font-size:.82rem">Need help? <a href="https://discord.gg/tdnXaV6e">Join our Discord</a></p></div>
-</div>
-</div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• DASHBOARD â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ════════════ DASHBOARD ════════════ -->
 <div id="p-dash" class="hidden">
 <div class="dash">
   <div class="sb">
-    <div class="brand"><div class="logo" onclick="go('landing')" style="font-size:1.15rem"><span class="licon" style="font-size:1.3rem">ðŸƒ</span> HyperStack</div><p>Dashboard</p></div>
-    <button class="sbtn act" onclick="dt('start')" id="t-start">ðŸš€ Get Started</button>
-    <button class="sbtn" onclick="dt('cards')" id="t-cards">ðŸƒ Cards</button>
-    <button class="sbtn" onclick="dt('key')" id="t-key">ðŸ”‘ API Key</button>
-    <button class="sbtn" onclick="dt('ws')" id="t-ws">ðŸ“ Workspaces</button>
-    <button class="sbtn" onclick="dt('team')" id="t-team">ðŸ‘¥ Team</button>
-    <button class="sbtn" onclick="dt('stats')" id="t-stats">ðŸ“Š Analytics</button>
-    <button class="sbtn" onclick="go('docs')" id="t-docs">ðŸ“– Docs</button>
-    <div class="bot"><div class="em" id="d-em">â€”</div><div id="d-pt" style="margin-top:4px"></div></div>
+    <div class="brand"><div class="logo" onclick="go('landing')" style="font-size:.95rem">🃏 HyperStack</div><p>Dashboard</p></div>
+    <button class="sbtn act" onclick="dt('cards')" id="t-cards">🃏 Cards</button>
+    <button class="sbtn" onclick="dt('key')" id="t-key">🔑 API Key</button>
+    <button class="sbtn" onclick="dt('ws')" id="t-ws">📁 Workspaces</button>
+    <button class="sbtn" onclick="dt('team')" id="t-team">👥 Team</button>
+    <button class="sbtn" onclick="dt('stats')" id="t-stats">📊 Analytics</button>
+    <div class="bot"><div class="em" id="d-em">—</div><div id="d-pt" style="margin-top:4px"></div></div>
   </div>
   <div class="dc" id="dm"></div>
 </div>
-<!-- Mobile bottom nav -->
-<div class="mob-nav">
-  <div class="mob-nav-inner">
-    <button class="act" onclick="dt('start')" id="mt-start"><span style="font-size:16px">ðŸš€</span><br>Start</button>
-    <button onclick="dt('cards')" id="mt-cards"><span style="font-size:16px">ðŸƒ</span><br>Cards</button>
-    <button onclick="dt('key')" id="mt-key"><span style="font-size:16px">ðŸ”‘</span><br>Key</button>
-    <button onclick="dt('ws')" id="mt-ws"><span style="font-size:16px">ðŸ“</span><br>Spaces</button>
-    <button onclick="dt('stats')" id="mt-stats"><span style="font-size:16px">ðŸ“Š</span><br>Stats</button>
-  </div>
-</div>
 </div>
 
-<script>
-const A="https://hyperstack-cloud.vercel.app";let U=null,T=null,DV="start";
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const A="https://hyperstack-cloud.vercel.app";let U=null,T=null,DV="cards";
 const SC={projects:"#3b82f6",people:"#a855f7",decisions:"#ff6b2b",preferences:"#22c55e",workflows:"#eab308"};
-const SE={projects:"ðŸ“¦",people:"ðŸ‘¤",decisions:"âš–ï¸",preferences:"âš™ï¸",workflows:"ðŸ”„",general:"ðŸ“„"};
+const SE={projects:"📦",people:"👤",decisions:"⚖️",preferences:"⚙️",workflows:"🔄",general:"📄"};
 const DEMO=[
-  {slug:"project-webapp",title:"WebApp",stack:"projects",keywords:["nextjs","prisma","vercel","clerk"],body:"- Next.js 15 + Prisma + PostgreSQL\n- Auth: Clerk\n- CI: GitHub Actions â†’ Vercel",updated:"2026-02-09",ver:3},
+  {slug:"project-webapp",title:"WebApp",stack:"projects",keywords:["nextjs","prisma","vercel","clerk"],body:"- Next.js 15 + Prisma + PostgreSQL\n- Auth: Clerk\n- CI: GitHub Actions → Vercel",updated:"2026-02-09",ver:3},
   {slug:"person-alice",title:"Alice Chen",stack:"people",keywords:["backend","postgresql","fastapi"],body:"- Senior Engineer, backend\n- Owns API service\n- EST timezone, morning standups",updated:"2026-02-10",ver:2},
-  {slug:"decision-auth",title:"Auth: Auth0 â†’ Clerk",stack:"decisions",keywords:["clerk","auth0","migration"],body:"- Chose Clerk (DX + pricing)\n- 3 day migration, zero downtime\n- Saves $400/month",updated:"2026-01-15",ver:1},
+  {slug:"decision-auth",title:"Auth: Auth0 → Clerk",stack:"decisions",keywords:["clerk","auth0","migration"],body:"- Chose Clerk (DX + pricing)\n- 3 day migration, zero downtime\n- Saves $400/month",updated:"2026-01-15",ver:1},
   {slug:"prefs-editor",title:"Editor Prefs",stack:"preferences",keywords:["neovim","typescript","fish"],body:"- TypeScript strict, 2-space indent\n- Neovim + LazyVim\n- Fish shell + starship",updated:"2026-02-10",ver:1},
 ];
 
@@ -722,7 +485,7 @@ function heroSignup(){const e=document.getElementById("hero-email").value;
   if(!e||!e.includes("@")){document.getElementById("hero-note").innerHTML='<span style="color:var(--red)">Enter a valid email</span>';return}
   document.getElementById("su-e").value=e;go("signup")}
 function bottomSignup(){const e=document.getElementById("bottom-email").value;
-  if(!e||!e.includes("@")){document.getElementById("bottom-email").style.borderColor="var(--red)";document.getElementById("bottom-email").placeholder="Enter your email first";setTimeout(()=>{document.getElementById("bottom-email").style.borderColor="";document.getElementById("bottom-email").placeholder="you@example.com"},2000);return}document.getElementById("su-e").value=e;go("signup")}
+  if(!e||!e.includes("@"))return;document.getElementById("su-e").value=e;go("signup")}
 
 async function doSignup(){const e=document.getElementById("su-e").value,p=document.getElementById("su-p").value,er=document.getElementById("su-err");
   er.classList.add("hidden");if(!e||!p){er.textContent="Fill in all fields";er.classList.remove("hidden");return}
@@ -739,252 +502,39 @@ async function doLogin(){const e=document.getElementById("li-e").value,p=documen
     U=d.user;T=d.token;localStorage.setItem("hs_t",d.token);go("dash")}
   catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
 
-async function doForgot(){const e=document.getElementById("fp-e").value,er=document.getElementById("fp-err"),ok=document.getElementById("fp-ok");
-  er.classList.add("hidden");ok.classList.add("hidden");if(!e){er.textContent="Enter your email";er.classList.remove("hidden");return}
-  try{const r=await fetch(A+"/api/auth?action=request-reset",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e})});
-    const d=await r.json();ok.textContent="If that email exists, a reset code has been generated.";ok.classList.remove("hidden");
-    if(d._devToken){ok.innerHTML="Reset code (dev mode):<br><code style=\"font-size:.75rem;word-break:break-all;color:var(--accent)\">"+d._devToken+"</code><br>Copy this and click \"Already have a code?\" below.";ok.classList.remove("hidden")}}
-  catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
-
-async function doReset(){const t=document.getElementById("rp-t").value,p=document.getElementById("rp-p").value,er=document.getElementById("rp-err"),ok=document.getElementById("rp-ok");
-  er.classList.add("hidden");ok.classList.add("hidden");
-  if(!t||!p){er.textContent="Fill in all fields";er.classList.remove("hidden");return}
-  if(p.length<8){er.textContent="Password: 8+ characters";er.classList.remove("hidden");return}
-  try{const r=await fetch(A+"/api/auth?action=reset-password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token:t,password:p})});
-    const d=await r.json();if(!r.ok){er.textContent=d.error||"Failed";er.classList.remove("hidden");return}
-    ok.textContent="Password reset! Redirecting to sign in...";ok.classList.remove("hidden");
-    setTimeout(()=>go("login"),2000)}
-  catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
-
 function out(){U=null;T=null;localStorage.removeItem("hs_t");go("landing")}
 
 function dt(t){DV=t;document.querySelectorAll(".sbtn").forEach(b=>b.classList.remove("act"));
-  const b=document.getElementById("t-"+t);if(b)b.classList.add("act");
-  document.querySelectorAll(".mob-nav button").forEach(b=>b.classList.remove("act"));
-  const mb=document.getElementById("mt-"+t);if(mb)mb.classList.add("act");
-  renderD()}
+  const b=document.getElementById("t-"+t);if(b)b.classList.add("act");renderD()}
 
 function showCode(lang,btn){document.querySelectorAll('[id^="code-"]').forEach(e=>e.classList.add("hidden"));
   document.getElementById("code-"+lang).classList.remove("hidden");
   document.querySelectorAll('.demo-tab').forEach(t=>t.classList.remove("active"));btn.classList.add("active")}
 
-function showPlatform(p,btn){['openclaw','claude','python','js','curl'].forEach(id=>{
-  const el=document.getElementById('ob-plat-'+id);if(el)el.classList.toggle('hidden',id!==p);
-  // Also support old plat- prefix
-  const el2=document.getElementById('plat-'+id);if(el2)el2.classList.toggle('hidden',id!==p)});
-  document.querySelectorAll('.plat-tab').forEach(b=>b.classList.remove('act'));
-  if(btn)btn.classList.add('act');else if(event&&event.target)event.target.classList.add('act')}
 function renderD(){if(!U)return;
   document.getElementById("d-em").textContent=U.email;
   document.getElementById("d-pt").innerHTML=U.plan==="PRO"?'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>':'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>';
   const m=document.getElementById("dm");
-  if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
+  if(DV==="cards")rCards(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
 
-function rStart(el){el.innerHTML=`<div style="text-align:center;padding:16px 0 20px">
-    <h1 style="font-family:var(--mono);font-size:1.3rem;font-weight:800">ðŸš€ You're saving money already</h1>
-    <p style="color:var(--dim);margin-top:6px;font-size:.88rem">Copy your key, paste into your agent, done.</p>
-  </div>
-
-  <div class="ob-savings">
-    <div class="ob-save-card" style="border-left:3px solid var(--red)">
-      <div class="big" style="color:var(--red)">$270<span style="font-size:.7rem;color:var(--dim)">/mo</span></div>
-      <div class="lbl">Without HyperStack</div>
-    </div>
-    <div class="ob-save-card" style="border-left:3px solid var(--green)">
-      <div class="big" style="color:var(--green)">$16<span style="font-size:.7rem;color:var(--dim)">/mo</span></div>
-      <div class="lbl">With HyperStack</div>
-    </div>
-  </div>
-
-  <div class="ob-steps">
-    <div class="ob-step done"><div class="num">âœ“</div><div class="stxt">Sign up</div></div>
-    <div class="ob-step active"><div class="num">2</div><div class="stxt">Copy key</div></div>
-    <div class="ob-step"><div class="num">3</div><div class="stxt">Paste & go</div></div>
-  </div>
-
-  <div class="setup-card">
-    <h3>ðŸ”‘ Your API Key</h3>
-    <div class="key-display">
-      <code>${U.apiKey}</code>
-      <button onclick="cpKey(this)">Copy</button>
-    </div>
-    <p style="font-size:.72rem;color:var(--faint);margin-top:4px">Add to your agent env as <code style="color:var(--accent);font-family:var(--mono);font-size:.72rem">HYPERSTACK_API_KEY</code></p>
-  </div>
-
-  <div class="setup-card">
-    <h3>âš¡ Quick setup</h3>
-    <div class="plat-tabs">
-      <button class="plat-tab act" onclick="showPlatform('mcp',this)">ðŸ”Œ MCP Server</button>
-      <button class="plat-tab" onclick="showPlatform('openclaw',this)">ðŸ¾ OpenClaw</button>
-      <button class="plat-tab" onclick="showPlatform('claude',this)">ðŸ¤– Claude Code</button>
-      <button class="plat-tab" onclick="showPlatform('python',this)">ðŸ Python</button>
-      <button class="plat-tab" onclick="showPlatform('js',this)">âš¡ JS</button>
-      <button class="plat-tab" onclick="showPlatform('curl',this)">ðŸ’» cURL</button>
-    </div>
-
-    <div id="ob-plat-mcp" class="code-block"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre><span style="color:var(--faint)">// Add to claude_desktop_config.json or .cursor/mcp.json</span>
-{
-  "mcpServers": {
-    "hyperstack": {
-      "command": "npx",
-      "args": ["-y", "hyperstack-mcp"],
-      "env": {
-        "HYPERSTACK_API_KEY": "<span style="color:var(--green)">${U.apiKey}</span>"
-      }
-    }
-  }
-}
-<span style="color:var(--faint)">// Works with: Claude Desktop, Cursor, VS Code, Windsurf</span></pre></div>
-
-    <div id="ob-plat-openclaw" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre><span style="color:var(--faint)"># Add skill + set env</span>
-mkdir -p skills/hyperstack
-export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
-export HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span>
-<span style="color:var(--faint)"># Your agent reads SKILL.md and handles the rest</span></pre></div>
-
-    <div id="ob-plat-claude" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre><span style="color:var(--faint)"># Add to .env or shell profile</span>
-export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
-export HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span>
-<span style="color:var(--faint)"># Tell Claude: "Use HyperStack API for memory"</span></pre></div>
-
-    <div id="ob-plat-python" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre>import requests
-h = {"X-API-Key": "<span style="color:var(--green)">${U.apiKey}</span>"}
-<span style="color:var(--faint)"># Store</span>
-requests.post("${A}/api/cards?workspace=default",
-  headers=h, json={"slug":"test","title":"Test",
-  "stack":"general","body":"It works!"})
-<span style="color:var(--faint)"># Search</span>
-r = requests.get("${A}/api/search?workspace=default&q=test", headers=h)</pre></div>
-
-    <div id="ob-plat-js" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre>const KEY = "<span style="color:var(--green)">${U.apiKey}</span>"
-await fetch("${A}/api/cards?workspace=default", {
-  method: "POST",
-  headers: {"X-API-Key": KEY, "Content-Type": "application/json"},
-  body: JSON.stringify({slug:"test",title:"Test",
-    stack:"general",body:"It works!"})
-})</pre></div>
-
-    <div id="ob-plat-curl" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre>curl -X POST "${A}/api/cards?workspace=default" \\
-  -H "X-API-Key: ${U.apiKey}" \\
-  -H "Content-Type: application/json" \\
-  -d '{"slug":"test","title":"Test","stack":"general","body":"It works!"}'</pre></div>
-  </div>
-
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
-    <div class="setup-card" style="text-align:center;cursor:pointer;margin:0;padding:16px" onclick="dt('cards')">
-      <span style="font-size:1.3rem">ðŸƒ</span>
-      <div style="font-family:var(--mono);font-size:.78rem;font-weight:600;margin-top:4px">View Cards</div>
-    </div>
-    <div class="setup-card" style="text-align:center;cursor:pointer;margin:0;padding:16px" onclick="go('docs')">
-      <span style="font-size:1.3rem">ðŸ“–</span>
-      <div style="font-family:var(--mono);font-size:.78rem;font-weight:600;margin-top:4px">Docs</div>
-    </div>
-  </div>`}
-
-function rCards(el){el.innerHTML=`<div class="dh"><div><h1>ðŸƒ Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="ðŸ” Search..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)">Loading cards from API...</div></div>`;
-  fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
-    const cards=d.cards||[];
-    document.querySelector('.dh p').textContent=cards.length+' cards Â· '+d.plan+' ('+cards.length+'/'+d.limit+')';
-    const cl=document.getElementById('cl');
-    if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:40px">
-      <span style="font-size:2.5rem">ðŸƒ</span>
-      <h3 style="font-family:var(--mono);margin:12px 0 8px">No cards yet</h3>
-      <p style="color:var(--dim);font-size:.85rem;margin-bottom:16px">Your agent creates cards via the API. Go back to setup to get started.</p>
-      <button class="btn bp bs" onclick="dt('start')">â† Setup</button>
-      <button class="btn bo bs" style="margin-left:6px" onclick="rCards(document.getElementById('dm'))">ðŸ”„ Refresh</button>
-    </div>`;return}
-    const stacks=[...new Set(cards.map(c=>c.stack))];
-    const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">ðŸ—‚ï¸ All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)">${SE[s]||'ðŸ“„'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
-    const cardsHtml=`<div class="card-grid">${cards.map(c=>{
-      const bc=SC[c.stack]||'#555';
-      const kw=(c.keywords||[]).slice(0,3);
-      const body=(c.body||'').replace(/</g,'&lt;').substring(0,80);
-      return`<div class="cc" data-s="${c.stack}" data-q="${(c.title+' '+(c.keywords||[]).join(' ')+' '+(c.body||'')).toLowerCase()}" onclick="expandCard(${JSON.stringify(c).replace(/"/g,'&quot;')})">
-        <div class="cc-stripe" style="background:${bc}"></div>
-        <button class="cc-del" onclick="event.stopPropagation();if(confirm('Delete ${c.slug}?'))delCard('${c.slug}')" title="Delete">âœ•</button>
-        <div class="cc-head"><span class="cc-icon">${SE[c.stack]||'ðŸ“„'}</span><span class="cc-title">${c.title||c.slug}</span></div>
-        <div class="cc-body">${body}</div>
-        <div class="cc-footer"><div class="cc-tags">${kw.map(k=>`<span class="cc-tag" style="background:${bc}15;color:${bc};border:1px solid ${bc}30">#${k}</span>`).join('')}</div><span class="cc-meta">${c.tokens||0}t</span></div>
-      </div>`}).join('')}</div>`;
-    cl.innerHTML=filtersHtml+cardsHtml+`<div style="text-align:center;margin-top:14px"><button class="btn bo bs" onclick="rCards(document.getElementById('dm'))">ðŸ”„ Refresh</button></div>`;
-  }).catch(err=>{
-    document.getElementById('cl').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red)">Failed to load cards: ${err.message}<br><button class="btn bo bs" style="margin-top:10px" onclick="rCards(document.getElementById('dm'))">Retry</button></div>`;
-  })}
-
-function delCard(slug){fetch(A+"/api/cards?workspace=default&id="+slug,{method:"DELETE",headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(()=>rCards(document.getElementById('dm'))).catch(err=>alert("Delete failed: "+err.message))}
+function rCards(el){el.innerHTML=`<div class="dh"><div><h1>Cards</h1><p>${DEMO.length} cards · default workspace</p></div><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"></div>
+  <div class="filters"><button class="fb act" onclick="fStack('all',this)">All</button>${[...new Set(DEMO.map(c=>c.stack))].map(s=>`<button class="fb" onclick="fStack('${s}',this)">${SE[s]||'📄'} ${s}</button>`).join('')}</div>
+  <div id="cl">${DEMO.map(c=>{const d=Math.floor((new Date("2026-02-10")-new Date(c.updated))/864e5);
+    const fc=d<=7?"var(--green)":d<=30?"var(--blue)":d<=60?"var(--yellow)":"var(--red)";
+    const fl=d<=7?"Fresh":d<=30?"Current":d<=60?"Stale":"Old";
+    return`<div class="ci" data-s="${c.stack}" data-q="${(c.title+' '+c.keywords.join(' ')+' '+c.body).toLowerCase()}">
+      <div class="ci-top"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">${SE[c.stack]||'📄'}</span><div><div class="ci-title">${c.title}</div><div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px">${c.keywords.map(k=>`<span class="badge" style="background:${SC[c.stack]||'#555'}18;color:${SC[c.stack]||'#888'};border:1px solid ${SC[c.stack]||'#555'}30">#${k}</span>`).join('')}</div></div></div>
+      <span class="badge" style="background:${fc}18;color:${fc};border:1px solid ${fc}30">${fl}</span></div>
+      <div class="ci-body">${c.body}</div>
+      <div class="ci-acts"><button>✏️ Edit</button><button>⏪ ${c.ver}v</button><span class="date">${c.updated}</span></div></div>`}).join('')}</div>`}
 
 function fStack(s,b){document.querySelectorAll('.fb').forEach(x=>x.classList.remove('act'));b.classList.add('act');
-  document.querySelectorAll('.cc').forEach(e=>{e.style.display=(s==='all'||e.dataset.s===s)?'':'none'})}
-function fCards(q){const t=q.toLowerCase();document.querySelectorAll('.cc').forEach(e=>{e.style.display=e.dataset.q.includes(t)?'':'none'})}
+  document.querySelectorAll('.ci').forEach(e=>{e.style.display=(s==='all'||e.dataset.s===s)?'':'none'})}
+function fCards(q){const t=q.toLowerCase();document.querySelectorAll('.ci').forEach(e=>{e.style.display=e.dataset.q.includes(t)?'':'none'})}
 
-function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
-  const ov=document.createElement('div');ov.className='card-expand';ov.onclick=e=>{if(e.target===ov)ov.remove()};
-  ov.innerHTML=`<div class="card-expand-inner">
-    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:14px">
-      <div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:20px">${SE[c.stack]||'ðŸ“„'}</span><span style="font-family:var(--mono);font-weight:700;font-size:1rem">${c.title||c.slug}</span></div>
-      <div style="display:flex;gap:4px;flex-wrap:wrap">${kw.map(k=>`<span style="padding:2px 8px;border-radius:8px;font-family:var(--mono);font-size:.65rem;font-weight:600;background:${bc}15;color:${bc};border:1px solid ${bc}30">#${k}</span>`).join('')}</div></div>
-      <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;padding:4px">âœ•</button>
-    </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px">
-      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap">${(c.body||'').replace(/</g,'&lt;')}</pre>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <span style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">${c.slug} Â· ${c.tokens||0} tokens Â· ${c.stack}</span>
-      <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3)" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">ðŸ—‘ï¸ Delete</button>
-    </div>
-  </div>`;
-  document.body.appendChild(ov)}
-
-function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='âœ“ Copied';btn.classList.add('copied-btn');
-  setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied-btn')},2000);
-  const steps=document.querySelectorAll('.ob-step');
-  if(steps[1]){steps[1].classList.add('done');steps[1].classList.remove('active')}
-  if(steps[2])steps[2].classList.add('active')}
-
-function cpBlock(btn){const pre=btn.parentElement.querySelector('pre');
-  navigator.clipboard.writeText(pre.textContent);btn.textContent='âœ“ Copied';
-  setTimeout(()=>{btn.textContent='Copy'},2000)}
-
-function showCardForm(){const w=document.getElementById('card-form-wrap');
-  if(w.innerHTML){w.innerHTML='';return}
-  w.innerHTML=`<div class="setup-card" style="margin-bottom:14px">
-    <h3 style="margin-bottom:12px">âœ¨ Create Memory Card</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-      <div class="fg"><label>Slug (unique ID)</label><input id="cf-slug" placeholder="project-webapp"></div>
-      <div class="fg"><label>Title</label><input id="cf-title" placeholder="WebApp"></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-      <div class="fg"><label>Stack</label><select id="cf-stack" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none">
-        <option value="projects">ðŸ“¦ projects</option><option value="people">ðŸ‘¤ people</option><option value="decisions">âš–ï¸ decisions</option>
-        <option value="preferences">âš™ï¸ preferences</option><option value="workflows">ðŸ”„ workflows</option><option value="general" selected>ðŸ“„ general</option>
-      </select></div>
-      <div class="fg"><label>Keywords (comma-separated)</label><input id="cf-kw" placeholder="react, vercel, auth"></div>
-    </div>
-    <div class="fg" style="margin-bottom:10px"><label>Body</label><textarea id="cf-body" rows="3" placeholder="What should your agent remember?" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.85rem;outline:none;resize:vertical"></textarea></div>
-    <div style="display:flex;gap:6px"><button class="btn bp bs" onclick="createCard()">Create Card â†’</button><button class="btn bo bs" onclick="document.getElementById('card-form-wrap').innerHTML=''">Cancel</button></div>
-    <div id="cf-err" class="ferr hidden" style="margin-top:6px"></div>
-  </div>`}
-
-function createCard(){const slug=document.getElementById('cf-slug').value.trim(),title=document.getElementById('cf-title').value.trim(),
-  stack=document.getElementById('cf-stack').value,kw=document.getElementById('cf-kw').value.split(',').map(s=>s.trim()).filter(Boolean),
-  body=document.getElementById('cf-body').value.trim(),err=document.getElementById('cf-err');
-  err.classList.add('hidden');
-  if(!slug||!title||!body){err.textContent='Fill in slug, title, and body';err.classList.remove('hidden');return}
-  fetch(A+"/api/cards?workspace=default",{method:"POST",headers:{"X-API-Key":U.apiKey,"Content-Type":"application/json"},
-    body:JSON.stringify({slug,title,stack,keywords:kw,body})}).then(r=>r.json()).then(d=>{
-    if(d.error){err.textContent=d.error;err.classList.remove('hidden');return}
-    document.getElementById('card-form-wrap').innerHTML='';rCards(document.getElementById('dm'));
-  }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden')})}
-
-function rKey(el){el.innerHTML=`<div class="dh"><div><h1>ðŸ”‘ API Key</h1><p>Use this key in any agent</p></div></div>
+function rKey(el){el.innerHTML=`<div class="dh"><div><h1>🔑 API Key</h1><p>Use this key in any agent</p></div></div>
   <div class="akbox"><p style="color:var(--text);font-weight:500;margin-bottom:4px">Your API Key</p>
-    <div class="key">${U.apiKey}</div> <button class="btn bo bs" onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='âœ“ Copied'">Copy</button>
+    <div class="key">${U.apiKey}</div> <button class="btn bo bs" onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='✓ Copied'">Copy</button>
     <p style="margin-top:12px;color:var(--dim);font-size:.85rem">Add to your agent's environment:</p>
     <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;margin-top:8px">
       <pre style="font-family:var(--mono);font-size:.8rem;color:var(--dim);margin:0">HYPERSTACK_API_KEY=${U.apiKey}
@@ -995,21 +545,21 @@ HYPERSTACK_WORKSPACE=default</pre></div></div>
   -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span></pre></div></div>`}
 
 function rWs(el){const pro=U.plan==="PRO";
-  el.innerHTML=`<div class="dh"><div><h1>ðŸ“ Workspaces</h1><p>${pro?'Unlimited':'1 workspace'} on ${U.plan}</p></div></div>
-  <div class="ci"><div class="ci-top"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">ðŸ“</span><div><div class="ci-title">default</div><div style="font-size:.78rem;color:var(--dim)">${DEMO.length} cards</div></div></div>
+  el.innerHTML=`<div class="dh"><div><h1>📁 Workspaces</h1><p>${pro?'Unlimited':'1 workspace'} on ${U.plan}</p></div></div>
+  <div class="ci"><div class="ci-top"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">📁</span><div><div class="ci-title">default</div><div style="font-size:.78rem;color:var(--dim)">${DEMO.length} cards</div></div></div>
   <span class="badge" style="background:var(--greend);color:var(--green);border:1px solid rgba(34,197,94,.3)">Active</span></div></div>
-  ${pro?'<button class="btn bo" style="margin-top:10px">+ New Workspace</button>':`<div class="ci" style="text-align:center;padding:20px;margin-top:10px"><p style="color:var(--dim);margin-bottom:8px">Need more workspaces?</p><a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp bs">Upgrade to Pro â€” $15/mo</a> <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg bs" style="margin-left:6px">Yearly â€” $12/mo</a></div>`}`}
+  ${pro?'<button class="btn bo" style="margin-top:10px">+ New Workspace</button>':`<div class="ci" style="text-align:center;padding:20px;margin-top:10px"><p style="color:var(--dim);margin-bottom:8px">Need more workspaces?</p><a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp bs">Upgrade to Pro &mdash; $15/mo</a> <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg bs" style="margin-left:6px">Yearly &mdash; $12/mo</a></div>`}`}
 
 function rTeam(el){const pro=U.plan==="PRO";
-  if(!pro){el.innerHTML=`<div class="dh"><div><h1>ðŸ‘¥ Team</h1></div></div><div class="ci" style="text-align:center;padding:32px"><span style="font-size:2rem">ðŸ‘¥</span><h3 style="font-family:var(--mono);margin:10px 0 6px">Team Memory requires Pro</h3><p style="color:var(--dim);margin-bottom:12px">Share cards across teammates so every agent stays in sync.</p><a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro â€” $15/mo</a> <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="margin-left:8px">Yearly â€” $12/mo</a></div>`;return}
-  el.innerHTML=`<div class="dh"><div><h1>ðŸ‘¥ Team</h1><p>Share cards across your team</p></div></div>
-  <div class="ci"><div style="display:flex;align-items:center;gap:10px;padding:6px 0"><div style="width:28px;height:28px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:12px">ðŸ§‘â€ðŸ’»</div><div><div style="font-family:var(--mono);font-size:.82rem">${U.name||U.email}</div><div style="font-size:.72rem;color:var(--dim)">${U.email}</div></div><span class="badge" style="background:var(--glow);color:var(--accent);margin-left:auto">Owner</span></div></div>
+  if(!pro){el.innerHTML=`<div class="dh"><div><h1>👥 Team</h1></div></div><div class="ci" style="text-align:center;padding:32px"><span style="font-size:2rem">👥</span><h3 style="font-family:var(--mono);margin:10px 0 6px">Team Memory requires Pro</h3><p style="color:var(--dim);margin-bottom:12px">Share cards across teammates so every agent stays in sync.</p><a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro &mdash; $15/mo</a> <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="margin-left:8px">Yearly &mdash; $12/mo</a></div>`;return}
+  el.innerHTML=`<div class="dh"><div><h1>👥 Team</h1><p>Share cards across your team</p></div></div>
+  <div class="ci"><div style="display:flex;align-items:center;gap:10px;padding:6px 0"><div style="width:28px;height:28px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:12px">🧑‍💻</div><div><div style="font-family:var(--mono);font-size:.82rem">${U.name||U.email}</div><div style="font-size:.72rem;color:var(--dim)">${U.email}</div></div><span class="badge" style="background:var(--glow);color:var(--accent);margin-left:auto">Owner</span></div></div>
   <button class="btn bo" style="margin-top:10px">+ Invite Teammate</button>
   <div style="background:var(--surface);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:14px;margin-top:14px"><p style="color:var(--dim);font-size:.82rem">Set cards to <strong style="color:var(--text)">shared</strong> and they'll sync to every team member's workspace. Private cards stay private.</p></div>`}
 
 function rStats(el){const pro=U.plan==="PRO";
-  if(!pro){el.innerHTML=`<div class="dh"><div><h1>ðŸ“Š Analytics</h1></div></div><div class="ci" style="text-align:center;padding:32px"><span style="font-size:2rem">ðŸ“Š</span><h3 style="font-family:var(--mono);margin:10px 0 6px">Analytics requires Pro</h3><p style="color:var(--dim);margin-bottom:12px">Token savings, stale cards, usage patterns.</p><a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro â€” $15/mo</a> <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="margin-left:8px">Yearly â€” $12/mo</a></div>`;return}
-  el.innerHTML=`<div class="dh"><div><h1>ðŸ“Š Analytics</h1></div></div>
+  if(!pro){el.innerHTML=`<div class="dh"><div><h1>📊 Analytics</h1></div></div><div class="ci" style="text-align:center;padding:32px"><span style="font-size:2rem">📊</span><h3 style="font-family:var(--mono);margin:10px 0 6px">Analytics requires Pro</h3><p style="color:var(--dim);margin-bottom:12px">Token savings, stale cards, usage patterns.</p><a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro &mdash; $15/mo</a> <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="margin-left:8px">Yearly &mdash; $12/mo</a></div>`;return}
+  el.innerHTML=`<div class="dh"><div><h1>📊 Analytics</h1></div></div>
   <div class="sgrid"><div class="sc"><div class="n" style="color:var(--green)">94%</div><div class="l">Token Savings</div></div>
   <div class="sc"><div class="n">${DEMO.length}</div><div class="l">Cards</div></div>
   <div class="sc"><div class="n" style="color:var(--accent)">$254</div><div class="l">Saved/mo</div></div>
@@ -1017,13 +567,9 @@ function rStats(el){const pro=U.plan==="PRO";
   <div class="ci"><p style="color:var(--text);font-weight:500;margin-bottom:10px">Token Savings</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="text-align:center;padding:10px;background:var(--redd);border-radius:6px"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--red)">6,000</div><div style="font-size:.72rem;color:var(--dim)">Without (tok/msg)</div></div>
   <div style="text-align:center;padding:10px;background:var(--greend);border-radius:6px"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--green)">350</div><div style="font-size:.72rem;color:var(--dim)">With HyperStack</div></div></div></div>
-  <div class="ci" style="margin-top:8px"><p style="color:var(--text);font-weight:500;margin-bottom:6px">âš ï¸ Stale Cards</p>
-  <div style="display:flex;align-items:center;gap:6px"><span class="badge" style="background:rgba(234,179,8,.1);color:var(--yellow);border:1px solid rgba(234,179,8,.3)">26 days</span><span style="font-family:var(--mono);font-size:.82rem">decision-auth</span><span style="font-size:.78rem;color:var(--dim)">Auth0 â†’ Clerk</span></div></div>`}
+  <div class="ci" style="margin-top:8px"><p style="color:var(--text);font-weight:500;margin-bottom:6px">⚠️ Stale Cards</p>
+  <div style="display:flex;align-items:center;gap:6px"><span class="badge" style="background:rgba(234,179,8,.1);color:var(--yellow);border:1px solid rgba(234,179,8,.3)">26 days</span><span style="font-family:var(--mono);font-size:.82rem">decision-auth</span><span style="font-size:.78rem;color:var(--dim)">Auth0 → Clerk</span></div></div>`}
 
 // Auto-login
 (async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+t}});if(r.ok){const d=await r.json();U=d.user;T=t}}catch{}
-  const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);document.getElementById("nd").classList.toggle("hidden",!l);document.getElementById("no").classList.toggle("hidden",!l)})();
-</script>
-</body>
-</html>
-
+  const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);d
