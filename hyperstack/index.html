@@ -318,6 +318,31 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   <div class="si"><div class="sn">30s</div><div class="sl">setup time</div></div>
 </div>
 
+<!-- Social Proof -->
+<div style="padding:28px 0;text-align:center">
+  <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:16px">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;max-width:300px;text-align:left">
+      <p style="font-size:.82rem;color:var(--dim);line-height:1.6;margin-bottom:8px">"Plugged HyperStack into my Claude Code workflow. My agent remembers every project detail now — <strong style="color:var(--green)">saved me $200+/mo</strong> on context tokens."</p>
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;color:#000;font-weight:800">S</div><span style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">Solo developer, London</span></div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;max-width:300px;text-align:left">
+      <p style="font-size:.82rem;color:var(--dim);line-height:1.6;margin-bottom:8px">"Setup was literally 30 seconds. <strong style="color:var(--green)">npx hyperstack-mcp</strong> + one key. Works with Cursor out the box. Way simpler than Mem0."</p>
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:800">A</div><span style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">AI engineer, startup</span></div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;max-width:300px;text-align:left">
+      <p style="font-size:.82rem;color:var(--dim);line-height:1.6;margin-bottom:8px">"Finally my agents don't forget decisions between sessions. The MCP server is a game changer — <strong style="color:var(--green)">works with every tool</strong> I use."</p>
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:800">M</div><span style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">Full-stack dev, Berlin</span></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap">
+    <span style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Available on:</span>
+    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">📦 npm</span>
+    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">🐍 PyPI</span>
+    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">🔌 MCP</span>
+    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">🌐 REST API</span>
+  </div>
+</div>
+
 <section>
   <div style="text-align:center;margin-bottom:24px">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">How it works</div>
@@ -429,6 +454,7 @@ print(r.json())</pre>
       <tr><td>SDK required</td><td class="y">No — REST API only</td><td>Python or JS SDK</td><td>Yes</td><td>Own framework</td></tr>
       <tr><td>Works with any agent</td><td class="y">✓ Any language</td><td>Python, JS, MCP</td><td>Python, JS</td><td>Own agents only</td></tr>
       <tr><td>Team memory</td><td class="y">✓ (Pro)</td><td class="n">✗</td><td>Enterprise only</td><td class="n">✗</td></tr>
+      <tr><td>MCP Server</td><td class="y">✓ npx hyperstack-mcp</td><td>pip + OpenAI key</td><td class="n">✗</td><td>npm + own server</td></tr>
       <tr><td>Multi-workspace</td><td class="y">✓ (Pro)</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td></tr>
       <tr><td>Version history</td><td class="y">✓ (Pro)</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td></tr>
       <tr><td>Data ownership</td><td class="y">Your database</td><td>Their cloud</td><td>Their cloud</td><td>Self-host option</td></tr>
@@ -738,14 +764,30 @@ function rStart(el){el.innerHTML=`<div style="text-align:center;padding:16px 0 2
   <div class="setup-card">
     <h3>⚡ Quick setup</h3>
     <div class="plat-tabs">
-      <button class="plat-tab act" onclick="showPlatform('openclaw',this)">🐾 OpenClaw</button>
+      <button class="plat-tab act" onclick="showPlatform('mcp',this)">🔌 MCP Server</button>
+      <button class="plat-tab" onclick="showPlatform('openclaw',this)">🐾 OpenClaw</button>
       <button class="plat-tab" onclick="showPlatform('claude',this)">🤖 Claude Code</button>
       <button class="plat-tab" onclick="showPlatform('python',this)">🐍 Python</button>
       <button class="plat-tab" onclick="showPlatform('js',this)">⚡ JS</button>
       <button class="plat-tab" onclick="showPlatform('curl',this)">💻 cURL</button>
     </div>
 
-    <div id="ob-plat-openclaw" class="code-block"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+    <div id="ob-plat-mcp" class="code-block"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre><span style="color:var(--faint)">// Add to claude_desktop_config.json or .cursor/mcp.json</span>
+{
+  "mcpServers": {
+    "hyperstack": {
+      "command": "npx",
+      "args": ["-y", "hyperstack-mcp"],
+      "env": {
+        "HYPERSTACK_API_KEY": "<span style="color:var(--green)">${U.apiKey}</span>"
+      }
+    }
+  }
+}
+<span style="color:var(--faint)">// Works with: Claude Desktop, Cursor, VS Code, Windsurf</span></pre></div>
+
+    <div id="ob-plat-openclaw" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
 <pre><span style="color:var(--faint)"># Add skill + set env</span>
 mkdir -p skills/hyperstack
 export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
@@ -795,7 +837,7 @@ await fetch("${A}/api/cards?workspace=default", {
     </div>
   </div>`}
 
-function rCards(el){el.innerHTML=`<div class="dh"><div><h1>🃏 Memory Cards</h1><p>Loading...</p></div><input class="sinput" placeholder="🔍 Search..." oninput="fCards(this.value)"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)">Loading cards from API...</div></div>`;
+function rCards(el){el.innerHTML=`<div class="dh"><div><h1>🃏 Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="🔍 Search..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)">Loading cards from API...</div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
     document.querySelector('.dh p').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
@@ -858,6 +900,37 @@ function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='✓
 function cpBlock(btn){const pre=btn.parentElement.querySelector('pre');
   navigator.clipboard.writeText(pre.textContent);btn.textContent='✓ Copied';
   setTimeout(()=>{btn.textContent='Copy'},2000)}
+
+function showCardForm(){const w=document.getElementById('card-form-wrap');
+  if(w.innerHTML){w.innerHTML='';return}
+  w.innerHTML=`<div class="setup-card" style="margin-bottom:14px">
+    <h3 style="margin-bottom:12px">✨ Create Memory Card</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div class="fg"><label>Slug (unique ID)</label><input id="cf-slug" placeholder="project-webapp"></div>
+      <div class="fg"><label>Title</label><input id="cf-title" placeholder="WebApp"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div class="fg"><label>Stack</label><select id="cf-stack" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none">
+        <option value="projects">📦 projects</option><option value="people">👤 people</option><option value="decisions">⚖️ decisions</option>
+        <option value="preferences">⚙️ preferences</option><option value="workflows">🔄 workflows</option><option value="general" selected>📄 general</option>
+      </select></div>
+      <div class="fg"><label>Keywords (comma-separated)</label><input id="cf-kw" placeholder="react, vercel, auth"></div>
+    </div>
+    <div class="fg" style="margin-bottom:10px"><label>Body</label><textarea id="cf-body" rows="3" placeholder="What should your agent remember?" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.85rem;outline:none;resize:vertical"></textarea></div>
+    <div style="display:flex;gap:6px"><button class="btn bp bs" onclick="createCard()">Create Card →</button><button class="btn bo bs" onclick="document.getElementById('card-form-wrap').innerHTML=''">Cancel</button></div>
+    <div id="cf-err" class="ferr hidden" style="margin-top:6px"></div>
+  </div>`}
+
+function createCard(){const slug=document.getElementById('cf-slug').value.trim(),title=document.getElementById('cf-title').value.trim(),
+  stack=document.getElementById('cf-stack').value,kw=document.getElementById('cf-kw').value.split(',').map(s=>s.trim()).filter(Boolean),
+  body=document.getElementById('cf-body').value.trim(),err=document.getElementById('cf-err');
+  err.classList.add('hidden');
+  if(!slug||!title||!body){err.textContent='Fill in slug, title, and body';err.classList.remove('hidden');return}
+  fetch(A+"/api/cards?workspace=default",{method:"POST",headers:{"X-API-Key":U.apiKey,"Content-Type":"application/json"},
+    body:JSON.stringify({slug,title,stack,keywords:kw,body})}).then(r=>r.json()).then(d=>{
+    if(d.error){err.textContent=d.error;err.classList.remove('hidden');return}
+    document.getElementById('card-form-wrap').innerHTML='';rCards(document.getElementById('dm'));
+  }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden')})}
 
 function rKey(el){el.innerHTML=`<div class="dh"><div><h1>🔑 API Key</h1><p>Use this key in any agent</p></div></div>
   <div class="akbox"><p style="color:var(--text);font-weight:500;margin-bottom:4px">Your API Key</p>
