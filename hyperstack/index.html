@@ -521,15 +521,19 @@ print(r.json())</pre>
   </div>
 
   <div class="ci" style="border-left:3px solid #eab308;margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">❓ FAQ</h2>
+    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">❓ FAQ &amp; Troubleshooting</h2>
     <div style="display:grid;gap:12px">
       <div><strong style="font-family:var(--mono);font-size:.85rem">How does my agent use HyperStack?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Your agent calls the REST API to store and search memories. Before responding, it searches for relevant cards. When it learns something new, it creates or updates a card. This means it never forgets.</p></div>
       <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What counts as a "card"?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Any piece of knowledge — a person's role, a project's tech stack, a decision rationale, your coding preferences. Cards are small (a few lines) and focused on one topic.</p></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">I get "Unauthorized" when calling the API</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Make sure you're sending the header <code style="font-family:var(--mono);color:var(--accent)">X-API-Key: your_key</code> (not <code>Authorization</code>). Your key is in the API Key tab of your dashboard. It should start with <code style="color:var(--accent)">hs_</code>.</p></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What fields does a card need?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Required: <code style="color:var(--accent)">slug</code> (unique ID, like "my-project"), <code style="color:var(--accent)">title</code>, <code style="color:var(--accent)">body</code>. Optional but recommended: <code style="color:var(--accent)">stack</code> (category), <code style="color:var(--accent)">keywords</code> (array of tags for search). If you POST the same slug again, it updates the existing card.</p></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">How do I delete a card?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Send a DELETE request with the slug as the <code style="color:var(--accent)">id</code> parameter: <code style="font-family:var(--mono);font-size:.78rem;color:var(--dim)">DELETE /api/cards?workspace=default&amp;id=my-card-slug</code></p></div>
       <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">How do I save tokens?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Without memory, agents stuff everything into the prompt (6,000+ tokens). With HyperStack, the agent searches for only the relevant card (~350 tokens). That's 94% less.</p></div>
       <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What's a workspace?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">A workspace is a separate bucket of cards. Use "default" for everything, or create separate workspaces per project (Pro feature) so cards don't mix.</p></div>
       <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">Can I use any AI agent?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Yes. HyperStack is a REST API. If your agent can make HTTP requests, it works — OpenClaw, Claude Code, LangChain, CrewAI, AutoGPT, custom agents, or even a simple Python script.</p></div>
       <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">Is my data safe?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Your cards are stored in a secure PostgreSQL database. Only your API key can access your data. We don't read, sell, or share your cards.</p></div>
       <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What happens if I hit 50 cards on Free?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">You can still read and search cards, but you can't create new ones until you delete some or upgrade to Pro (unlimited cards).</p></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">PowerShell users: curl doesn't work!</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">PowerShell aliases <code>curl</code> to <code>Invoke-WebRequest</code>. Use <code style="color:var(--accent)">Invoke-RestMethod</code> instead, or run curl commands in Git Bash / WSL / CMD.</p></div>
     </div>
   </div>
 
@@ -708,19 +712,44 @@ print(r.json())</pre></div>
     <div class="ci" style="text-align:center;cursor:pointer;border-color:rgba(34,197,94,.2)" onclick="go('docs')"><span style="font-size:1.5rem">📖</span><h3 style="font-family:var(--mono);font-size:.85rem;margin:8px 0 4px">Read Docs</h3><p style="font-size:.75rem;color:var(--dim)">Stacks, cards, API guide</p></div>
   </div>`}
 
-function rCards(el){el.innerHTML=`<div class="dh"><div><h1>🃏 Memory Cards</h1><p>${DEMO.length} cards · default workspace</p></div><input class="sinput" placeholder="🔍 Search cards..." oninput="fCards(this.value)"></div>
-  <div class="filters"><button class="fb act" onclick="fStack('all',this)">🗂️ All</button>${[...new Set(DEMO.map(c=>c.stack))].map(s=>`<button class="fb" onclick="fStack('${s}',this)">${SE[s]||'📄'} ${s}</button>`).join('')}</div>
-  <div id="cl">${DEMO.map(c=>{const d=Math.floor((new Date("2026-02-10")-new Date(c.updated))/864e5);
-    const fc=d<=7?"var(--green)":d<=30?"var(--blue)":d<=60?"var(--yellow)":"var(--red)";
-    const fl=d<=7?"🟢 Fresh":d<=30?"🔵 Current":d<=60?"🟡 Stale":"🔴 Old";
-    const bc=SC[c.stack]||'#555';
-    return`<div class="ci" data-s="${c.stack}" data-q="${(c.title+' '+c.keywords.join(' ')+' '+c.body).toLowerCase()}" style="border-left:3px solid ${bc}">
-      <div class="ci-top"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px;filter:drop-shadow(0 0 4px ${bc}50)">${SE[c.stack]||'📄'}</span><div><div class="ci-title">${c.title}</div><div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">${c.keywords.map(k=>`<span class="badge" style="background:${bc}15;color:${bc};border:1px solid ${bc}30;border-radius:10px;padding:2px 8px">#${k}</span>`).join('')}</div></div></div>
-      <span class="badge" style="background:${fc}15;color:${fc};border:1px solid ${fc}30;font-size:.7rem;padding:3px 8px">${fl}</span></div>
-      <div class="ci-body">${c.body}</div>
-      <div class="ci-acts"><button onclick="alert('Edit coming soon — use the API to update cards')">✏️ Edit</button><button>⏪ v${c.ver}</button><span class="date">Updated ${c.updated}</span></div></div>`}).join('')}</div>
-  <div style="margin-top:16px;padding:14px;background:var(--surface);border:1px dashed var(--border);border-radius:10px;text-align:center"><p style="color:var(--faint);font-size:.8rem">These are demo cards. Use the API to create your own →</p>
-  <code style="font-family:var(--mono);font-size:.72rem;color:var(--accent);display:block;margin-top:6px">curl -X POST ".../api/cards?workspace=default" -d '{"slug":"my-card",...}'</code></div>`}
+function rCards(el){el.innerHTML=`<div class="dh"><div><h1>🃏 Memory Cards</h1><p>Loading...</p></div><input class="sinput" placeholder="🔍 Search cards..." oninput="fCards(this.value)"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)">Loading cards from API...</div></div>`;
+  fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
+    const cards=d.cards||[];
+    document.querySelector('.dh p').textContent=cards.length+' cards · default workspace · '+d.plan+' plan ('+cards.length+'/'+d.limit+')';
+    const cl=document.getElementById('cl');
+    if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:40px">
+      <span style="font-size:2.5rem">🃏</span>
+      <h3 style="font-family:var(--mono);margin:12px 0 8px">No cards yet</h3>
+      <p style="color:var(--dim);font-size:.85rem;margin-bottom:16px">Create your first card using the API. Here's a quick example:</p>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:left;max-width:600px;margin:0 auto;position:relative">
+        <button class="btn bo bs" style="position:absolute;top:8px;right:8px" onclick="navigator.clipboard.writeText('curl -X POST \\'https://hyperstack-cloud.vercel.app/api/cards?workspace=default\\' -H \\'X-API-Key: ${U.apiKey}\\' -H \\'Content-Type: application/json\\' -d \\'{\\\\\\"slug\\\\\\":\\\\\\"my-project\\\\\\",\\\\\\"title\\\\\\":\\\\\\"My Project\\\\\\",\\\\\\"stack\\\\\\":\\\\\\"projects\\\\\\",\\\\\\"keywords\\\\\\":[\\\\\\"react\\\\\\"],\\\\\\"body\\\\\\":\\\\\\"React + Node.js app\\\\\\"}\\'' );this.textContent='✓ Copied'">Copy</button>
+        <pre style="font-family:var(--mono);font-size:.76rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> -X POST <span style="color:var(--green)">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \\
+  -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span> \\
+  -H <span style="color:var(--green)">"Content-Type: application/json"</span> \\
+  -d <span style="color:var(--green)">'{"slug":"my-project","title":"My Project","stack":"projects","keywords":["react"],"body":"React + Node.js app"}'</span></pre></div>
+      <button class="btn bp bs" style="margin-top:16px" onclick="rCards(document.getElementById('dm'))">🔄 Refresh</button>
+    </div>`;return}
+    // Build filter buttons from actual stacks
+    const stacks=[...new Set(cards.map(c=>c.stack))];
+    const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">🗂️ All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)">${SE[s]||'📄'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
+    // Build card HTML
+    const cardsHtml=cards.map(c=>{
+      const d=Math.floor((Date.now()-new Date(c.updatedAt))/864e5);
+      const fc=d<=7?"var(--green)":d<=30?"var(--blue)":d<=60?"var(--yellow)":"var(--red)";
+      const fl=d<=7?"🟢 Fresh":d<=30?"🔵 Current":d<=60?"🟡 Stale":"🔴 Old";
+      const bc=SC[c.stack]||'#555';
+      const kw=(c.keywords||[]);
+      return`<div class="ci" data-s="${c.stack}" data-q="${(c.title+' '+kw.join(' ')+' '+(c.body||'')).toLowerCase()}" style="border-left:3px solid ${bc}">
+        <div class="ci-top"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px;filter:drop-shadow(0 0 4px ${bc}50)">${SE[c.stack]||'📄'}</span><div><div class="ci-title">${c.title||c.slug}</div><div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">${kw.map(k=>`<span class="badge" style="background:${bc}15;color:${bc};border:1px solid ${bc}30;border-radius:10px;padding:2px 8px">#${k}</span>`).join('')}</div></div></div>
+        <span class="badge" style="background:${fc}15;color:${fc};border:1px solid ${fc}30;font-size:.7rem;padding:3px 8px">${fl}</span></div>
+        <div class="ci-body">${(c.body||'').replace(/</g,'&lt;')}</div>
+        <div class="ci-acts"><button onclick="if(confirm('Delete card: ${c.slug}?'))delCard('${c.slug}')">🗑️ Delete</button><span style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">${c.tokens||0} tokens</span><span class="date">${c.slug}</span></div></div>`}).join('');
+    cl.innerHTML=filtersHtml+cardsHtml+`<div style="text-align:center;margin-top:12px"><button class="btn bo bs" onclick="rCards(document.getElementById('dm'))">🔄 Refresh</button></div>`;
+  }).catch(err=>{
+    document.getElementById('cl').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red)">Failed to load cards: ${err.message}<br><button class="btn bo bs" style="margin-top:10px" onclick="rCards(document.getElementById('dm'))">Retry</button></div>`;
+  })}
+
+function delCard(slug){fetch(A+"/api/cards?workspace=default&id="+slug,{method:"DELETE",headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(()=>rCards(document.getElementById('dm'))).catch(err=>alert("Delete failed: "+err.message))}
 
 function fStack(s,b){document.querySelectorAll('.fb').forEach(x=>x.classList.remove('act'));b.classList.add('act');
   document.querySelectorAll('.ci').forEach(e=>{e.style.display=(s==='all'||e.dataset.s===s)?'':'none'})}
