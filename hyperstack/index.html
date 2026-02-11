@@ -203,7 +203,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   <div class="navr">
     <a href="#features">Features</a>
     <a href="#pricing">Pricing</a>
-    <a href="https://github.com/deeqyaqub1-cmd/hyperstack">Docs</a>
+    <a href="javascript:void(0)" onclick="go('docs')">Docs</a>
     <button onclick="go('login')" id="nl" class="btn bo bs">Sign In</button>
     <button onclick="go('dash')" id="nd" class="hidden btn bp bs">Dashboard</button>
     <button onclick="out()" id="no" class="hidden btn bo bs" style="color:var(--red)">Log Out</button>
@@ -428,7 +428,7 @@ print(r.json())</pre>
   </div>
 </section>
 
-<footer><div class="c">© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="https://github.com/deeqyaqub1-cmd/hyperstack">GitHub</a><a href="https://discord.gg/tdnXaV6e">Join Discord</a></div></footer>
+<footer><div class="c">© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Join Discord</a></div></footer>
 </div>
 </div>
 
@@ -460,6 +460,83 @@ print(r.json())</pre>
 </div>
 </div>
 
+<!-- ════════════ DOCS ════════════ -->
+<div id="p-docs" class="hidden">
+<div class="w" style="max-width:760px;padding:40px 24px 80px">
+  <div style="margin-bottom:8px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">← Back to home</a></div>
+  <h1 style="font-family:var(--mono);font-weight:800;font-size:1.6rem;margin-bottom:6px">📖 HyperStack Docs</h1>
+  <p style="color:var(--dim);margin-bottom:32px">Everything you need to give your AI agent persistent memory.</p>
+
+  <div class="ci" style="border-left:3px solid var(--accent);margin-bottom:16px">
+    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">🃏 What are Cards?</h2>
+    <p style="color:var(--dim);font-size:.85rem;line-height:1.7">Cards are small chunks of knowledge your agent stores and retrieves. Think of them as sticky notes for your AI — project details, people info, decisions, preferences. Each card has a <strong style="color:var(--text)">slug</strong> (unique ID), <strong style="color:var(--text)">title</strong>, <strong style="color:var(--text)">body</strong> (the content), <strong style="color:var(--text)">keywords</strong> (for search), and a <strong style="color:var(--text)">stack</strong> (category).</p>
+  </div>
+
+  <div class="ci" style="border-left:3px solid #3b82f6;margin-bottom:16px">
+    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">📁 What are Stacks?</h2>
+    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:12px">Stacks are categories that organize your cards. They help your agent find the right memory fast. Use any name you want, but here are the recommended ones:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #3b82f6"><strong style="font-family:var(--mono);font-size:.8rem">📦 projects</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Tech stacks, repos, architecture</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #a855f7"><strong style="font-family:var(--mono);font-size:.8rem">👤 people</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Teammates, contacts, roles</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #ff6b2b"><strong style="font-family:var(--mono);font-size:.8rem">⚖️ decisions</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Why you chose X over Y</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #22c55e"><strong style="font-family:var(--mono);font-size:.8rem">⚙️ preferences</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Editor, tools, coding style</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #eab308"><strong style="font-family:var(--mono);font-size:.8rem">🔄 workflows</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Deploy steps, review processes</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #8585a0"><strong style="font-family:var(--mono);font-size:.8rem">📄 general</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Everything else</p></div>
+    </div>
+  </div>
+
+  <div class="ci" style="border-left:3px solid #22c55e;margin-bottom:16px">
+    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">⚡ API Reference</h2>
+    <div style="display:grid;gap:10px">
+      <div style="background:var(--bg);border-radius:8px;padding:14px">
+        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--greend);color:var(--green);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">POST</span> <span style="color:var(--text)">/api/cards?workspace=default</span></div>
+        <p style="font-size:.78rem;color:var(--dim)">Create or update a card. Send JSON body with: slug, title, body, stack, keywords (array)</p>
+      </div>
+      <div style="background:var(--bg);border-radius:8px;padding:14px">
+        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--blued);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">GET</span> <span style="color:var(--text)">/api/cards?workspace=default</span></div>
+        <p style="font-size:.78rem;color:var(--dim)">Get all cards in a workspace</p>
+      </div>
+      <div style="background:var(--bg);border-radius:8px;padding:14px">
+        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--blued);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">GET</span> <span style="color:var(--text)">/api/search?workspace=default&q=search term</span></div>
+        <p style="font-size:.78rem;color:var(--dim)">Search cards by keywords, title, or content</p>
+      </div>
+      <div style="background:var(--bg);border-radius:8px;padding:14px">
+        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--redd);color:var(--red);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">DEL</span> <span style="color:var(--text)">/api/cards?workspace=default&slug=card-slug</span></div>
+        <p style="font-size:.78rem;color:var(--dim)">Delete a card by slug</p>
+      </div>
+    </div>
+    <p style="font-size:.78rem;color:var(--faint);margin-top:10px">All endpoints require header: <code style="font-family:var(--mono);color:var(--accent)">X-API-Key: your_key</code></p>
+  </div>
+
+  <div class="ci" style="border-left:3px solid #a855f7;margin-bottom:16px">
+    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">🐾 Using with OpenClaw</h2>
+    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:10px">HyperStack works as an OpenClaw skill. Your agent reads the SKILL.md file and automatically knows how to create, search, and update cards.</p>
+    <div style="background:var(--bg);border-radius:8px;padding:14px">
+      <p style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8"><strong style="color:var(--text)">Setup:</strong><br>
+      1. Download SKILL.md from your dashboard (Get Started tab)<br>
+      2. Place in your project: <code style="color:var(--accent)">skills/hyperstack/SKILL.md</code><br>
+      3. Set env: <code style="color:var(--green)">HYPERSTACK_API_KEY=your_key</code><br>
+      4. Your agent now has memory — it reads the skill and handles everything</p>
+    </div>
+  </div>
+
+  <div class="ci" style="border-left:3px solid #eab308;margin-bottom:16px">
+    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">❓ FAQ</h2>
+    <div style="display:grid;gap:12px">
+      <div><strong style="font-family:var(--mono);font-size:.85rem">How does my agent use HyperStack?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Your agent calls the REST API to store and search memories. Before responding, it searches for relevant cards. When it learns something new, it creates or updates a card. This means it never forgets.</p></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What counts as a "card"?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Any piece of knowledge — a person's role, a project's tech stack, a decision rationale, your coding preferences. Cards are small (a few lines) and focused on one topic.</p></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">How do I save tokens?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Without memory, agents stuff everything into the prompt (6,000+ tokens). With HyperStack, the agent searches for only the relevant card (~350 tokens). That's 94% less.</p></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What's a workspace?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">A workspace is a separate bucket of cards. Use "default" for everything, or create separate workspaces per project (Pro feature) so cards don't mix.</p></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">Can I use any AI agent?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Yes. HyperStack is a REST API. If your agent can make HTTP requests, it works — OpenClaw, Claude Code, LangChain, CrewAI, AutoGPT, custom agents, or even a simple Python script.</p></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">Is my data safe?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Your cards are stored in a secure PostgreSQL database. Only your API key can access your data. We don't read, sell, or share your cards.</p></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What happens if I hit 50 cards on Free?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">You can still read and search cards, but you can't create new ones until you delete some or upgrade to Pro (unlimited cards).</p></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:20px 0"><p style="color:var(--faint);font-size:.82rem">Need help? <a href="https://discord.gg/tdnXaV6e">Join our Discord</a></p></div>
+</div>
+</div>
+
 <!-- ════════════ DASHBOARD ════════════ -->
 <div id="p-dash" class="hidden">
 <div class="dash">
@@ -471,6 +548,7 @@ print(r.json())</pre>
     <button class="sbtn" onclick="dt('ws')" id="t-ws">📁 Workspaces</button>
     <button class="sbtn" onclick="dt('team')" id="t-team">👥 Team</button>
     <button class="sbtn" onclick="dt('stats')" id="t-stats">📊 Analytics</button>
+    <button class="sbtn" onclick="go('docs')" id="t-docs">📖 Docs</button>
     <div class="bot"><div class="em" id="d-em">—</div><div id="d-pt" style="margin-top:4px"></div></div>
   </div>
   <div class="dc" id="dm"></div>
@@ -499,7 +577,7 @@ function heroSignup(){const e=document.getElementById("hero-email").value;
   if(!e||!e.includes("@")){document.getElementById("hero-note").innerHTML='<span style="color:var(--red)">Enter a valid email</span>';return}
   document.getElementById("su-e").value=e;go("signup")}
 function bottomSignup(){const e=document.getElementById("bottom-email").value;
-  if(!e||!e.includes("@"))return;document.getElementById("su-e").value=e;go("signup")}
+  if(!e||!e.includes("@")){document.getElementById("bottom-email").style.borderColor="var(--red)";document.getElementById("bottom-email").placeholder="Enter your email first";setTimeout(()=>{document.getElementById("bottom-email").style.borderColor="";document.getElementById("bottom-email").placeholder="you@example.com"},2000);return}document.getElementById("su-e").value=e;go("signup")}
 
 async function doSignup(){const e=document.getElementById("su-e").value,p=document.getElementById("su-p").value,er=document.getElementById("su-err");
   er.classList.add("hidden");if(!e||!p){er.textContent="Fill in all fields";er.classList.remove("hidden");return}
@@ -554,17 +632,21 @@ function rStart(el){el.innerHTML=`<div style="margin-bottom:24px"><h1 style="fon
 
     <div id="plat-openclaw" class="ci" style="border-left:3px solid var(--accent)">
       <h3 style="font-family:var(--mono);font-size:.9rem;margin-bottom:10px">🐾 OpenClaw Skill — Fastest setup</h3>
-      <p style="color:var(--dim);font-size:.82rem;margin-bottom:12px">HyperStack is an OpenClaw skill. Install it and your agent gets memory automatically.</p>
+      <p style="color:var(--dim);font-size:.82rem;margin-bottom:12px">Add HyperStack as a skill in your OpenClaw agent. Your agent gets persistent memory automatically.</p>
       <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px">
-        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--faint)"># Step 1: Install the skill</span>
-<span style="color:var(--accent)">clawhub</span> install hyperstack
+        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--faint)"># Step 1: Download the skill file</span>
+<span style="color:var(--faint)"># Get SKILL.md from cascadeai.dev/hyperstack/SKILL.md</span>
+<span style="color:var(--faint)"># Place it in your agent's skills folder:</span>
+<span style="color:var(--accent)">mkdir</span> -p skills/hyperstack
+<span style="color:var(--accent)">cp</span> SKILL.md <span style="color:var(--green)">skills/hyperstack/SKILL.md</span>
 
-<span style="color:var(--faint)"># Step 2: Set your API key (paste your key)</span>
+<span style="color:var(--faint)"># Step 2: Set your API key</span>
 <span style="color:var(--accent)">export</span> <span style="color:var(--green)">HYPERSTACK_API_KEY=${U.apiKey}</span>
+<span style="color:var(--accent)">export</span> <span style="color:var(--green)">HYPERSTACK_WORKSPACE=default</span>
 
-<span style="color:var(--faint)"># That's it! Your OpenClaw agent now has persistent memory.</span>
-<span style="color:var(--faint)"># It will auto-create cards as you work.</span></pre></div>
-      <p style="color:var(--faint);font-size:.75rem">The skill reads SKILL.md and handles card creation, search, and updates automatically. No extra code needed.</p>
+<span style="color:var(--faint)"># That's it! Your OpenClaw agent reads the skill</span>
+<span style="color:var(--faint)"># and handles cards automatically.</span></pre></div>
+      <p style="color:var(--faint);font-size:.75rem">The skill tells your agent how to create, search, and update cards. No extra code needed — the agent reads SKILL.md and does the rest.</p>
     </div>
 
     <div id="plat-claude" class="ci hidden" style="border-left:3px solid #a855f7">
@@ -623,7 +705,7 @@ print(r.json())</pre></div>
 
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px">
     <div class="ci" style="text-align:center;cursor:pointer;border-color:rgba(59,130,246,.2)" onclick="dt('cards')"><span style="font-size:1.5rem">🃏</span><h3 style="font-family:var(--mono);font-size:.85rem;margin:8px 0 4px">View Cards</h3><p style="font-size:.75rem;color:var(--dim)">Browse your memory cards</p></div>
-    <div class="ci" style="text-align:center;cursor:pointer;border-color:rgba(34,197,94,.2)" onclick="window.open('https://github.com/deeqyaqub1-cmd/hyperstack','_blank')"><span style="font-size:1.5rem">📖</span><h3 style="font-family:var(--mono);font-size:.85rem;margin:8px 0 4px">Read Docs</h3><p style="font-size:.75rem;color:var(--dim)">Full API reference</p></div>
+    <div class="ci" style="text-align:center;cursor:pointer;border-color:rgba(34,197,94,.2)" onclick="go('docs')"><span style="font-size:1.5rem">📖</span><h3 style="font-family:var(--mono);font-size:.85rem;margin:8px 0 4px">Read Docs</h3><p style="font-size:.75rem;color:var(--dim)">Stacks, cards, API guide</p></div>
   </div>`}
 
 function rCards(el){el.innerHTML=`<div class="dh"><div><h1>🃏 Memory Cards</h1><p>${DEMO.length} cards · default workspace</p></div><input class="sinput" placeholder="🔍 Search cards..." oninput="fCards(this.value)"></div>
