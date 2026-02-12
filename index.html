@@ -184,10 +184,11 @@ footer .l{display:flex;gap:16px}
 footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 
 @media(max-width:700px){
-  nav{padding:10px 0;gap:8px}
-  .logo{font-size:.9rem}
+  nav{padding:10px 0;gap:6px;flex-wrap:wrap}
+  .logo{font-size:.85rem}
+  .navr{flex-wrap:wrap;justify-content:center}
   .navr{gap:8px}
-  .navr a,.navr button{font-size:.72rem}
+  .navr a,.navr button{font-size:.68rem;padding:4px 8px}
   h1{font-size:1.8rem!important}
   .fgrid,.pgrid{grid-template-columns:1fr}
   .ba{grid-template-columns:1fr;gap:8px}.ba-arrow{transform:rotate(90deg);padding:8px 0}
@@ -196,7 +197,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   .hero-signup{flex-direction:column;max-width:100%}
   .hero-signup input{width:100%}
   .hero-signup .btn{width:100%}
-  .nav-links{display:none}
+  .nav-links{display:flex;gap:10px;font-size:.68rem}
   .navr{gap:8px}
   .sb{display:none}.dc{margin-left:0;padding:16px 16px 80px}
   .mob-nav{display:block}
