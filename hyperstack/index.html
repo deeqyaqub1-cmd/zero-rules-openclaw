@@ -755,90 +755,7 @@ print(r.json())</pre>
   { headers: { <span class="str">"X-API-Key"</span>: KEY } })</pre>
   </div>
 </section>
-</div>
 
-<div id="ltab-howit" class="hidden">
-<section>
-  <div style="text-align:center;margin-bottom:24px">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">How it works</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:12px">Three steps. That&rsquo;s the whole product.</h2>
-    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;max-width:700px;margin-left:auto;margin-right:auto">
-      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
-        <div style="font-size:1.5rem;margin-bottom:4px">&#9312;</div>
-        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Store</div>
-        <div style="font-size:.78rem;color:var(--dim)">Agent learns something? Save it as a card.</div>
-      </div>
-      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
-        <div style="font-size:1.5rem;margin-bottom:4px">&#9313;</div>
-        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Search</div>
-        <div style="font-size:.78rem;color:var(--dim)">Next session, agent searches for what&rsquo;s relevant.</div>
-      </div>
-      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
-        <div style="font-size:1.5rem;margin-bottom:4px">&#9314;</div>
-        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Remember</div>
-        <div style="font-size:.78rem;color:var(--dim)">Agent gets exactly the context it needs. ~350 tokens, not 6,000.</div>
-      </div>
-    </div>
-    <p style="font-family:var(--mono);font-size:.75rem;color:var(--faint)">Here&rsquo;s what that looks like in code &#8595;</p>
-  </div>
-  <div class="demo">
-    <div class="demo-bar">
-      <div class="demo-dot"></div><div class="demo-dot"></div><div class="demo-dot"></div>
-      <div class="demo-tabs">
-        <div class="demo-tab active" onclick="showCode('curl',this)">cURL</div>
-        <div class="demo-tab" onclick="showCode('python',this)">Python</div>
-        <div class="demo-tab" onclick="showCode('js',this)">JavaScript</div>
-      </div>
-    </div>
-<pre id="code-curl"><span class="cm"># 1. Store a memory</span>
-<span class="kw">curl</span> -X POST <span class="str">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \
-  -H <span class="str">"X-API-Key: YOUR_KEY"</span> -H <span class="str">"Content-Type: application/json"</span> \
-  -d <span class="str">'{"slug":"project-api","title":"API","stack":"projects",
-       "keywords":["fastapi","python"],"body":"FastAPI 3.12 on AWS"}'</span>
-
-<span class="cm"># 2. Search memories</span>
-<span class="kw">curl</span> <span class="str">"https://hyperstack-cloud.vercel.app/api/search?workspace=default&q=python"</span> \
-  -H <span class="str">"X-API-Key: YOUR_KEY"</span>
-
-<span class="cm"># 3. Get all cards</span>
-<span class="kw">curl</span> <span class="str">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \
-  -H <span class="str">"X-API-Key: YOUR_KEY"</span></pre>
-<pre id="code-python" class="hidden"><span class="cm"># pip install requests</span>
-<span class="kw">import</span> requests
-
-<span class="fn">API</span> = <span class="str">"https://hyperstack-cloud.vercel.app"</span>
-<span class="fn">KEY</span> = <span class="str">"YOUR_KEY"</span>
-<span class="fn">h</span>   = {<span class="str">"X-API-Key"</span>: KEY, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>}
-
-<span class="cm"># Store</span>
-requests.<span class="fn">post</span>(f<span class="str">"{API}/api/cards?workspace=default"</span>, headers=h,
-  json={<span class="str">"slug"</span>:<span class="str">"project-api"</span>, <span class="str">"title"</span>:<span class="str">"API"</span>,
-        <span class="str">"stack"</span>:<span class="str">"projects"</span>, <span class="str">"keywords"</span>:[<span class="str">"fastapi"</span>],
-        <span class="str">"body"</span>:<span class="str">"FastAPI 3.12 on AWS"</span>})
-
-<span class="cm"># Search</span>
-r = requests.<span class="fn">get</span>(f<span class="str">"{API}/api/search?workspace=default&q=python"</span>, headers=h)
-print(r.json())</pre>
-<pre id="code-js" class="hidden"><span class="cm">// Node.js / Deno / Bun</span>
-<span class="kw">const</span> <span class="fn">API</span> = <span class="str">"https://hyperstack-cloud.vercel.app"</span>
-<span class="kw">const</span> <span class="fn">KEY</span> = <span class="str">"YOUR_KEY"</span>
-
-<span class="cm">// Store</span>
-<span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${API}/api/cards?workspace=default`</span>, {
-  method: <span class="str">"POST"</span>,
-  headers: { <span class="str">"X-API-Key"</span>: KEY, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span> },
-  body: JSON.stringify({
-    slug: <span class="str">"project-api"</span>, title: <span class="str">"API"</span>,
-    stack: <span class="str">"projects"</span>, keywords: [<span class="str">"fastapi"</span>],
-    body: <span class="str">"FastAPI 3.12 on AWS"</span>
-  })
-})
-
-<span class="cm">// Search</span>
-<span class="kw">const</span> r = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${API}/api/search?workspace=default&q=python`</span>,
-  { headers: { <span class="str">"X-API-Key"</span>: KEY } })</pre>
-  </div>
-</section>
 <section>
   <div style="text-align:center;margin-bottom:20px">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The math</div>
@@ -878,6 +795,11 @@ print(r.json())</pre>
     <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Pricing based on <a href="https://www.anthropic.com/pricing" style="color:var(--dim)">Claude Sonnet 4</a> ($3/M input). GPT-4o and Opus savings are even higher.</p>
   </div>
 </section>
+
+</div>
+
+<div id="ltab-howit" class="hidden">
+
 </div>
 
 <div id="ltab-compare" class="hidden">
@@ -921,7 +843,7 @@ print(r.json())</pre>
 
 
 
-<footer><div class="c">Â© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Join Discord</a></div></footer>
+<footer><div class="c">© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Join Discord</a></div></footer>
 </div>
 </div>
 
@@ -1018,7 +940,7 @@ print(r.json())</pre>
       <div class="pc-badge">Most Popular</div>
       <h3 style="color:var(--accent)">Pro Monthly</h3>
       <div class="amt">$15 <span>/mo</span></div>
-      <div class="per">billed monthly Â· cancel anytime</div>
+      <div class="per">billed monthly · cancel anytime</div>
       <ul>
         <li>Everything in Free</li>
         <li class="pro">Unlimited cards</li>
@@ -1034,7 +956,7 @@ print(r.json())</pre>
       <div class="pc-badge green">Save 20%</div>
       <h3 style="color:var(--green)">Pro Yearly</h3>
       <div class="amt">$144 <span>/yr</span></div>
-      <div class="per">$12/mo Â· save $36/year</div>
+      <div class="per">$12/mo · save $36/year</div>
       <ul>
         <li>Everything in Pro</li>
         <li class="pro">Unlimited cards</li>
