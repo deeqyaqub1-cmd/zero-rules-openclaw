@@ -732,37 +732,46 @@ print(r.json())</pre>
 </section>
 
 <section>
+  <div style="text-align:center;margin-bottom:20px">
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The math</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:6px">Real savings, real math</h2>
+    <p style="color:var(--dim);font-size:.85rem;max-width:560px;margin:0 auto">Based on Claude Sonnet at $3/M input tokens, 100 agent messages/day.</p>
+  </div>
+
   <div class="ba">
     <div class="ba-card" style="border-color:rgba(239,68,68,.3)">
       <h3 style="color:var(--red)">Without HyperStack</h3>
       <div class="num" style="color:var(--red)">~6,000</div>
       <div class="sub">tokens every message</div>
-      <div class="sub" style="margin-top:8px"><strong style="color:var(--red)">$270/mo</strong> wasted on context</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:12px;font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.7">
+        6,000 tok &times; 100 msgs/day<br>
+        = 600K tokens/day<br>
+        &times; 30 days = <strong style="color:var(--red)">18M tokens/mo</strong><br>
+        &times; $3/M = <strong style="color:var(--red)">$54/mo input alone</strong><br>
+        <span style="font-size:.62rem;color:var(--faint)">+ output tokens &amp; re-explanations &asymp; $270/mo</span>
+      </div>
     </div>
-    <div class="ba-arrow">→</div>
+    <div class="ba-arrow">&rarr;</div>
     <div class="ba-card" style="border-color:rgba(34,197,94,.3)">
       <h3 style="color:var(--green)">With HyperStack</h3>
       <div class="num" style="color:var(--green)">~350</div>
       <div class="sub">tokens per message</div>
-      <div class="sub" style="margin-top:8px"><strong style="color:var(--green)">$16/mo</strong> — 94% less</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:12px;font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.7">
+        350 tok &times; 100 msgs/day<br>
+        = 35K tokens/day<br>
+        &times; 30 days = <strong style="color:var(--green)">1.05M tokens/mo</strong><br>
+        &times; $3/M = <strong style="color:var(--green)">$3.15/mo input</strong><br>
+        <span style="font-size:.62rem;color:var(--faint)">+ $15 Pro plan = $18/mo total &mdash; <strong style="color:var(--green)">94% less</strong></span>
+      </div>
     </div>
+  </div>
+
+  <div style="text-align:center;margin-top:14px">
+    <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Pricing based on <a href="https://www.anthropic.com/pricing" style="color:var(--dim)">Claude Sonnet 4</a> ($3/M input). GPT-4o and Opus savings are even higher.</p>
   </div>
 </section>
 
-<section id="features">
-  <div style="text-align:center;margin-bottom:24px">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Features</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">How HyperStack actually works</h2>
-  </div>
-  <div class="fgrid">
-    <div class="fc" style="border-color:rgba(239,68,68,.2)"><div class="icon">&#128548;</div><h3>Your agent has amnesia</h3><p>Every new session, your agent forgets your tech stack, your team, your decisions. You waste 5 minutes re-explaining or paste a wall of text that costs $0.08 per message.</p></div>
-    <div class="fc" style="border-color:rgba(34,197,94,.2)"><div class="icon">&#128161;</div><h3>Cards fix that</h3><p>HyperStack stores knowledge as small structured cards (~350 tokens). Your agent searches and loads only what&rsquo;s relevant &mdash; not your entire conversation history. 94% fewer tokens.</p></div>
-    <div class="fc" style="border-color:rgba(255,107,43,.2)"><div class="icon">&#128269;</div><h3>Hybrid search finds anything</h3><p>Semantic understanding + keyword matching. Ask &ldquo;what does Alice work on?&rdquo; and it finds her card even if you stored it as &ldquo;backend engineer&rdquo;. Powered by pgvector &mdash; $0 per search.</p></div>
-    <div class="fc" style="border-color:rgba(59,130,246,.2)"><div class="icon">&#128268;</div><h3>Plugs into anything</h3><p>MCP server for Claude/Cursor, Python &amp; JS SDKs, REST API for any language, OpenClaw plugin. Pick whatever fits your workflow &mdash; they all hit the same memory.</p></div>
-    <div class="fc"><div class="icon">&#128101;</div><h3>Team-wide knowledge <span class="pro-tag">PRO</span></h3><p>Alice&rsquo;s agent learns a decision, Bob&rsquo;s agent knows it instantly. Shared cards sync across your team. Private cards stay private.</p></div>
-    <div class="fc"><div class="icon">&#128274;</div><h3>Your data stays safe</h3><p>Built-in PII redaction rules. Version history on every edit. Your database, your cards. No training on your data. Self-funded &mdash; no VC incentives to monetize you.</p></div>
-  </div>
-</section>
+
 
 <section>
   <div style="text-align:center;margin-bottom:24px">
