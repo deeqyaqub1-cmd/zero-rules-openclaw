@@ -269,6 +269,10 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 .mob-nav-inner{display:flex;justify-content:space-around;align-items:center}
 .mob-nav button{background:none;border:none;color:var(--dim);padding:6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--mono);font-size:.55rem;transition:color .15s}
 .mob-nav button.act{color:var(--accent)}
+
+.hs-card-glow{animation:cardGlow 4s ease-in-out infinite}
+.hs-card-wrap:hover .hs-card-glow{opacity:.5!important;filter:blur(28px)!important}
+@keyframes cardGlow{0%,100%{opacity:.25;transform:scale(1)}50%{opacity:.4;transform:scale(1.01)}}
 </style>
 </head>
 <body>
@@ -366,6 +370,123 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
     </div>
   </div>
 </section>
+
+<section style="padding:60px 0;overflow:hidden">
+  <div style="text-align:center;margin-bottom:32px">
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The building block</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:8px">Everything is a card</h2>
+    <p style="color:var(--dim);max-width:520px;margin:0 auto;font-size:.88rem">Small, structured, searchable. Each card holds one piece of knowledge your agent can instantly retrieve.</p>
+  </div>
+
+  <div style="display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap;max-width:960px;margin:0 auto;padding:0 20px">
+
+    <!-- THE CARD -->
+    <div class="hs-card-wrap" style="position:relative;width:380px;flex-shrink:0">
+      <!-- Glow effect -->
+      <div class="hs-card-glow" style="position:absolute;inset:-2px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--purple),var(--blue),var(--green));opacity:.3;filter:blur(24px);z-index:0"></div>
+      <!-- Gradient border -->
+      <div style="position:absolute;inset:0;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.4),rgba(168,85,247,.4),rgba(59,130,246,.4));padding:1px;z-index:1"><div style="background:var(--surface);border-radius:13px;height:100%"></div></div>
+
+      <!-- Card content -->
+      <div style="position:relative;z-index:2;background:var(--surface);border-radius:14px;padding:0;overflow:hidden">
+
+        <!-- Card header bar -->
+        <div style="padding:14px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+            <span style="font-family:var(--mono);font-size:.65rem;color:var(--faint);letter-spacing:.06em">HYPERSTACK CARD</span>
+          </div>
+          <span style="font-family:var(--mono);font-size:.6rem;color:var(--faint)">v3 &middot; 2d ago</span>
+        </div>
+
+        <!-- Slug field -->
+        <div style="padding:14px 20px 0">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">slug</div>
+          <div style="font-family:var(--mono);font-size:.85rem;color:var(--accent);font-weight:600">auth-decision-clerk</div>
+        </div>
+
+        <!-- Title field -->
+        <div style="padding:10px 20px 0">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">title</div>
+          <div style="font-size:.95rem;font-weight:600;color:var(--text)">Auth: Migrating Auth0 &rarr; Clerk</div>
+        </div>
+
+        <!-- Stack + Keywords -->
+        <div style="padding:12px 20px 0;display:flex;gap:20px">
+          <div>
+            <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">stack</div>
+            <span style="font-family:var(--mono);font-size:.72rem;background:rgba(168,85,247,.12);color:var(--purple);padding:3px 10px;border-radius:6px;border:1px solid rgba(168,85,247,.2)">&diams; decisions</span>
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">keywords</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              <span style="font-family:var(--mono);font-size:.65rem;background:rgba(59,130,246,.08);color:var(--blue);padding:2px 8px;border-radius:4px;border:1px solid rgba(59,130,246,.15)">clerk</span>
+              <span style="font-family:var(--mono);font-size:.65rem;background:rgba(59,130,246,.08);color:var(--blue);padding:2px 8px;border-radius:4px;border:1px solid rgba(59,130,246,.15)">auth0</span>
+              <span style="font-family:var(--mono);font-size:.65rem;background:rgba(59,130,246,.08);color:var(--blue);padding:2px 8px;border-radius:4px;border:1px solid rgba(59,130,246,.15)">migration</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Body field -->
+        <div style="padding:12px 20px 0">
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">body</div>
+          <div style="font-size:.82rem;color:var(--dim);line-height:1.6;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px">
+            Chose Clerk over Auth0 for better DX and pricing.<br>
+            Migration took 3 days, zero downtime.<br>
+            Saves <span style="color:var(--green);font-weight:600">$400/month</span> on auth costs.<br>
+            <span style="color:var(--faint);font-style:italic">Alice led the migration. Bob reviewed.</span>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding:12px 20px 16px;display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--green)"></div>
+            <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">~85 tokens</span>
+          </div>
+          <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">workspace: acme-prod</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Annotations sidebar -->
+    <div style="max-width:300px">
+      <div style="margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <div style="width:20px;height:2px;background:var(--accent)"></div>
+          <span style="font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:700">slug</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--dim);line-height:1.5;margin:0">Unique ID. Same slug = update, not duplicate. Your agent upserts knowledge naturally.</p>
+      </div>
+      <div style="margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <div style="width:20px;height:2px;background:var(--purple)"></div>
+          <span style="font-family:var(--mono);font-size:.72rem;color:var(--purple);font-weight:700">stack</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--dim);line-height:1.5;margin:0">Category folder. Separate projects, decisions, people, preferences. Agent only loads what&rsquo;s relevant.</p>
+      </div>
+      <div style="margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <div style="width:20px;height:2px;background:var(--blue)"></div>
+          <span style="font-family:var(--mono);font-size:.72rem;color:var(--blue);font-weight:700">keywords</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--dim);line-height:1.5;margin:0">Exact-match tags for instant lookup. No AI needed to find &ldquo;clerk&rdquo; &mdash; just pattern matching.</p>
+      </div>
+      <div style="margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <div style="width:20px;height:2px;background:var(--green)"></div>
+          <span style="font-family:var(--mono);font-size:.72rem;color:var(--green);font-weight:700">body</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--dim);line-height:1.5;margin:0">The knowledge itself. Semantic search understands meaning &mdash; &ldquo;what auth do we use?&rdquo; finds this card.</p>
+      </div>
+      <div style="padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-top:16px">
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--green);font-weight:600;margin-bottom:2px">~85 tokens per card</div>
+        <div style="font-size:.78rem;color:var(--dim)">vs ~6,000 tokens pasting chat history. Load 5 relevant cards = 425 tokens total.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <section>
   <div style="text-align:center;margin-bottom:24px">
