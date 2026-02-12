@@ -206,9 +206,13 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   .demo pre{font-size:.68rem;padding:14px}
   .dh{flex-direction:column;align-items:flex-start;gap:8px}
   .dh .sinput{width:100%}
+  #p-docs [style*="repeat(3"]{grid-template-columns:1fr 1fr!important}
+  #p-pricing .pgrid{grid-template-columns:1fr!important}
   .card-grid{grid-template-columns:1fr 1fr}
   .ob-savings{grid-template-columns:1fr 1fr}
   .ob-save-card .big{font-size:1.4rem}
+  .dc{overflow-x:hidden}
+  .dc pre,.dc code{overflow-x:auto;max-width:100%;word-break:break-all}
   #cf-cards-grid{grid-template-columns:1fr!important;gap:10px!important;max-width:320px;margin:0 auto 24px!important}
   #cf-cards-grid>div{min-height:auto}
   .ql-card{padding:12px}
@@ -221,6 +225,8 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   #cf-cards-grid div[style*="font-size:.84rem"]{font-size:.76rem!important}
 }
 @media(max-width:600px){
+  .dc{overflow-x:hidden}
+  .dc pre,.dc code{overflow-x:auto;max-width:100%;word-break:break-all}
   #cf-cards-grid{grid-template-columns:1fr!important;gap:10px!important;max-width:300px;margin-left:auto!important;margin-right:auto!important}
 }
 @media(max-width:400px){
@@ -321,6 +327,18 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 .faq-item.open .faq-arrow{transform:rotate(180deg);color:var(--accent)}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;padding:0 0;font-size:.82rem;color:var(--dim);line-height:1.65}
 .faq-item.open .faq-a{max-height:200px;padding:0 0 14px}
+
+/* Sliding marquee */
+.marquee-wrap{overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.marquee-track{display:flex;gap:8px;width:max-content;animation:marquee 25s linear infinite}
+.marquee-item{flex-shrink:0;font-family:var(--mono);font-size:.78rem;color:var(--text);background:var(--surface);border:1px solid var(--border);padding:6px 16px;border-radius:20px;white-space:nowrap;transition:all .3s}
+.marquee-item:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 12px rgba(255,107,43,.15)}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.ltab{font-family:var(--mono);font-size:.82rem;padding:10px 24px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;transition:all .25s;font-weight:500}
+.ltab:hover{border-color:var(--accent);color:var(--text)}
+.ltab.act{background:rgba(255,107,43,.1);border-color:var(--accent);color:var(--accent);font-weight:700;box-shadow:0 0 12px rgba(255,107,43,.08)}
+@media(max-width:700px){.ltab{font-size:.72rem;padding:8px 16px}}
 </style>
 </head>
 <body>
@@ -329,8 +347,8 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 <nav>
   <div class="logo" onclick="go('landing')"><img src="data:image/webp;base64,UklGRv4FAABXRUJQVlA4IPIFAAAwGgCdASpQAFAAPlEgjUQjoiEVzHY8OAUEtABjz+1Dekd2Z/FbzoXftSnh7dzzFebh6XvNy6mL0APLm9jv+50E3miiL9y798vdhLpcZnvj6+qPYQ6QzS0ozEhGkuw67nvRDLesULj3vmHPcBHcnJ2w3wqpRylwtJecTZCs5+2dH0RyDj7KAOXug99o6n9Vg9S96tBBjg7LbOmN0vDNLjPMiUb+57xrMVCb281hWM/FgGpZcktvunqQdVP3AmJtmUHEK+WcCLtCV2Tp2gaaPV5fS+4Um4z0JgX1QAD+/vNYQVDqiwmkLAFccTwkCSiwg8mZiwq2oYZ1EM7dJRqR0mzvwQ9Ak7y7HS2dyQf8ewH9HMDXiYq0LaDNlv/833xNSGyzi2KtQgDaE8LURUbd2y1/iEe5LSGhXqhYN7ov0bx9sYa6E1G1pv2GsoCnR9mQJ7Gu5yUJAeVQkQgfpJ1aoIzaFLeO0sM04oiIpzLOTkfmL7w9iSn2X0HAPa037Hnbf7CizYsvR5PHmoB+ryO7XolVKOsj55ddfrNInj/hCLG0AZjIFzIvz1X9f3AM+3wiAvYKj97qR3gNKd+fPHciIgK5vM/HCRCJM4qbVh/wQTz/8zJkvea/gjDwhzX5zL6cd33tqPjdLFVfXDYx9LT5P7sq63BO/gNJYs45Ieay35b16VeW547w2U6pn6DnBGUY9hLINqvCZQZQJo+7QdUm0bh7S/Jtl63GTQNsC3/YMO4k1eCUHpjkUBYNconMxY1sMrm6uocCtnzLXJCS5kceAQhcKVWnYxcPVUP5+7WhBOxFiwK0sBnqadlkl/J2tRuBXaXV7w7/X/HlTUYq3zwL8JO884rEZ9rjMqxfYPmyZrmCao+mNiK/oOOFmVtaGCDTs+j9PLDVnDYQKBBTAwPCHXBqiYQL1b6LNORt7Usrn79ck1gQwrkyyKE6D6EaxFxY6vYUVCDiNLODp5hv1htCy2XqjaO5BkHrx2efGr1FrZpneyiC4EtEAnlBeI29hkUBMyJWW7qAejc5OLCqZqFps2Eug6EVfJe7GnG2cIyypySxnjmxupUDkBEiDIHQJ8vdX/xPcHHnLHIkCwzYbgfTDWbAZUQHn2yUSphuq8pP8zTAF76WHqeb1Aa77qLUaQgA0+FAHVSuaqrhLDt9vJSPtqBMpjaO5vcvjfkPFOGuwcOszik1Dp1YQ6R5NawT1HK2lPSkTrIwYvl/MWffvBmIQCnwPsUzjqnBZg3kUs8+My5Ju9jcKQZDcZIiUT9zGPousLqCWEG9Gna4bc20d1Jc16gYab+gXj9wtSs4FlYXniSUdw5Vkj7dieG0xDDeQ4XTd1kT+El0lq7926VwCdMet9C62djx35d6CK+QCNk4X2g0kGq3gZujMDFrcTdif+323VKVTgGxVRl5lWjiw7eywYJ5LQ9ifL8j57pcW2AurJfYSnMZkLK7sAkTzN+K1/U49gbrp/ObSxI7VKcDx0vyVXCwQkJSk1rGRijjO9PnS0SaB8tjwWCb96NI/UsWeCOFYnCootxwGEFlVKARDLuX4DdRIMp6GhYUWucDOJyt+Rs3lYWFqIzM9uBAAVeNEU/sT2l6IGUZIdV/ApDjxQmuANcn5+K2a6FY8NIlJZGZe1GrIjTuYmI0dsRo/kM6nCF38m4XEvxvZ41lk2ww0xpB9Y0uZ1o7rDbAbec2aOVDdVTvCj5VW3s4QkTvhobSqtrR8VGdGypr3curz/fUFvbSW7LAmzNK8f+U1fzwk4V3AG4Kr2yKdCNxU22grEiSRBzhV0CptosjC8HjvNyDqBfb0y0RDth1qdtdPoJdUM8SVr7MKIgcAbes0d+HmRnH9Xd7mSZRPw4CLbzcqZn5q0hIuPu/6kIcgvobdqdirOI7Fk1xaK8qpGzDPAJpwFDqjNCIdthvKwpa/TLYYAJYQsFS6+bcEoIiR8He4tv8zrxRg9iJ8X+MGUCDHkc8W61bQyIZ3G1IAQ5Czx7A/6ZtSdhZaSdlXbcLz7UEbZ3HoVDc+1rAwAAA" alt="" width="38" height="38" style="border-radius:8px;flex-shrink:0"> HyperStack</div>
   <div class="navr">
-    <span class="nav-links"><a href="#card-flow-section">Features</a>
-    <a href="#pricing">Pricing</a>
+    <span class="nav-links"><a href="javascript:void(0)" onclick="showLTab('problem',document.querySelectorAll('.ltab')[0]);window.scrollTo({top:document.querySelector('.ltab').offsetTop-20,behavior:'smooth'})">Features</a>
+    <a href="javascript:void(0)" onclick="go('pricing')">Pricing</a>
     <a href="javascript:void(0)" onclick="go('docs')">Docs</a></span>
     <button onclick="go('login')" id="nl" class="btn bo bs">Sign In</button>
     <button onclick="go('dash')" id="nd" class="hidden btn bp bs">Dashboard</button>
@@ -355,51 +373,43 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   <div class="hero-note" id="hero-note">No credit card. Takes 30 seconds. Cancel anytime.</div>
 </section>
 
-<div class="logos">
-  <span>Works with:</span>
-  <span>OpenClaw</span><span>Â·</span>
-  <span>Claude Code</span><span>Â·</span>
-  <span>LangChain</span><span>Â·</span>
-  <span>CrewAI</span><span>Â·</span>
-  <span>AutoGPT</span><span>Â·</span>
-  <span>Python</span><span>Â·</span>
-  <span>Node.js</span><span>Â·</span>
-  <span>Any language</span>
-</div>
-
-<div class="sbar">
-  <div class="si"><div class="sn" style="color:var(--green)">94%</div><div class="sl">avg token savings</div></div>
-  <div class="si"><div class="sn">~350</div><div class="sl">tokens per message</div></div>
-  <div class="si"><div class="sn" style="color:var(--accent)">$254</div><div class="sl">saved per month</div></div>
-  <div class="si"><div class="sn">30s</div><div class="sl">setup time</div></div>
-</div>
-
-<!-- Social Proof -->
-<div style="padding:28px 0;text-align:center">
-  <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:16px">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;max-width:300px;text-align:left">
-      <p style="font-size:.82rem;color:var(--dim);line-height:1.6;margin-bottom:8px">"Plugged HyperStack into my Claude Code workflow. My agent remembers every project detail now — <strong style="color:var(--green)">saved me $200+/mo</strong> on context tokens."</p>
-      <div style="display:flex;align-items:center;gap:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;color:#000;font-weight:800">S</div><span style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">Solo developer, London</span></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;max-width:300px;text-align:left">
-      <p style="font-size:.82rem;color:var(--dim);line-height:1.6;margin-bottom:8px">"Setup was literally 30 seconds. <strong style="color:var(--green)">npx hyperstack-mcp</strong> + one key. Works with Cursor out the box. Way simpler than Mem0."</p>
-      <div style="display:flex;align-items:center;gap:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:800">A</div><span style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">AI engineer, startup</span></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;max-width:300px;text-align:left">
-      <p style="font-size:.82rem;color:var(--dim);line-height:1.6;margin-bottom:8px">"Finally my agents don't forget decisions between sessions. The MCP server is a game changer — <strong style="color:var(--green)">works with every tool</strong> I use."</p>
-      <div style="display:flex;align-items:center;gap:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:800">M</div><span style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">Full-stack dev, Berlin</span></div>
+<div style="overflow:hidden;position:relative;padding:18px 0 8px">
+  <div style="text-align:center;font-family:var(--mono);font-size:.65rem;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Works with</div>
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">&#128062; OpenClaw</span>
+      <span class="marquee-item">&#9889; Claude Code</span>
+      <span class="marquee-item">&#128279; Cursor</span>
+      <span class="marquee-item">&#129302; LangChain</span>
+      <span class="marquee-item">&#128101; CrewAI</span>
+      <span class="marquee-item">&#9881;&#65039; AutoGPT</span>
+      <span class="marquee-item">&#128013; Python</span>
+      <span class="marquee-item">&#128154; Node.js</span>
+      <span class="marquee-item">&#9881;&#65039; VS Code</span>
+      <span class="marquee-item">&#127758; REST API</span>
+      <span class="marquee-item">&#128062; OpenClaw</span>
+      <span class="marquee-item">&#9889; Claude Code</span>
+      <span class="marquee-item">&#128279; Cursor</span>
+      <span class="marquee-item">&#129302; LangChain</span>
+      <span class="marquee-item">&#128101; CrewAI</span>
+      <span class="marquee-item">&#9881;&#65039; AutoGPT</span>
+      <span class="marquee-item">&#128013; Python</span>
+      <span class="marquee-item">&#128154; Node.js</span>
+      <span class="marquee-item">&#9881;&#65039; VS Code</span>
+      <span class="marquee-item">&#127758; REST API</span>
     </div>
   </div>
-  <div style="display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap">
-    <span style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Available on:</span>
-    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">📦 npm</span>
-    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">🐍 PyPI</span>
-    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">🔌 MCP</span>
-    <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim);background:var(--surface);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">🌐 REST API</span>
-  </div>
 </div>
 
 
+<!-- ═══ TAB PILLS ═══ -->
+<div style="display:flex;justify-content:center;gap:8px;padding:24px 24px 8px">
+  <button class="ltab act" onclick="showLTab('problem',this)">The Problem</button>
+  <button class="ltab" onclick="showLTab('howit',this)">How It Works</button>
+  <button class="ltab" onclick="showLTab('compare',this)">Compare</button>
+</div>
+
+<div id="ltab-problem">
 <section style="padding:50px 0">
   <div style="max-width:680px;margin:0 auto;text-align:center">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The problem</div>
@@ -624,6 +634,7 @@ function cfDeactivateCard(n,d){cfTimers.push(setTimeout(()=>{const c=document.ge
   const b=document.getElementById('cf-c'+n+'-border');b.style.border='2px solid '+clr+'44';b.style.background='#111113';b.style.boxShadow='0 4px 16px rgba(0,0,0,.4)'},d))}
 
 function cfStart(mode){if(cfPlaying)return;cfMode=mode;cfPlaying=true;cfClear();
+  var sec=document.getElementById('card-flow-section');if(sec&&window.innerWidth<700){sec.scrollIntoView({behavior:'smooth',block:'start'});}
   const bw=document.getElementById('cf-btn-with'),bwo=document.getElementById('cf-btn-without');
   bw.style.background=mode==='with'?'rgba(34,197,94,.12)':'#111113';bw.style.borderColor=mode==='with'?'rgba(34,197,94,.35)':'#2a2a2e';bw.style.color=mode==='with'?'#22c55e':'#555568';bw.style.fontWeight=mode==='with'?'700':'400';
   bwo.style.background=mode==='without'?'rgba(239,68,68,.1)':'#111113';bwo.style.borderColor=mode==='without'?'rgba(239,68,68,.3)':'#2a2a2e';bwo.style.color=mode==='without'?'#ef4444':'#555568';bwo.style.fontWeight=mode==='without'?'700':'400';
@@ -743,7 +754,90 @@ print(r.json())</pre>
   { headers: { <span class="str">"X-API-Key"</span>: KEY } })</pre>
   </div>
 </section>
+</div>
 
+<div id="ltab-howit" class="hidden">
+<section>
+  <div style="text-align:center;margin-bottom:24px">
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">How it works</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:12px">Three steps. That&rsquo;s the whole product.</h2>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;max-width:700px;margin-left:auto;margin-right:auto">
+      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
+        <div style="font-size:1.5rem;margin-bottom:4px">&#9312;</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Store</div>
+        <div style="font-size:.78rem;color:var(--dim)">Agent learns something? Save it as a card.</div>
+      </div>
+      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
+        <div style="font-size:1.5rem;margin-bottom:4px">&#9313;</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Search</div>
+        <div style="font-size:.78rem;color:var(--dim)">Next session, agent searches for what&rsquo;s relevant.</div>
+      </div>
+      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
+        <div style="font-size:1.5rem;margin-bottom:4px">&#9314;</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Remember</div>
+        <div style="font-size:.78rem;color:var(--dim)">Agent gets exactly the context it needs. ~350 tokens, not 6,000.</div>
+      </div>
+    </div>
+    <p style="font-family:var(--mono);font-size:.75rem;color:var(--faint)">Here&rsquo;s what that looks like in code &#8595;</p>
+  </div>
+  <div class="demo">
+    <div class="demo-bar">
+      <div class="demo-dot"></div><div class="demo-dot"></div><div class="demo-dot"></div>
+      <div class="demo-tabs">
+        <div class="demo-tab active" onclick="showCode('curl',this)">cURL</div>
+        <div class="demo-tab" onclick="showCode('python',this)">Python</div>
+        <div class="demo-tab" onclick="showCode('js',this)">JavaScript</div>
+      </div>
+    </div>
+<pre id="code-curl"><span class="cm"># 1. Store a memory</span>
+<span class="kw">curl</span> -X POST <span class="str">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \
+  -H <span class="str">"X-API-Key: YOUR_KEY"</span> -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{"slug":"project-api","title":"API","stack":"projects",
+       "keywords":["fastapi","python"],"body":"FastAPI 3.12 on AWS"}'</span>
+
+<span class="cm"># 2. Search memories</span>
+<span class="kw">curl</span> <span class="str">"https://hyperstack-cloud.vercel.app/api/search?workspace=default&q=python"</span> \
+  -H <span class="str">"X-API-Key: YOUR_KEY"</span>
+
+<span class="cm"># 3. Get all cards</span>
+<span class="kw">curl</span> <span class="str">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \
+  -H <span class="str">"X-API-Key: YOUR_KEY"</span></pre>
+<pre id="code-python" class="hidden"><span class="cm"># pip install requests</span>
+<span class="kw">import</span> requests
+
+<span class="fn">API</span> = <span class="str">"https://hyperstack-cloud.vercel.app"</span>
+<span class="fn">KEY</span> = <span class="str">"YOUR_KEY"</span>
+<span class="fn">h</span>   = {<span class="str">"X-API-Key"</span>: KEY, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>}
+
+<span class="cm"># Store</span>
+requests.<span class="fn">post</span>(f<span class="str">"{API}/api/cards?workspace=default"</span>, headers=h,
+  json={<span class="str">"slug"</span>:<span class="str">"project-api"</span>, <span class="str">"title"</span>:<span class="str">"API"</span>,
+        <span class="str">"stack"</span>:<span class="str">"projects"</span>, <span class="str">"keywords"</span>:[<span class="str">"fastapi"</span>],
+        <span class="str">"body"</span>:<span class="str">"FastAPI 3.12 on AWS"</span>})
+
+<span class="cm"># Search</span>
+r = requests.<span class="fn">get</span>(f<span class="str">"{API}/api/search?workspace=default&q=python"</span>, headers=h)
+print(r.json())</pre>
+<pre id="code-js" class="hidden"><span class="cm">// Node.js / Deno / Bun</span>
+<span class="kw">const</span> <span class="fn">API</span> = <span class="str">"https://hyperstack-cloud.vercel.app"</span>
+<span class="kw">const</span> <span class="fn">KEY</span> = <span class="str">"YOUR_KEY"</span>
+
+<span class="cm">// Store</span>
+<span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${API}/api/cards?workspace=default`</span>, {
+  method: <span class="str">"POST"</span>,
+  headers: { <span class="str">"X-API-Key"</span>: KEY, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span> },
+  body: JSON.stringify({
+    slug: <span class="str">"project-api"</span>, title: <span class="str">"API"</span>,
+    stack: <span class="str">"projects"</span>, keywords: [<span class="str">"fastapi"</span>],
+    body: <span class="str">"FastAPI 3.12 on AWS"</span>
+  })
+})
+
+<span class="cm">// Search</span>
+<span class="kw">const</span> r = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${API}/api/search?workspace=default&q=python`</span>,
+  { headers: { <span class="str">"X-API-Key"</span>: KEY } })</pre>
+  </div>
+</section>
 <section>
   <div style="text-align:center;margin-bottom:20px">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The math</div>
@@ -783,9 +877,9 @@ print(r.json())</pre>
     <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Pricing based on <a href="https://www.anthropic.com/pricing" style="color:var(--dim)">Claude Sonnet 4</a> ($3/M input). GPT-4o and Opus savings are even higher.</p>
   </div>
 </section>
+</div>
 
-
-
+<div id="ltab-compare" class="hidden">
 <section>
   <div style="text-align:center;margin-bottom:24px">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Why HyperStack</div>
@@ -809,7 +903,97 @@ print(r.json())</pre>
     </tbody>
   </table>
 </section>
+</div>
 
+
+
+<section style="padding:40px 0">
+  <div style="text-align:center">
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:8px">Ready?</h2>
+    <p style="color:var(--dim);font-size:.9rem;margin-bottom:16px">50 cards free. No credit card. 30 seconds.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button onclick="go('signup')" class="btn bp">Get Free Key &rarr;</button>
+      <button onclick="go('pricing')" class="btn bo">See Pricing</button>
+    </div>
+  </div>
+</section>
+
+
+
+<footer><div class="c">Â© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Join Discord</a></div></footer>
+</div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â• SIGNUP â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div id="p-signup" class="hidden">
+<div class="w">
+  <div class="auth">
+    <h2>Create your account</h2>
+    <div class="fg"><label>Email</label><input type="email" id="su-e" placeholder="you@example.com"></div>
+    <div class="fg"><label>Password (8+ chars)</label><input type="password" id="su-p" placeholder="••••••••"></div>
+    <div id="su-err" class="ferr hidden"></div>
+    <button onclick="doSignup()" class="btn bp" style="width:100%;margin-top:6px">Create Account →</button>
+    <div class="aswitch">Have an account? <a onclick="go('login')">Sign in</a></div>
+  </div>
+</div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â• LOGIN â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div id="p-login" class="hidden">
+<div class="w">
+  <div class="auth">
+    <h2>Sign in</h2>
+    <div class="fg"><label>Email</label><input type="email" id="li-e" placeholder="you@example.com"></div>
+    <div class="fg"><label>Password</label><input type="password" id="li-p" placeholder="••••••••"></div>
+    <div id="li-err" class="ferr hidden"></div>
+    <button onclick="doLogin()" class="btn bp" style="width:100%;margin-top:6px">Sign In →</button>
+    <div class="aswitch">No account? <a onclick="go('signup')">Create one free</a></div>
+    <div class="aswitch" style="margin-top:4px"><a onclick="go('forgot')" style="cursor:pointer;color:var(--dim);font-size:.82rem">Forgot password?</a></div>
+  </div>
+</div>
+</div>
+
+<!-- FORGOT PASSWORD -->
+<div id="p-forgot" class="hidden">
+<div class="w">
+  <div class="auth">
+    <h2>Reset password</h2>
+    <p style="color:var(--dim);font-size:.85rem;margin-bottom:12px">Verify your identity to reset your password.</p>
+    <div class="fg"><label>Email</label><input type="email" id="fp-e" placeholder="you@example.com"></div>
+    <div class="fg"><label>API Key <span style="color:var(--faint);font-weight:400;font-size:.75rem">(starts with hs_)</span></label><input type="text" id="fp-k" placeholder="hs_your_api_key" style="font-family:var(--mono);font-size:.82rem"></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:8px 0">
+      <p style="font-size:.75rem;color:var(--faint);line-height:1.5;margin:0">&#128274; We verify you own this account by checking your API key. Find it in your dashboard under API Key tab, or in your <code style="color:var(--accent);font-size:.72rem">.env</code> file.</p>
+    </div>
+    <div id="fp-err" class="ferr hidden"></div>
+    <div id="fp-ok" class="hidden" style="color:var(--green);font-size:.85rem;margin:8px 0"></div>
+    <button onclick="doForgot()" class="btn bp" style="width:100%;margin-top:6px">Verify &amp; Reset &#8594;</button>
+    <div class="aswitch" style="margin-top:8px"><a onclick="go('reset')">Already have a reset token?</a></div>
+    <div class="aswitch"><a onclick="go('login')">&#8592; Back to sign in</a></div>
+  </div>
+</div>
+</div>
+
+<!-- RESET PASSWORD -->
+<div id="p-reset" class="hidden">
+<div class="w">
+  <div class="auth">
+    <h2>Set new password</h2>
+    <div class="fg" id="rp-t-wrap"><label>Reset Token</label><input type="text" id="rp-t" placeholder="Auto-filled if you verified above" style="font-family:var(--mono);font-size:.82rem"></div>
+    <div class="fg"><label>New Password (8+ chars)</label><input type="password" id="rp-p" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"></div>
+    <div id="rp-err" class="ferr hidden"></div>
+    <div id="rp-ok" class="hidden" style="color:var(--green);font-size:.85rem;margin:8px 0"></div>
+    <button onclick="doReset()" class="btn bp" style="width:100%;margin-top:6px">Reset Password &#8594;</button>
+    <div class="aswitch"><a onclick="go('login')">&#8592; Back to sign in</a></div>
+  </div>
+</div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â• DOCS â•â•â•â•â•â•â•â•â•â•â•â• -->
+
+<!-- ═══ PRICING PAGE ═══ -->
+<div id="p-pricing" class="hidden">
+<div class="w" style="max-width:780px;padding:40px 24px 80px">
+  <div style="margin-bottom:8px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Back to home</a></div>
 <section id="pricing">
   <div style="text-align:center;margin-bottom:24px">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Pricing</div>
@@ -863,81 +1047,9 @@ print(r.json())</pre>
     </div>
   </div>
 </section>
-
-<section style="text-align:center;padding:60px 0 80px">
-  <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:8px">Ready?</h2>
-  <p style="color:var(--dim);margin-bottom:20px">50 cards free. No credit card. 30 seconds.</p>
-  <div class="hero-signup" style="justify-content:center">
-    <input type="email" id="bottom-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')bottomSignup()">
-    <button class="btn bp" onclick="bottomSignup()">Get Free Key →</button>
-  </div>
-</section>
-
-<footer><div class="c">Â© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Join Discord</a></div></footer>
 </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• SIGNUP â•â•â•â•â•â•â•â•â•â•â•â• -->
-<div id="p-signup" class="hidden">
-<div class="w">
-  <div class="auth">
-    <h2>Create your account</h2>
-    <div class="fg"><label>Email</label><input type="email" id="su-e" placeholder="you@example.com"></div>
-    <div class="fg"><label>Password (8+ chars)</label><input type="password" id="su-p" placeholder="••••••••"></div>
-    <div id="su-err" class="ferr hidden"></div>
-    <button onclick="doSignup()" class="btn bp" style="width:100%;margin-top:6px">Create Account →</button>
-    <div class="aswitch">Have an account? <a onclick="go('login')">Sign in</a></div>
-  </div>
-</div>
-</div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• LOGIN â•â•â•â•â•â•â•â•â•â•â•â• -->
-<div id="p-login" class="hidden">
-<div class="w">
-  <div class="auth">
-    <h2>Sign in</h2>
-    <div class="fg"><label>Email</label><input type="email" id="li-e" placeholder="you@example.com"></div>
-    <div class="fg"><label>Password</label><input type="password" id="li-p" placeholder="••••••••"></div>
-    <div id="li-err" class="ferr hidden"></div>
-    <button onclick="doLogin()" class="btn bp" style="width:100%;margin-top:6px">Sign In →</button>
-    <div class="aswitch">No account? <a onclick="go('signup')">Create one free</a></div>
-    <div class="aswitch" style="margin-top:4px"><a onclick="go('forgot')" style="cursor:pointer;color:var(--dim);font-size:.82rem">Forgot password?</a></div>
-  </div>
-</div>
-</div>
-
-<!-- FORGOT PASSWORD -->
-<div id="p-forgot" class="hidden">
-<div class="w">
-  <div class="auth">
-    <h2>Reset password</h2>
-    <p style="color:var(--dim);font-size:.85rem;margin-bottom:12px">Enter your email to receive a reset code.</p>
-    <div class="fg"><label>Email</label><input type="email" id="fp-e" placeholder="you@example.com"></div>
-    <div id="fp-err" class="ferr hidden"></div>
-    <div id="fp-ok" class="hidden" style="color:var(--green);font-size:.85rem;margin:8px 0"></div>
-    <button onclick="doForgot()" class="btn bp" style="width:100%;margin-top:6px">Send Reset Code &#8594;</button>
-    <div class="aswitch" style="margin-top:8px"><a onclick="go('reset')">Already have a code?</a></div>
-    <div class="aswitch"><a onclick="go('login')">&#8592; Back to sign in</a></div>
-  </div>
-</div>
-</div>
-
-<!-- RESET PASSWORD -->
-<div id="p-reset" class="hidden">
-<div class="w">
-  <div class="auth">
-    <h2>Set new password</h2>
-    <div class="fg"><label>Reset Code</label><input type="text" id="rp-t" placeholder="Paste your reset code" style="font-family:var(--mono);font-size:.82rem"></div>
-    <div class="fg"><label>New Password (8+ chars)</label><input type="password" id="rp-p" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"></div>
-    <div id="rp-err" class="ferr hidden"></div>
-    <div id="rp-ok" class="hidden" style="color:var(--green);font-size:.85rem;margin:8px 0"></div>
-    <button onclick="doReset()" class="btn bp" style="width:100%;margin-top:6px">Reset Password &#8594;</button>
-    <div class="aswitch"><a onclick="go('login')">&#8592; Back to sign in</a></div>
-  </div>
-</div>
-</div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• DOCS â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="p-docs" class="hidden">
 <div class="w" style="max-width:780px;padding:40px 24px 80px">
   <div style="margin-bottom:8px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Back to home</a></div>
@@ -1107,18 +1219,40 @@ print(r.json())</pre>
 </div>
 <!-- Mobile bottom nav -->
 <div class="mob-nav">
-  <div class="mob-nav-inner">
+  <div class="mob-nav-inner" style="overflow-x:auto;justify-content:flex-start;gap:0;padding:0 8px;-webkit-overflow-scrolling:touch">
     <button class="act" onclick="dt('start')" id="mt-start"><span style="font-size:16px">🚀</span><br>Start</button>
     <button onclick="dt('cards')" id="mt-cards"><span style="font-size:16px">🃏</span><br>Cards</button>
     <button onclick="dt('key')" id="mt-key"><span style="font-size:16px">🔑</span><br>Key</button>
     <button onclick="dt('ws')" id="mt-ws"><span style="font-size:16px">📁</span><br>Spaces</button>
+    <button onclick="dt('team')" id="mt-team"><span style="font-size:16px">👥</span><br>Team</button>
     <button onclick="dt('stats')" id="mt-stats"><span style="font-size:16px">📊</span><br>Stats</button>
+    <button onclick="go('docs')" id="mt-docs"><span style="font-size:16px">📖</span><br>Docs</button>
   </div>
 </div>
 </div>
 
 <script>
 function toggleFaq(el){el.classList.toggle('open')}
+</script>
+<script>
+function showLTab(id,btn){
+  ['problem','howit','compare'].forEach(function(t){
+    var el=document.getElementById('ltab-'+t);
+    if(el)el.classList.toggle('hidden',t!==id);
+  });
+  document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('act')});
+  if(btn)btn.classList.add('act');
+}
+</script>
+<script>
+// Auto-fill reset token if available from verification
+document.addEventListener('DOMContentLoaded',function(){
+  var t=sessionStorage.getItem('_rst');
+  if(t){
+    var inp=document.getElementById('rp-t');
+    if(inp){inp.value=t;inp.closest('.fg').style.display='none';}
+  }
+});
 </script>
 <script src="app.js"></script>
 </body>

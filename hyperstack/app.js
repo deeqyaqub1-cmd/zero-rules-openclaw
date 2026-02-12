@@ -1,3 +1,6 @@
+
+// Rate limiting
+var _rl={};function rlCheck(key,ms){var now=Date.now();if(_rl[key]&&now-_rl[key]<ms)return false;_rl[key]=now;return true}
 const A="https://hyperstack-cloud.vercel.app";let U=null,T=null,DV="start";
 const SC={projects:"#3b82f6",people:"#a855f7",decisions:"#ff6b2b",preferences:"#22c55e",workflows:"#eab308"};
 const SE={projects:"📦",people:"👤",decisions:"⚖️",preferences:"⚙️",workflows:"🔄",general:"📄"};
@@ -21,7 +24,7 @@ function heroSignup(){const e=document.getElementById("hero-email").value;
 function bottomSignup(){const e=document.getElementById("bottom-email").value;
   if(!e||!e.includes("@")){document.getElementById("bottom-email").style.borderColor="var(--red)";document.getElementById("bottom-email").placeholder="Enter your email first";setTimeout(()=>{document.getElementById("bottom-email").style.borderColor="";document.getElementById("bottom-email").placeholder="you@example.com"},2000);return}document.getElementById("su-e").value=e;go("signup")}
 
-async function doSignup(){const e=document.getElementById("su-e").value,p=document.getElementById("su-p").value,er=document.getElementById("su-err");
+async function doSignup(){if(!rlCheck("signup",10000)){return}const e=document.getElementById("su-e").value,p=document.getElementById("su-p").value,er=document.getElementById("su-err");
   er.classList.add("hidden");if(!e||!p){er.textContent="Fill in all fields";er.classList.remove("hidden");return}
   if(p.length<8){er.textContent="Password: 8+ characters";er.classList.remove("hidden");return}
   try{const r=await fetch(A+"/api/auth?action=signup",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e,password:p})});
@@ -29,28 +32,48 @@ async function doSignup(){const e=document.getElementById("su-e").value,p=docume
     U=d.user;T=d.token;localStorage.setItem("hs_t",d.token);go("dash")}
   catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
 
-async function doLogin(){const e=document.getElementById("li-e").value,p=document.getElementById("li-p").value,er=document.getElementById("li-err");
+async function doLogin(){if(!rlCheck("login",3000)){return}const e=document.getElementById("li-e").value,p=document.getElementById("li-p").value,er=document.getElementById("li-err");
   er.classList.add("hidden");if(!e||!p){er.textContent="Fill in all fields";er.classList.remove("hidden");return}
   try{const r=await fetch(A+"/api/auth?action=login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e,password:p})});
     const d=await r.json();if(!r.ok){er.textContent=d.error||"Failed";er.classList.remove("hidden");return}
     U=d.user;T=d.token;localStorage.setItem("hs_t",d.token);go("dash")}
   catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
 
-async function doForgot(){const e=document.getElementById("fp-e").value,er=document.getElementById("fp-err"),ok=document.getElementById("fp-ok");
-  er.classList.add("hidden");ok.classList.add("hidden");if(!e){er.textContent="Enter your email";er.classList.remove("hidden");return}
-  try{const r=await fetch(A+"/api/auth?action=request-reset",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e})});
-    const d=await r.json();ok.textContent="If that email exists, a reset code has been generated.";ok.classList.remove("hidden");
-    if(d._devToken){ok.innerHTML="Reset code (dev mode):<br><code style=\"font-size:.75rem;word-break:break-all;color:var(--accent)\">"+d._devToken+"</code><br>Copy this and click \"Already have a code?\" below.";ok.classList.remove("hidden")}}
-  catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
-
-async function doReset(){const t=document.getElementById("rp-t").value,p=document.getElementById("rp-p").value,er=document.getElementById("rp-err"),ok=document.getElementById("rp-ok");
+async function doForgot(){if(!rlCheck("forgot",30000)){document.getElementById("fp-err").textContent="Please wait 30 seconds between attempts.";document.getElementById("fp-err").classList.remove("hidden");return}
+  const e=document.getElementById("fp-e").value;
+  const k=document.getElementById("fp-k").value;
+  const er=document.getElementById("fp-err"),ok=document.getElementById("fp-ok");
   er.classList.add("hidden");ok.classList.add("hidden");
-  if(!t||!p){er.textContent="Fill in all fields";er.classList.remove("hidden");return}
-  if(p.length<8){er.textContent="Password: 8+ characters";er.classList.remove("hidden");return}
-  try{const r=await fetch(A+"/api/auth?action=reset-password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token:t,password:p})});
-    const d=await r.json();if(!r.ok){er.textContent=d.error||"Failed";er.classList.remove("hidden");return}
+  if(!e){er.textContent="Enter your email";er.classList.remove("hidden");return}
+  if(!k){er.textContent="Enter your API key for verification";er.classList.remove("hidden");return}
+  try{
+    const r=await fetch(A+"/api/auth?action=request-reset",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e,apiKey:k})});
+    const d=await r.json();
+    if(!r.ok){er.textContent=d.error||"Verification failed. Check your email and API key.";er.classList.remove("hidden");return}
+    if(d._devToken){
+      sessionStorage.setItem("_rst",d._devToken);
+      ok.textContent="Verified! Click below to set your new password.";ok.classList.remove("hidden");
+    } else {
+      ok.textContent="Verified. Proceed to set a new password.";ok.classList.remove("hidden");
+    }
+  }catch(err){er.textContent="Cannot connect to server.";er.classList.remove("hidden")}}
+
+async function doReset(){
+  const t=sessionStorage.getItem("_rst")||document.getElementById("rp-t").value;
+  const p=document.getElementById("rp-p").value;
+  const er=document.getElementById("rp-err"),ok=document.getElementById("rp-ok");
+  er.classList.add("hidden");ok.classList.add("hidden");
+  if(!t){er.textContent="No reset token. Go back and verify your identity first.";er.classList.remove("hidden");return}
+  if(!p){er.textContent="Enter a new password";er.classList.remove("hidden");return}
+  if(p.length<8){er.textContent="Password must be 8+ characters";er.classList.remove("hidden");return}
+  try{
+    const r=await fetch(A+"/api/auth?action=reset-password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token:t,password:p})});
+    const d=await r.json();
+    if(!r.ok){er.textContent=d.error||"Reset failed";er.classList.remove("hidden");return}
+    sessionStorage.removeItem("_rst");
     ok.textContent="Password reset! Redirecting to sign in...";ok.classList.remove("hidden");
-    setTimeout(()=>go("login"),2000)}
+    setTimeout(()=>go("login"),2000);
+  }catch(err){er.textContent="Cannot connect to server.";er.classList.remove("hidden")}}
   catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
 
 function out(){U=null;T=null;localStorage.removeItem("hs_t");go("landing")}
