@@ -2,6 +2,9 @@
 // Rate limiting
 var _rl={};function rlCheck(key,ms){var now=Date.now();if(_rl[key]&&now-_rl[key]<ms)return false;_rl[key]=now;return true}
 const A="https://hyperstack-cloud.vercel.app";let U=null,T=null,DV="start";
+const ADMINS=["deeq.yaqub1@gmail.com"];
+function adminCheck(){if(U&&ADMINS.includes(U.email))U.plan="PRO";}
+
 const SC={projects:"#3b82f6",people:"#a855f7",decisions:"#ff6b2b",preferences:"#22c55e",workflows:"#eab308"};
 const SE={projects:"📦",people:"👤",decisions:"⚖️",preferences:"⚙️",workflows:"🔄",general:"📄"};
 const DEMO=[
@@ -29,14 +32,14 @@ async function doSignup(){if(!rlCheck("signup",10000)){return}const e=document.g
   if(p.length<8){er.textContent="Password: 8+ characters";er.classList.remove("hidden");return}
   try{const r=await fetch(A+"/api/auth?action=signup",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e,password:p})});
     const d=await r.json();if(!r.ok){er.textContent=d.error||"Failed";er.classList.remove("hidden");return}
-    U=d.user;T=d.token;localStorage.setItem("hs_t",d.token);go("dash")}
+    U=d.user;T=d.token;adminCheck();localStorage.setItem("hs_t",d.token);go("dash")}
   catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
 
 async function doLogin(){if(!rlCheck("login",3000)){return}const e=document.getElementById("li-e").value,p=document.getElementById("li-p").value,er=document.getElementById("li-err");
   er.classList.add("hidden");if(!e||!p){er.textContent="Fill in all fields";er.classList.remove("hidden");return}
   try{const r=await fetch(A+"/api/auth?action=login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e,password:p})});
     const d=await r.json();if(!r.ok){er.textContent=d.error||"Failed";er.classList.remove("hidden");return}
-    U=d.user;T=d.token;localStorage.setItem("hs_t",d.token);go("dash")}
+    U=d.user;T=d.token;adminCheck();localStorage.setItem("hs_t",d.token);go("dash")}
   catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
 
 async function doForgot(){if(!rlCheck("forgot",30000)){document.getElementById("fp-err").textContent="Please wait 30 seconds between attempts.";document.getElementById("fp-err").classList.remove("hidden");return}
@@ -662,5 +665,5 @@ function rStats(el){const pro=U.plan==="PRO";
 
 
 // Auto-login
-(async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+t}});if(r.ok){const d=await r.json();U=d.user;T=t}}catch{}
+(async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
   const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);document.getElementById("nd").classList.toggle("hidden",!l);document.getElementById("no").classList.toggle("hidden",!l)})();
