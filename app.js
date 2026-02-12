@@ -74,7 +74,6 @@ async function doReset(){
     ok.textContent="Password reset! Redirecting to sign in...";ok.classList.remove("hidden");
     setTimeout(()=>go("login"),2000);
   }catch(err){er.textContent="Cannot connect to server.";er.classList.remove("hidden")}}
-  catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
 
 function out(){U=null;T=null;localStorage.removeItem("hs_t");go("landing")}
 
