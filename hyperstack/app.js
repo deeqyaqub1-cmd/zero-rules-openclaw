@@ -186,7 +186,7 @@ await fetch("${A}/api/cards?workspace=default", {
   </div>
 
   <!-- Quick links with card aesthetic -->
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px" class="ql-grid">
     <div class="ql-card" onclick="dt('cards')">
       <span class="ql-icon">🃏</span>
       <div class="ql-label">Cards</div>

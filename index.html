@@ -209,6 +209,19 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   .card-grid{grid-template-columns:1fr 1fr}
   .ob-savings{grid-template-columns:1fr 1fr}
   .ob-save-card .big{font-size:1.4rem}
+  #cf-cards-grid{grid-template-columns:1fr!important;gap:10px!important;max-width:320px;margin:0 auto 24px!important}
+  #cf-cards-grid>div{min-height:auto}
+  .ql-card{padding:12px}
+  .ql-grid{grid-template-columns:repeat(2,1fr)!important}
+}
+
+@media(max-width:880px){
+  #cf-cards-grid{grid-template-columns:1fr 1fr 1fr;gap:8px!important;padding:0!important}
+  #cf-cards-grid div[style*="font-size:.8rem"]{font-size:.7rem!important}
+  #cf-cards-grid div[style*="font-size:.84rem"]{font-size:.76rem!important}
+}
+@media(max-width:600px){
+  #cf-cards-grid{grid-template-columns:1fr!important;gap:10px!important;max-width:300px;margin-left:auto!important;margin-right:auto!important}
 }
 @media(max-width:400px){
   .card-grid{grid-template-columns:1fr}
