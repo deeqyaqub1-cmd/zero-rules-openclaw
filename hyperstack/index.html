@@ -170,6 +170,11 @@ footer .l{display:flex;gap:16px}
 footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 
 @media(max-width:700px){
+  nav{padding:10px 0;gap:8px}
+  .logo{font-size:.9rem}
+  .navr{gap:8px}
+  .navr a,.navr button{font-size:.72rem}
+  .nav-links{display:none}
   h1{font-size:1.8rem!important}
   .fgrid,.pgrid{grid-template-columns:1fr}
   .ba{grid-template-columns:1fr;gap:8px}.ba-arrow{transform:rotate(90deg);padding:8px 0}
@@ -188,9 +193,9 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 <nav>
   <div class="logo" onclick="go('landing')">🃏 HyperStack</div>
   <div class="navr">
-    <a href="#features">Features</a>
+    <span class="nav-links"><a href="#features">Features</a>
     <a href="#pricing">Pricing</a>
-    <a href="https://github.com/deeqyaqub1-cmd/hyperstack">Docs</a>
+    <a href="https://github.com/deeqyaqub1-cmd/hyperstack">Docs</a></span>
     <button onclick="go('login')" id="nl" class="btn bo bs">Sign In</button>
     <button onclick="go('dash')" id="nd" class="hidden btn bp bs">Dashboard</button>
     <button onclick="out()" id="no" class="hidden btn bo bs" style="color:var(--red)">Log Out</button>
