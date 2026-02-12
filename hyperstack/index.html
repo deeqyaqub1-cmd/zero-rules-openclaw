@@ -298,6 +298,16 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 .loading-dots span:nth-child(2){animation-delay:.2s}
 .loading-dots span:nth-child(3){animation-delay:.4s}
 @keyframes ldot{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1.1)}}
+
+/* FAQ accordion */
+.faq-item{border-top:1px solid var(--border);cursor:pointer;transition:background .2s}
+.faq-item:first-child{border-top:none}
+.faq-item:hover{background:rgba(255,255,255,.02)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:14px 0;font-family:var(--mono);font-size:.85rem;font-weight:600;color:var(--text)}
+.faq-arrow{color:var(--faint);font-size:.8rem;transition:transform .3s}
+.faq-item.open .faq-arrow{transform:rotate(180deg);color:var(--accent)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;padding:0 0;font-size:.82rem;color:var(--dim);line-height:1.65}
+.faq-item.open .faq-a{max-height:200px;padding:0 0 14px}
 </style>
 </head>
 <body>
@@ -907,82 +917,153 @@ print(r.json())</pre>
 
 <!-- â•â•â•â•â•â•â•â•â•â•â•â• DOCS â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="p-docs" class="hidden">
-<div class="w" style="max-width:760px;padding:40px 24px 80px">
-  <div style="margin-bottom:8px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">â† Back to home</a></div>
-  <h1 style="font-family:var(--mono);font-weight:800;font-size:1.6rem;margin-bottom:6px">📖 HyperStack Docs</h1>
-  <p style="color:var(--dim);margin-bottom:32px">Everything you need to give your AI agent persistent memory.</p>
-
-  <div class="ci" style="border-left:3px solid var(--accent);margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">🃏 What are Cards?</h2>
-    <p style="color:var(--dim);font-size:.85rem;line-height:1.7">Cards are small chunks of knowledge your agent stores and retrieves. Think of them as sticky notes for your AI — project details, people info, decisions, preferences. Each card has a <strong style="color:var(--text)">slug</strong> (unique ID), <strong style="color:var(--text)">title</strong>, <strong style="color:var(--text)">body</strong> (the content), <strong style="color:var(--text)">keywords</strong> (for search), and a <strong style="color:var(--text)">stack</strong> (category).</p>
+<div class="w" style="max-width:780px;padding:40px 24px 80px">
+  <div style="margin-bottom:8px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Back to home</a></div>
+  
+  <div style="text-align:center;margin-bottom:36px">
+    <div style="font-family:var(--mono);font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Documentation</div>
+    <h1 style="font-family:var(--mono);font-weight:800;font-size:1.6rem;margin-bottom:8px">&#128214; HyperStack Docs</h1>
+    <p style="color:var(--dim);font-size:.9rem">Everything you need to give your AI agent persistent memory.</p>
   </div>
 
-  <div class="ci" style="border-left:3px solid #3b82f6;margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">📁 What are Stacks?</h2>
-    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:12px">Stacks are categories that organize your cards. They help your agent find the right memory fast. Use any name you want, but here are the recommended ones:</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #3b82f6"><strong style="font-family:var(--mono);font-size:.8rem">📦 projects</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Tech stacks, repos, architecture</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #a855f7"><strong style="font-family:var(--mono);font-size:.8rem">👤 people</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Teammates, contacts, roles</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #ff6b2b"><strong style="font-family:var(--mono);font-size:.8rem">⚖ï¸ decisions</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Why you chose X over Y</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #22c55e"><strong style="font-family:var(--mono);font-size:.8rem">⚙ï¸ preferences</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Editor, tools, coding style</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #eab308"><strong style="font-family:var(--mono);font-size:.8rem">🔄 workflows</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Deploy steps, review processes</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #8585a0"><strong style="font-family:var(--mono);font-size:.8rem">📄 general</strong><p style="font-size:.75rem;color:var(--dim);margin-top:3px">Everything else</p></div>
+  <!-- What are Cards -->
+  <div style="position:relative;margin-bottom:16px">
+    <div style="position:absolute;inset:-1px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.15),rgba(168,85,247,.1));opacity:.2;filter:blur(12px)"></div>
+    <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.2);border-radius:14px;padding:22px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)"></div>
+        <span style="font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:.06em;font-weight:600">CORE CONCEPT</span>
+      </div>
+      <h2 style="font-family:var(--mono);font-size:1.05rem;font-weight:700;margin-bottom:10px">&#127183; What are Cards?</h2>
+      <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:14px">Cards are small, structured chunks of knowledge your agent stores and retrieves. Think of them as index cards for an AI brain. Each card has:</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--accent)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--accent)">slug</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Unique ID &mdash; same slug = update, not duplicate</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--text)"><strong style="font-family:var(--mono);font-size:.78rem">title</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Human-readable name for the card</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--blue)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--blue)">keywords</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Tags for exact-match search</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--purple)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--purple)">stack</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Category folder (projects, people, etc)</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stacks -->
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <span style="font-size:1rem">&#128193;</span>
+      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Stacks</span>
+      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">Categories for your cards</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #3b82f6"><strong style="font-family:var(--mono);font-size:.78rem">&#128230; projects</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Tech stacks, repos, architecture</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #a855f7"><strong style="font-family:var(--mono);font-size:.78rem">&#128100; people</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Teammates, contacts, roles</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #ff6b2b"><strong style="font-family:var(--mono);font-size:.78rem">&#9878;&#65039; decisions</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Why you chose X over Y</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #22c55e"><strong style="font-family:var(--mono);font-size:.78rem">&#9881;&#65039; preferences</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Editor, tools, coding style</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #eab308"><strong style="font-family:var(--mono);font-size:.78rem">&#128260; workflows</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Deploy steps, review processes</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #8585a0"><strong style="font-family:var(--mono);font-size:.78rem">&#128196; general</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Everything else</p></div>
     </div>
   </div>
 
-  <div class="ci" style="border-left:3px solid #22c55e;margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">⚡ API Reference</h2>
-    <div style="display:grid;gap:10px">
-      <div style="background:var(--bg);border-radius:8px;padding:14px">
-        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--greend);color:var(--green);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">POST</span> <span style="color:var(--text)">/api/cards?workspace=default</span></div>
-        <p style="font-size:.78rem;color:var(--dim)">Create or update a card. Send JSON body with: slug, title, body, stack, keywords (array)</p>
+  <!-- API Reference -->
+  <div style="position:relative;margin-bottom:16px">
+    <div style="position:absolute;inset:-1px;border-radius:14px;background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(59,130,246,.1));opacity:.2;filter:blur(12px)"></div>
+    <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.2);border-radius:14px;padding:22px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+        <span style="font-family:var(--mono);font-size:.72rem;color:var(--green);letter-spacing:.06em;font-weight:600">API REFERENCE</span>
       </div>
-      <div style="background:var(--bg);border-radius:8px;padding:14px">
-        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--blued);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">GET</span> <span style="color:var(--text)">/api/cards?workspace=default</span></div>
-        <p style="font-size:.78rem;color:var(--dim)">Get all cards in a workspace</p>
+      <div style="display:grid;gap:10px">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+          <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:rgba(34,197,94,.12);color:var(--green);padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700">POST</span> <span style="color:var(--text)">/api/cards?workspace=default</span></div>
+          <p style="font-size:.78rem;color:var(--dim)">Create or update a card. Body: <code style="color:var(--accent);font-size:.75rem">{slug, title, body, stack, keywords[]}</code></p>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+          <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:rgba(59,130,246,.12);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700">GET</span> <span style="color:var(--text)">/api/cards?workspace=default</span></div>
+          <p style="font-size:.78rem;color:var(--dim)">List all cards in a workspace</p>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+          <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:rgba(59,130,246,.12);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700">GET</span> <span style="color:var(--text)">/api/search?workspace=default&amp;q=term</span></div>
+          <p style="font-size:.78rem;color:var(--dim)">Hybrid search: keywords + semantic matching (pgvector)</p>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+          <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:rgba(239,68,68,.12);color:var(--red);padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700">DEL</span> <span style="color:var(--text)">/api/cards?workspace=default&amp;id=slug</span></div>
+          <p style="font-size:.78rem;color:var(--dim)">Delete a card by slug</p>
+        </div>
       </div>
-      <div style="background:var(--bg);border-radius:8px;padding:14px">
-        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--blued);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">GET</span> <span style="color:var(--text)">/api/search?workspace=default&q=search term</span></div>
-        <p style="font-size:.78rem;color:var(--dim)">Search cards by keywords, title, or content</p>
-      </div>
-      <div style="background:var(--bg);border-radius:8px;padding:14px">
-        <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:var(--redd);color:var(--red);padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600">DEL</span> <span style="color:var(--text)">/api/cards?workspace=default&slug=card-slug</span></div>
-        <p style="font-size:.78rem;color:var(--dim)">Delete a card by slug</p>
-      </div>
-    </div>
-    <p style="font-size:.78rem;color:var(--faint);margin-top:10px">All endpoints require header: <code style="font-family:var(--mono);color:var(--accent)">X-API-Key: your_key</code></p>
-  </div>
-
-  <div class="ci" style="border-left:3px solid #a855f7;margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">🐾 Using with OpenClaw</h2>
-    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:10px">HyperStack works as an OpenClaw skill. Your agent reads the SKILL.md file and automatically knows how to create, search, and update cards.</p>
-    <div style="background:var(--bg);border-radius:8px;padding:14px">
-      <p style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8"><strong style="color:var(--text)">Setup:</strong><br>
-      1. Download SKILL.md from your dashboard (Get Started tab)<br>
-      2. Place in your project: <code style="color:var(--accent)">skills/hyperstack/SKILL.md</code><br>
-      3. Set env: <code style="color:var(--green)">HYPERSTACK_API_KEY=your_key</code><br>
-      4. Your agent now has memory — it reads the skill and handles everything</p>
+      <p style="font-size:.75rem;color:var(--faint);margin-top:12px;text-align:center">All endpoints require header: <code style="font-family:var(--mono);color:var(--accent)">X-API-Key: your_key</code></p>
     </div>
   </div>
 
-  <div class="ci" style="border-left:3px solid #eab308;margin-bottom:16px">
-    <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:10px">â“ FAQ &amp; Troubleshooting</h2>
-    <div style="display:grid;gap:12px">
-      <div><strong style="font-family:var(--mono);font-size:.85rem">How does my agent use HyperStack?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Your agent calls the REST API to store and search memories. Before responding, it searches for relevant cards. When it learns something new, it creates or updates a card. This means it never forgets.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What counts as a "card"?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Any piece of knowledge — a person's role, a project's tech stack, a decision rationale, your coding preferences. Cards are small (a few lines) and focused on one topic.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">I get "Unauthorized" when calling the API</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Make sure you're sending the header <code style="font-family:var(--mono);color:var(--accent)">X-API-Key: your_key</code> (not <code>Authorization</code>). Your key is in the API Key tab of your dashboard. It should start with <code style="color:var(--accent)">hs_</code>.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What fields does a card need?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Required: <code style="color:var(--accent)">slug</code> (unique ID, like "my-project"), <code style="color:var(--accent)">title</code>, <code style="color:var(--accent)">body</code>. Optional but recommended: <code style="color:var(--accent)">stack</code> (category), <code style="color:var(--accent)">keywords</code> (array of tags for search). If you POST the same slug again, it updates the existing card.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">How do I delete a card?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Send a DELETE request with the slug as the <code style="color:var(--accent)">id</code> parameter: <code style="font-family:var(--mono);font-size:.78rem;color:var(--dim)">DELETE /api/cards?workspace=default&amp;id=my-card-slug</code></p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">How do I save tokens?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Without memory, agents stuff everything into the prompt (6,000+ tokens). With HyperStack, the agent searches for only the relevant card (~350 tokens). That's 94% less.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What's a workspace?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">A workspace is a separate bucket of cards. Use "default" for everything, or create separate workspaces per project (Pro feature) so cards don't mix.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">Can I use any AI agent?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Yes. HyperStack is a REST API. If your agent can make HTTP requests, it works — OpenClaw, Claude Code, LangChain, CrewAI, AutoGPT, custom agents, or even a simple Python script.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">Is my data safe?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">Your cards are stored in a secure PostgreSQL database. Only your API key can access your data. We don't read, sell, or share your cards.</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">What happens if I hit 50 cards on Free?</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">You can still read and search cards, but you can't create new ones until you delete some or upgrade to Pro (unlimited cards).</p></div>
-      <div style="border-top:1px solid var(--border);padding-top:12px"><strong style="font-family:var(--mono);font-size:.85rem">PowerShell users: curl doesn't work!</strong><p style="color:var(--dim);font-size:.82rem;margin-top:4px;line-height:1.6">PowerShell aliases <code>curl</code> to <code>Invoke-WebRequest</code>. Use <code style="color:var(--accent)">Invoke-RestMethod</code> instead, or run curl commands in Git Bash / WSL / CMD.</p></div>
+  <!-- Using with OpenClaw -->
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span style="font-size:1rem">&#128062;</span>
+      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Using with OpenClaw</span>
+    </div>
+    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:12px">HyperStack works as an OpenClaw skill. Your agent reads the SKILL.md file and automatically knows how to create, search, and update cards.</p>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+      <div style="display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
+        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">1.</div>
+        <div style="font-size:.82rem;color:var(--dim)">Place SKILL.md in <code style="color:var(--accent);font-size:.78rem">skills/hyperstack/SKILL.md</code></div>
+        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">2.</div>
+        <div style="font-size:.82rem;color:var(--dim)">Set env: <code style="color:var(--green);font-size:.78rem">HYPERSTACK_API_KEY=your_key</code></div>
+        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">3.</div>
+        <div style="font-size:.82rem;color:var(--dim)">Done &mdash; your agent reads the skill and handles everything</div>
+      </div>
     </div>
   </div>
 
-  <div style="text-align:center;padding:20px 0"><p style="color:var(--faint);font-size:.82rem">Need help? <a href="https://discord.gg/tdnXaV6e">Join our Discord</a></p></div>
+  <!-- FAQ -->
+  <div style="position:relative;margin-bottom:16px">
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:22px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+        <span style="font-size:1rem">&#10067;</span>
+        <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">FAQ</span>
+      </div>
+      <div id="faq-list" style="display:grid;gap:0">
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>How does my agent use HyperStack?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">Your agent calls the REST API to store and search memories. Before responding, it searches for relevant cards. When it learns something new, it creates or updates a card. This means your agent never forgets context between sessions.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>What counts as a &ldquo;card&rdquo;?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">Any piece of knowledge &mdash; a person&rsquo;s role, a project&rsquo;s tech stack, a decision rationale, your coding preferences. Cards are small (a few lines) and focused on one topic. Think &ldquo;one sticky note = one card.&rdquo;</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>How is this different from Mem0?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">Mem0 calls an LLM internally for every memory operation (~$0.002 each). HyperStack uses pattern matching + pgvector &mdash; $0 per operation. At scale, this saves $200+/month. Plus, you control what gets stored &mdash; no AI deciding behind your back what&rsquo;s &ldquo;important.&rdquo;</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>I get &ldquo;Unauthorized&rdquo; when calling the API</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">Make sure you&rsquo;re sending the header <code style="font-family:var(--mono);color:var(--accent)">X-API-Key: your_key</code> (not <code>Authorization</code>). Your key starts with <code style="color:var(--accent)">hs_</code> and is in the API Key tab of your dashboard.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>What fields does a card need?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a"><strong>Required:</strong> slug, title, body. <strong>Optional:</strong> stack (category), keywords (array of tags). If you POST the same slug again, it upserts &mdash; updates the existing card instead of creating a duplicate.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>How does search work?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">Hybrid search: keyword matching (instant, $0) + semantic search via pgvector (understands meaning). Ask &ldquo;what auth do we use?&rdquo; and it finds a card about Clerk even if &ldquo;auth&rdquo; isn&rsquo;t a keyword &mdash; because it understands the meaning.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>Can I use any AI agent?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">Yes. HyperStack is a REST API. If your agent can make HTTP requests, it works &mdash; Claude Code, Cursor, LangChain, CrewAI, AutoGPT, OpenClaw, custom agents, or even a simple Python script.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>Is my data safe?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">Your cards are stored in a secure PostgreSQL database with pgvector. Only your API key can access your data. We don&rsquo;t read, sell, or train on your cards. HyperStack is self-funded &mdash; no VC pressure to monetize your data.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>What happens at 50 cards on Free?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">You can still read and search all your cards, but you can&rsquo;t create new ones until you delete some or upgrade to Pro (unlimited cards, unlimited workspaces, team sharing).</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>PowerShell: curl doesn&rsquo;t work!</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">PowerShell aliases <code>curl</code> to <code>Invoke-WebRequest</code>. Use <code style="color:var(--accent)">Invoke-RestMethod</code> instead, or run curl commands in Git Bash, WSL, or CMD.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:20px 0"><p style="color:var(--faint);font-size:.82rem">Need help? <a href="https://discord.gg/tdnXaV6e" style="color:var(--accent)">Join our Discord</a></p></div>
 </div>
 </div>
 
@@ -1014,6 +1095,9 @@ print(r.json())</pre>
 </div>
 </div>
 
+<script>
+function toggleFaq(el){el.classList.toggle('open')}
+</script>
 <script src="app.js"></script>
 </body>
 </html>

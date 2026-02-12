@@ -409,31 +409,235 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
 /* ═══════════════════════════════════════════
    UNCHANGED TABS (Phase 2)
    ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   📁 WORKSPACES — Premium display
+   ═══════════════════════════════════════════ */
 function rWs(el){const pro=U.plan==="PRO";
-  el.innerHTML=`<div class="dh"><div><h1>📁 Workspaces</h1><p>${pro?'Unlimited':'1 workspace'} on ${U.plan}</p></div></div>
-  <div class="ci"><div class="ci-top"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">📁</span><div><div class="ci-title">default</div><div style="font-size:.78rem;color:var(--dim)">${DEMO.length} cards</div></div></div>
-  <span class="badge" style="background:var(--greend);color:var(--green);border:1px solid rgba(34,197,94,.3)">Active</span></div></div>
-  ${pro?'<button class="btn bo" style="margin-top:10px">+ New Workspace</button>':`<div class="ci" style="text-align:center;padding:20px;margin-top:10px"><p style="color:var(--dim);margin-bottom:8px">Need more workspaces?</p><a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp bs">Upgrade to Pro — $15/mo</a> <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg bs" style="margin-left:6px">Yearly — $12/mo</a></div>`}`}
+  el.innerHTML=`
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📁 Workspaces</h1><p>${pro?'Unlimited workspaces':'1 workspace'} on ${U.plan} plan</p></div></div>
 
+  <!-- Active workspace card with glow -->
+  <div style="position:relative;margin-bottom:16px">
+    <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(59,130,246,.15));opacity:.25;filter:blur(14px)"></div>
+    <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:14px;padding:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;font-size:18px">📁</div>
+          <div>
+            <div style="font-family:var(--mono);font-weight:700;font-size:.95rem">default</div>
+            <div style="font-family:var(--mono);font-size:.7rem;color:var(--dim)">Primary workspace</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)"></div>
+          <span style="font-family:var(--mono);font-size:.68rem;color:var(--green);font-weight:600">Active</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem">${DEMO.length}</div>
+          <div style="font-size:.68rem;color:var(--dim)">Cards</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem">${[...new Set(DEMO.map(c=>c.stack))].length}</div>
+          <div style="font-size:.68rem;color:var(--dim)">Stacks</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--green)">~${DEMO.length * 70}</div>
+          <div style="font-size:.68rem;color:var(--dim)">Tokens stored</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  ${pro?`<div style="position:relative;margin-bottom:16px">
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;text-align:center">
+      <button class="btn bp" style="font-size:.82rem">+ Create New Workspace</button>
+      <p style="font-size:.72rem;color:var(--faint);margin-top:8px">Separate workspaces for each project. Zero cross-contamination.</p>
+    </div>
+  </div>`:`
+  <div style="position:relative;margin-bottom:16px">
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:28px;text-align:center">
+      <div style="font-size:1.8rem;margin-bottom:10px">🔒</div>
+      <h3 style="font-family:var(--mono);font-size:.92rem;font-weight:700;margin-bottom:6px">Multiple workspaces require Pro</h3>
+      <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Separate workspaces per project so your agent only sees what's relevant. Zero cross-contamination.</p>
+      <div style="display:flex;gap:8px;justify-content:center">
+        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp bs">Upgrade to Pro — $15/mo</a>
+        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg bs">Yearly — $12/mo</a>
+      </div>
+    </div>
+  </div>`}`}
+
+/* ═══════════════════════════════════════════
+   👥 TEAM — Premium display
+   ═══════════════════════════════════════════ */
 function rTeam(el){const pro=U.plan==="PRO";
-  if(!pro){el.innerHTML=`<div class="dh"><div><h1>👥 Team</h1></div></div><div class="ci" style="text-align:center;padding:32px"><span style="font-size:2rem">👥</span><h3 style="font-family:var(--mono);margin:10px 0 6px">Team Memory requires Pro</h3><p style="color:var(--dim);margin-bottom:12px">Share cards across teammates so every agent stays in sync.</p><a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro — $15/mo</a> <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="margin-left:8px">Yearly — $12/mo</a></div>`;return}
-  el.innerHTML=`<div class="dh"><div><h1>👥 Team</h1><p>Share cards across your team</p></div></div>
-  <div class="ci"><div style="display:flex;align-items:center;gap:10px;padding:6px 0"><div style="width:28px;height:28px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:12px">🧑‍💻</div><div><div style="font-family:var(--mono);font-size:.82rem">${U.name||U.email}</div><div style="font-size:.72rem;color:var(--dim)">${U.email}</div></div><span class="badge" style="background:var(--glow);color:var(--accent);margin-left:auto">Owner</span></div></div>
-  <button class="btn bo" style="margin-top:10px">+ Invite Teammate</button>
-  <div style="background:var(--surface);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:14px;margin-top:14px"><p style="color:var(--dim);font-size:.82rem">Set cards to <strong style="color:var(--text)">shared</strong> and they'll sync to every team member's workspace. Private cards stay private.</p></div>`}
+  if(!pro){el.innerHTML=`
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
+  <div style="position:relative;margin-bottom:16px">
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
+      <div style="font-size:2rem;margin-bottom:12px">👥</div>
+      <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Team Memory requires Pro</h3>
+      <p style="color:var(--dim);font-size:.85rem;margin-bottom:8px;max-width:400px;margin-left:auto;margin-right:auto">When Alice's agent learns something, Bob's agent knows it too. Shared cards sync instantly across your entire team.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px auto;max-width:420px">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-size:1.2rem;margin-bottom:4px">🔄</div>
+          <div style="font-size:.7rem;color:var(--dim)">Instant sync</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-size:1.2rem;margin-bottom:4px">🔒</div>
+          <div style="font-size:.7rem;color:var(--dim)">Private cards stay private</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-size:1.2rem;margin-bottom:4px">👤</div>
+          <div style="font-size:.7rem;color:var(--dim)">Up to 20 members</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
+        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro — $15/mo</a>
+        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg">Yearly — $12/mo</a>
+      </div>
+    </div>
+  </div>`;return}
+  el.innerHTML=`
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
 
+  <!-- Team members -->
+  <div style="position:relative;margin-bottom:16px">
+    <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(59,130,246,.15));opacity:.2;filter:blur(14px)"></div>
+    <div style="position:relative;background:var(--surface);border:2px solid rgba(168,85,247,.2);border-radius:14px;padding:20px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--purple);box-shadow:0 0 8px var(--purple)"></div>
+        <span style="font-family:var(--mono);font-size:.68rem;color:var(--purple);letter-spacing:.06em;font-weight:600">TEAM MEMBERS</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#000">${(U.name||U.email||'U')[0].toUpperCase()}</div>
+        <div style="flex:1">
+          <div style="font-family:var(--mono);font-size:.85rem;font-weight:600">${U.name||U.email}</div>
+          <div style="font-size:.72rem;color:var(--dim)">${U.email}</div>
+        </div>
+        <span style="font-family:var(--mono);font-size:.62rem;background:var(--glow);color:var(--accent);padding:3px 10px;border-radius:6px;border:1px solid rgba(255,107,43,.3);font-weight:600">Owner</span>
+      </div>
+      <button class="btn bo" style="margin-top:14px;width:100%;text-align:center;font-size:.82rem">+ Invite Teammate</button>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:18px;border-left:3px solid var(--accent)">
+    <div style="display:flex;align-items:start;gap:10px">
+      <span style="font-size:1rem;flex-shrink:0">💡</span>
+      <div>
+        <div style="font-family:var(--mono);font-size:.82rem;font-weight:600;margin-bottom:4px">How team sharing works</div>
+        <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin:0">Set any card to <strong style="color:var(--text)">shared</strong> and it syncs to every team member's workspace. Private cards stay private — only you can see them.</p>
+      </div>
+    </div>
+  </div>`}
+
+/* ═══════════════════════════════════════════
+   📊 ANALYTICS — Premium display
+   ═══════════════════════════════════════════ */
 function rStats(el){const pro=U.plan==="PRO";
-  if(!pro){el.innerHTML=`<div class="dh"><div><h1>📊 Analytics</h1></div></div><div class="ci" style="text-align:center;padding:32px"><span style="font-size:2rem">📊</span><h3 style="font-family:var(--mono);margin:10px 0 6px">Analytics requires Pro</h3><p style="color:var(--dim);margin-bottom:12px">Token savings, stale cards, usage patterns.</p><a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro — $15/mo</a> <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="margin-left:8px">Yearly — $12/mo</a></div>`;return}
-  el.innerHTML=`<div class="dh"><div><h1>📊 Analytics</h1></div></div>
-  <div class="sgrid"><div class="sc"><div class="n" style="color:var(--green)">94%</div><div class="l">Token Savings</div></div>
-  <div class="sc"><div class="n">${DEMO.length}</div><div class="l">Cards</div></div>
-  <div class="sc"><div class="n" style="color:var(--accent)">$254</div><div class="l">Saved/mo</div></div>
-  <div class="sc"><div class="n" style="color:var(--yellow)">1</div><div class="l">Stale Cards</div></div></div>
-  <div class="ci"><p style="color:var(--text);font-weight:500;margin-bottom:10px">Token Savings</p>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="text-align:center;padding:10px;background:var(--redd);border-radius:6px"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--red)">6,000</div><div style="font-size:.72rem;color:var(--dim)">Without (tok/msg)</div></div>
-  <div style="text-align:center;padding:10px;background:var(--greend);border-radius:6px"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--green)">350</div><div style="font-size:.72rem;color:var(--dim)">With HyperStack</div></div></div></div>
-  <div class="ci" style="margin-top:8px"><p style="color:var(--text);font-weight:500;margin-bottom:6px">⚠️ Stale Cards</p>
-  <div style="display:flex;align-items:center;gap:6px"><span class="badge" style="background:rgba(234,179,8,.1);color:var(--yellow);border:1px solid rgba(234,179,8,.3)">26 days</span><span style="font-family:var(--mono);font-size:.82rem">decision-auth</span><span style="font-size:.78rem;color:var(--dim)">Auth0 → Clerk</span></div></div>`}
+  if(!pro){el.innerHTML=`
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Track your agent's memory usage</p></div></div>
+  <div style="position:relative;margin-bottom:16px">
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
+      <div style="font-size:2rem;margin-bottom:12px">📊</div>
+      <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Analytics requires Pro</h3>
+      <p style="color:var(--dim);font-size:.85rem;margin-bottom:8px;max-width:400px;margin-left:auto;margin-right:auto">Track token savings, find stale cards, see usage patterns, and measure how much money your agent is saving you.</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px auto;max-width:480px">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem;color:var(--green)">94%</div>
+          <div style="font-size:.6rem;color:var(--faint)">Token savings</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem;color:var(--accent)">$254</div>
+          <div style="font-size:.6rem;color:var(--faint)">Saved/mo</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">📈</div>
+          <div style="font-size:.6rem;color:var(--faint)">Usage trends</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">⚠️</div>
+          <div style="font-size:.6rem;color:var(--faint)">Stale alerts</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
+        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro — $15/mo</a>
+        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg">Yearly — $12/mo</a>
+      </div>
+    </div>
+  </div>`;return}
+
+  const totalTokens=DEMO.reduce((s,c)=>s+(c.tokens||70),0);
+  const savedPerMsg=6000-350;
+  el.innerHTML=`
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Your agent's memory performance</p></div></div>
+
+  <!-- Stats grid with glow -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+    <div style="position:relative">
+      <div style="position:absolute;inset:-1px;border-radius:12px;background:rgba(34,197,94,.15);filter:blur(8px)"></div>
+      <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.25);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--green)">94%</div>
+        <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Token Savings</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+      <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800">${DEMO.length}</div>
+      <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Total Cards</div>
+    </div>
+    <div style="position:relative">
+      <div style="position:absolute;inset:-1px;border-radius:12px;background:rgba(255,107,43,.12);filter:blur(8px)"></div>
+      <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.2);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--accent)">$254</div>
+        <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Saved / month</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:2px solid rgba(234,179,8,.15);border-radius:12px;padding:16px;text-align:center">
+      <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--yellow)">1</div>
+      <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Stale Cards</div>
+    </div>
+  </div>
+
+  <!-- Token comparison -->
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <span style="font-size:1rem">⚡</span>
+      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Token Usage Per Message</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div style="text-align:center;padding:16px;background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:10px">
+        <div style="font-family:var(--mono);font-size:1.5rem;font-weight:800;color:var(--red)">6,000</div>
+        <div style="font-size:.72rem;color:var(--dim);margin-top:2px">Without HyperStack</div>
+        <div style="width:100%;height:6px;background:rgba(239,68,68,.15);border-radius:3px;margin-top:10px"><div style="width:100%;height:100%;background:var(--red);border-radius:3px"></div></div>
+      </div>
+      <div style="text-align:center;padding:16px;background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);border-radius:10px">
+        <div style="font-family:var(--mono);font-size:1.5rem;font-weight:800;color:var(--green)">350</div>
+        <div style="font-size:.72rem;color:var(--dim);margin-top:2px">With HyperStack</div>
+        <div style="width:100%;height:6px;background:rgba(34,197,94,.15);border-radius:3px;margin-top:10px"><div style="width:6%;height:100%;background:var(--green);border-radius:3px"></div></div>
+      </div>
+    </div>
+    <div style="text-align:center;font-family:var(--mono);font-size:.75rem;color:var(--faint)">You save <strong style="color:var(--green)">~${savedPerMsg.toLocaleString()} tokens</strong> every message</div>
+  </div>
+
+  <!-- Stale cards alert -->
+  <div style="background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:14px;padding:20px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span style="font-size:1rem">⚠️</span>
+      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Stale Cards</span>
+      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">Cards not updated in 21+ days</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
+      <div style="width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 6px var(--yellow)"></div>
+      <div style="flex:1">
+        <span style="font-family:var(--mono);font-size:.82rem;font-weight:600">decision-auth</span>
+        <span style="font-size:.78rem;color:var(--dim);margin-left:8px">Auth0 → Clerk</span>
+      </div>
+      <span style="font-family:var(--mono);font-size:.65rem;background:rgba(234,179,8,.1);color:var(--yellow);padding:3px 10px;border-radius:6px;border:1px solid rgba(234,179,8,.2);font-weight:600">26 days</span>
+    </div>
+    <p style="font-size:.72rem;color:var(--faint);margin-top:8px;text-align:center">Stale cards may contain outdated info. Consider reviewing or archiving them.</p>
+  </div>`}
+
 
 // Auto-login
 (async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+t}});if(r.ok){const d=await r.json();U=d.user;T=t}}catch{}
