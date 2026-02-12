@@ -1,6 +1,6 @@
 const A="https://hyperstack-cloud.vercel.app";let U=null,T=null,DV="start";
 const SC={projects:"#3b82f6",people:"#a855f7",decisions:"#ff6b2b",preferences:"#22c55e",workflows:"#eab308"};
-const SE={projects:"📦",people:"👤",decisions:"⚖ï¸",preferences:"⚙ï¸",workflows:"🔄",general:"📄"};
+const SE={projects:"📦",people:"👤",decisions:"⚖️",preferences:"⚙️",workflows:"🔄",general:"📄"};
 const DEMO=[
   {slug:"project-webapp",title:"WebApp",stack:"projects",keywords:["nextjs","prisma","vercel","clerk"],body:"- Next.js 15 + Prisma + PostgreSQL\n- Auth: Clerk\n- CI: GitHub Actions → Vercel",updated:"2026-02-09",ver:3},
   {slug:"person-alice",title:"Alice Chen",stack:"people",keywords:["backend","postgresql","fastapi"],body:"- Senior Engineer, backend\n- Owns API service\n- EST timezone, morning standups",updated:"2026-02-10",ver:2},
@@ -65,62 +65,73 @@ function showCode(lang,btn){document.querySelectorAll('[id^="code-"]').forEach(e
   document.getElementById("code-"+lang).classList.remove("hidden");
   document.querySelectorAll('.demo-tab').forEach(t=>t.classList.remove("active"));btn.classList.add("active")}
 
-function showPlatform(p,btn){['openclaw','claude','python','js','curl'].forEach(id=>{
-  const el=document.getElementById('ob-plat-'+id);if(el)el.classList.toggle('hidden',id!==p);
-  // Also support old plat- prefix
-  const el2=document.getElementById('plat-'+id);if(el2)el2.classList.toggle('hidden',id!==p)});
+function showPlatform(p,btn){['mcp','openclaw','claude','python','js','curl'].forEach(id=>{
+  const el=document.getElementById('ob-plat-'+id);if(el)el.classList.toggle('hidden',id!==p)});
   document.querySelectorAll('.plat-tab').forEach(b=>b.classList.remove('act'));
-  if(btn)btn.classList.add('act');else if(event&&event.target)event.target.classList.add('act')}
+  if(btn)btn.classList.add('act')}
+
 function renderD(){if(!U)return;
   document.getElementById("d-em").textContent=U.email;
   document.getElementById("d-pt").innerHTML=U.plan==="PRO"?'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>':'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>';
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
 
-function rStart(el){el.innerHTML=`<div style="text-align:center;padding:16px 0 20px">
-    <h1 style="font-family:var(--mono);font-size:1.3rem;font-weight:800">🚀 You're saving money already</h1>
-    <p style="color:var(--dim);margin-top:6px;font-size:.88rem">Copy your key, paste into your agent, done.</p>
+/* ═══════════════════════════════════════════
+   🚀 GET STARTED — Premium animated onboarding
+   ═══════════════════════════════════════════ */
+function rStart(el){
+  el.innerHTML=`
+  <div style="text-align:center;padding:20px 0 24px">
+    <div style="font-family:var(--mono);font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Welcome to HyperStack</div>
+    <h1 style="font-family:var(--mono);font-size:1.4rem;font-weight:800;margin-bottom:6px">Your agent is about to get a lot smarter</h1>
+    <p style="color:var(--dim);font-size:.88rem">Three steps. Under 30 seconds. Let's go.</p>
   </div>
 
-  <div class="ob-savings">
-    <div class="ob-save-card" style="border-left:3px solid var(--red)">
-      <div class="big" style="color:var(--red)">$270<span style="font-size:.7rem;color:var(--dim)">/mo</span></div>
-      <div class="lbl">Without HyperStack</div>
-    </div>
-    <div class="ob-save-card" style="border-left:3px solid var(--green)">
-      <div class="big" style="color:var(--green)">$16<span style="font-size:.7rem;color:var(--dim)">/mo</span></div>
-      <div class="lbl">With HyperStack</div>
+  <!-- Animated step indicators -->
+  <div class="ob-steps" id="ob-steps-wrap">
+    <div class="ob-step done" id="obs-1"><div class="num">✓</div><div class="stxt">Sign up</div></div>
+    <div class="ob-step active" id="obs-2"><div class="num">2</div><div class="stxt">Copy key</div></div>
+    <div class="ob-step" id="obs-3"><div class="num">3</div><div class="stxt">Paste & go</div></div>
+  </div>
+
+  <!-- Step 2: API Key card with glow -->
+  <div style="position:relative;margin:8px 0 16px">
+    <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.3),rgba(168,85,247,.2),rgba(59,130,246,.2));opacity:.3;filter:blur(16px);z-index:0"></div>
+    <div style="position:relative;z-index:1;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:20px;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+        <span style="font-family:var(--mono);font-size:.68rem;color:var(--accent);letter-spacing:.06em;font-weight:600">YOUR API KEY</span>
+      </div>
+      <div class="key-display">
+        <code>${U.apiKey}</code>
+        <button onclick="cpKey(this)">Copy</button>
+      </div>
+      <p style="font-size:.72rem;color:var(--faint);margin-top:6px">Set as <code style="color:var(--accent);font-family:var(--mono);font-size:.72rem">HYPERSTACK_API_KEY</code> in your agent's environment</p>
     </div>
   </div>
 
-  <div class="ob-steps">
-    <div class="ob-step done"><div class="num">✓</div><div class="stxt">Sign up</div></div>
-    <div class="ob-step active"><div class="num">2</div><div class="stxt">Copy key</div></div>
-    <div class="ob-step"><div class="num">3</div><div class="stxt">Paste & go</div></div>
-  </div>
+  <!-- Step 3: Setup — animated code paste -->
+  <div style="position:relative;margin-bottom:16px">
+    <div style="position:relative;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;overflow:hidden;transition:border-color .3s" id="setup-wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:1rem">⚡</span>
+          <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick setup</span>
+        </div>
+        <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">Pick your tool ↓</span>
+      </div>
 
-  <div class="setup-card">
-    <h3>🔑 Your API Key</h3>
-    <div class="key-display">
-      <code>${U.apiKey}</code>
-      <button onclick="cpKey(this)">Copy</button>
-    </div>
-    <p style="font-size:.72rem;color:var(--faint);margin-top:4px">Add to your agent env as <code style="color:var(--accent);font-family:var(--mono);font-size:.72rem">HYPERSTACK_API_KEY</code></p>
-  </div>
+      <div class="plat-tabs">
+        <button class="plat-tab act" onclick="showPlatform('mcp',this)">🔌 MCP Server</button>
+        <button class="plat-tab" onclick="showPlatform('openclaw',this)">🐾 OpenClaw</button>
+        <button class="plat-tab" onclick="showPlatform('claude',this)">🤖 Claude Code</button>
+        <button class="plat-tab" onclick="showPlatform('python',this)">🐍 Python</button>
+        <button class="plat-tab" onclick="showPlatform('js',this)">⚡ JS</button>
+        <button class="plat-tab" onclick="showPlatform('curl',this)">💻 cURL</button>
+      </div>
 
-  <div class="setup-card">
-    <h3>⚡ Quick setup</h3>
-    <div class="plat-tabs">
-      <button class="plat-tab act" onclick="showPlatform('mcp',this)">🔌 MCP Server</button>
-      <button class="plat-tab" onclick="showPlatform('openclaw',this)">🐾 OpenClaw</button>
-      <button class="plat-tab" onclick="showPlatform('claude',this)">🤖 Claude Code</button>
-      <button class="plat-tab" onclick="showPlatform('python',this)">🐍 Python</button>
-      <button class="plat-tab" onclick="showPlatform('js',this)">⚡ JS</button>
-      <button class="plat-tab" onclick="showPlatform('curl',this)">💻 cURL</button>
-    </div>
-
-    <div id="ob-plat-mcp" class="code-block"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre><span style="color:var(--faint)">// Add to claude_desktop_config.json or .cursor/mcp.json</span>
+      <div id="ob-plat-mcp" class="code-block"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre><span style="color:var(--faint)">// claude_desktop_config.json or .cursor/mcp.json</span>
 {
   "mcpServers": {
     "hyperstack": {
@@ -132,32 +143,32 @@ function rStart(el){el.innerHTML=`<div style="text-align:center;padding:16px 0 2
     }
   }
 }
-<span style="color:var(--faint)">// Works with: Claude Desktop, Cursor, VS Code, Windsurf</span></pre></div>
+<span style="color:var(--faint)">// Claude Desktop · Cursor · VS Code · Windsurf</span></pre></div>
 
-    <div id="ob-plat-openclaw" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+      <div id="ob-plat-openclaw" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
 <pre><span style="color:var(--faint)"># Add skill + set env</span>
 mkdir -p skills/hyperstack
 export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
 export HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span>
-<span style="color:var(--faint)"># Your agent reads SKILL.md and handles the rest</span></pre></div>
+<span style="color:var(--faint)"># Agent reads SKILL.md and handles the rest</span></pre></div>
 
-    <div id="ob-plat-claude" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+      <div id="ob-plat-claude" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
 <pre><span style="color:var(--faint)"># Add to .env or shell profile</span>
 export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
 export HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span>
-<span style="color:var(--faint)"># Tell Claude: "Use HyperStack API for memory"</span></pre></div>
+<span style="color:var(--faint)"># Tell Claude: "Use HyperStack for memory"</span></pre></div>
 
-    <div id="ob-plat-python" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+      <div id="ob-plat-python" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
 <pre>import requests
 h = {"X-API-Key": "<span style="color:var(--green)">${U.apiKey}</span>"}
-<span style="color:var(--faint)"># Store</span>
+<span style="color:var(--faint)"># Store a card</span>
 requests.post("${A}/api/cards?workspace=default",
   headers=h, json={"slug":"test","title":"Test",
   "stack":"general","body":"It works!"})
-<span style="color:var(--faint)"># Search</span>
+<span style="color:var(--faint)"># Search cards</span>
 r = requests.get("${A}/api/search?workspace=default&q=test", headers=h)</pre></div>
 
-    <div id="ob-plat-js" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+      <div id="ob-plat-js" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
 <pre>const KEY = "<span style="color:var(--green)">${U.apiKey}</span>"
 await fetch("${A}/api/cards?workspace=default", {
   method: "POST",
@@ -166,83 +177,147 @@ await fetch("${A}/api/cards?workspace=default", {
     stack:"general",body:"It works!"})
 })</pre></div>
 
-    <div id="ob-plat-curl" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+      <div id="ob-plat-curl" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
 <pre>curl -X POST "${A}/api/cards?workspace=default" \\
   -H "X-API-Key: ${U.apiKey}" \\
   -H "Content-Type: application/json" \\
   -d '{"slug":"test","title":"Test","stack":"general","body":"It works!"}'</pre></div>
+    </div>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
-    <div class="setup-card" style="text-align:center;cursor:pointer;margin:0;padding:16px" onclick="dt('cards')">
-      <span style="font-size:1.3rem">🃏</span>
-      <div style="font-family:var(--mono);font-size:.78rem;font-weight:600;margin-top:4px">View Cards</div>
+  <!-- Quick links with card aesthetic -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px">
+    <div class="ql-card" onclick="dt('cards')">
+      <span class="ql-icon">🃏</span>
+      <div class="ql-label">Cards</div>
     </div>
-    <div class="setup-card" style="text-align:center;cursor:pointer;margin:0;padding:16px" onclick="go('docs')">
-      <span style="font-size:1.3rem">📖</span>
-      <div style="font-family:var(--mono);font-size:.78rem;font-weight:600;margin-top:4px">Docs</div>
+    <div class="ql-card" onclick="dt('key')">
+      <span class="ql-icon">🔑</span>
+      <div class="ql-label">API Key</div>
     </div>
-  </div>`}
+    <div class="ql-card" onclick="dt('ws')">
+      <span class="ql-icon">📁</span>
+      <div class="ql-label">Workspaces</div>
+    </div>
+    <div class="ql-card" onclick="go('docs')">
+      <span class="ql-icon">📖</span>
+      <div class="ql-label">Docs</div>
+    </div>
+  </div>`;
+}
 
-function rCards(el){el.innerHTML=`<div class="dh"><div><h1>🃏 Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="🔍 Search..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)">Loading cards from API...</div></div>`;
+/* ═══════════════════════════════════════════
+   🃏 CARDS — Premium card grid with glow
+   ═══════════════════════════════════════════ */
+function rCards(el){
+  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🃏 Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
-    document.querySelector('.dh p').textContent=cards.length+' cards Â· '+d.plan+' ('+cards.length+'/'+d.limit+')';
+    document.querySelector('.dh p').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
     const cl=document.getElementById('cl');
-    if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:40px">
-      <span style="font-size:2.5rem">🃏</span>
-      <h3 style="font-family:var(--mono);margin:12px 0 8px">No cards yet</h3>
-      <p style="color:var(--dim);font-size:.85rem;margin-bottom:16px">Your agent creates cards via the API. Go back to setup to get started.</p>
-      <button class="btn bp bs" onclick="dt('start')">â† Setup</button>
-      <button class="btn bo bs" style="margin-left:6px" onclick="rCards(document.getElementById('dm'))">🔄 Refresh</button>
+    if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:48px 20px">
+      <div style="position:relative;display:inline-block;margin-bottom:16px">
+        <div style="position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,43,.15),transparent);filter:blur(8px)"></div>
+        <span style="font-size:3rem;position:relative">🃏</span>
+      </div>
+      <h3 style="font-family:var(--mono);margin:0 0 8px;font-size:1rem">No cards yet</h3>
+      <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:360px;margin-left:auto;margin-right:auto">Cards are how your agent remembers. Create one manually or let your agent create them via the API.</p>
+      <div style="display:flex;gap:8px;justify-content:center">
+        <button class="btn bp bs" onclick="showCardForm()">+ Create First Card</button>
+        <button class="btn bo bs" onclick="dt('start')">← Setup Guide</button>
+      </div>
     </div>`;return}
     const stacks=[...new Set(cards.map(c=>c.stack))];
-    const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">🗂ï¸ All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)">${SE[s]||'📄'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
-    const cardsHtml=`<div class="card-grid">${cards.map(c=>{
+    const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)" style="border-color:${SC[s]||'#555'}30">${SE[s]||'📄'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
+    const cardsHtml=`<div class="card-grid">${cards.map((c,i)=>{
       const bc=SC[c.stack]||'#555';
       const kw=(c.keywords||[]).slice(0,3);
       const body=(c.body||'').replace(/</g,'&lt;').substring(0,80);
-      return`<div class="cc" data-s="${c.stack}" data-q="${(c.title+' '+(c.keywords||[]).join(' ')+' '+(c.body||'')).toLowerCase()}" onclick="expandCard(${JSON.stringify(c).replace(/"/g,'&quot;')})">
-        <div class="cc-stripe" style="background:${bc}"></div>
-        <button class="cc-del" onclick="event.stopPropagation();if(confirm('Delete ${c.slug}?'))delCard('${c.slug}')" title="Delete">✕</button>
-        <div class="cc-head"><span class="cc-icon">${SE[c.stack]||'📄'}</span><span class="cc-title">${c.title||c.slug}</span></div>
-        <div class="cc-body">${body}</div>
-        <div class="cc-footer"><div class="cc-tags">${kw.map(k=>`<span class="cc-tag" style="background:${bc}15;color:${bc};border:1px solid ${bc}30">#${k}</span>`).join('')}</div><span class="cc-meta">${c.tokens||0}t</span></div>
+      return`<div class="hsc" data-s="${c.stack}" data-q="${(c.title+' '+(c.keywords||[]).join(' ')+' '+(c.body||'')).toLowerCase()}" onclick="expandCard(${JSON.stringify(c).replace(/"/g,'&quot;')})" style="animation-delay:${i*60}ms">
+        <div class="hsc-glow" style="background:linear-gradient(135deg,${bc},${bc}88,transparent)"></div>
+        <div class="hsc-border" style="border-color:${bc}44">
+          <button class="hsc-del" onclick="event.stopPropagation();if(confirm('Delete ${c.slug}?'))delCard('${c.slug}')" title="Delete">✕</button>
+          <div class="hsc-header" style="border-color:${bc}25">
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="width:7px;height:7px;border-radius:50%;background:${bc};box-shadow:0 0 6px ${bc}"></div>
+              <span style="font-family:var(--mono);font-size:.55rem;color:${bc};letter-spacing:.06em;font-weight:600">${(SE[c.stack]||'📄')} ${(c.stack||'').toUpperCase()}</span>
+            </div>
+            <span style="font-family:var(--mono);font-size:.5rem;color:var(--faint)">${c.tokens||0}t</span>
+          </div>
+          <div style="padding:8px 14px 0">
+            <div style="font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:600">${c.slug}</div>
+          </div>
+          <div style="padding:4px 14px 0">
+            <div style="font-size:.84rem;font-weight:600;color:var(--text)">${c.title||c.slug}</div>
+          </div>
+          <div style="padding:6px 14px 0;display:flex;gap:3px;flex-wrap:wrap">
+            ${kw.map(k=>`<span style="font-family:var(--mono);font-size:.55rem;background:${bc}10;color:${bc};padding:2px 7px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}
+          </div>
+          <div style="padding:6px 14px 0">
+            <div style="font-size:.72rem;color:var(--dim);line-height:1.5;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-family:var(--mono);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${body}</div>
+          </div>
+          <div style="padding:8px 14px 10px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint)">v${c.ver||1}</span>
+            <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint)">${c.updated||''}</span>
+          </div>
+        </div>
       </div>`}).join('')}</div>`;
-    cl.innerHTML=filtersHtml+cardsHtml+`<div style="text-align:center;margin-top:14px"><button class="btn bo bs" onclick="rCards(document.getElementById('dm'))">🔄 Refresh</button></div>`;
+    cl.innerHTML=filtersHtml+cardsHtml+`<div style="text-align:center;margin-top:16px"><button class="btn bo bs" onclick="rCards(document.getElementById('dm'))">↻ Refresh</button></div>`;
   }).catch(err=>{
-    document.getElementById('cl').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red)">Failed to load cards: ${err.message}<br><button class="btn bo bs" style="margin-top:10px" onclick="rCards(document.getElementById('dm'))">Retry</button></div>`;
+    document.getElementById('cl').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red)">Failed to load: ${err.message}<br><button class="btn bo bs" style="margin-top:10px" onclick="rCards(document.getElementById('dm'))">Retry</button></div>`;
   })}
 
 function delCard(slug){fetch(A+"/api/cards?workspace=default&id="+slug,{method:"DELETE",headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(()=>rCards(document.getElementById('dm'))).catch(err=>alert("Delete failed: "+err.message))}
 
 function fStack(s,b){document.querySelectorAll('.fb').forEach(x=>x.classList.remove('act'));b.classList.add('act');
-  document.querySelectorAll('.cc').forEach(e=>{e.style.display=(s==='all'||e.dataset.s===s)?'':'none'})}
-function fCards(q){const t=q.toLowerCase();document.querySelectorAll('.cc').forEach(e=>{e.style.display=e.dataset.q.includes(t)?'':'none'})}
+  document.querySelectorAll('.hsc').forEach(e=>{e.style.display=(s==='all'||e.dataset.s===s)?'':'none'})}
+function fCards(q){const t=q.toLowerCase();document.querySelectorAll('.hsc').forEach(e=>{e.style.display=e.dataset.q.includes(t)?'':'none'})}
 
 function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
   const ov=document.createElement('div');ov.className='card-expand';ov.onclick=e=>{if(e.target===ov)ov.remove()};
-  ov.innerHTML=`<div class="card-expand-inner">
-    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:14px">
-      <div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:20px">${SE[c.stack]||'📄'}</span><span style="font-family:var(--mono);font-weight:700;font-size:1rem">${c.title||c.slug}</span></div>
-      <div style="display:flex;gap:4px;flex-wrap:wrap">${kw.map(k=>`<span style="padding:2px 8px;border-radius:8px;font-family:var(--mono);font-size:.65rem;font-weight:600;background:${bc}15;color:${bc};border:1px solid ${bc}30">#${k}</span>`).join('')}</div></div>
-      <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;padding:4px">✕</button>
+  ov.innerHTML=`<div class="card-expand-inner" style="border:2px solid ${bc}44;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px ${bc}15">
+    <div style="display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid ${bc}25;margin-bottom:14px">
+      <div style="width:8px;height:8px;border-radius:50%;background:${bc};box-shadow:0 0 8px ${bc}"></div>
+      <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:600">${SE[c.stack]||'📄'} ${(c.stack||'').toUpperCase()}</span>
+      <span style="margin-left:auto;font-family:var(--mono);font-size:.55rem;color:var(--faint)">~${c.tokens||0} tokens</span>
+      <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px;margin-left:8px">✕</button>
     </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px">
-      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap">${(c.body||'').replace(/</g,'&lt;')}</pre>
+    <div style="margin-bottom:6px">
+      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">slug</div>
+      <div style="font-family:var(--mono);font-size:.88rem;color:var(--accent);font-weight:600">${c.slug}</div>
     </div>
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <span style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">${c.slug} Â· ${c.tokens||0} tokens Â· ${c.stack}</span>
-      <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3)" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">🗑ï¸ Delete</button>
+    <div style="margin-bottom:6px">
+      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">title</div>
+      <div style="font-size:1rem;font-weight:600;color:var(--text)">${c.title||c.slug}</div>
+    </div>
+    <div style="display:flex;gap:16px;margin-bottom:10px">
+      <div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">stack</div>
+        <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'📄'} ${c.stack}</span>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">keywords</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">${kw.map(k=>`<span style="font-family:var(--mono);font-size:.62rem;background:${bc}10;color:${bc};padding:2px 8px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}</div>
+      </div>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">body</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap">${(c.body||'').replace(/</g,'&lt;')}</pre>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)">
+      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} · ${c.updated||'just now'}</span>
+      <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3);font-size:.72rem" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">Delete</button>
     </div>
   </div>`;
   document.body.appendChild(ov)}
 
 function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='✓ Copied';btn.classList.add('copied-btn');
   setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied-btn')},2000);
-  const steps=document.querySelectorAll('.ob-step');
-  if(steps[1]){steps[1].classList.add('done');steps[1].classList.remove('active')}
-  if(steps[2])steps[2].classList.add('active')}
+  const s2=document.getElementById('obs-2'),s3=document.getElementById('obs-3');
+  if(s2){s2.classList.add('done');s2.classList.remove('active');s2.querySelector('.num').textContent='✓'}
+  if(s3)s3.classList.add('active')}
 
 function cpBlock(btn){const pre=btn.parentElement.querySelector('pre');
   navigator.clipboard.writeText(pre.textContent);btn.textContent='✓ Copied';
@@ -250,22 +325,28 @@ function cpBlock(btn){const pre=btn.parentElement.querySelector('pre');
 
 function showCardForm(){const w=document.getElementById('card-form-wrap');
   if(w.innerHTML){w.innerHTML='';return}
-  w.innerHTML=`<div class="setup-card" style="margin-bottom:14px">
-    <h3 style="margin-bottom:12px">✨ Create Memory Card</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-      <div class="fg"><label>Slug (unique ID)</label><input id="cf-slug" placeholder="project-webapp"></div>
-      <div class="fg"><label>Title</label><input id="cf-title" placeholder="WebApp"></div>
+  w.innerHTML=`<div style="position:relative;margin-bottom:16px">
+    <div style="position:absolute;inset:-1px;border-radius:14px;background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(59,130,246,.2));opacity:.3;filter:blur(12px);z-index:0"></div>
+    <div style="position:relative;z-index:1;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:14px;padding:20px;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+        <span style="font-family:var(--mono);font-size:.68rem;color:var(--green);letter-spacing:.06em;font-weight:600">NEW CARD</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div class="fg"><label>Slug (unique ID)</label><input id="cf-slug" placeholder="project-webapp"></div>
+        <div class="fg"><label>Title</label><input id="cf-title" placeholder="WebApp"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div class="fg"><label>Stack</label><select id="cf-stack" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none">
+          <option value="projects">📦 projects</option><option value="people">👤 people</option><option value="decisions">⚖️ decisions</option>
+          <option value="preferences">⚙️ preferences</option><option value="workflows">🔄 workflows</option><option value="general" selected>📄 general</option>
+        </select></div>
+        <div class="fg"><label>Keywords (comma-separated)</label><input id="cf-kw" placeholder="react, vercel, auth"></div>
+      </div>
+      <div class="fg" style="margin-bottom:12px"><label>Body</label><textarea id="cf-body" rows="3" placeholder="What should your agent remember?" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.85rem;outline:none;resize:vertical"></textarea></div>
+      <div style="display:flex;gap:8px"><button class="btn bp bs" onclick="createCard()">Create Card →</button><button class="btn bo bs" onclick="document.getElementById('card-form-wrap').innerHTML=''">Cancel</button></div>
+      <div id="cf-err" class="ferr hidden" style="margin-top:6px"></div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-      <div class="fg"><label>Stack</label><select id="cf-stack" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none">
-        <option value="projects">📦 projects</option><option value="people">👤 people</option><option value="decisions">⚖ï¸ decisions</option>
-        <option value="preferences">⚙ï¸ preferences</option><option value="workflows">🔄 workflows</option><option value="general" selected>📄 general</option>
-      </select></div>
-      <div class="fg"><label>Keywords (comma-separated)</label><input id="cf-kw" placeholder="react, vercel, auth"></div>
-    </div>
-    <div class="fg" style="margin-bottom:10px"><label>Body</label><textarea id="cf-body" rows="3" placeholder="What should your agent remember?" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.85rem;outline:none;resize:vertical"></textarea></div>
-    <div style="display:flex;gap:6px"><button class="btn bp bs" onclick="createCard()">Create Card →</button><button class="btn bo bs" onclick="document.getElementById('card-form-wrap').innerHTML=''">Cancel</button></div>
-    <div id="cf-err" class="ferr hidden" style="margin-top:6px"></div>
   </div>`}
 
 function createCard(){const slug=document.getElementById('cf-slug').value.trim(),title=document.getElementById('cf-title').value.trim(),
@@ -279,18 +360,55 @@ function createCard(){const slug=document.getElementById('cf-slug').value.trim()
     document.getElementById('card-form-wrap').innerHTML='';rCards(document.getElementById('dm'));
   }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden')})}
 
-function rKey(el){el.innerHTML=`<div class="dh"><div><h1>🔑 API Key</h1><p>Use this key in any agent</p></div></div>
-  <div class="akbox"><p style="color:var(--text);font-weight:500;margin-bottom:4px">Your API Key</p>
-    <div class="key">${U.apiKey}</div> <button class="btn bo bs" onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='✓ Copied'">Copy</button>
-    <p style="margin-top:12px;color:var(--dim);font-size:.85rem">Add to your agent's environment:</p>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;margin-top:8px">
-      <pre style="font-family:var(--mono);font-size:.8rem;color:var(--dim);margin:0">HYPERSTACK_API_KEY=${U.apiKey}
-HYPERSTACK_WORKSPACE=default</pre></div></div>
-  <div class="akbox"><p style="color:var(--text);font-weight:500;margin-bottom:8px">Quick test</p>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px">
-      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> <span style="color:var(--green)">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \\
-  -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span></pre></div></div>`}
+/* ═══════════════════════════════════════════
+   🔑 API KEY — Premium display
+   ═══════════════════════════════════════════ */
+function rKey(el){el.innerHTML=`
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🔑 API Key</h1><p>Use this key in any agent or integration</p></div></div>
 
+  <div style="position:relative;margin-bottom:16px">
+    <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.3),rgba(168,85,247,.2));opacity:.25;filter:blur(16px)"></div>
+    <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:20px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+        <span style="font-family:var(--mono);font-size:.65rem;color:var(--accent);letter-spacing:.06em;font-weight:600">ACTIVE KEY</span>
+        <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint);margin-left:auto">workspace: default</span>
+      </div>
+      <div class="key-display">
+        <code>${U.apiKey}</code>
+        <button onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='✓ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span style="font-size:1rem">📋</span>
+      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Environment variables</span>
+    </div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative">
+      <button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+      <pre style="font-family:var(--mono);font-size:.8rem;color:var(--dim);margin:0;line-height:1.8">HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
+HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span style="font-size:1rem">🧪</span>
+      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick test</span>
+      <span style="font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-left:auto">paste in terminal</span>
+    </div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative">
+      <button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> <span style="color:var(--green)">"${A}/api/cards?workspace=default"</span> \\
+  -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span></pre>
+    </div>
+  </div>`}
+
+/* ═══════════════════════════════════════════
+   UNCHANGED TABS (Phase 2)
+   ═══════════════════════════════════════════ */
 function rWs(el){const pro=U.plan==="PRO";
   el.innerHTML=`<div class="dh"><div><h1>📁 Workspaces</h1><p>${pro?'Unlimited':'1 workspace'} on ${U.plan}</p></div></div>
   <div class="ci"><div class="ci-top"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">📁</span><div><div class="ci-title">default</div><div style="font-size:.78rem;color:var(--dim)">${DEMO.length} cards</div></div></div>
@@ -300,7 +418,7 @@ function rWs(el){const pro=U.plan==="PRO";
 function rTeam(el){const pro=U.plan==="PRO";
   if(!pro){el.innerHTML=`<div class="dh"><div><h1>👥 Team</h1></div></div><div class="ci" style="text-align:center;padding:32px"><span style="font-size:2rem">👥</span><h3 style="font-family:var(--mono);margin:10px 0 6px">Team Memory requires Pro</h3><p style="color:var(--dim);margin-bottom:12px">Share cards across teammates so every agent stays in sync.</p><a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro — $15/mo</a> <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="margin-left:8px">Yearly — $12/mo</a></div>`;return}
   el.innerHTML=`<div class="dh"><div><h1>👥 Team</h1><p>Share cards across your team</p></div></div>
-  <div class="ci"><div style="display:flex;align-items:center;gap:10px;padding:6px 0"><div style="width:28px;height:28px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:12px">🧑â€💻</div><div><div style="font-family:var(--mono);font-size:.82rem">${U.name||U.email}</div><div style="font-size:.72rem;color:var(--dim)">${U.email}</div></div><span class="badge" style="background:var(--glow);color:var(--accent);margin-left:auto">Owner</span></div></div>
+  <div class="ci"><div style="display:flex;align-items:center;gap:10px;padding:6px 0"><div style="width:28px;height:28px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:12px">🧑‍💻</div><div><div style="font-family:var(--mono);font-size:.82rem">${U.name||U.email}</div><div style="font-size:.72rem;color:var(--dim)">${U.email}</div></div><span class="badge" style="background:var(--glow);color:var(--accent);margin-left:auto">Owner</span></div></div>
   <button class="btn bo" style="margin-top:10px">+ Invite Teammate</button>
   <div style="background:var(--surface);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:14px;margin-top:14px"><p style="color:var(--dim);font-size:.82rem">Set cards to <strong style="color:var(--text)">shared</strong> and they'll sync to every team member's workspace. Private cards stay private.</p></div>`}
 
@@ -314,7 +432,7 @@ function rStats(el){const pro=U.plan==="PRO";
   <div class="ci"><p style="color:var(--text);font-weight:500;margin-bottom:10px">Token Savings</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="text-align:center;padding:10px;background:var(--redd);border-radius:6px"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--red)">6,000</div><div style="font-size:.72rem;color:var(--dim)">Without (tok/msg)</div></div>
   <div style="text-align:center;padding:10px;background:var(--greend);border-radius:6px"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--green)">350</div><div style="font-size:.72rem;color:var(--dim)">With HyperStack</div></div></div></div>
-  <div class="ci" style="margin-top:8px"><p style="color:var(--text);font-weight:500;margin-bottom:6px">⚠ï¸ Stale Cards</p>
+  <div class="ci" style="margin-top:8px"><p style="color:var(--text);font-weight:500;margin-bottom:6px">⚠️ Stale Cards</p>
   <div style="display:flex;align-items:center;gap:6px"><span class="badge" style="background:rgba(234,179,8,.1);color:var(--yellow);border:1px solid rgba(234,179,8,.3)">26 days</span><span style="font-family:var(--mono);font-size:.82rem">decision-auth</span><span style="font-size:.78rem;color:var(--dim)">Auth0 → Clerk</span></div></div>`}
 
 // Auto-login
