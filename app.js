@@ -1,4 +1,5 @@
 
+// HyperStack Dashboard v6 — with Graph Explorer
 // Rate limiting
 var _rl={};function rlCheck(key,ms){var now=Date.now();if(_rl[key]&&now-_rl[key]<ms)return false;_rl[key]=now;return true}
 const A="https://hyperstack-cloud.vercel.app";let U=null,T=null,DV="start";
@@ -85,6 +86,8 @@ function dt(t){DV=t;document.querySelectorAll(".sbtn").forEach(b=>b.classList.re
   const b=document.getElementById("t-"+t);if(b)b.classList.add("act");
   document.querySelectorAll(".mob-nav button").forEach(b=>b.classList.remove("act"));
   const mb=document.getElementById("mt-"+t);if(mb)mb.classList.add("act");
+  var dc=document.getElementById("dm");if(dc)dc.scrollTop=0;
+  window.scrollTo(0,0);
   renderD()}
 
 function showCode(lang,btn){document.querySelectorAll('[id^="code-"]').forEach(e=>e.classList.add("hidden"));

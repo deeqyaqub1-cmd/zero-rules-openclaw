@@ -209,6 +209,8 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   .demo pre{font-size:.68rem;padding:14px}
   .dh{flex-direction:column;align-items:flex-start;gap:8px}
   .dh .sinput{width:100%}
+  .fifty-grid{grid-template-columns:1fr!important;gap:4px!important;font-size:.8rem!important}
+  .fifty-stats{flex-direction:column!important;align-items:flex-start!important;font-size:.68rem!important}
   #p-docs [style*="repeat(3"]{grid-template-columns:1fr 1fr!important}
   #p-pricing .pgrid{grid-template-columns:1fr!important}
   .card-grid{grid-template-columns:1fr 1fr}
@@ -902,7 +904,7 @@ print(r.json())</pre>
     <!-- What 50 cards gets you -->
     <div style="max-width:700px;margin:32px auto 0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px;text-align:left">
       <div style="font-family:var(--mono);font-size:.7rem;letter-spacing:2px;color:var(--accent);margin-bottom:12px;text-transform:uppercase">What 50 free cards actually gets you</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;font-size:.85rem;line-height:1.7">
+      <div class="fifty-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;font-size:.85rem;line-height:1.7">
         <div><span style="color:var(--accent)">8-10</span> <span style="color:var(--dim)">team member cards</span></div>
         <div><span style="color:var(--accent)">10-15</span> <span style="color:var(--dim)">decision cards</span></div>
         <div><span style="color:var(--accent)">5-8</span> <span style="color:var(--dim)">preference cards</span></div>
@@ -910,7 +912,7 @@ print(r.json())</pre>
         <div><span style="color:var(--accent)">5-10</span> <span style="color:var(--dim)">project &amp; stack cards</span></div>
         <div><span style="color:var(--accent)">1 project</span> <span style="color:var(--dim)">fully covered</span></div>
       </div>
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-family:var(--mono);font-size:.75rem;color:var(--faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <div class="fifty-stats" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-family:var(--mono);font-size:.75rem;color:var(--faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <span>50 cards = <span style="color:var(--accent)">~17,500 tokens</span> of knowledge</span>
         <span>Replaces <span style="color:var(--accent)">~300,000 tokens</span> of history</span>
       </div>
@@ -1275,6 +1277,6 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 });
 </script>
-<script src="app.js?v=6"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>
