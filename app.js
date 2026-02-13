@@ -21,7 +21,8 @@ function go(p){document.querySelectorAll('[id^="p-"]').forEach(e=>e.classList.ad
   document.getElementById("nd").classList.toggle("hidden",!l);
   document.getElementById("no").classList.toggle("hidden",!l);
   document.querySelectorAll('.dash-back-link').forEach(a=>{a.style.display=l?'inline':'none'});
-  if(p==="dash"&&U){DV="start";dt("start")}}
+  if(p==="dash"&&U){DV="start";dt("start")}
+  if(p==="pricing"&&typeof updatePricingButtons==='function'){updatePricingButtons()}}
 
 function heroSignup(){const e=document.getElementById("hero-email").value;
   if(!e||!e.includes("@")){document.getElementById("hero-note").innerHTML='<span style="color:var(--red)">Enter a valid email</span>';return}
@@ -103,7 +104,11 @@ function showPlatform(p,btn){['mcp','openclaw','claude','python','js','curl'].fo
 function renderD(){if(!U)return;
   document.getElementById("d-em").textContent=U.email;
   var planBadges={BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',PRO:'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>',TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'};
-  document.getElementById("d-pt").innerHTML=planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span> <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono)">Upgrade</a>';
+  var upgradeLink='';
+  if(U.plan==='FREE')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono)">Upgrade</a>';
+  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.6rem;color:#60a5fa;font-family:var(--mono)">→ Team</a>';
+  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.6rem;color:var(--green);font-family:var(--mono)">→ Business</a>';
+  document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>')+upgradeLink;
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
 
@@ -1593,7 +1598,13 @@ var _pendingSuccess=false;
     _pendingSuccess=true;
     // Clean the URL so refreshes don't re-trigger
     window.history.replaceState({},document.title,window.location.pathname);
-    // Wait for auto-login to complete, then show success
+    // Check if we have a token — if so, auto-login should work
+    var hasToken=!!localStorage.getItem("hs_t");
+    if(!hasToken){
+      // No token — user needs to log in, _pendingSuccess will redirect after
+      return;
+    }
+    // Wait for auto-login to complete (it runs on DOMContentLoaded)
     var waitForLogin=setInterval(function(){
       if(U&&T){
         clearInterval(waitForLogin);
@@ -1602,26 +1613,42 @@ var _pendingSuccess=false;
         checkSuccess();
       }
     },300);
-    // Safety timeout — if not logged in after 5s, go to login normally
+    // Safety timeout — 10s should be plenty for auto-login
     setTimeout(function(){
       clearInterval(waitForLogin);
-      if(!U){
-        go('login');
-        // _pendingSuccess stays true — doLogin will check it
-      }else{
+      if(U&&T){
         _pendingSuccess=false;
         go('success');
         checkSuccess();
       }
-    },5000);
+      // If still not logged in, _pendingSuccess stays true for doLogin
+    },10000);
   }
 })();
 
 // Helper: open Stripe with prefilled email if logged in
-function stripeGo(url){
+function stripeGo(url,plan){
+  if(U&&U.plan===plan){alert('You are already on the '+plan+' plan!');return}
   if(U&&U.email){
     window.open(url+'?prefilled_email='+encodeURIComponent(U.email),'_blank');
   }else{
     window.open(url,'_blank');
   }
+}
+
+// Update pricing page buttons based on current plan
+function updatePricingButtons(){
+  if(!U)return;
+  var btns=document.querySelectorAll('[data-plan-btn]');
+  btns.forEach(function(btn){
+    var plan=btn.getAttribute('data-plan-btn');
+    if(U.plan===plan){
+      btn.textContent='Current Plan ✓';
+      btn.style.opacity='0.5';
+      btn.style.pointerEvents='none';
+      btn.style.background='var(--surface)';
+      btn.style.color='var(--dim)';
+      btn.style.borderColor='var(--border)';
+    }
+  });
 }
