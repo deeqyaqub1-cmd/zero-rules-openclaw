@@ -691,6 +691,9 @@ function rGraph(el){
   el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">\ud83d\udd17 Context Graph</h1><p id="graph-status">Loading cards...</p></div>
   <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+    <select id="gf-focus" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none;max-width:160px">
+      <option value="">All cards</option>
+    </select>
     <select id="gf-type" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none">
       <option value="">All types</option>
       <option value="person">\ud83d\udc64 person</option><option value="project">\ud83d\udce6 project</option><option value="decision">\u2696\ufe0f decision</option>
@@ -733,7 +736,17 @@ function rGraph(el){
 
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
     var cards=d.cards||[];
-    document.getElementById('graph-status').textContent=cards.length+' cards \u00b7 '+d.plan;
+    var plan=d.plan||'FREE';
+    var limit=plan==='PRO'?500:50;
+    var pct=Math.round(cards.length/limit*100);
+    var statusEl=document.getElementById('graph-status');
+    if(plan==='FREE'&&cards.length>=35){
+      statusEl.innerHTML=cards.length+'/'+limit+' cards <span style="color:var(--red)">'+pct+'% used</span> \u00b7 <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade for unlimited</a>';
+    }else if(plan==='FREE'){
+      statusEl.innerHTML=cards.length+'/'+limit+' cards \u00b7 FREE \u00b7 <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:none;opacity:.6">Upgrade</a>';
+    }else{
+      statusEl.textContent=cards.length+' cards \u00b7 PRO';
+    }
     var nodeMap={},edges=[],linkedSlugs=new Set();
     cards.forEach(function(c){
       nodeMap[c.slug]={slug:c.slug,title:c.title,stack:c.stack,cardType:c.cardType||'general',keywords:c.keywords||[],links:c.links||[],tokens:c.tokens||0,triggeredBy:c.triggeredBy,approvedBy:c.approvedBy,reason:c.reason};
@@ -751,13 +764,20 @@ function rGraph(el){
       document.getElementById('graph-canvas').style.display='none';
       document.getElementById('graph-empty').style.display='block';return;
     }
-    document.getElementById('gf-type').onchange=function(){_gDraw(nodes,edges,this.value,document.getElementById('gf-rel').value)};
-    document.getElementById('gf-rel').onchange=function(){_gDraw(nodes,edges,document.getElementById('gf-type').value,this.value)};
-    requestAnimationFrame(function(){setTimeout(function(){_gDraw(nodes,edges,'','')},60)});
+    // Populate focus dropdown
+    var focusSel=document.getElementById('gf-focus');
+    cards.forEach(function(c){
+      var o=document.createElement('option');o.value=c.slug;o.textContent=(c.cardType?c.cardType[0].toUpperCase()+': ':'')+c.title;focusSel.appendChild(o);
+    });
+    var redraw=function(){_gDraw(nodes,edges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value)};
+    document.getElementById('gf-type').onchange=redraw;
+    document.getElementById('gf-rel').onchange=redraw;
+    document.getElementById('gf-focus').onchange=redraw;
+    requestAnimationFrame(function(){setTimeout(function(){_gDraw(nodes,edges,'','','')},60)});
   }).catch(function(err){var gs=document.getElementById('graph-status');if(gs)gs.textContent='Failed: '+err.message});
 }
 
-function _gDraw(allNodes,allEdges,filterType,filterRel){
+function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
   if(_graphAnim){cancelAnimationFrame(_graphAnim);_graphAnim=null}
   var TC={person:'#a855f7',project:'#3b82f6',decision:'#ff6b2b',preference:'#22c55e',workflow:'#eab308',event:'#f43f5e',account:'#06b6d4',general:'#8888a0'};
   var RC={related:'#8888aa',owns:'#c084fc',decided:'#ff8855',approved:'#4ade80',uses:'#60a5fa',triggers:'#facc15',blocks:'#f87171','depends-on':'#22d3ee',reviews:'#d8b4fe'};
@@ -765,10 +785,25 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
   // Filter
   var edges=allEdges.slice();
   if(filterRel)edges=edges.filter(function(e){return e.relation===filterRel});
+
+  // Focus mode — only show cards connected to the focus card (depth 2)
+  if(focusSlug){
+    var focusSet=new Set([focusSlug]);
+    // Depth 1
+    edges.forEach(function(e){if(e.from===focusSlug)focusSet.add(e.to);if(e.to===focusSlug)focusSet.add(e.from)});
+    // Depth 2
+    var d1=new Set(focusSet);
+    edges.forEach(function(e){if(d1.has(e.from))focusSet.add(e.to);if(d1.has(e.to))focusSet.add(e.from)});
+    edges=edges.filter(function(e){return focusSet.has(e.from)&&focusSet.has(e.to)});
+  }
   var activeSlugs=new Set();
   edges.forEach(function(e){activeSlugs.add(e.from);activeSlugs.add(e.to)});
   var nodes;
-  if(filterType){nodes=allNodes.filter(function(n){return n.cardType===filterType});nodes.forEach(function(n){activeSlugs.add(n.slug)})}
+  if(focusSlug){
+    var allSlugs=new Set(activeSlugs);allSlugs.add(focusSlug);
+    nodes=allNodes.filter(function(n){return allSlugs.has(n.slug)});
+    if(filterType)nodes=nodes.filter(function(n){return n.cardType===filterType||n.slug===focusSlug});
+  }else if(filterType){nodes=allNodes.filter(function(n){return n.cardType===filterType});nodes.forEach(function(n){activeSlugs.add(n.slug)})}
   else if(activeSlugs.size>0){nodes=allNodes.filter(function(n){return activeSlugs.has(n.slug)})}
   else{nodes=allNodes.slice()}
   var nodeSlugs=new Set(nodes.map(function(n){return n.slug}));
@@ -819,39 +854,45 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
 
   // Physics state
   var physics={cooling:1,running:true,tick:0};
+  var pinned={};  // slugs that user dragged — they stay put
   var hovNode=null,selNode=null,dragNode=null,dragStart=null,isPanning=false,panStart=null,camStart=null;
 
   // Live force simulation
   function simulate(){
     if(physics.cooling<0.005){physics.running=false;return}
-    physics.cooling*=0.992;
+    physics.cooling*=0.993;
     physics.tick++;
 
-    // Repulsion (all pairs) — much stronger
+    // Repulsion (all pairs)
     for(var i=0;i<nodes.length;i++){
       for(var j=i+1;j<nodes.length;j++){
         var a=pos[nodes[i].slug],b=pos[nodes[j].slug];
+        if(pinned[nodes[i].slug]&&pinned[nodes[j].slug])continue;
         var dx=b.x-a.x,dy=b.y-a.y,dist=Math.sqrt(dx*dx+dy*dy)||1;
-        var force=3000/(dist*dist)*physics.cooling;
+        var force=2500/(dist*dist)*physics.cooling;
         var fx=dx/dist*force,fy=dy/dist*force;
-        a.vx-=fx;a.vy-=fy;b.vx+=fx;b.vy+=fy;
+        if(!pinned[nodes[i].slug]){a.vx-=fx;a.vy-=fy}
+        if(!pinned[nodes[j].slug]){b.vx+=fx;b.vy+=fy}
       }
     }
-    // Attraction along edges — stronger spring
+    // Attraction along edges
     edges.forEach(function(e){
       var a=pos[e.from],b=pos[e.to];if(!a||!b)return;
       var dx=b.x-a.x,dy=b.y-a.y,dist=Math.sqrt(dx*dx+dy*dy)||1;
-      var ideal=100+nodes.length*8;
-      var force=(dist-ideal)*0.015*physics.cooling;
+      var ideal=110+nodes.length*6;
+      var force=(dist-ideal)*0.012*physics.cooling;
       var fx=dx/dist*force,fy=dy/dist*force;
-      a.vx+=fx;a.vy+=fy;b.vx-=fx;b.vy-=fy;
+      if(!pinned[e.from]){a.vx+=fx;a.vy+=fy}
+      if(!pinned[e.to]){b.vx-=fx;b.vy-=fy}
     });
-    // Centering
+    // Very light centering — only during first 80 ticks, then none
+    var centerForce=physics.tick<80?0.001:0;
     nodes.forEach(function(n){
       var p=pos[n.slug];
-      p.vx+=(0-p.x)*0.002*physics.cooling;
-      p.vy+=(0-p.y)*0.002*physics.cooling;
+      if(pinned[n.slug]){p.vx=0;p.vy=0;return}
       if(dragNode&&dragNode.slug===n.slug)return;
+      p.vx+=(0-p.x)*centerForce*physics.cooling;
+      p.vy+=(0-p.y)*centerForce*physics.cooling;
       p.x+=p.vx;p.y+=p.vy;
       p.vx*=0.82;p.vy*=0.82;
     });
@@ -933,7 +974,8 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
     // Nodes
     nodes.forEach(function(n){
       var p=pos[n.slug],s=toScreen(p.x,p.y);
-      var baseR=nR(n)*cam.z;
+      var isFocus=focusSlug&&n.slug===focusSlug;
+      var baseR=(isFocus?nR(n)*1.3:nR(n))*cam.z;
       var breath=1+Math.sin(breathPhase+n.slug.length*0.7)*0.03;
       var r=baseR*breath;
       var color=TC[n.cardType]||'#8888a0';
@@ -982,6 +1024,16 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
       ctx.font='600 '+tfs+'px "JetBrains Mono"';
       ctx.fillStyle=dim?color+'33':color+'99';
       ctx.fillText(n.cardType,s.x,s.y+r+23*cam.z);
+      // Pin indicator
+      if(pinned[n.slug]){
+        ctx.font='600 '+Math.max(7,9*cam.z)+'px "JetBrains Mono"';
+        ctx.fillStyle='#ffffff66';ctx.fillText('\ud83d\udccc',s.x+r*0.7,s.y-r*0.7);
+      }
+      // Focus ring
+      if(isFocus){
+        ctx.beginPath();ctx.arc(s.x,s.y,r+4*cam.z,0,Math.PI*2);
+        ctx.strokeStyle=color;ctx.lineWidth=2;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+      }
       ctx.globalAlpha=1;
     });
   }
@@ -1035,8 +1087,14 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
         tt.innerHTML='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><div style="width:8px;height:8px;border-radius:50%;background:'+color+';box-shadow:0 0 8px '+color+'"></div><span style="font-family:var(--mono);font-size:.68rem;color:'+color+';font-weight:700">'+node.cardType.toUpperCase()+'</span></div><div style="font-family:var(--mono);font-size:.6rem;color:var(--accent)">'+node.slug+'</div><div style="font-size:.88rem;font-weight:700;color:var(--text);margin:3px 0 6px">'+node.title+'</div><div style="display:flex;gap:8px;font-family:var(--mono);font-size:.58rem;color:var(--dim)"><span>\u2197 '+linkCount+' out</span><span>\u2199 '+inCount+' in</span><span>~'+node.tokens+'t</span></div>'+(node.reason?'<div style="font-size:.68rem;color:var(--dim);margin-top:6px;padding-top:6px;border-top:1px solid var(--border)">'+node.reason.substring(0,100)+'</div>':'');
         var rect=canvas.getBoundingClientRect();
         tt.style.display='block';
-        tt.style.left=Math.min(e.clientX-rect.left+14,W-270)+'px';
-        tt.style.top=Math.min(e.clientY-rect.top+14,H-140)+'px';
+        // Position in corner farthest from the node
+        var nx=e.clientX-rect.left;
+        var ny=e.clientY-rect.top;
+        var ttW=260,ttH=140;
+        if(nx<W/2){tt.style.left=Math.max(W-ttW-12,10)+'px'}
+        else{tt.style.left='12px'}
+        if(ny<H/2){tt.style.top=Math.max(H-ttH-12,10)+'px'}
+        else{tt.style.top='12px'}
       }else{tt.style.display='none'}
     }
   };
@@ -1053,11 +1111,13 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
   };
   canvas.onmouseup=function(e){
     if(dragNode){
-      // Drag only moves — no panel. Just highlight connections.
       var w=evtToWorld(e);
       var moved=dragStart?Math.hypot(w.x-dragStart.x,w.y-dragStart.y):0;
-      if(moved<5){
-        // Tiny move = click — toggle selection highlight (no panel)
+      if(moved>8){
+        // Real drag — pin the node where it was dropped
+        pinned[dragNode.slug]=true;
+      }else{
+        // Tiny move = click — toggle selection highlight
         selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode;
       }
     }
@@ -1152,12 +1212,12 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
         document.getElementById('graph-tooltip').style.display='none';
         _gDetail(selNode,nodes,edges,TC,RC);
       }else{
-        // Single tap = just highlight
         var w2=dragStart;
         if(w2&&dragNode){
           var p=pos[dragNode.slug];
           var moved=Math.hypot(p.x-w2.x,p.y-w2.y);
-          if(moved<10){selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode}
+          if(moved>10){pinned[dragNode.slug]=true}
+          else{selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode}
         }
       }
       lastTapTime=now;
