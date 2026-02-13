@@ -689,8 +689,9 @@ function rGraph(el){
     </select>
     <button class="btn bo bs" onclick="rGraph(document.getElementById('dm'))" style="font-size:.75rem">\u21bb Refresh</button>
   </div></div>
-  <div id="graph-wrap" style="position:relative;background:var(--surface);border:2px solid var(--border);border-radius:14px;overflow:hidden;min-height:500px">
-    <canvas id="graph-canvas" style="width:100%;display:block;cursor:grab"></canvas>
+  <div id="graph-wrap" style="position:relative;background:var(--surface);border:2px solid var(--border);border-radius:14px;overflow:hidden;min-height:400px">
+    <div id="graph-loading" style="text-align:center;padding:60px 20px;color:var(--dim);font-family:var(--mono);font-size:.85rem">Loading graph...</div>
+    <canvas id="graph-canvas" style="width:100%;display:none;cursor:grab"></canvas>
     <div id="graph-empty" style="display:none;text-align:center;padding:60px 20px">
       <div style="font-size:2.5rem;margin-bottom:12px">\ud83d\udd17</div>
       <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">No linked cards yet</h3>
@@ -720,19 +721,19 @@ function rGraph(el){
     if(linkedSlugs.size>0){nodes=Object.values(nodeMap).filter(function(n){return linkedSlugs.has(n.slug)})}
     else{nodes=Object.values(nodeMap)}
     if(nodes.length===0){
-  
+      var gl=document.getElementById('graph-loading');if(gl)gl.style.display='none';
       document.getElementById('graph-canvas').style.display='none';
       document.getElementById('graph-empty').style.display='block';return;
     }
     if(edges.length===0&&nodes.length>0){
-  
+      var gl=document.getElementById('graph-loading');if(gl)gl.style.display='none';
       document.getElementById('graph-canvas').style.display='none';
       document.getElementById('graph-empty').style.display='block';return;
     }
 
     document.getElementById('gf-type').onchange=function(){_gDraw(nodes,edges,this.value,document.getElementById('gf-rel').value)};
     document.getElementById('gf-rel').onchange=function(){_gDraw(nodes,edges,document.getElementById('gf-type').value,this.value)};
-    _gDraw(nodes,edges,'','');
+    requestAnimationFrame(function(){setTimeout(function(){_gDraw(nodes,edges,'','')},50)});
   }).catch(function(err){var gs=document.getElementById('graph-status');if(gs)gs.textContent='Failed: '+err.message});
 }
 
@@ -749,14 +750,16 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
   else{nodes=allNodes.slice()}
   var nodeSlugs=new Set(nodes.map(function(n){return n.slug}));
   edges=edges.filter(function(e){return nodeSlugs.has(e.from)&&nodeSlugs.has(e.to)});
-  if(nodes.length===0){document.getElementById('graph-canvas').style.display='none';document.getElementById('graph-empty').style.display='block';return}
-  document.getElementById('graph-canvas').style.display='block';document.getElementById('graph-empty').style.display='none';
+  if(nodes.length===0){document.getElementById('graph-canvas').style.display='none';document.getElementById('graph-empty').style.display='block';var gl=document.getElementById('graph-loading');if(gl)gl.style.display='none';return}
+  document.getElementById('graph-canvas').style.display='block';document.getElementById('graph-empty').style.display='none';var gl2=document.getElementById('graph-loading');if(gl2)gl2.style.display='none';
 
   var canvas=document.getElementById('graph-canvas');
   var wrap=document.getElementById('graph-wrap');
-  var W=wrap.clientWidth||600;var H=Math.max(450,Math.min(650,nodes.length*35));
+  var W=wrap.clientWidth||wrap.offsetWidth||wrap.parentElement.clientWidth||Math.min(window.innerWidth-32,600);
+  var H=Math.max(350,Math.min(550,Math.max(nodes.length*40,300)));
+  if(W<100)W=Math.min(window.innerWidth-32,600);
   var dpr=window.devicePixelRatio||1;
-  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';canvas.style.width=W+'px';
   var ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
 
   var pos={};
