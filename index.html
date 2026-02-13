@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HyperStack — Cloud Memory for Any AI Agent</title>
-<meta name="description" content="Give any AI agent persistent memory. 50 free cards. Works with any framework. 30 seconds to set up.">
+<meta name="description" content="Give any AI agent persistent memory with typed cards, links, and graph traversal. 50 free cards. Works with any framework. 30 seconds to set up.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -366,7 +366,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 <section class="hero">
   <div class="hero-pill"><span class="dot"></span> Works with any AI agent</div>
   <h1>Your AI agent<br>forgets everything.<br><span class="hl">Fix that in 30 seconds.</span></h1>
-  <p>Give any AI agent persistent cloud memory. 50 cards free forever. No SDK, no vendor lock-in, just a simple API.</p>
+  <p>Give any AI agent persistent cloud memory. Typed cards, linked together, searchable by meaning. 50 cards free forever. No SDK, no vendor lock-in, just a simple API.</p>
 
   <div class="hero-signup">
     <input type="email" id="hero-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')heroSignup()">
@@ -417,7 +417,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The problem</div>
     <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:16px">Every conversation starts from zero</h2>
     <p style="color:var(--dim);font-size:.9rem;line-height:1.7;margin-bottom:20px">Your AI agent helped you pick TypeScript, chose Clerk for auth, and knows Alice owns the backend. But next session? It forgot all of it. So you either <strong style="color:var(--text)">re-explain everything</strong> (slow, annoying) or <strong style="color:var(--text)">paste your entire history into every prompt</strong> (expensive, hits token limits).</p>
-    <p style="color:var(--dim);font-size:.9rem;line-height:1.7;margin-bottom:20px">HyperStack gives your agent a <strong style="color:var(--green)">persistent memory</strong>. Small, structured cards &mdash; like index cards for an AI brain. Your agent stores what it learns, and retrieves only what&rsquo;s relevant next time. No full history dumps. No re-explaining.</p>
+    <p style="color:var(--dim);font-size:.9rem;line-height:1.7;margin-bottom:20px">HyperStack gives your agent a <strong style="color:var(--green)">persistent memory</strong>. Small, structured cards &mdash; like index cards for an AI brain. Type them, link them together, and build a knowledge graph your agent can traverse. No full history dumps. No re-explaining.</p>
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:24px">
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;text-align:left;max-width:300px">
         <div style="font-size:.75rem;color:var(--red);font-family:var(--mono);margin-bottom:6px">&#10007; Without memory</div>
@@ -818,7 +818,9 @@ print(r.json())</pre>
       <tr><td>Auto-capture &amp; auto-recall</td><td class="y">✔ Built-in</td><td>Varies</td></tr>
       <tr><td>Works with</td><td class="y">MCP + SDK + REST + OpenClaw</td><td>Usually 1 platform</td></tr>
       <tr><td>Team sharing</td><td class="y">✔ Up to 20 members</td><td>Rare / enterprise only</td></tr>
-      <tr><td>Structured cards</td><td class="y">✔ Slugs, stacks, keywords</td><td>Unstructured blobs</td></tr>
+      <tr><td>Structured cards</td><td class="y">✔ Slugs, stacks, keywords, types</td><td>Unstructured blobs</td></tr>
+      <tr><td>Card types</td><td class="y">✔ person, project, decision, event&hellip;</td><td>No typing</td></tr>
+      <tr><td>Card links &amp; graph</td><td class="y">✔ Link cards, traverse connections</td><td>Flat storage, no relationships</td></tr>
       <tr><td>PII / secrets redaction</td><td class="y">✔ Built-in rules</td><td>Not enforced</td></tr>
       <tr><td>Setup time</td><td class="hs">30 seconds</td><td>2–10 minutes</td></tr>
       <tr><td>Free tier</td><td class="y">50 cards forever</td><td>Limited or paid only</td></tr>
@@ -948,8 +950,8 @@ print(r.json())</pre>
       <ul>
         <li>50 cards</li>
         <li>1 workspace</li>
-        <li>Full search API</li>
-        <li>94% token savings</li>
+        <li>Full search + graph API</li>
+        <li>Card types &amp; links</li>
         <li>Any agent, any language</li>
       </ul>
       <button onclick="go('signup')" class="btn bo" style="width:100%">Get Free Key →</button>
@@ -1016,6 +1018,8 @@ print(r.json())</pre>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--text)"><strong style="font-family:var(--mono);font-size:.78rem">title</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Human-readable name for the card</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--blue)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--blue)">keywords</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Tags for exact-match search</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--purple)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--purple)">stack</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Category folder (projects, people, etc)</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #fbbf24"><strong style="font-family:var(--mono);font-size:.78rem;color:#fbbf24">cardType</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">person, project, decision, preference, workflow, event, account</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #f87171"><strong style="font-family:var(--mono);font-size:.78rem;color:#f87171">links</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Connect cards by slug &mdash; build a knowledge graph</p></div>
       </div>
     </div>
   </div>
@@ -1035,6 +1039,23 @@ print(r.json())</pre>
       <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #eab308"><strong style="font-family:var(--mono);font-size:.78rem">&#128260; workflows</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Deploy steps, review processes</p></div>
       <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #8585a0"><strong style="font-family:var(--mono);font-size:.78rem">&#128196; general</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Everything else</p></div>
     </div>
+  </div>
+
+  <!-- Context Graph -->
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <span style="font-size:1rem">&#128279;</span>
+      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Context Graph</span>
+      <span style="font-family:var(--mono);font-size:.62rem;color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);padding:1px 8px;border-radius:8px;margin-left:auto">NEW</span>
+    </div>
+    <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin-bottom:12px">Cards aren&rsquo;t flat. They connect. Type your cards, link them together, and traverse the graph.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #fbbf24"><strong style="font-family:var(--mono);font-size:.78rem;color:#fbbf24">Card Types</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">person, project, decision, preference, workflow, event, account. Filter cards by type.</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #f87171"><strong style="font-family:var(--mono);font-size:.78rem;color:#f87171">Card Links</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Connect cards by slug. &ldquo;decision-auth&rdquo; links to &ldquo;team-alice&rdquo; and &ldquo;project-webapp&rdquo;.</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--accent)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--accent)">Link Resolution</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">GET a card &rarr; linked cards resolved automatically with metadata.</p></div>
+      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--green)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--green)">Graph Traversal</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px"><code style="font-size:.65rem">GET /api/graph?from=slug&amp;depth=2</code> &mdash; follow connections up to 3 hops.</p></div>
+    </div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.68rem;color:var(--dim);line-height:1.8"><span style="color:var(--faint)">// Create a typed card with links</span><br>POST /api/cards?workspace=default<br>{<br>&nbsp;&nbsp;<span style="color:#fbbf24">"cardType"</span>: <span style="color:var(--green)">"decision"</span>,<br>&nbsp;&nbsp;<span style="color:#f87171">"links"</span>: [<span style="color:var(--green)">"team-alice"</span>, <span style="color:var(--green)">"project-webapp"</span>],<br>&nbsp;&nbsp;<span style="color:var(--accent)">"slug"</span>: <span style="color:var(--green)">"decision-auth-clerk"</span>,<br>&nbsp;&nbsp;...<br>}</div>
   </div>
 
   <!-- API Reference -->
@@ -1096,15 +1117,15 @@ print(r.json())</pre>
       <div id="faq-list" style="display:grid;gap:0">
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>How does my agent use HyperStack?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Your agent calls the REST API to store and search memories. Before responding, it searches for relevant cards. When it learns something new, it creates or updates a card. This means your agent never forgets context between sessions.</div>
+          <div class="faq-a">Your agent calls the REST API to store and search memories. Cards can be typed (person, decision, project) and linked to other cards by slug. Before responding, the agent searches for relevant cards. When it learns something new, it creates or updates a card. It can also traverse linked cards via the graph API to follow connections between knowledge.</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>What counts as a &ldquo;card&rdquo;?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Any piece of knowledge &mdash; a person&rsquo;s role, a project&rsquo;s tech stack, a decision rationale, your coding preferences. Cards are small (a few lines) and focused on one topic. Think &ldquo;one sticky note = one card.&rdquo;</div>
+          <div class="faq-a">Any piece of knowledge &mdash; a person&rsquo;s role, a project&rsquo;s tech stack, a decision rationale, your coding preferences. Cards are small (a few lines) and focused on one topic. Each card can have a type (person, decision, project, etc) and link to other cards, so your agent builds a connected knowledge graph over time.</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>How is this different from Mem0?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Mem0 calls an LLM internally for every memory operation (~$0.002 each). HyperStack uses pattern matching + pgvector &mdash; $0 per operation. At scale, this saves $200+/month. Plus, you control what gets stored &mdash; no AI deciding behind your back what&rsquo;s &ldquo;important.&rdquo;</div>
+          <div class="faq-q"><span>How is this different from other memory tools?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">Most memory tools store flat text blobs and run LLM calls on your API key for every operation (~$0.002 each). HyperStack stores typed, structured cards with explicit links between them &mdash; and runs embeddings server-side at $0 per operation. You get a searchable knowledge graph, not a bucket of text. At scale, this saves $200+/month. Plus, you control what gets stored.</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>I get &ldquo;Unauthorized&rdquo; when calling the API</span><span class="faq-arrow">&#9662;</span></div>
@@ -1112,7 +1133,7 @@ print(r.json())</pre>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>What fields does a card need?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a"><strong>Required:</strong> slug, title, body. <strong>Optional:</strong> stack (category), keywords (array of tags). If you POST the same slug again, it upserts &mdash; updates the existing card instead of creating a duplicate.</div>
+          <div class="faq-a"><strong>Required:</strong> slug, title, body. <strong>Optional:</strong> stack (category), keywords (tags), cardType (person, project, decision, etc), links (array of card slugs to connect). If you POST the same slug again, it upserts. Use the graph API to traverse linked cards.</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>How does search work?</span><span class="faq-arrow">&#9662;</span></div>
