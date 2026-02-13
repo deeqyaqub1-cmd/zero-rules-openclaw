@@ -19,6 +19,7 @@ function go(p){document.querySelectorAll('[id^="p-"]').forEach(e=>e.classList.ad
   const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);
   document.getElementById("nd").classList.toggle("hidden",!l);
   document.getElementById("no").classList.toggle("hidden",!l);
+  document.querySelectorAll('.dash-back-link').forEach(a=>{a.style.display=l?'inline':'none'});
   if(p==="dash"&&U)renderD()}
 
 function heroSignup(){const e=document.getElementById("hero-email").value;
@@ -703,7 +704,7 @@ function rGraph(el){
     var cards=d.cards||[];
     document.getElementById('graph-status').textContent=cards.length+' cards \u00b7 '+d.plan;
     var nodeMap={},edges=[],linkedSlugs=new Set();
-    console.log('[Graph] Cards loaded:',cards.length);
+
     cards.forEach(function(c){
       nodeMap[c.slug]={slug:c.slug,title:c.title,stack:c.stack,cardType:c.cardType||'general',keywords:c.keywords||[],links:c.links||[],tokens:c.tokens||0,triggeredBy:c.triggeredBy,approvedBy:c.approvedBy,reason:c.reason};
       (c.links||[]).forEach(function(l){
@@ -716,16 +717,16 @@ function rGraph(el){
     if(linkedSlugs.size>0){nodes=Object.values(nodeMap).filter(function(n){return linkedSlugs.has(n.slug)})}
     else{nodes=Object.values(nodeMap)}
     if(nodes.length===0){
-      console.log('[Graph] No nodes found');
+  
       document.getElementById('graph-canvas').style.display='none';
       document.getElementById('graph-empty').style.display='block';return;
     }
     if(edges.length===0&&nodes.length>0){
-      console.log('[Graph] Nodes:',nodes.length,'but no edges');
+  
       document.getElementById('graph-canvas').style.display='none';
       document.getElementById('graph-empty').style.display='block';return;
     }
-    console.log('[Graph] Drawing:',nodes.length,'nodes,',edges.length,'edges');
+
     document.getElementById('gf-type').onchange=function(){_gDraw(nodes,edges,this.value,document.getElementById('gf-rel').value)};
     document.getElementById('gf-rel').onchange=function(){_gDraw(nodes,edges,document.getElementById('gf-type').value,this.value)};
     _gDraw(nodes,edges,'','');

@@ -349,7 +349,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 <nav>
   <div class="logo" onclick="go('landing')"><img src="data:image/webp;base64,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" alt="" width="38" height="38" style="border-radius:8px;flex-shrink:0"> HyperStack</div>
   <div class="navr">
-    <span class="nav-links"><a href="javascript:void(0)" onclick="showLTab('problem',document.querySelectorAll('.ltab')[0]);window.scrollTo({top:document.querySelector('.ltab').offsetTop-20,behavior:'smooth'})">Features</a>
+    <span class="nav-links"><a href="javascript:void(0)" onclick="go('landing');setTimeout(function(){showLTab('problem',document.querySelectorAll('.ltab')[0])},100)">Features</a>
     <a href="javascript:void(0)" onclick="go('pricing')">Pricing</a>
     <a href="javascript:void(0)" onclick="go('docs')">Docs</a></span>
     <button onclick="go('login')" id="nl" class="btn bo bs">Sign In</button>
@@ -415,17 +415,17 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 <section style="padding:50px 0">
   <div style="max-width:680px;margin:0 auto;text-align:center">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The problem</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:16px">Every conversation starts from zero</h2>
-    <p style="color:var(--dim);font-size:.9rem;line-height:1.7;margin-bottom:20px">Your AI agent helped you pick TypeScript, chose Clerk for auth, and knows Alice owns the backend. But next session? It forgot all of it. So you either <strong style="color:var(--text)">re-explain everything</strong> (slow, annoying) or <strong style="color:var(--text)">paste your entire history into every prompt</strong> (expensive, hits token limits).</p>
-    <p style="color:var(--dim);font-size:.9rem;line-height:1.7;margin-bottom:20px">HyperStack gives your agent a <strong style="color:var(--green)">persistent memory</strong>. Small, structured cards &mdash; like index cards for an AI brain. Type them, link them together, and build a knowledge graph your agent can traverse. No full history dumps. No re-explaining.</p>
-    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:24px">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;text-align:left;max-width:300px">
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:20px">Every conversation starts from zero</h2>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;text-align:left;max-width:300px;flex:1;min-width:240px">
         <div style="font-size:.75rem;color:var(--red);font-family:var(--mono);margin-bottom:6px">&#10007; Without memory</div>
-        <p style="font-size:.82rem;color:var(--dim);line-height:1.5">&ldquo;What stack are we using again? Who owns the API? Remind me why we picked Clerk...&rdquo;</p>
+        <p style="font-size:.82rem;color:var(--dim);line-height:1.5">&ldquo;What stack are we using? Who owns the API? Why did we pick Clerk?&rdquo;</p>
+        <p style="font-size:.72rem;color:var(--faint);margin-top:8px;line-height:1.4">Every session = re-explaining everything, or pasting your whole history into the prompt.</p>
       </div>
-      <div style="background:var(--surface);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:16px 20px;text-align:left;max-width:300px">
+      <div style="background:var(--surface);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:16px 20px;text-align:left;max-width:300px;flex:1;min-width:240px">
         <div style="font-size:.75rem;color:var(--green);font-family:var(--mono);margin-bottom:6px">&#10004; With HyperStack</div>
-        <p style="font-size:.82rem;color:var(--dim);line-height:1.5">&ldquo;I see we&rsquo;re using Next.js + Prisma, Alice owns the API, and we chose Clerk for auth last month.&rdquo;</p>
+        <p style="font-size:.82rem;color:var(--dim);line-height:1.5">&ldquo;Next.js + Prisma. Alice owns the API. Clerk for auth since January.&rdquo;</p>
+        <p style="font-size:.72rem;color:var(--green);margin-top:8px;line-height:1.4;opacity:.7">Typed cards. Linked together. One API call.</p>
       </div>
     </div>
   </div>
@@ -991,7 +991,7 @@ print(r.json())</pre>
 <!-- ═══ PRICING PAGE ═══ -->
 <div id="p-pricing" class="hidden">
 <div class="w" style="max-width:780px;padding:40px 24px 80px">
-  <div style="margin-bottom:8px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Back to home</a></div>
+  <div style="margin-bottom:8px;display:flex;gap:16px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Home</a><a onclick="go('dash')" class="dash-back-link" style="cursor:pointer;font-family:var(--mono);font-size:.78rem;color:var(--accent);display:none">&larr; Dashboard</a></div>
 <section id="pricing">
   <div style="text-align:center;margin-bottom:24px">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Pricing</div>
@@ -1050,7 +1050,7 @@ print(r.json())</pre>
 
 <div id="p-docs" class="hidden">
 <div class="w" style="max-width:780px;padding:40px 24px 80px">
-  <div style="margin-bottom:8px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Back to home</a></div>
+  <div style="margin-bottom:8px;display:flex;gap:16px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Home</a><a onclick="go('dash')" class="dash-back-link" style="cursor:pointer;font-family:var(--mono);font-size:.78rem;color:var(--accent);display:none">&larr; Dashboard</a></div>
   
   <div style="text-align:center;margin-bottom:36px">
     <div style="font-family:var(--mono);font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Documentation</div>
@@ -1273,6 +1273,6 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 });
 </script>
-<script src="app.js?v=3"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>
