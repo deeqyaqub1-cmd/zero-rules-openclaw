@@ -669,7 +669,7 @@ function rStats(el){const pro=U.plan==="PRO";
    ═══════════════════════════════════════════ */
 function rGraph(el){
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">\ud83d\udd17 Context Graph</h1><p>Loading cards...</p></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">\ud83d\udd17 Context Graph</h1><p id="graph-status">Loading cards...</p></div>
   <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
     <select id="gf-type" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none">
       <option value="">All types</option>
@@ -701,8 +701,9 @@ function rGraph(el){
 
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
     var cards=d.cards||[];
-    document.querySelector('.dh p').textContent=cards.length+' cards \u00b7 '+d.plan;
+    document.getElementById('graph-status').textContent=cards.length+' cards \u00b7 '+d.plan;
     var nodeMap={},edges=[],linkedSlugs=new Set();
+    console.log('[Graph] Cards loaded:',cards.length);
     cards.forEach(function(c){
       nodeMap[c.slug]={slug:c.slug,title:c.title,stack:c.stack,cardType:c.cardType||'general',keywords:c.keywords||[],links:c.links||[],tokens:c.tokens||0,triggeredBy:c.triggeredBy,approvedBy:c.approvedBy,reason:c.reason};
       (c.links||[]).forEach(function(l){
@@ -715,17 +716,20 @@ function rGraph(el){
     if(linkedSlugs.size>0){nodes=Object.values(nodeMap).filter(function(n){return linkedSlugs.has(n.slug)})}
     else{nodes=Object.values(nodeMap)}
     if(nodes.length===0){
+      console.log('[Graph] No nodes found');
       document.getElementById('graph-canvas').style.display='none';
       document.getElementById('graph-empty').style.display='block';return;
     }
     if(edges.length===0&&nodes.length>0){
+      console.log('[Graph] Nodes:',nodes.length,'but no edges');
       document.getElementById('graph-canvas').style.display='none';
       document.getElementById('graph-empty').style.display='block';return;
     }
+    console.log('[Graph] Drawing:',nodes.length,'nodes,',edges.length,'edges');
     document.getElementById('gf-type').onchange=function(){_gDraw(nodes,edges,this.value,document.getElementById('gf-rel').value)};
     document.getElementById('gf-rel').onchange=function(){_gDraw(nodes,edges,document.getElementById('gf-type').value,this.value)};
     _gDraw(nodes,edges,'','');
-  }).catch(function(err){document.querySelector('.dh p').textContent='Failed: '+err.message});
+  }).catch(function(err){var gs=document.getElementById('graph-status');if(gs)gs.textContent='Failed: '+err.message});
 }
 
 function _gDraw(allNodes,allEdges,filterType,filterRel){
