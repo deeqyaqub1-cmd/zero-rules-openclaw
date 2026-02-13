@@ -213,6 +213,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   .fifty-stats{flex-direction:column!important;align-items:flex-start!important;font-size:.68rem!important}
   #p-docs [style*="repeat(3"]{grid-template-columns:1fr 1fr!important}
   #p-pricing .pgrid{grid-template-columns:1fr!important}
+@media(max-width:800px){#pricing .pc{min-width:0}#pricing>div:nth-child(2){grid-template-columns:1fr 1fr!important}}
   .card-grid{grid-template-columns:1fr 1fr}
   .ob-savings{grid-template-columns:1fr 1fr}
   .ob-save-card .big{font-size:1.4rem}
@@ -370,7 +371,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 <section class="hero">
   <div class="hero-pill"><span class="dot"></span> Works with any AI agent</div>
   <h1>Memory tools store text.<br>We store <span class="hl">a knowledge graph.</span></h1>
-  <p>Your AI agent forgets everything between sessions. HyperStack gives it typed cards, linked with relations, and a graph your agent can traverse. Not flat text &mdash; structured knowledge. 50 cards free forever.</p>
+  <p>Your AI agent forgets everything between sessions. HyperStack gives it typed cards, linked with relations, and a graph your agent can traverse. Not flat text &mdash; structured knowledge. 10 cards free. Graph from $9/mo.</p>
 
   <div class="hero-signup">
     <input type="email" id="hero-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')heroSignup()">
@@ -476,7 +477,33 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 
 <div id="ltab-problem">
 
-<section style="padding:48px 0 56px;position:relative;overflow:hidden" id="card-flow-section">
+<!-- ANIMATED GRAPH TRAVERSAL DEMO -->
+<section style="padding:48px 0 20px;position:relative;overflow:hidden">
+  <div style="text-align:center;margin-bottom:24px;position:relative;z-index:1">
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">See it in action</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.1rem,3.5vw,1.5rem);margin-bottom:10px;line-height:1.3">Watch your agent traverse the graph</h2>
+    <p style="color:var(--dim);font-size:.85rem;max-width:520px;margin:0 auto;line-height:1.5">Your agent asks &ldquo;Why Stripe?&rdquo; &mdash; and follows the links to find who decided, why, and what depends on it.</p>
+  </div>
+
+  <div style="max-width:700px;margin:0 auto;position:relative">
+    <canvas id="demo-graph" style="width:100%;height:360px;border-radius:12px;background:#0a0a0c;border:1px solid var(--border);display:block"></canvas>
+    <!-- Query bar overlay -->
+    <div id="dg-query" style="position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(15,15,18,.9);border:1px solid var(--border);border-radius:20px;padding:6px 16px;font-family:var(--mono);font-size:.72rem;color:var(--faint);backdrop-filter:blur(8px);white-space:nowrap;opacity:0;transition:opacity .5s">
+      <span style="color:var(--accent)">agent:</span> &ldquo;Why are we using Stripe?&rdquo;
+    </div>
+    <!-- Traversal path overlay -->
+    <div id="dg-path" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(15,15,18,.9);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-family:var(--mono);font-size:.66rem;color:var(--dim);backdrop-filter:blur(8px);opacity:0;transition:opacity .5s;text-align:center;max-width:90%"></div>
+    <!-- Replay button -->
+    <button id="dg-replay" onclick="demoGraphPlay()" style="position:absolute;bottom:14px;right:14px;background:rgba(255,107,43,.15);border:1px solid rgba(255,107,43,.3);border-radius:8px;padding:6px 12px;color:var(--accent);font-family:var(--mono);font-size:.65rem;cursor:pointer;display:none;z-index:5">&#8635; Replay</button>
+  </div>
+
+  <div style="text-align:center;margin-top:16px">
+    <p style="font-family:var(--mono);font-size:.72rem;color:var(--faint)">This is what the Graph Explorer does. <a href="javascript:void(0)" onclick="go('pricing')" style="color:var(--accent)">From $9/mo &rarr;</a></p>
+  </div>
+</section>
+
+<!-- EXISTING CARD FLOW DEMO -->
+<section style="padding:28px 0 56px;position:relative;overflow:hidden" id="card-flow-section">
   <!-- Ambient glow -->
   <div id="cf-ambient" style="position:absolute;top:30%;left:50%;width:600px;height:600px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,107,43,.06) 0%,transparent 70%);pointer-events:none;transition:background 1s"></div>
 
@@ -887,7 +914,7 @@ print(r.json())</pre>
         = 35K tokens/day<br>
         &times; 30 days = <strong style="color:var(--green)">1.05M tokens/mo</strong><br>
         &times; $3/M = <strong style="color:var(--green)">$3.15/mo input</strong><br>
-        <span style="font-size:.62rem;color:var(--faint)">+ $15 Pro plan = $18/mo total &mdash; <strong style="color:var(--green)">94% less</strong></span>
+        <span style="font-size:.62rem;color:var(--faint)">+ $9 Starter plan = $12/mo total &mdash; <strong style="color:var(--green)">96% less</strong></span>
       </div>
     </div>
   </div>
@@ -923,8 +950,8 @@ print(r.json())</pre>
       <tr><td>Card links &amp; graph</td><td class="y">✔ Link cards, traverse connections</td><td>Flat storage, no relationships</td></tr>
       <tr><td>PII / secrets redaction</td><td class="y">✔ Built-in rules</td><td>Not enforced</td></tr>
       <tr><td>Setup time</td><td class="hs">30 seconds</td><td>2–10 minutes</td></tr>
-      <tr><td>Free tier</td><td class="y">50 cards forever</td><td>Limited or paid only</td></tr>
-      <tr><td>Pro price</td><td class="hs">$15/mo flat</td><td>$99+/mo usage-based</td></tr>
+      <tr><td>Free tier</td><td class="y">10 cards forever</td><td>Limited or paid only</td></tr>
+      <tr><td>Starter price</td><td class="hs">$9/mo &mdash; graph included</td><td>$99+/mo usage-based</td></tr>
       <tr><td>Funding required</td><td class="hs">$0 — self-funded</td><td>$23M+ in VC</td></tr>
     </tbody>
   </table>
@@ -939,26 +966,23 @@ print(r.json())</pre>
 <section style="padding:40px 0">
   <div style="text-align:center">
     <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:8px">Ready?</h2>
-    <p style="color:var(--dim);font-size:.9rem;margin-bottom:16px">50 cards free. No credit card. 30 seconds.</p>
+    <p style="color:var(--dim);font-size:.9rem;margin-bottom:16px">10 cards free. Graph from $9/mo. No credit card for free tier.</p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <button onclick="go('signup')" class="btn bp">Get Free Key &rarr;</button>
       <button onclick="go('pricing')" class="btn bo">See Pricing</button>
     </div>
 
-    <!-- What 50 cards gets you -->
+    <!-- What 10 free cards gets you -->
     <div style="max-width:480px;margin:32px auto 0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center">
-      <div style="font-family:var(--mono);font-size:.7rem;letter-spacing:2px;color:var(--accent);margin-bottom:14px;text-transform:uppercase">What 50 free cards actually gets you</div>
+      <div style="font-family:var(--mono);font-size:.7rem;letter-spacing:2px;color:var(--accent);margin-bottom:14px;text-transform:uppercase">What 10 free cards gets you</div>
       <div class="fifty-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:.85rem;line-height:1.7;text-align:left;max-width:360px;margin:0 auto">
-        <div><span style="color:var(--accent)">8-10</span> <span style="color:var(--dim)">team members</span></div>
-        <div><span style="color:var(--accent)">10-15</span> <span style="color:var(--dim)">decisions</span></div>
-        <div><span style="color:var(--accent)">5-8</span> <span style="color:var(--dim)">preferences</span></div>
-        <div><span style="color:var(--accent)">5-8</span> <span style="color:var(--dim)">workflows</span></div>
-        <div><span style="color:var(--accent)">5-10</span> <span style="color:var(--dim)">projects</span></div>
-        <div><span style="color:var(--accent)">1 project</span> <span style="color:var(--dim)">fully covered</span></div>
+        <div><span style="color:var(--accent)">2-3</span> <span style="color:var(--dim)">team members</span></div>
+        <div><span style="color:var(--accent)">2-3</span> <span style="color:var(--dim)">decisions</span></div>
+        <div><span style="color:var(--accent)">2-3</span> <span style="color:var(--dim)">preferences</span></div>
+        <div><span style="color:var(--accent)">1-2</span> <span style="color:var(--dim)">projects</span></div>
       </div>
-      <div class="fifty-stats" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-family:var(--mono);font-size:.72rem;color:var(--faint);display:flex;justify-content:center;gap:20px;flex-wrap:wrap">
-        <span>50 cards = <span style="color:var(--accent)">~17,500 tokens</span></span>
-        <span>Replaces <span style="color:var(--accent)">~300,000 tokens</span></span>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-family:var(--mono);font-size:.72rem;color:var(--faint)">
+        <span>Enough to try it. <a href="javascript:void(0)" onclick="go('pricing')" style="color:var(--accent)">$9/mo unlocks graph + 50 cards &rarr;</a></span>
       </div>
     </div>
   </div>
@@ -1043,53 +1067,85 @@ print(r.json())</pre>
 <section id="pricing">
   <div style="text-align:center;margin-bottom:24px">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Pricing</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">Start free. Upgrade when you need superpowers.</h2>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">Start free. Unlock the graph.</h2>
+    <p style="color:var(--dim);font-size:.85rem;margin-top:6px">Graph traversal &amp; visual explorer are paid features &mdash; that&rsquo;s our moat and yours.</p>
   </div>
-  <div class="pgrid">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:900px;margin:0 auto">
+
+    <!-- FREE -->
     <div class="pc">
       <h3>Free</h3>
       <div class="amt">$0</div>
       <div class="per">forever</div>
       <ul>
-        <li>50 cards</li>
+        <li><strong>10 cards</strong></li>
         <li>1 workspace</li>
-        <li>Full search + graph API</li>
+        <li>Keyword search</li>
         <li>Card types &amp; links</li>
-        <li>Any agent, any language</li>
+        <li style="color:var(--faint);text-decoration:line-through">Graph traversal API</li>
+        <li style="color:var(--faint);text-decoration:line-through">Visual graph explorer</li>
       </ul>
-      <button onclick="go('signup')" class="btn bo" style="width:100%">Get Free Key →</button>
+      <button onclick="go('signup')" class="btn bo" style="width:100%">Get Free Key &rarr;</button>
     </div>
+
+    <!-- STARTER -->
     <div class="pc feat">
-      <div class="pc-badge">Most Popular</div>
-      <h3 style="color:var(--accent)">Pro Monthly</h3>
-      <div class="amt">$15 <span>/mo</span></div>
-      <div class="per">billed monthly · cancel anytime</div>
+      <div class="pc-badge">Best for Indies</div>
+      <h3 style="color:var(--accent)">Starter</h3>
+      <div class="amt">$9 <span>/mo</span></div>
+      <div class="per">billed monthly &middot; cancel anytime</div>
       <ul>
-        <li>Everything in Free</li>
-        <li class="pro">Unlimited cards</li>
-        <li class="pro">Unlimited workspaces + sync</li>
-        <li class="pro">Team memory (20 members)</li>
-        <li class="pro">Version history</li>
-        <li class="pro">Analytics dashboard</li>
-        <li class="pro">Priority support</li>
+        <li><strong>50 cards</strong></li>
+        <li>3 workspaces</li>
+        <li>Semantic search</li>
+        <li>Card types &amp; typed links</li>
+        <li class="pro">Graph traversal API &check;</li>
+        <li class="pro">Visual graph explorer &check;</li>
       </ul>
-      <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp" style="width:100%">Get Pro →</a>
+      <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp" style="width:100%">Get Starter &rarr;</a>
     </div>
-    <div class="pc" style="border-color:var(--green)">
-      <div class="pc-badge green">Save 20%</div>
-      <h3 style="color:var(--green)">Pro Yearly</h3>
-      <div class="amt">$144 <span>/yr</span></div>
-      <div class="per">$12/mo · save $36/year</div>
+
+    <!-- PRO -->
+    <div class="pc" style="border-color:#3b82f6">
+      <div class="pc-badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border-color:rgba(59,130,246,.3)">Teams</div>
+      <h3 style="color:#3b82f6">Pro</h3>
+      <div class="amt">$19 <span>/mo</span></div>
+      <div class="per">billed monthly</div>
       <ul>
-        <li>Everything in Pro</li>
-        <li class="pro">Unlimited cards</li>
-        <li class="pro">Unlimited workspaces + sync</li>
-        <li class="pro">Team memory (20 members)</li>
+        <li><strong>300 cards</strong></li>
+        <li>Unlimited workspaces</li>
+        <li>Everything in Starter</li>
+        <li class="pro">3 team API keys</li>
         <li class="pro">Version history</li>
         <li class="pro">Analytics dashboard</li>
-        <li class="pro">Priority support</li>
       </ul>
-      <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="width:100%">Get Pro Yearly →</a>
+      <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bo" style="width:100%;border-color:#3b82f6;color:#3b82f6">Get Pro &rarr;</a>
+    </div>
+
+    <!-- BUSINESS -->
+    <div class="pc" style="border-color:var(--green)">
+      <div class="pc-badge green">Scale</div>
+      <h3 style="color:var(--green)">Business</h3>
+      <div class="amt">$49 <span>/mo</span></div>
+      <div class="per">billed monthly</div>
+      <ul>
+        <li><strong>1,000 cards</strong></li>
+        <li>Unlimited everything</li>
+        <li>Everything in Pro</li>
+        <li class="pro">20 team members</li>
+        <li class="pro">Priority support</li>
+        <li class="pro">Webhook events <em style="font-size:.65rem;color:var(--faint)">(soon)</em></li>
+      </ul>
+      <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg" style="width:100%">Get Business &rarr;</a>
+    </div>
+
+  </div>
+
+  <!-- Feature comparison mini-table -->
+  <div style="max-width:700px;margin:28px auto 0;text-align:center">
+    <div style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-bottom:12px">ALL PLANS INCLUDE: REST API &middot; Any agent &middot; Any language &middot; No SDK required</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:var(--mono);font-size:.72rem;color:var(--dim);display:inline-block">
+      <span style="color:var(--accent)">Graph API</span> is the difference. Free stores cards. <strong style="color:var(--text)">Paid plans traverse them.</strong>
     </div>
   </div>
 </section>
@@ -1251,8 +1307,8 @@ print(r.json())</pre>
           <div class="faq-a">Your cards are stored in a secure PostgreSQL database with pgvector. Only your API key can access your data. We don&rsquo;t read, sell, or train on your cards. HyperStack is self-funded &mdash; no VC pressure to monetize your data.</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>What happens at 50 cards on Free?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">You can still read and search all your cards, but you can&rsquo;t create new ones until you delete some or upgrade to Pro (unlimited cards, unlimited workspaces, team sharing).</div>
+          <div class="faq-q"><span>What happens at 10 cards on Free?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">You can still read and search all your cards, but you can&rsquo;t create new ones until you delete some or upgrade to Starter ($9/mo for 50 cards + graph traversal + visual explorer). The graph API and visual explorer are only available on paid plans.</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>PowerShell: curl doesn&rsquo;t work!</span><span class="faq-arrow">&#9662;</span></div>
@@ -1309,6 +1365,8 @@ function showLTab(id,btn){
   });
   document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('act')});
   if(btn)btn.classList.add('act');
+  // Trigger graph demo when See It In Action tab shown
+  if(id==='problem'&&typeof demoGraphPlay==='function'){setTimeout(demoGraphPlay,100)}
 }
 </script>
 <script>
@@ -1321,6 +1379,6 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 });
 </script>
-<script src="app.js?v=17"></script>
+<script src="app.js?v=21"></script>
 </body>
 </html>

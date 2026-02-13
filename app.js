@@ -101,7 +101,8 @@ function showPlatform(p,btn){['mcp','openclaw','claude','python','js','curl'].fo
 
 function renderD(){if(!U)return;
   document.getElementById("d-em").textContent=U.email;
-  document.getElementById("d-pt").innerHTML=U.plan==="PRO"?'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>':'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>';
+  var planBadges={BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',PRO:'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>',STARTER:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">STARTER</span>'};
+  document.getElementById("d-pt").innerHTML=planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span> <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono)">Upgrade</a>';
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
 
@@ -491,8 +492,8 @@ function rWs(el){const pro=U.plan==="PRO";
       <h3 style="font-family:var(--mono);font-size:.92rem;font-weight:700;margin-bottom:6px">Multiple workspaces require Pro</h3>
       <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Separate workspaces per project so your agent only sees what's relevant. Zero cross-contamination.</p>
       <div style="display:flex;gap:8px;justify-content:center">
-        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp bs">Upgrade to Pro — $15/mo</a>
-        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg bs">Yearly — $12/mo</a>
+        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp bs">Upgrade — $9/mo</a>
+        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg bs">Pro — $19/mo</a>
       </div>
     </div>
   </div>`}`}
@@ -523,8 +524,8 @@ function rTeam(el){const pro=U.plan==="PRO";
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro — $15/mo</a>
-        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg">Yearly — $12/mo</a>
+        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade — $9/mo</a>
+        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg">Pro — $19/mo</a>
       </div>
     </div>
   </div>`;return}
@@ -591,8 +592,8 @@ function rStats(el){const pro=U.plan==="PRO";
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade to Pro — $15/mo</a>
-        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg">Yearly — $12/mo</a>
+        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade — $9/mo</a>
+        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg">Pro — $19/mo</a>
       </div>
     </div>
   </div>`;return}
@@ -669,7 +670,6 @@ function rStats(el){const pro=U.plan==="PRO";
 
 
 /* ═══════════════════════════════════════════
-/* ═══════════════════════════════════════════
    CONTEXT GRAPH — Bubblemaps-style interactive
    ═══════════════════════════════════════════ */
 var _graphAnim=null; // animation frame id
@@ -727,6 +727,31 @@ function rGraph(el){
     <div id="graph-detail" style="display:none;position:absolute;top:12px;right:12px;width:260px;background:rgba(12,12,15,.95);border:2px solid var(--border);border-radius:12px;padding:16px;z-index:10;backdrop-filter:blur(12px);max-height:calc(100% - 24px);overflow-y:auto"></div>
     <div id="graph-legend" style="position:absolute;bottom:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap;z-index:5"></div>
     <div id="graph-stats" style="position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:.6rem;color:var(--faint);z-index:5"></div>
+    <div id="graph-guide" style="position:absolute;top:12px;right:12px;z-index:6">
+      <button onclick="var g=document.getElementById('gg-body');g.style.display=g.style.display==='none'?'block':'none'" style="background:rgba(17,17,20,.9);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:.65rem;backdrop-filter:blur(8px)">? Guide</button>
+      <div id="gg-body" style="display:none;background:rgba(10,10,13,.95);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:4px;width:200px;backdrop-filter:blur(12px)">
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin-bottom:6px;font-weight:700">CONTROLS</div>
+        <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
+          \ud83d\udd18 Drag node \u2192 move &amp; pin<br>
+          \ud83d\udd18 Double-click \u2192 details<br>
+          \ud83d\udd18 Click node \u2192 highlight<br>
+          \ud83d\udd18 Scroll \u2192 zoom<br>
+          \ud83d\udd18 Drag empty \u2192 pan<br>
+        </div>
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">MOBILE</div>
+        <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
+          \u261d\ufe0f Drag \u2192 move or pan<br>
+          \ud83e\udd0f Pinch \u2192 zoom<br>
+          \ud83d\udc46 Double-tap \u2192 details
+        </div>
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">FILTERS</div>
+        <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
+          \ud83c\udfaf Focus \u2192 one card + neighbors<br>
+          \ud83c\udfa8 Type \u2192 persons, projects...<br>
+          \ud83d\udd17 Relation \u2192 owns, triggers...
+        </div>
+      </div>
+    </div>
     <div id="graph-zoom" style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:5">
       <button id="gz-in" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">+</button>
       <button id="gz-out" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">\u2212</button>
@@ -737,15 +762,25 @@ function rGraph(el){
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
     var cards=d.cards||[];
     var plan=d.plan||'FREE';
-    var limit=plan==='PRO'?500:50;
+    var planLimits={FREE:10,STARTER:50,PRO:300,BUSINESS:1000};
+    var limit=planLimits[plan]||10;
     var pct=Math.round(cards.length/limit*100);
     var statusEl=document.getElementById('graph-status');
-    if(plan==='FREE'&&cards.length>=35){
-      statusEl.innerHTML=cards.length+'/'+limit+' cards <span style="color:var(--red)">'+pct+'% used</span> \u00b7 <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade for unlimited</a>';
-    }else if(plan==='FREE'){
-      statusEl.innerHTML=cards.length+'/'+limit+' cards \u00b7 FREE \u00b7 <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:none;opacity:.6">Upgrade</a>';
+
+    // FREE users see upgrade gate over the graph
+    if(plan==='FREE'){
+      statusEl.innerHTML=cards.length+'/'+limit+' cards \u00b7 FREE';
+      var overlay=document.createElement('div');
+      overlay.style.cssText='position:absolute;inset:0;background:rgba(10,10,12,.88);z-index:20;display:flex;align-items:center;justify-content:center;border-radius:12px;backdrop-filter:blur(4px)';
+      overlay.innerHTML='<div style="text-align:center;max-width:320px"><div style="font-size:2rem;margin-bottom:12px">\ud83d\udd12</div><h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--text)">Graph Explorer is a paid feature</h3><p style="font-size:.82rem;color:var(--dim);margin-bottom:16px;line-height:1.5">Upgrade to Starter to unlock graph traversal, visual explorer, and 50 cards.</p><a href="javascript:void(0)" onclick="go(\'pricing\')" class="btn bp" style="font-size:.82rem">Unlock Graph \u2014 $9/mo</a><p style="font-size:.68rem;color:var(--faint);margin-top:10px">Your '+cards.length+' cards are safe. Upgrade adds the graph on top.</p></div>';
+      document.getElementById('graph-wrap').appendChild(overlay);
+      return;
+    }
+
+    if(pct>=70){
+      statusEl.innerHTML=cards.length+'/'+limit+' cards <span style="color:var(--red)">'+pct+'% used</span> \u00b7 '+plan+' \u00b7 <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade</a>';
     }else{
-      statusEl.textContent=cards.length+' cards \u00b7 PRO';
+      statusEl.textContent=cards.length+'/'+limit+' cards \u00b7 '+plan;
     }
     var nodeMap={},edges=[],linkedSlugs=new Set();
     cards.forEach(function(c){
@@ -1262,3 +1297,239 @@ function _gDetail(node,nodes,edges,TC,RC){
 // Auto-login
 (async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
   const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);document.getElementById("nd").classList.toggle("hidden",!l);document.getElementById("no").classList.toggle("hidden",!l)})();
+
+// ═══════════════════════════════════════════════════════
+// ANIMATED GRAPH TRAVERSAL DEMO — landing page
+// ═══════════════════════════════════════════════════════
+
+var _demoTimer=null;
+function demoGraphPlay(){
+  if(_demoTimer){clearTimeout(_demoTimer);_demoTimer=null}
+  var canvas=document.getElementById('demo-graph');
+  if(!canvas)return;
+  var dpr=window.devicePixelRatio||1;
+  var rect=canvas.getBoundingClientRect();
+  var W=rect.width,H=rect.height;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  var ctx=canvas.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  var TC={person:'#a855f7',project:'#3b82f6',decision:'#ff6b2b',preference:'#22c55e'};
+
+  // Demo nodes
+  var nodes=[
+    {id:'use-stripe',label:'Use Stripe',type:'decision',x:W*0.5,y:H*0.32},
+    {id:'alice',label:'Alice (Lead)',type:'person',x:W*0.25,y:H*0.25},
+    {id:'cto',label:'CTO',type:'person',x:W*0.15,y:H*0.55},
+    {id:'saas-mvp',label:'SaaS MVP',type:'project',x:W*0.75,y:H*0.28},
+    {id:'billing-v2',label:'Billing v2',type:'project',x:W*0.72,y:H*0.62},
+    {id:'use-paddle',label:'Rejected: Paddle',type:'decision',x:W*0.42,y:H*0.72},
+    {id:'pref-ts',label:'TypeScript',type:'preference',x:W*0.85,y:H*0.5}
+  ];
+  var edges=[
+    {from:'alice',to:'use-stripe',rel:'decided',color:'#ff8855'},
+    {from:'cto',to:'use-stripe',rel:'approved',color:'#4ade80'},
+    {from:'saas-mvp',to:'use-stripe',rel:'triggers',color:'#facc15'},
+    {from:'billing-v2',to:'use-stripe',rel:'depends-on',color:'#22d3ee'},
+    {from:'use-stripe',to:'use-paddle',rel:'blocks',color:'#f87171'},
+    {from:'saas-mvp',to:'pref-ts',rel:'uses',color:'#60a5fa'},
+    {from:'alice',to:'saas-mvp',rel:'owns',color:'#c084fc'}
+  ];
+
+  // State
+  var activeNodes=new Set();
+  var activeEdges=new Set();
+  var glowPhase=0;
+  var pathText='';
+  var animFrame=null;
+
+  function nMap(id){return nodes.find(function(n){return n.id===id})}
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // Subtle grid
+    ctx.globalAlpha=0.03;ctx.strokeStyle='#ffffff';ctx.lineWidth=1;
+    for(var gx=0;gx<W;gx+=50){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,H);ctx.stroke()}
+    for(var gy=0;gy<H;gy+=50){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke()}
+    ctx.globalAlpha=1;
+
+    glowPhase+=0.04;
+
+    // Edges
+    edges.forEach(function(e,i){
+      var a=nMap(e.from),b=nMap(e.to);if(!a||!b)return;
+      var active=activeEdges.has(i);
+      var mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+      var dx=b.x-a.x,dy=b.y-a.y;
+      var cx=mx-dy*0.08,cy=my+dx*0.08;
+
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(cx,cy,b.x,b.y);
+      ctx.strokeStyle=active?e.color:'#333340';
+      ctx.lineWidth=active?3:1.5;
+      ctx.globalAlpha=active?0.9:0.25;
+      ctx.setLineDash(active?[]:[5,4]);ctx.stroke();ctx.setLineDash([]);
+
+      // Arrow
+      var t=0.72;
+      var ax2=(1-t)*(1-t)*a.x+2*(1-t)*t*cx+t*t*b.x;
+      var ay2=(1-t)*(1-t)*a.y+2*(1-t)*t*cy+t*t*b.y;
+      var tx2=2*(1-t)*(cx-a.x)+2*t*(b.x-cx);
+      var ty2=2*(1-t)*(cy-a.y)+2*t*(b.y-cy);
+      var ang=Math.atan2(ty2,tx2);
+      var sz=active?9:6;
+      ctx.beginPath();
+      ctx.moveTo(ax2+Math.cos(ang)*sz,ay2+Math.sin(ang)*sz);
+      ctx.lineTo(ax2+Math.cos(ang+2.5)*sz*0.6,ay2+Math.sin(ang+2.5)*sz*0.6);
+      ctx.lineTo(ax2+Math.cos(ang-2.5)*sz*0.6,ay2+Math.sin(ang-2.5)*sz*0.6);
+      ctx.closePath();ctx.fillStyle=active?e.color:'#333340';ctx.fill();
+
+      // Label
+      if(active){
+        ctx.globalAlpha=0.85;
+        ctx.font='600 9px "JetBrains Mono",monospace';ctx.textAlign='center';
+        var lw=ctx.measureText(e.rel).width+8;
+        ctx.fillStyle='rgba(10,10,12,.85)';
+        ctx.fillRect(cx-lw/2,cy-8,lw,14);
+        ctx.fillStyle='#fff';ctx.fillText(e.rel,cx,cy+3);
+      }
+      ctx.globalAlpha=1;
+    });
+
+    // Nodes
+    nodes.forEach(function(n){
+      var active=activeNodes.has(n.id);
+      var color=TC[n.type]||'#8888a0';
+      var r=active?22:16;
+      var breath=active?1+Math.sin(glowPhase)*0.06:1;
+      r*=breath;
+
+      // Glow
+      if(active){
+        var g=ctx.createRadialGradient(n.x,n.y,r*0.3,n.x,n.y,r*2);
+        g.addColorStop(0,color+'50');g.addColorStop(1,color+'00');
+        ctx.beginPath();ctx.arc(n.x,n.y,r*2,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+
+        // Pulse ring
+        var pr=r*(1.3+Math.sin(glowPhase*1.5)*0.15);
+        ctx.beginPath();ctx.arc(n.x,n.y,pr,0,Math.PI*2);
+        ctx.strokeStyle=color+'55';ctx.lineWidth=1.5;ctx.stroke();
+      }
+
+      // Ring
+      ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+      ctx.fillStyle=active?color+'20':color+'08';ctx.fill();
+      ctx.strokeStyle=active?color+'cc':color+'33';ctx.lineWidth=active?2.5:1.5;ctx.stroke();
+
+      // Dot
+      ctx.beginPath();ctx.arc(n.x,n.y,r*0.2,0,Math.PI*2);
+      ctx.fillStyle=active?color:color+'44';ctx.fill();
+
+      // Label
+      ctx.globalAlpha=active?1:0.35;
+      ctx.font=(active?'700':'500')+' '+(active?11:9)+'px "JetBrains Mono",monospace';
+      ctx.textAlign='center';ctx.fillStyle=active?'#e8e8ec':'#888';
+      ctx.fillText(n.label,n.x,n.y+r+14);
+
+      // Type badge
+      ctx.font='600 7px "JetBrains Mono",monospace';
+      ctx.fillStyle=active?color+'bb':color+'33';
+      ctx.fillText(n.type,n.x,n.y+r+24);
+      ctx.globalAlpha=1;
+    });
+
+    animFrame=requestAnimationFrame(draw);
+  }
+
+  // Animation sequence
+  var qEl=document.getElementById('dg-query');
+  var pEl=document.getElementById('dg-path');
+  var rEl=document.getElementById('dg-replay');
+  qEl.style.opacity='0';pEl.style.opacity='0';rEl.style.display='none';
+  activeNodes.clear();activeEdges.clear();
+
+  draw();
+
+  function step(delay,fn){_demoTimer=setTimeout(fn,delay)}
+
+  // Step 1: Query appears
+  step(600,function(){
+    qEl.style.opacity='1';
+  });
+
+  // Step 2: Find use-stripe node
+  step(1800,function(){
+    activeNodes.add('use-stripe');
+    pEl.innerHTML='<span style="color:var(--accent)">use-stripe</span> found';
+    pEl.style.opacity='1';
+  });
+
+  // Step 3: Traverse — who decided?
+  step(3000,function(){
+    activeNodes.add('alice');
+    activeEdges.add(0); // alice->use-stripe decided
+    pEl.innerHTML='<span style="color:#a855f7">alice</span> <span style="color:#ff8855">\u2192 decided \u2192</span> <span style="color:var(--accent)">use-stripe</span>';
+  });
+
+  // Step 4: Who approved?
+  step(4200,function(){
+    activeNodes.add('cto');
+    activeEdges.add(1); // cto->use-stripe approved
+    pEl.innerHTML='<span style="color:#a855f7">alice</span> <span style="color:#ff8855">decided</span> \u00b7 <span style="color:#a855f7">cto</span> <span style="color:#4ade80">approved</span>';
+  });
+
+  // Step 5: What triggered it?
+  step(5400,function(){
+    activeNodes.add('saas-mvp');
+    activeEdges.add(2); // saas-mvp->use-stripe triggers
+    pEl.innerHTML='<span style="color:#3b82f6">saas-mvp</span> <span style="color:#facc15">triggered</span> \u2192 <span style="color:#a855f7">alice</span> <span style="color:#ff8855">decided</span> \u2192 <span style="color:#a855f7">cto</span> <span style="color:#4ade80">approved</span>';
+  });
+
+  // Step 6: What depends on it?
+  step(6600,function(){
+    activeNodes.add('billing-v2');
+    activeEdges.add(3); // billing-v2->use-stripe depends-on
+    pEl.innerHTML='Full trail: <span style="color:#3b82f6">saas-mvp</span> \u2192 <span style="color:#a855f7">alice</span> \u2192 <span style="color:#a855f7">cto</span> \u2192 <span style="color:var(--accent)">use-stripe</span> \u2190 <span style="color:#3b82f6">billing-v2</span>';
+  });
+
+  // Step 7: What did it block?
+  step(7800,function(){
+    activeNodes.add('use-paddle');
+    activeEdges.add(4); // use-stripe->use-paddle blocks
+    pEl.innerHTML='<span style="color:var(--accent)">use-stripe</span> <span style="color:#f87171">blocks</span> <span style="color:#ff6b2b">use-paddle</span> \u00b7 Decision trail complete';
+  });
+
+  // Step 8: Light up remaining
+  step(9000,function(){
+    activeNodes.add('pref-ts');
+    activeEdges.add(5);activeEdges.add(6);
+    pEl.innerHTML='\u2705 Full context in <strong style="color:var(--accent)">one API call</strong>. 7 cards, 7 edges, 0 follow-ups.';
+  });
+
+  // Step 9: Show replay
+  step(11000,function(){
+    rEl.style.display='block';
+    if(animFrame)cancelAnimationFrame(animFrame);
+  });
+}
+
+// Auto-play when section becomes visible or tab is shown
+var _demoObserver=null;
+(function initDemo(){
+  var c=document.getElementById('demo-graph');
+  if(!c){setTimeout(initDemo,200);return}
+  // If already visible, play immediately
+  if(c.offsetParent!==null&&c.getBoundingClientRect().width>0){
+    setTimeout(demoGraphPlay,300);
+  }
+  // Also watch for scroll into view
+  if(typeof IntersectionObserver!=='undefined'){
+    _demoObserver=new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting&&entries[0].target.getBoundingClientRect().width>0){
+        demoGraphPlay();_demoObserver.disconnect();
+      }
+    },{threshold:0.2});
+    _demoObserver.observe(c);
+  }
+})();
