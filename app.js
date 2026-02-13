@@ -882,22 +882,51 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
       var sa=toScreen(a.x,a.y),sb=toScreen(b.x,b.y);
       var hi=hovNode&&(hovNode.slug===e.from||hovNode.slug===e.to);
       var si=selNode&&(selNode.slug===e.from||selNode.slug===e.to);
-      var rc=RC[e.relation]||'#555568';
+      var active=hi||si;
+      var dimmed=(hovNode||selNode)&&!active;
+      var rc=RC[e.relation]||'#8888aa';
       var mx=(sa.x+sb.x)/2,my=(sa.y+sb.y)/2;
       var ddx=sb.x-sa.x,ddy=sb.y-sa.y;
       var cx=mx-ddy*0.1,cy=my+ddx*0.1;
+
+      // Line
       ctx.beginPath();ctx.moveTo(sa.x,sa.y);ctx.quadraticCurveTo(cx,cy,sb.x,sb.y);
       ctx.strokeStyle=rc;
-      ctx.lineWidth=(hi||si)?3*cam.z:2*cam.z;
-      ctx.globalAlpha=(hi||si)?0.95:((hovNode||selNode)?0.15:0.5);
-      ctx.setLineDash([(hi||si)?0:6*cam.z,4*cam.z]);ctx.stroke();ctx.setLineDash([]);
-      // Label on hover/select
-      if(hi||si){
-        ctx.globalAlpha=0.9;
-        var fs=Math.max(8,10*cam.z);
-        ctx.font='600 '+fs+'px "JetBrains Mono"';ctx.fillStyle=rc;ctx.textAlign='center';
-        ctx.fillText(e.relation,cx,cy-8*cam.z);
-      }
+      ctx.lineWidth=active?3.5*cam.z:2*cam.z;
+      ctx.globalAlpha=active?1:(dimmed?0.12:0.55);
+      ctx.setLineDash(active?[]:[6*cam.z,4*cam.z]);ctx.stroke();ctx.setLineDash([]);
+
+      // Arrow at target end
+      var t=0.75;
+      var ax=(1-t)*(1-t)*sa.x+2*(1-t)*t*cx+t*t*sb.x;
+      var ay=(1-t)*(1-t)*sa.y+2*(1-t)*t*cy+t*t*sb.y;
+      var tx=2*(1-t)*(cx-sa.x)+2*t*(sb.x-cx);
+      var ty=2*(1-t)*(cy-sa.y)+2*t*(sb.y-cy);
+      var ang=Math.atan2(ty,tx);
+      var arrowSize=(active?10:7)*cam.z;
+      ctx.beginPath();
+      ctx.moveTo(ax+Math.cos(ang)*arrowSize,ay+Math.sin(ang)*arrowSize);
+      ctx.lineTo(ax+Math.cos(ang+2.5)*arrowSize*0.6,ay+Math.sin(ang+2.5)*arrowSize*0.6);
+      ctx.lineTo(ax+Math.cos(ang-2.5)*arrowSize*0.6,ay+Math.sin(ang-2.5)*arrowSize*0.6);
+      ctx.closePath();
+      ctx.fillStyle=rc;
+      ctx.globalAlpha=active?0.9:(dimmed?0.08:0.4);
+      ctx.fill();
+
+      // Relation label — always show, brighter when active
+      var fs=Math.max(7,(active?11:9)*cam.z);
+      ctx.font='600 '+fs+'px "JetBrains Mono"';ctx.textAlign='center';
+      ctx.globalAlpha=active?1:(dimmed?0.08:0.4);
+      // Label background pill
+      var labelW=ctx.measureText(e.relation).width+8*cam.z;
+      var labelH=fs+4*cam.z;
+      ctx.fillStyle='rgba(10,10,12,0.85)';
+      if(ctx.roundRect){ctx.beginPath();ctx.roundRect(cx-labelW/2,cy-labelH/2-2*cam.z,labelW,labelH,4*cam.z);ctx.fill()}
+      else{ctx.fillRect(cx-labelW/2,cy-labelH/2-2*cam.z,labelW,labelH)}
+      // Label text
+      ctx.fillStyle=active?'#ffffff':rc;
+      ctx.fillText(e.relation,cx,cy+fs*0.3-2*cam.z);
+
       ctx.globalAlpha=1;
     });
 
@@ -915,24 +944,24 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
 
       // Glow
       if(hi||si){
-        var glowR=r*1.6;
-        var g=ctx.createRadialGradient(s.x,s.y,r*0.5,s.x,s.y,glowR);
-        g.addColorStop(0,color+'30');g.addColorStop(1,color+'00');
+        var glowR=r*1.8;
+        var g=ctx.createRadialGradient(s.x,s.y,r*0.3,s.x,s.y,glowR);
+        g.addColorStop(0,color+'40');g.addColorStop(1,color+'00');
         ctx.beginPath();ctx.arc(s.x,s.y,glowR,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
       }
 
       // Outer ring
       ctx.beginPath();ctx.arc(s.x,s.y,r,0,Math.PI*2);
-      ctx.fillStyle=dim?'rgba(15,15,18,.7)':color+'12';
+      ctx.fillStyle=dim?color+'08':color+'15';
       ctx.fill();
-      ctx.strokeStyle=dim?'#1a1a1e':color+((hi||si)?'bb':'55');
-      ctx.lineWidth=(hi||si)?2.5:1.5;
+      ctx.strokeStyle=dim?color+'22':color+((hi||si)?'cc':'66');
+      ctx.lineWidth=(hi||si)?3:1.5;
       ctx.stroke();
 
       // Inner dot
-      var dotR=Math.max(3,r*0.18);
+      var dotR=Math.max(3,r*0.2);
       ctx.beginPath();ctx.arc(s.x,s.y,dotR,0,Math.PI*2);
-      ctx.fillStyle=dim?'#22222255':color;ctx.fill();
+      ctx.fillStyle=dim?color+'33':color;ctx.fill();
 
       // Pulse ring for selected
       if(si){
@@ -942,16 +971,16 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
       }
 
       // Labels
-      ctx.globalAlpha=dim?0.12:1;
+      ctx.globalAlpha=dim?0.25:1;
       var fontSize=Math.max(8,((hi||si)?12:10)*cam.z);
       ctx.font='600 '+fontSize+'px "JetBrains Mono"';
-      ctx.fillStyle=dim?'#555568':'#e8e8ec';ctx.textAlign='center';
+      ctx.fillStyle=dim?'#666680':'#e8e8ec';ctx.textAlign='center';
       var label=n.title.length>16?n.title.substring(0,14)+'\u2026':n.title;
       ctx.fillText(label,s.x,s.y+r+13*cam.z);
 
       var tfs=Math.max(6,8*cam.z);
       ctx.font='600 '+tfs+'px "JetBrains Mono"';
-      ctx.fillStyle=dim?'#22222255':color+'88';
+      ctx.fillStyle=dim?color+'33':color+'99';
       ctx.fillText(n.cardType,s.x,s.y+r+23*cam.z);
       ctx.globalAlpha=1;
     });
