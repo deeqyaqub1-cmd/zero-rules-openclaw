@@ -760,7 +760,7 @@ function rGraph(el){
 function _gDraw(allNodes,allEdges,filterType,filterRel){
   if(_graphAnim){cancelAnimationFrame(_graphAnim);_graphAnim=null}
   var TC={person:'#a855f7',project:'#3b82f6',decision:'#ff6b2b',preference:'#22c55e',workflow:'#eab308',event:'#f43f5e',account:'#06b6d4',general:'#8888a0'};
-  var RC={related:'#555568',owns:'#a855f7',decided:'#ff6b2b',approved:'#22c55e',uses:'#3b82f6',triggers:'#eab308',blocks:'#ef4444','depends-on':'#06b6d4',reviews:'#c084fc'};
+  var RC={related:'#8888aa',owns:'#c084fc',decided:'#ff8855',approved:'#4ade80',uses:'#60a5fa',triggers:'#facc15',blocks:'#f87171','depends-on':'#22d3ee',reviews:'#d8b4fe'};
 
   // Filter
   var edges=allEdges.slice();
@@ -823,37 +823,37 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
 
   // Live force simulation
   function simulate(){
-    if(physics.cooling<0.01){physics.running=false;return}
-    physics.cooling*=0.995;
+    if(physics.cooling<0.005){physics.running=false;return}
+    physics.cooling*=0.992;
     physics.tick++;
 
-    // Repulsion (all pairs)
+    // Repulsion (all pairs) — much stronger
     for(var i=0;i<nodes.length;i++){
       for(var j=i+1;j<nodes.length;j++){
         var a=pos[nodes[i].slug],b=pos[nodes[j].slug];
         var dx=b.x-a.x,dy=b.y-a.y,dist=Math.sqrt(dx*dx+dy*dy)||1;
-        var force=1200/(dist*dist)*physics.cooling;
+        var force=3000/(dist*dist)*physics.cooling;
         var fx=dx/dist*force,fy=dy/dist*force;
         a.vx-=fx;a.vy-=fy;b.vx+=fx;b.vy+=fy;
       }
     }
-    // Attraction along edges
+    // Attraction along edges — stronger spring
     edges.forEach(function(e){
       var a=pos[e.from],b=pos[e.to];if(!a||!b)return;
       var dx=b.x-a.x,dy=b.y-a.y,dist=Math.sqrt(dx*dx+dy*dy)||1;
-      var ideal=120+nodes.length*5;
-      var force=(dist-ideal)*0.005*physics.cooling;
+      var ideal=100+nodes.length*8;
+      var force=(dist-ideal)*0.015*physics.cooling;
       var fx=dx/dist*force,fy=dy/dist*force;
       a.vx+=fx;a.vy+=fy;b.vx-=fx;b.vy-=fy;
     });
     // Centering
     nodes.forEach(function(n){
       var p=pos[n.slug];
-      p.vx+=(0-p.x)*0.0008*physics.cooling;
-      p.vy+=(0-p.y)*0.0008*physics.cooling;
+      p.vx+=(0-p.x)*0.002*physics.cooling;
+      p.vy+=(0-p.y)*0.002*physics.cooling;
       if(dragNode&&dragNode.slug===n.slug)return;
       p.x+=p.vx;p.y+=p.vy;
-      p.vx*=0.88;p.vy*=0.88;
+      p.vx*=0.82;p.vy*=0.82;
     });
   }
 
@@ -888,9 +888,9 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
       var cx=mx-ddy*0.1,cy=my+ddx*0.1;
       ctx.beginPath();ctx.moveTo(sa.x,sa.y);ctx.quadraticCurveTo(cx,cy,sb.x,sb.y);
       ctx.strokeStyle=rc;
-      ctx.lineWidth=(hi||si)?2.5*cam.z:1.2*cam.z;
-      ctx.globalAlpha=(hi||si)?0.85:((hovNode||selNode)?0.08:0.25);
-      ctx.setLineDash([(hi||si)?0:5*cam.z,3*cam.z]);ctx.stroke();ctx.setLineDash([]);
+      ctx.lineWidth=(hi||si)?3*cam.z:2*cam.z;
+      ctx.globalAlpha=(hi||si)?0.95:((hovNode||selNode)?0.15:0.5);
+      ctx.setLineDash([(hi||si)?0:6*cam.z,4*cam.z]);ctx.stroke();ctx.setLineDash([]);
       // Label on hover/select
       if(hi||si){
         ctx.globalAlpha=0.9;
@@ -992,14 +992,14 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
     if(dragNode){
       pos[dragNode.slug].x=w.x;pos[dragNode.slug].y=w.y;
       pos[dragNode.slug].vx=0;pos[dragNode.slug].vy=0;
-      physics.cooling=Math.max(physics.cooling,0.05);physics.running=true;
+      physics.cooling=Math.max(physics.cooling,0.3);physics.running=true;
       return;
     }
     var node=hitN(w.x,w.y);
     if(node!==hovNode){
       hovNode=node;canvas.style.cursor=node?'pointer':'grab';
       var tt=document.getElementById('graph-tooltip');
-      if(node){
+      if(node&&!selNode){
         var color=TC[node.cardType]||'#8888a0';
         var linkCount=(node.links||[]).length;
         var inCount=edges.filter(function(e){return e.to===node.slug}).length;
@@ -1024,8 +1024,8 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
   };
   canvas.onmouseup=function(e){
     if(dragNode){
-      var moved=Math.abs(pos[dragNode.slug].vx)+Math.abs(pos[dragNode.slug].vy);
       selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode;
+      document.getElementById('graph-tooltip').style.display='none';
       _gDetail(selNode,nodes,edges,TC,RC);
     }
     if(isPanning&&panStart){
@@ -1099,7 +1099,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
       var w=toWorld(sx,sy);
       pos[dragNode.slug].x=w.x;pos[dragNode.slug].y=w.y;
       pos[dragNode.slug].vx=0;pos[dragNode.slug].vy=0;
-      physics.cooling=Math.max(physics.cooling,0.05);physics.running=true;
+      physics.cooling=Math.max(physics.cooling,0.3);physics.running=true;
     }else if(isPanning&&panStart){
       cam.x=camStart.x+(sx-panStart.x)/cam.z;
       cam.y=camStart.y+(sy-panStart.y)/cam.z;
