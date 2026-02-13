@@ -20,7 +20,7 @@ function go(p){document.querySelectorAll('[id^="p-"]').forEach(e=>e.classList.ad
   document.getElementById("nd").classList.toggle("hidden",!l);
   document.getElementById("no").classList.toggle("hidden",!l);
   document.querySelectorAll('.dash-back-link').forEach(a=>{a.style.display=l?'inline':'none'});
-  if(p==="dash"&&U)renderD()}
+  if(p==="dash"&&U){DV="start";dt("start")}}
 
 function heroSignup(){const e=document.getElementById("hero-email").value;
   if(!e||!e.includes("@")){document.getElementById("hero-note").innerHTML='<span style="color:var(--red)">Enter a valid email</span>';return}
