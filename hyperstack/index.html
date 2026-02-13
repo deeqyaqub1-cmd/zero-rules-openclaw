@@ -437,8 +437,8 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 
   <div style="text-align:center;margin-bottom:36px;position:relative;z-index:1">
     <div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">See it in action</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.3rem,4vw,1.7rem);margin-bottom:10px;line-height:1.3">One question. Three cards. Zero follow-ups.</h2>
-    <p style="color:var(--dim);font-size:.88rem;max-width:520px;margin:0 auto;line-height:1.6">Your agent pulls exactly the cards it needs &mdash; preferences, people, workflows &mdash; and responds in one shot.</p>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.3rem,4vw,1.7rem);margin-bottom:10px;line-height:1.3">One question. Three linked cards. Zero follow-ups.</h2>
+    <p style="color:var(--dim);font-size:.88rem;max-width:520px;margin:0 auto;line-height:1.6">Your agent pulls typed cards, follows the links between them, and responds in one shot.</p>
   </div>
 
   <!-- Mode toggle -->
@@ -473,15 +473,37 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
       </div>
 
       <!-- Three cards -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;padding:0 4px" id="cf-cards-grid">
-        <!-- Card 1: Preferences -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;padding:0 4px;position:relative" id="cf-cards-grid">
+        <!-- SVG connection lines between cards -->
+        <svg id="cf-links-svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible">
+          <defs>
+            <linearGradient id="link-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#a855f7" stop-opacity="0.7"/>
+              <stop offset="50%" stop-color="#ff6b2b" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#22c55e" stop-opacity="0.7"/>
+            </linearGradient>
+            <linearGradient id="link-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#a855f7" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.6"/>
+            </linearGradient>
+            <filter id="link-blur"><feGaussianBlur in="SourceGraphic" stdDeviation="2"/></filter>
+          </defs>
+          <!-- C1 ↔ C2 -->
+          <path id="cf-link-1-2" d="" stroke="url(#link-grad-1)" stroke-width="2" fill="none" stroke-dasharray="6,4" opacity="0" style="transition:opacity .8s"/>
+          <path id="cf-link-1-2-glow" d="" stroke="url(#link-grad-1)" stroke-width="6" fill="none" stroke-dasharray="6,4" opacity="0" filter="url(#link-blur)" style="transition:opacity .8s"/>
+          <!-- C2 ↔ C3 -->
+          <path id="cf-link-2-3" d="" stroke="url(#link-grad-2)" stroke-width="2" fill="none" stroke-dasharray="6,4" opacity="0" style="transition:opacity .8s"/>
+          <path id="cf-link-2-3-glow" d="" stroke="url(#link-grad-2)" stroke-width="6" fill="none" stroke-dasharray="6,4" opacity="0" filter="url(#link-blur)" style="transition:opacity .8s"/>
+        </svg>
+
+        <!-- Card 1: Preferences (preference type, links to alice) -->
         <div id="cf-c1" style="opacity:.08;transform:translateY(24px) scale(.94);transition:all .8s cubic-bezier(.16,1,.3,1)">
           <div style="position:relative">
             <div id="cf-c1-glow" style="position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,#22c55e,#22c55e88,transparent);opacity:0;filter:blur(10px);transition:all 1s;z-index:0"></div>
             <div id="cf-c1-border" style="position:relative;z-index:1;background:#111113;border:2px solid #2a2a2e;border-radius:14px;overflow:hidden;transition:all .7s cubic-bezier(.16,1,.3,1)">
               <div style="padding:10px 14px 8px;border-bottom:1px solid #2a2a2e;display:flex;align-items:center;justify-content:space-between">
                 <div style="display:flex;align-items:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:#22c55e"></div><span style="font-family:var(--mono);font-size:.55rem;color:#555568;letter-spacing:.06em;font-weight:600">&#9881;&#65039; PREFERENCES</span></div>
-                <span style="font-family:var(--mono);font-size:.52rem;color:#555568">~58t</span>
+                <span style="font-family:var(--mono);font-size:.5rem;color:#000;background:#fbbf24;padding:1px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em">preference</span>
               </div>
               <div style="padding:10px 14px 0"><div style="font-family:var(--mono);font-size:.8rem;color:#ff6b2b;font-weight:600">prefers-typescript</div></div>
               <div style="padding:4px 14px 0"><div style="font-size:.84rem;font-weight:600;color:#e8e8ec">TypeScript strict + Zod</div></div>
@@ -492,21 +514,24 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
               </div>
               <div style="padding:8px 14px 0"><div style="font-size:.74rem;color:#8888a0;line-height:1.55;background:#0a0a0b;border:1px solid #2a2a2e;border-radius:6px;padding:8px 10px;white-space:pre-line;min-height:56px">Always TypeScript strict mode.
 Zod for validation. No any types.</div></div>
-              <div id="cf-c1-use" style="padding:8px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
+              <div id="cf-c1-links" style="padding:6px 14px 0;opacity:0;transition:opacity .6s .2s">
+                <div style="display:flex;align-items:center;gap:4px"><span style="font-size:.55rem;color:#555568">&#128279;</span><span style="font-family:var(--mono);font-size:.52rem;color:#a855f7;opacity:.7">team-alice-backend</span></div>
+              </div>
+              <div id="cf-c1-use" style="padding:6px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
                 <div style="font-family:var(--mono);font-size:.68rem;color:#22c55e;font-weight:600;display:flex;align-items:center;gap:4px"><span>&rarr;</span> TypeScript strict with Zod &#10004;</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Card 2: People -->
+        <!-- Card 2: People (person type, links to preferences + workflow) -->
         <div id="cf-c2" style="opacity:.08;transform:translateY(24px) scale(.94);transition:all .8s cubic-bezier(.16,1,.3,1) .05s">
           <div style="position:relative">
             <div id="cf-c2-glow" style="position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,#a855f7,#a855f788,transparent);opacity:0;filter:blur(10px);transition:all 1s;z-index:0"></div>
             <div id="cf-c2-border" style="position:relative;z-index:1;background:#111113;border:2px solid #2a2a2e;border-radius:14px;overflow:hidden;transition:all .7s cubic-bezier(.16,1,.3,1)">
               <div style="padding:10px 14px 8px;border-bottom:1px solid #2a2a2e;display:flex;align-items:center;justify-content:space-between">
                 <div style="display:flex;align-items:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:#a855f7"></div><span style="font-family:var(--mono);font-size:.55rem;color:#555568;letter-spacing:.06em;font-weight:600">&#128100; PEOPLE</span></div>
-                <span style="font-family:var(--mono);font-size:.52rem;color:#555568">~72t</span>
+                <span style="font-family:var(--mono);font-size:.5rem;color:#000;background:#c084fc;padding:1px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em">person</span>
               </div>
               <div style="padding:10px 14px 0"><div style="font-family:var(--mono);font-size:.8rem;color:#ff6b2b;font-weight:600">team-alice-backend</div></div>
               <div style="padding:4px 14px 0"><div style="font-size:.84rem;font-weight:600;color:#e8e8ec">Alice &mdash; Backend Lead</div></div>
@@ -518,21 +543,24 @@ Zod for validation. No any types.</div></div>
               <div style="padding:8px 14px 0"><div style="font-size:.74rem;color:#8888a0;line-height:1.55;background:#0a0a0b;border:1px solid #2a2a2e;border-radius:6px;padding:8px 10px;white-space:pre-line;min-height:56px">Alice owns backend services.
 Review PRs within 24h.
 Prefers async comms.</div></div>
-              <div id="cf-c2-use" style="padding:8px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
+              <div id="cf-c2-links" style="padding:6px 14px 0;opacity:0;transition:opacity .6s .2s">
+                <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap"><span style="font-size:.55rem;color:#555568">&#128279;</span><span style="font-family:var(--mono);font-size:.52rem;color:#22c55e;opacity:.7">prefers-typescript</span><span style="font-family:var(--mono);font-size:.52rem;color:#3b82f6;opacity:.7">deploy-process-prod</span></div>
+              </div>
+              <div id="cf-c2-use" style="padding:6px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
                 <div style="font-family:var(--mono);font-size:.68rem;color:#a855f7;font-weight:600;display:flex;align-items:center;gap:4px"><span>&rarr;</span> PR assigned to Alice &#10004;</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Card 3: Workflows -->
+        <!-- Card 3: Workflows (workflow type, links to alice) -->
         <div id="cf-c3" style="opacity:.08;transform:translateY(24px) scale(.94);transition:all .8s cubic-bezier(.16,1,.3,1) .1s">
           <div style="position:relative">
             <div id="cf-c3-glow" style="position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,#3b82f6,#3b82f688,transparent);opacity:0;filter:blur(10px);transition:all 1s;z-index:0"></div>
             <div id="cf-c3-border" style="position:relative;z-index:1;background:#111113;border:2px solid #2a2a2e;border-radius:14px;overflow:hidden;transition:all .7s cubic-bezier(.16,1,.3,1)">
               <div style="padding:10px 14px 8px;border-bottom:1px solid #2a2a2e;display:flex;align-items:center;justify-content:space-between">
                 <div style="display:flex;align-items:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:#3b82f6"></div><span style="font-family:var(--mono);font-size:.55rem;color:#555568;letter-spacing:.06em;font-weight:600">&#128260; WORKFLOWS</span></div>
-                <span style="font-family:var(--mono);font-size:.52rem;color:#555568">~65t</span>
+                <span style="font-family:var(--mono);font-size:.5rem;color:#000;background:#60a5fa;padding:1px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em">workflow</span>
               </div>
               <div style="padding:10px 14px 0"><div style="font-family:var(--mono);font-size:.8rem;color:#ff6b2b;font-weight:600">deploy-process-prod</div></div>
               <div style="padding:4px 14px 0"><div style="font-size:.84rem;font-weight:600;color:#e8e8ec">Deploy: Production flow</div></div>
@@ -544,7 +572,10 @@ Prefers async comms.</div></div>
               <div style="padding:8px 14px 0"><div style="font-size:.74rem;color:#8888a0;line-height:1.55;background:#0a0a0b;border:1px solid #2a2a2e;border-radius:6px;padding:8px 10px;white-space:pre-line;min-height:56px">PR &rarr; staging auto-deploys &rarr;
 QA signs off in #releases &rarr;
 Merge to main &rarr; prod.</div></div>
-              <div id="cf-c3-use" style="padding:8px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
+              <div id="cf-c3-links" style="padding:6px 14px 0;opacity:0;transition:opacity .6s .2s">
+                <div style="display:flex;align-items:center;gap:4px"><span style="font-size:.55rem;color:#555568">&#128279;</span><span style="font-family:var(--mono);font-size:.52rem;color:#a855f7;opacity:.7">team-alice-backend</span></div>
+              </div>
+              <div id="cf-c3-use" style="padding:6px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
                 <div style="font-family:var(--mono);font-size:.68rem;color:#3b82f6;font-weight:600;display:flex;align-items:center;gap:4px"><span>&rarr;</span> Staging deploy triggered &#10004;</div>
               </div>
             </div>
@@ -564,9 +595,9 @@ Merge to main &rarr; prod.</div></div>
           <div style="font-size:.92rem;color:#e8e8ec;line-height:1.65;margin-top:4px">&ldquo;Created <strong style="color:#22c55e">payments service</strong> in TypeScript strict with Zod validation. PR assigned to <strong style="color:#a855f7">Alice</strong> for backend review. <strong style="color:#3b82f6">Staging auto-deploys</strong> &mdash; I&rsquo;ll ping #releases for QA sign-off.&rdquo;</div>
           <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
             <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">3 cards loaded</span>
+            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">3 cards linked</span>
             <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">~195 tokens</span>
             <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">0 follow-ups</span>
-            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">No LLM calls on your bill</span>
           </div>
         </div>
       </div>
@@ -615,9 +646,32 @@ function cfClear(){cfTimers.forEach(clearTimeout);cfTimers=[];
   [1,2,3].forEach(i=>{const c=document.getElementById('cf-c'+i);c.style.opacity='.08';c.style.transform='translateY(24px) scale(.94)';
     const g=document.getElementById('cf-c'+i+'-glow');g.style.opacity='0';g.style.filter='blur(10px)';
     const b=document.getElementById('cf-c'+i+'-border');b.style.border='2px solid #2a2a2e';b.style.background='#111113';b.style.boxShadow='none';
-    const u=document.getElementById('cf-c'+i+'-use');u.style.opacity='0'});
+    const u=document.getElementById('cf-c'+i+'-use');u.style.opacity='0';
+    const l=document.getElementById('cf-c'+i+'-links');if(l)l.style.opacity='0'});
+  ['cf-link-1-2','cf-link-1-2-glow','cf-link-2-3','cf-link-2-3-glow'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.opacity='0'});
   document.querySelectorAll('.cf-q').forEach(q=>{q.style.opacity='0';q.style.transform='translateY(12px) scale(.97)'});
   document.getElementById('cf-replay').style.display='none'}
+
+function cfDrawLinks(){
+  var grid=document.getElementById('cf-cards-grid');if(!grid)return;
+  var c1=document.getElementById('cf-c1'),c2=document.getElementById('cf-c2'),c3=document.getElementById('cf-c3');
+  if(!c1||!c2||!c3)return;
+  var gRect=grid.getBoundingClientRect();
+  var r1=c1.getBoundingClientRect(),r2=c2.getBoundingClientRect(),r3=c3.getBoundingClientRect();
+  var x1=r1.right-gRect.left,y1=(r1.top+r1.bottom)/2-gRect.top;
+  var x2l=r2.left-gRect.left,x2r=r2.right-gRect.left,y2=(r2.top+r2.bottom)/2-gRect.top;
+  var x3=r3.left-gRect.left,y3=(r3.top+r3.bottom)/2-gRect.top;
+  var cpx1=(x1+x2l)/2,cpx2=(x2r+x3)/2;
+  var d12='M'+x1+','+y1+' C'+cpx1+','+y1+' '+cpx1+','+y2+' '+x2l+','+y2;
+  var d23='M'+x2r+','+y2+' C'+cpx2+','+y2+' '+cpx2+','+y3+' '+x3+','+y3;
+  ['cf-link-1-2','cf-link-1-2-glow'].forEach(id=>{var e=document.getElementById(id);if(e)e.setAttribute('d',d12)});
+  ['cf-link-2-3','cf-link-2-3-glow'].forEach(id=>{var e=document.getElementById(id);if(e)e.setAttribute('d',d23)});
+}
+function cfShowLinks(d){cfTimers.push(setTimeout(function(){
+  cfDrawLinks();
+  ['cf-link-1-2','cf-link-1-2-glow','cf-link-2-3','cf-link-2-3-glow'].forEach(id=>{var e=document.getElementById(id);if(e)e.style.opacity=id.includes('glow')?'0.3':'0.6'});
+  [1,2,3].forEach(i=>{var l=document.getElementById('cf-c'+i+'-links');if(l)l.style.opacity='1'});
+},d))}
 
 function cfShow(id,d){cfTimers.push(setTimeout(()=>{const e=document.getElementById(id);if(e){e.style.opacity='1';e.style.transform='translateY(0) scale(1)'}},d))}
 
@@ -653,11 +707,12 @@ function cfStart(mode){if(cfPlaying)return;cfMode=mode;cfPlaying=true;cfClear();
     cfDeactivateCard(1,5200);cfActivateCard(2,5400,true);
     cfDeactivateCard(2,8000);cfActivateCard(3,8200,true);
     cfDeactivateCard(3,10600);
+    cfShowLinks(10800);
     cfTimers.push(setTimeout(()=>{clearInterval(boltAnim);boltEl.style.opacity='1'},10600));
-    cfShow('cf-conn2',10800);cfShow('cf-response',11200);
+    cfShow('cf-conn2',11400);cfShow('cf-response',11800);
     cfTimers.push(setTimeout(()=>{cfPlaying=false;
       document.getElementById('cf-replay').style.display='flex';
-      var tb=document.getElementById('cf-toggle-btn');tb.textContent='✗ See without';tb.style.background='rgba(239,68,68,.08)';tb.style.borderColor='rgba(239,68,68,.2)';tb.style.color='#ef4444'},13000))
+      var tb=document.getElementById('cf-toggle-btn');tb.textContent='✗ See without';tb.style.background='rgba(239,68,68,.08)';tb.style.borderColor='rgba(239,68,68,.2)';tb.style.color='#ef4444'},13600))
   } else {
     cfShow('cf-warn',2200);
     var qs=document.querySelectorAll('.cf-q');
