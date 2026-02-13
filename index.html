@@ -369,8 +369,8 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 
 <section class="hero">
   <div class="hero-pill"><span class="dot"></span> Works with any AI agent</div>
-  <h1>Your AI agent<br>forgets everything.<br><span class="hl">Fix that in 30 seconds.</span></h1>
-  <p>Give any AI agent persistent cloud memory. Typed cards, linked together, searchable by meaning. 50 cards free forever. No SDK, no vendor lock-in, just a simple API.</p>
+  <h1>Memory tools store text.<br>We store <span class="hl">a knowledge graph.</span></h1>
+  <p>Your AI agent forgets everything between sessions. HyperStack gives it typed cards, linked with relations, and a graph your agent can traverse. Not flat text &mdash; structured knowledge. 50 cards free forever.</p>
 
   <div class="hero-signup">
     <input type="email" id="hero-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')heroSignup()">
@@ -408,32 +408,73 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 </div>
 
 
+<!-- ═══ THE MOAT — right after hero ═══ -->
+<section style="padding:48px 0 20px">
+  <div style="max-width:720px;margin:0 auto;text-align:center">
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Why this changes everything</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,4vw,1.6rem);margin-bottom:8px">Flat memory can&rsquo;t do this</h2>
+    <p style="color:var(--dim);font-size:.85rem;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.5">Every &ldquo;AI memory&rdquo; tool stores flat text and searches by keyword.<br>HyperStack stores <span style="color:var(--accent)">typed cards</span>, <span style="color:var(--accent)">linked with relations</span>, and lets your agent <span style="color:var(--accent)">traverse the graph</span>.</p>
+  </div>
+
+  <div style="max-width:660px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+
+    <!-- Scenario 1: Decision trail -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;overflow:hidden">
+      <div style="font-family:var(--mono);font-size:.66rem;color:var(--red);margin-bottom:6px;letter-spacing:.05em">&#10007; YOUR AGENT TODAY</div>
+      <p style="font-size:.85rem;color:var(--dim);line-height:1.55;margin-bottom:12px">&ldquo;Why are we using Stripe?&rdquo; &mdash; No idea. That decision was 200 conversations ago.</p>
+      <div style="font-family:var(--mono);font-size:.66rem;color:var(--green);margin-bottom:6px;letter-spacing:.05em">&#10004; WITH HYPERSTACK</div>
+      <p style="font-size:.82rem;color:var(--text);line-height:1.5;margin-bottom:10px">One call traces the full decision trail:</p>
+      <div style="background:#0a0a0c;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.7rem;line-height:1.8;overflow-x:auto">
+        <span style="color:var(--accent)">use-stripe</span> <span style="color:#8888aa">&larr; decided &larr;</span> <span style="color:#a855f7">alice</span> <span style="color:#8888aa">&larr; approved &larr;</span> <span style="color:#a855f7">cto</span><br>
+        <span style="color:var(--faint)">reason:</span> <span style="color:var(--dim)">&ldquo;Paddle doesn&rsquo;t support per-seat billing&rdquo;</span>
+      </div>
+    </div>
+
+    <!-- Scenario 2: Impact analysis -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;overflow:hidden">
+      <div style="font-family:var(--mono);font-size:.66rem;color:var(--red);margin-bottom:6px;letter-spacing:.05em">&#10007; YOUR AGENT TODAY</div>
+      <p style="font-size:.85rem;color:var(--dim);line-height:1.55;margin-bottom:12px">&ldquo;If we swap auth providers, what breaks?&rdquo; &mdash; Guesses. Can&rsquo;t see dependencies.</p>
+      <div style="font-family:var(--mono);font-size:.66rem;color:var(--green);margin-bottom:6px;letter-spacing:.05em">&#10004; WITH HYPERSTACK</div>
+      <p style="font-size:.82rem;color:var(--text);line-height:1.5;margin-bottom:10px">Walk the dependency graph:</p>
+      <div style="background:#0a0a0c;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.7rem;line-height:1.8;overflow-x:auto">
+        <span style="color:var(--accent)">GET /api/graph?from=use-clerk&amp;depth=2</span><br>
+        <span style="color:#06b6d4">use-clerk</span> <span style="color:#eab308">&rarr; triggers &rarr;</span> <span style="color:#3b82f6">signup-flow</span><br>
+        <span style="color:#06b6d4">use-clerk</span> <span style="color:#eab308">&rarr; triggers &rarr;</span> <span style="color:#3b82f6">api-middleware</span><br>
+        <span style="color:#3b82f6">api-middleware</span> <span style="color:#ef4444">&rarr; blocks &rarr;</span> <span style="color:#ff6b2b">migrate-to-supabase</span>
+      </div>
+      <p style="font-size:.72rem;color:var(--faint);margin-top:8px;font-family:var(--mono)">3 things break. Your agent knows before you ask.</p>
+    </div>
+
+    <!-- Scenario 3: Who owns what -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;overflow:hidden">
+      <div style="font-family:var(--mono);font-size:.66rem;color:var(--red);margin-bottom:6px;letter-spacing:.05em">&#10007; YOUR AGENT TODAY</div>
+      <p style="font-size:.85rem;color:var(--dim);line-height:1.55;margin-bottom:12px">&ldquo;Who set up the database?&rdquo; &mdash; Can&rsquo;t trace ownership. Memory is just text.</p>
+      <div style="font-family:var(--mono);font-size:.66rem;color:var(--green);margin-bottom:6px;letter-spacing:.05em">&#10004; WITH HYPERSTACK</div>
+      <p style="font-size:.82rem;color:var(--text);line-height:1.5;margin-bottom:10px">Filter by relation:</p>
+      <div style="background:#0a0a0c;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.7rem;line-height:1.8;overflow-x:auto">
+        <span style="color:#a855f7">bob</span> <span style="color:#c084fc">&rarr; owns &rarr;</span> <span style="color:#3b82f6">postgres-schema</span><br>
+        <span style="color:#a855f7">alice</span> <span style="color:#22c55e">&rarr; approved &rarr;</span> <span style="color:#3b82f6">postgres-schema</span>
+      </div>
+      <p style="font-size:.72rem;color:var(--faint);margin-top:8px;font-family:var(--mono)">Bob set it up. Alice signed off. Instant.</p>
+    </div>
+
+  </div>
+
+  <div style="text-align:center;margin-top:24px">
+    <p style="font-family:var(--mono);font-size:.8rem;color:var(--dim);max-width:460px;margin:0 auto 16px">Flat text returns search results. <span style="color:var(--accent)">A knowledge graph returns answers.</span></p>
+    <button onclick="go('signup')" class="btn bp">Get Free Key &rarr;</button>
+  </div>
+</section>
+
+
 <!-- ═══ TAB PILLS ═══ -->
 <div style="display:flex;justify-content:center;gap:8px;padding:24px 24px 8px">
-  <button class="ltab act" onclick="showLTab('problem',this)">The Problem</button>
+  <button class="ltab act" onclick="showLTab('problem',this)">See It In Action</button>
   <button class="ltab" onclick="showLTab('howit',this)">How It Works</button>
   <button class="ltab" onclick="showLTab('compare',this)">Compare</button>
 </div>
 
 <div id="ltab-problem">
-<section style="padding:50px 0">
-  <div style="max-width:680px;margin:0 auto;text-align:center">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The problem</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:20px">Every conversation starts from zero</h2>
-    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;text-align:left;max-width:300px;flex:1;min-width:240px">
-        <div style="font-size:.75rem;color:var(--red);font-family:var(--mono);margin-bottom:6px">&#10007; Without memory</div>
-        <p style="font-size:.82rem;color:var(--dim);line-height:1.5">&ldquo;What stack are we using? Who owns the API? Why did we pick Clerk?&rdquo;</p>
-        <p style="font-size:.72rem;color:var(--faint);margin-top:8px;line-height:1.4">Every session = re-explaining everything, or pasting your whole history into the prompt.</p>
-      </div>
-      <div style="background:var(--surface);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:16px 20px;text-align:left;max-width:300px;flex:1;min-width:240px">
-        <div style="font-size:.75rem;color:var(--green);font-family:var(--mono);margin-bottom:6px">&#10004; With HyperStack</div>
-        <p style="font-size:.82rem;color:var(--dim);line-height:1.5">&ldquo;Next.js + Prisma. Alice owns the API. Clerk for auth since January.&rdquo;</p>
-        <p style="font-size:.72rem;color:var(--green);margin-top:8px;line-height:1.4;opacity:.7">Typed cards. Linked together. One API call.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section style="padding:48px 0 56px;position:relative;overflow:hidden" id="card-flow-section">
   <!-- Ambient glow -->
@@ -892,6 +933,9 @@ print(r.json())</pre>
 
 
 
+
+
+
 <section style="padding:40px 0">
   <div style="text-align:center">
     <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:8px">Ready?</h2>
@@ -1277,6 +1321,6 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 });
 </script>
-<script src="app.js?v=13"></script>
+<script src="app.js?v=16"></script>
 </body>
 </html>

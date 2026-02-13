@@ -819,7 +819,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
 
   // Physics state
   var physics={cooling:1,running:true,tick:0};
-  var hovNode=null,selNode=null,dragNode=null,isPanning=false,panStart=null,camStart=null;
+  var hovNode=null,selNode=null,dragNode=null,dragStart=null,isPanning=false,panStart=null,camStart=null;
 
   // Live force simulation
   function simulate(){
@@ -1043,7 +1043,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
 
   canvas.onmousedown=function(e){
     var w=evtToWorld(e);var node=hitN(w.x,w.y);
-    if(node){dragNode=node;canvas.style.cursor='grabbing'}
+    if(node){dragNode=node;dragStart={x:w.x,y:w.y};canvas.style.cursor='grabbing'}
     else{
       isPanning=true;canvas.style.cursor='grabbing';
       var rect=canvas.getBoundingClientRect();
@@ -1053,9 +1053,13 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
   };
   canvas.onmouseup=function(e){
     if(dragNode){
-      selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode;
-      document.getElementById('graph-tooltip').style.display='none';
-      _gDetail(selNode,nodes,edges,TC,RC);
+      // Drag only moves — no panel. Just highlight connections.
+      var w=evtToWorld(e);
+      var moved=dragStart?Math.hypot(w.x-dragStart.x,w.y-dragStart.y):0;
+      if(moved<5){
+        // Tiny move = click — toggle selection highlight (no panel)
+        selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode;
+      }
     }
     if(isPanning&&panStart){
       var rect=canvas.getBoundingClientRect();
@@ -1064,8 +1068,17 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
       var totalPan=Math.hypot(sx-panStart.x,sy-panStart.y);
       if(totalPan<5){selNode=null;_gDetail(null,nodes,edges,TC,RC)}
     }
-    dragNode=null;isPanning=false;panStart=null;camStart=null;
+    dragNode=null;dragStart=null;isPanning=false;panStart=null;camStart=null;
     canvas.style.cursor='grab';
+  };
+  // Double-click opens detail panel
+  canvas.ondblclick=function(e){
+    var w=evtToWorld(e);var node=hitN(w.x,w.y);
+    if(node){
+      selNode=node;
+      document.getElementById('graph-tooltip').style.display='none';
+      _gDetail(selNode,nodes,edges,TC,RC);
+    }
   };
   canvas.onmouseleave=function(){hovNode=null;dragNode=null;isPanning=false;panStart=null;document.getElementById('graph-tooltip').style.display='none';canvas.style.cursor='grab'};
 
@@ -1084,11 +1097,10 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
   };
 
   // Touch events for mobile
-  var touchNode=null,lastTouchDist=0,lastTouchMid=null;
+  var touchNode=null,lastTouchDist=0,lastTouchMid=null,lastTapTime=0;
   canvas.ontouchstart=function(e){
     e.preventDefault();
     if(e.touches.length===2){
-      // Pinch zoom start
       var dx=e.touches[0].clientX-e.touches[1].clientX;
       var dy=e.touches[0].clientY-e.touches[1].clientY;
       lastTouchDist=Math.hypot(dx,dy);
@@ -1100,7 +1112,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
     var sy=(t.clientY-rect.top)*(H/rect.height);
     var w=toWorld(sx,sy);
     touchNode=hitN(w.x,w.y);
-    if(touchNode){dragNode=touchNode}
+    if(touchNode){dragNode=touchNode;dragStart={x:w.x,y:w.y}}
     else{isPanning=true;panStart={x:sx,y:sy};camStart={x:cam.x,y:cam.y}}
   };
   canvas.ontouchmove=function(e){
@@ -1112,12 +1124,8 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
       var scale=dist/lastTouchDist;
       cam.z=Math.max(0.3,Math.min(3,cam.z*scale));
       lastTouchDist=dist;
-      // Pan with midpoint
       var mid={x:(e.touches[0].clientX+e.touches[1].clientX)/2,y:(e.touches[0].clientY+e.touches[1].clientY)/2};
-      if(lastTouchMid){
-        cam.x+=(mid.x-lastTouchMid.x)/cam.z;
-        cam.y+=(mid.y-lastTouchMid.y)/cam.z;
-      }
+      if(lastTouchMid){cam.x+=(mid.x-lastTouchMid.x)/cam.z;cam.y+=(mid.y-lastTouchMid.y)/cam.z}
       lastTouchMid=mid;
       return;
     }
@@ -1136,8 +1144,25 @@ function _gDraw(allNodes,allEdges,filterType,filterRel){
   };
   canvas.ontouchend=function(e){
     e.preventDefault();
-    if(dragNode){selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode;_gDetail(selNode,nodes,edges,TC,RC)}
-    dragNode=null;touchNode=null;isPanning=false;panStart=null;lastTouchDist=0;lastTouchMid=null;
+    var now=Date.now();
+    if(touchNode){
+      // Double-tap detection
+      if(now-lastTapTime<350){
+        selNode=touchNode;
+        document.getElementById('graph-tooltip').style.display='none';
+        _gDetail(selNode,nodes,edges,TC,RC);
+      }else{
+        // Single tap = just highlight
+        var w2=dragStart;
+        if(w2&&dragNode){
+          var p=pos[dragNode.slug];
+          var moved=Math.hypot(p.x-w2.x,p.y-w2.y);
+          if(moved<10){selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode}
+        }
+      }
+      lastTapTime=now;
+    }
+    dragNode=null;dragStart=null;touchNode=null;isPanning=false;panStart=null;lastTouchDist=0;lastTouchMid=null;
   };
 
   // Zoom buttons
