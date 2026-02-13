@@ -101,7 +101,7 @@ function showPlatform(p,btn){['mcp','openclaw','claude','python','js','curl'].fo
 
 function renderD(){if(!U)return;
   document.getElementById("d-em").textContent=U.email;
-  var planBadges={BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',PRO:'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>',STARTER:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">STARTER</span>'};
+  var planBadges={BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',PRO:'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>',TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'};
   document.getElementById("d-pt").innerHTML=planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span> <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono)">Upgrade</a>';
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
@@ -442,7 +442,7 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
 /* ═══════════════════════════════════════════
    📁 WORKSPACES — Premium display
    ═══════════════════════════════════════════ */
-function rWs(el){const pro=U.plan==="PRO";
+function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📁 Workspaces</h1><p>${pro?'Unlimited workspaces':'1 workspace'} on ${U.plan} plan</p></div></div>
 
@@ -492,8 +492,8 @@ function rWs(el){const pro=U.plan==="PRO";
       <h3 style="font-family:var(--mono);font-size:.92rem;font-weight:700;margin-bottom:6px">Multiple workspaces require Pro</h3>
       <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Separate workspaces per project so your agent only sees what's relevant. Zero cross-contamination.</p>
       <div style="display:flex;gap:8px;justify-content:center">
-        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp bs">Upgrade — $9/mo</a>
-        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg bs">Pro — $19/mo</a>
+        <a href="https://buy.stripe.com/test_cNi3cv5v79Xu1X34hZeUU04" class="btn bp bs">Upgrade — $29/mo</a>
+        <a href="https://buy.stripe.com/test_dRmcN57Df9XucBH01JeUU03" class="btn bg bs">Team — $59/mo</a>
       </div>
     </div>
   </div>`}`}
@@ -501,7 +501,7 @@ function rWs(el){const pro=U.plan==="PRO";
 /* ═══════════════════════════════════════════
    👥 TEAM — Premium display
    ═══════════════════════════════════════════ */
-function rTeam(el){const pro=U.plan==="PRO";
+function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
   <div style="position:relative;margin-bottom:16px">
@@ -524,8 +524,8 @@ function rTeam(el){const pro=U.plan==="PRO";
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade — $9/mo</a>
-        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg">Pro — $19/mo</a>
+        <a href="https://buy.stripe.com/test_cNi3cv5v79Xu1X34hZeUU04" class="btn bp">Upgrade — $29/mo</a>
+        <a href="https://buy.stripe.com/test_dRmcN57Df9XucBH01JeUU03" class="btn bg">Team — $59/mo</a>
       </div>
     </div>
   </div>`;return}
@@ -565,7 +565,7 @@ function rTeam(el){const pro=U.plan==="PRO";
 /* ═══════════════════════════════════════════
    📊 ANALYTICS — Premium display
    ═══════════════════════════════════════════ */
-function rStats(el){const pro=U.plan==="PRO";
+function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Track your agent's memory usage</p></div></div>
   <div style="position:relative;margin-bottom:16px">
@@ -592,8 +592,8 @@ function rStats(el){const pro=U.plan==="PRO";
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="https://buy.stripe.com/dRmcN57Df9XucBH01JeUU03" class="btn bp">Upgrade — $9/mo</a>
-        <a href="https://buy.stripe.com/cNi3cv5v79Xu1X34hZeUU04" class="btn bg">Pro — $19/mo</a>
+        <a href="https://buy.stripe.com/test_cNi3cv5v79Xu1X34hZeUU04" class="btn bp">Upgrade — $29/mo</a>
+        <a href="https://buy.stripe.com/test_dRmcN57Df9XucBH01JeUU03" class="btn bg">Team — $59/mo</a>
       </div>
     </div>
   </div>`;return}
@@ -762,7 +762,7 @@ function rGraph(el){
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
     var cards=d.cards||[];
     var plan=d.plan||'FREE';
-    var planLimits={FREE:10,STARTER:50,PRO:300,BUSINESS:1000};
+    var planLimits={FREE:10,PRO:100,TEAM:500,BUSINESS:2000};
     var limit=planLimits[plan]||10;
     var pct=Math.round(cards.length/limit*100);
     var statusEl=document.getElementById('graph-status');
@@ -772,7 +772,7 @@ function rGraph(el){
       statusEl.innerHTML=cards.length+'/'+limit+' cards \u00b7 FREE';
       var overlay=document.createElement('div');
       overlay.style.cssText='position:absolute;inset:0;background:rgba(10,10,12,.88);z-index:20;display:flex;align-items:center;justify-content:center;border-radius:12px;backdrop-filter:blur(4px)';
-      overlay.innerHTML='<div style="text-align:center;max-width:320px"><div style="font-size:2rem;margin-bottom:12px">\ud83d\udd12</div><h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--text)">Graph Explorer is a paid feature</h3><p style="font-size:.82rem;color:var(--dim);margin-bottom:16px;line-height:1.5">Upgrade to Starter to unlock graph traversal, visual explorer, and 50 cards.</p><a href="javascript:void(0)" onclick="go(\'pricing\')" class="btn bp" style="font-size:.82rem">Unlock Graph \u2014 $9/mo</a><p style="font-size:.68rem;color:var(--faint);margin-top:10px">Your '+cards.length+' cards are safe. Upgrade adds the graph on top.</p></div>';
+      overlay.innerHTML='<div style="text-align:center;max-width:320px"><div style="font-size:2rem;margin-bottom:12px">\ud83d\udd12</div><h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--text)">Graph Explorer is a paid feature</h3><p style="font-size:.82rem;color:var(--dim);margin-bottom:16px;line-height:1.5">Upgrade to Pro to unlock graph traversal, visual explorer, and 100 cards.</p><a href="javascript:void(0)" onclick="go(\'pricing\')" class="btn bp" style="font-size:.82rem">Unlock Graph \u2014 $29/mo</a><p style="font-size:.68rem;color:var(--faint);margin-top:10px">Your '+cards.length+' cards are safe. Upgrade adds the graph on top.</p></div>';
       document.getElementById('graph-wrap').appendChild(overlay);
       return;
     }
@@ -1531,5 +1531,80 @@ var _demoObserver=null;
       }
     },{threshold:0.2});
     _demoObserver.observe(c);
+  }
+})();
+
+// ═══════════════════════════════════════════════════════
+// STRIPE SUCCESS — poll for plan upgrade
+// ═══════════════════════════════════════════════════════
+
+function checkSuccess(){
+  if(!U||!T)return;
+  var loading=document.getElementById('success-loading');
+  var done=document.getElementById('success-done');
+  var err=document.getElementById('success-error');
+  var planEl=document.getElementById('success-plan');
+  var cardsEl=document.getElementById('success-cards');
+  var attempts=0;
+  var maxAttempts=12; // 12 x 3s = 36 seconds
+
+  function poll(){
+    attempts++;
+    fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+T}})
+      .then(function(r){return r.json()})
+      .then(function(d){
+        if(d.user&&d.user.plan&&d.user.plan!=="FREE"){
+          // Plan upgraded!
+          U=d.user;adminCheck();
+          var plan=U.plan;
+          var cardLimits={PRO:100,TEAM:500,BUSINESS:2000};
+          planEl.textContent=plan.charAt(0)+plan.slice(1).toLowerCase();
+          planEl.style.color=plan==='BUSINESS'?'var(--green)':plan==='TEAM'?'#60a5fa':'var(--accent)';
+          cardsEl.textContent=cardLimits[plan]||100;
+          loading.style.display='none';
+          done.style.display='block';
+        }else if(attempts>=maxAttempts){
+          // Timeout — show fallback
+          loading.style.display='none';
+          err.style.display='block';
+        }else{
+          setTimeout(poll,3000);
+        }
+      })
+      .catch(function(){
+        if(attempts>=maxAttempts){
+          loading.style.display='none';
+          err.style.display='block';
+        }else{
+          setTimeout(poll,3000);
+        }
+      });
+  }
+
+  setTimeout(poll,2000); // Wait 2s before first poll
+}
+
+// Detect ?success=true in URL and route to success page
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  if(params.get('success')==='true'){
+    // Wait for auto-login to complete, then show success
+    var waitForLogin=setInterval(function(){
+      if(U&&T){
+        clearInterval(waitForLogin);
+        go('success');
+        checkSuccess();
+      }
+    },300);
+    // Safety timeout — if not logged in after 5s, show success anyway
+    setTimeout(function(){
+      clearInterval(waitForLogin);
+      if(!U){
+        go('login');
+      }else{
+        go('success');
+        checkSuccess();
+      }
+    },5000);
   }
 })();
