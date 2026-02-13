@@ -41,7 +41,8 @@ async function doLogin(){if(!rlCheck("login",3000)){return}const e=document.getE
   er.classList.add("hidden");if(!e||!p){er.textContent="Fill in all fields";er.classList.remove("hidden");return}
   try{const r=await fetch(A+"/api/auth?action=login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e,password:p})});
     const d=await r.json();if(!r.ok){er.textContent=d.error||"Failed";er.classList.remove("hidden");return}
-    U=d.user;T=d.token;adminCheck();localStorage.setItem("hs_t",d.token);go("dash")}
+    U=d.user;T=d.token;adminCheck();localStorage.setItem("hs_t",d.token);
+    if(typeof _pendingSuccess!=='undefined'&&_pendingSuccess){_pendingSuccess=false;go('success');checkSuccess()}else{go("dash")}}
   catch(err){er.textContent="Cannot connect to server. Try again.";er.classList.remove("hidden")}}
 
 async function doForgot(){if(!rlCheck("forgot",30000)){document.getElementById("fp-err").textContent="Please wait 30 seconds between attempts.";document.getElementById("fp-err").classList.remove("hidden");return}
@@ -1585,23 +1586,30 @@ function checkSuccess(){
 }
 
 // Detect ?success=true in URL and route to success page
+var _pendingSuccess=false;
 (function(){
   var params=new URLSearchParams(window.location.search);
   if(params.get('success')==='true'){
+    _pendingSuccess=true;
+    // Clean the URL so refreshes don't re-trigger
+    window.history.replaceState({},document.title,window.location.pathname);
     // Wait for auto-login to complete, then show success
     var waitForLogin=setInterval(function(){
       if(U&&T){
         clearInterval(waitForLogin);
+        _pendingSuccess=false;
         go('success');
         checkSuccess();
       }
     },300);
-    // Safety timeout — if not logged in after 5s, show success anyway
+    // Safety timeout — if not logged in after 5s, go to login normally
     setTimeout(function(){
       clearInterval(waitForLogin);
       if(!U){
         go('login');
+        // _pendingSuccess stays true — doLogin will check it
       }else{
+        _pendingSuccess=false;
         go('success');
         checkSuccess();
       }
