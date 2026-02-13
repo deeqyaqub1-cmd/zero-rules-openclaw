@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HyperStack — Cloud Memory for Any AI Agent</title>
-<meta name="description" content="Give any AI agent persistent memory with typed cards, links, and graph traversal. 50 free cards. Works with any framework. 30 seconds to set up.">
+<meta name="description" content="Give any AI agent persistent memory. 50 free cards. Works with any framework. 30 seconds to set up.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -341,7 +341,6 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 .ltab.act{background:rgba(255,107,43,.1);border-color:var(--accent);color:var(--accent);font-weight:700;box-shadow:0 0 12px rgba(255,107,43,.08)}
 @media(max-width:700px){.ltab{font-size:.72rem;padding:8px 16px}}
 </style>
-<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -366,7 +365,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 <section class="hero">
   <div class="hero-pill"><span class="dot"></span> Works with any AI agent</div>
   <h1>Your AI agent<br>forgets everything.<br><span class="hl">Fix that in 30 seconds.</span></h1>
-  <p>Give any AI agent persistent cloud memory. Typed cards, linked together, searchable by meaning. 50 cards free forever. No SDK, no vendor lock-in, just a simple API.</p>
+  <p>Give any AI agent persistent cloud memory. 50 cards free forever. No SDK, no vendor lock-in, just a simple API.</p>
 
   <div class="hero-signup">
     <input type="email" id="hero-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')heroSignup()">
@@ -417,7 +416,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The problem</div>
     <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:16px">Every conversation starts from zero</h2>
     <p style="color:var(--dim);font-size:.9rem;line-height:1.7;margin-bottom:20px">Your AI agent helped you pick TypeScript, chose Clerk for auth, and knows Alice owns the backend. But next session? It forgot all of it. So you either <strong style="color:var(--text)">re-explain everything</strong> (slow, annoying) or <strong style="color:var(--text)">paste your entire history into every prompt</strong> (expensive, hits token limits).</p>
-    <p style="color:var(--dim);font-size:.9rem;line-height:1.7;margin-bottom:20px">HyperStack gives your agent a <strong style="color:var(--green)">persistent memory</strong>. Small, structured cards &mdash; like index cards for an AI brain. Type them, link them together, and build a knowledge graph your agent can traverse. No full history dumps. No re-explaining.</p>
+    <p style="color:var(--dim);font-size:.9rem;line-height:1.7;margin-bottom:20px">HyperStack gives your agent a <strong style="color:var(--green)">persistent memory</strong>. Small, structured cards &mdash; like index cards for an AI brain. Your agent stores what it learns, and retrieves only what&rsquo;s relevant next time. No full history dumps. No re-explaining.</p>
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:24px">
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;text-align:left;max-width:300px">
         <div style="font-size:.75rem;color:var(--red);font-family:var(--mono);margin-bottom:6px">&#10007; Without memory</div>
@@ -437,8 +436,8 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 
   <div style="text-align:center;margin-bottom:36px;position:relative;z-index:1">
     <div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">See it in action</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.3rem,4vw,1.7rem);margin-bottom:10px;line-height:1.3">One question. Three linked cards. Zero follow-ups.</h2>
-    <p style="color:var(--dim);font-size:.88rem;max-width:520px;margin:0 auto;line-height:1.6">Your agent pulls typed cards, follows the links between them, and responds in one shot.</p>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.3rem,4vw,1.7rem);margin-bottom:10px;line-height:1.3">One question. Three cards. Zero follow-ups.</h2>
+    <p style="color:var(--dim);font-size:.88rem;max-width:520px;margin:0 auto;line-height:1.6">Your agent pulls exactly the cards it needs &mdash; preferences, people, workflows &mdash; and responds in one shot.</p>
   </div>
 
   <!-- Mode toggle -->
@@ -473,37 +472,15 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
       </div>
 
       <!-- Three cards -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;padding:0 4px;position:relative" id="cf-cards-grid">
-        <!-- SVG connection lines between cards -->
-        <svg id="cf-links-svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible">
-          <defs>
-            <linearGradient id="link-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#a855f7" stop-opacity="0.7"/>
-              <stop offset="50%" stop-color="#ff6b2b" stop-opacity="0.9"/>
-              <stop offset="100%" stop-color="#22c55e" stop-opacity="0.7"/>
-            </linearGradient>
-            <linearGradient id="link-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#a855f7" stop-opacity="0.6"/>
-              <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.6"/>
-            </linearGradient>
-            <filter id="link-blur"><feGaussianBlur in="SourceGraphic" stdDeviation="2"/></filter>
-          </defs>
-          <!-- C1 ↔ C2 -->
-          <path id="cf-link-1-2" d="" stroke="url(#link-grad-1)" stroke-width="2" fill="none" stroke-dasharray="6,4" opacity="0" style="transition:opacity .8s"/>
-          <path id="cf-link-1-2-glow" d="" stroke="url(#link-grad-1)" stroke-width="6" fill="none" stroke-dasharray="6,4" opacity="0" filter="url(#link-blur)" style="transition:opacity .8s"/>
-          <!-- C2 ↔ C3 -->
-          <path id="cf-link-2-3" d="" stroke="url(#link-grad-2)" stroke-width="2" fill="none" stroke-dasharray="6,4" opacity="0" style="transition:opacity .8s"/>
-          <path id="cf-link-2-3-glow" d="" stroke="url(#link-grad-2)" stroke-width="6" fill="none" stroke-dasharray="6,4" opacity="0" filter="url(#link-blur)" style="transition:opacity .8s"/>
-        </svg>
-
-        <!-- Card 1: Preferences (preference type, links to alice) -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;padding:0 4px" id="cf-cards-grid">
+        <!-- Card 1: Preferences -->
         <div id="cf-c1" style="opacity:.08;transform:translateY(24px) scale(.94);transition:all .8s cubic-bezier(.16,1,.3,1)">
           <div style="position:relative">
             <div id="cf-c1-glow" style="position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,#22c55e,#22c55e88,transparent);opacity:0;filter:blur(10px);transition:all 1s;z-index:0"></div>
             <div id="cf-c1-border" style="position:relative;z-index:1;background:#111113;border:2px solid #2a2a2e;border-radius:14px;overflow:hidden;transition:all .7s cubic-bezier(.16,1,.3,1)">
               <div style="padding:10px 14px 8px;border-bottom:1px solid #2a2a2e;display:flex;align-items:center;justify-content:space-between">
                 <div style="display:flex;align-items:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:#22c55e"></div><span style="font-family:var(--mono);font-size:.55rem;color:#555568;letter-spacing:.06em;font-weight:600">&#9881;&#65039; PREFERENCES</span></div>
-                <span style="font-family:var(--mono);font-size:.5rem;color:#000;background:#fbbf24;padding:1px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em">preference</span>
+                <span style="font-family:var(--mono);font-size:.52rem;color:#555568">~58t</span>
               </div>
               <div style="padding:10px 14px 0"><div style="font-family:var(--mono);font-size:.8rem;color:#ff6b2b;font-weight:600">prefers-typescript</div></div>
               <div style="padding:4px 14px 0"><div style="font-size:.84rem;font-weight:600;color:#e8e8ec">TypeScript strict + Zod</div></div>
@@ -514,24 +491,21 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
               </div>
               <div style="padding:8px 14px 0"><div style="font-size:.74rem;color:#8888a0;line-height:1.55;background:#0a0a0b;border:1px solid #2a2a2e;border-radius:6px;padding:8px 10px;white-space:pre-line;min-height:56px">Always TypeScript strict mode.
 Zod for validation. No any types.</div></div>
-              <div id="cf-c1-links" style="padding:6px 14px 0;opacity:0;transition:opacity .6s .2s">
-                <div style="display:flex;align-items:center;gap:4px"><span style="font-size:.55rem;color:#555568">&#128279;</span><span style="font-family:var(--mono);font-size:.52rem;color:#a855f7;opacity:.7">team-alice-backend</span></div>
-              </div>
-              <div id="cf-c1-use" style="padding:6px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
+              <div id="cf-c1-use" style="padding:8px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
                 <div style="font-family:var(--mono);font-size:.68rem;color:#22c55e;font-weight:600;display:flex;align-items:center;gap:4px"><span>&rarr;</span> TypeScript strict with Zod &#10004;</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Card 2: People (person type, links to preferences + workflow) -->
+        <!-- Card 2: People -->
         <div id="cf-c2" style="opacity:.08;transform:translateY(24px) scale(.94);transition:all .8s cubic-bezier(.16,1,.3,1) .05s">
           <div style="position:relative">
             <div id="cf-c2-glow" style="position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,#a855f7,#a855f788,transparent);opacity:0;filter:blur(10px);transition:all 1s;z-index:0"></div>
             <div id="cf-c2-border" style="position:relative;z-index:1;background:#111113;border:2px solid #2a2a2e;border-radius:14px;overflow:hidden;transition:all .7s cubic-bezier(.16,1,.3,1)">
               <div style="padding:10px 14px 8px;border-bottom:1px solid #2a2a2e;display:flex;align-items:center;justify-content:space-between">
                 <div style="display:flex;align-items:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:#a855f7"></div><span style="font-family:var(--mono);font-size:.55rem;color:#555568;letter-spacing:.06em;font-weight:600">&#128100; PEOPLE</span></div>
-                <span style="font-family:var(--mono);font-size:.5rem;color:#000;background:#c084fc;padding:1px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em">person</span>
+                <span style="font-family:var(--mono);font-size:.52rem;color:#555568">~72t</span>
               </div>
               <div style="padding:10px 14px 0"><div style="font-family:var(--mono);font-size:.8rem;color:#ff6b2b;font-weight:600">team-alice-backend</div></div>
               <div style="padding:4px 14px 0"><div style="font-size:.84rem;font-weight:600;color:#e8e8ec">Alice &mdash; Backend Lead</div></div>
@@ -543,24 +517,21 @@ Zod for validation. No any types.</div></div>
               <div style="padding:8px 14px 0"><div style="font-size:.74rem;color:#8888a0;line-height:1.55;background:#0a0a0b;border:1px solid #2a2a2e;border-radius:6px;padding:8px 10px;white-space:pre-line;min-height:56px">Alice owns backend services.
 Review PRs within 24h.
 Prefers async comms.</div></div>
-              <div id="cf-c2-links" style="padding:6px 14px 0;opacity:0;transition:opacity .6s .2s">
-                <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap"><span style="font-size:.55rem;color:#555568">&#128279;</span><span style="font-family:var(--mono);font-size:.52rem;color:#22c55e;opacity:.7">prefers-typescript</span><span style="font-family:var(--mono);font-size:.52rem;color:#3b82f6;opacity:.7">deploy-process-prod</span></div>
-              </div>
-              <div id="cf-c2-use" style="padding:6px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
+              <div id="cf-c2-use" style="padding:8px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
                 <div style="font-family:var(--mono);font-size:.68rem;color:#a855f7;font-weight:600;display:flex;align-items:center;gap:4px"><span>&rarr;</span> PR assigned to Alice &#10004;</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Card 3: Workflows (workflow type, links to alice) -->
+        <!-- Card 3: Workflows -->
         <div id="cf-c3" style="opacity:.08;transform:translateY(24px) scale(.94);transition:all .8s cubic-bezier(.16,1,.3,1) .1s">
           <div style="position:relative">
             <div id="cf-c3-glow" style="position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,#3b82f6,#3b82f688,transparent);opacity:0;filter:blur(10px);transition:all 1s;z-index:0"></div>
             <div id="cf-c3-border" style="position:relative;z-index:1;background:#111113;border:2px solid #2a2a2e;border-radius:14px;overflow:hidden;transition:all .7s cubic-bezier(.16,1,.3,1)">
               <div style="padding:10px 14px 8px;border-bottom:1px solid #2a2a2e;display:flex;align-items:center;justify-content:space-between">
                 <div style="display:flex;align-items:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:#3b82f6"></div><span style="font-family:var(--mono);font-size:.55rem;color:#555568;letter-spacing:.06em;font-weight:600">&#128260; WORKFLOWS</span></div>
-                <span style="font-family:var(--mono);font-size:.5rem;color:#000;background:#60a5fa;padding:1px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em">workflow</span>
+                <span style="font-family:var(--mono);font-size:.52rem;color:#555568">~65t</span>
               </div>
               <div style="padding:10px 14px 0"><div style="font-family:var(--mono);font-size:.8rem;color:#ff6b2b;font-weight:600">deploy-process-prod</div></div>
               <div style="padding:4px 14px 0"><div style="font-size:.84rem;font-weight:600;color:#e8e8ec">Deploy: Production flow</div></div>
@@ -572,10 +543,7 @@ Prefers async comms.</div></div>
               <div style="padding:8px 14px 0"><div style="font-size:.74rem;color:#8888a0;line-height:1.55;background:#0a0a0b;border:1px solid #2a2a2e;border-radius:6px;padding:8px 10px;white-space:pre-line;min-height:56px">PR &rarr; staging auto-deploys &rarr;
 QA signs off in #releases &rarr;
 Merge to main &rarr; prod.</div></div>
-              <div id="cf-c3-links" style="padding:6px 14px 0;opacity:0;transition:opacity .6s .2s">
-                <div style="display:flex;align-items:center;gap:4px"><span style="font-size:.55rem;color:#555568">&#128279;</span><span style="font-family:var(--mono);font-size:.52rem;color:#a855f7;opacity:.7">team-alice-backend</span></div>
-              </div>
-              <div id="cf-c3-use" style="padding:6px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
+              <div id="cf-c3-use" style="padding:8px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
                 <div style="font-family:var(--mono);font-size:.68rem;color:#3b82f6;font-weight:600;display:flex;align-items:center;gap:4px"><span>&rarr;</span> Staging deploy triggered &#10004;</div>
               </div>
             </div>
@@ -595,9 +563,9 @@ Merge to main &rarr; prod.</div></div>
           <div style="font-size:.92rem;color:#e8e8ec;line-height:1.65;margin-top:4px">&ldquo;Created <strong style="color:#22c55e">payments service</strong> in TypeScript strict with Zod validation. PR assigned to <strong style="color:#a855f7">Alice</strong> for backend review. <strong style="color:#3b82f6">Staging auto-deploys</strong> &mdash; I&rsquo;ll ping #releases for QA sign-off.&rdquo;</div>
           <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
             <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">3 cards loaded</span>
-            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">3 cards linked</span>
             <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">~195 tokens</span>
             <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">0 follow-ups</span>
+            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">No LLM calls on your bill</span>
           </div>
         </div>
       </div>
@@ -646,32 +614,9 @@ function cfClear(){cfTimers.forEach(clearTimeout);cfTimers=[];
   [1,2,3].forEach(i=>{const c=document.getElementById('cf-c'+i);c.style.opacity='.08';c.style.transform='translateY(24px) scale(.94)';
     const g=document.getElementById('cf-c'+i+'-glow');g.style.opacity='0';g.style.filter='blur(10px)';
     const b=document.getElementById('cf-c'+i+'-border');b.style.border='2px solid #2a2a2e';b.style.background='#111113';b.style.boxShadow='none';
-    const u=document.getElementById('cf-c'+i+'-use');u.style.opacity='0';
-    const l=document.getElementById('cf-c'+i+'-links');if(l)l.style.opacity='0'});
-  ['cf-link-1-2','cf-link-1-2-glow','cf-link-2-3','cf-link-2-3-glow'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.opacity='0'});
+    const u=document.getElementById('cf-c'+i+'-use');u.style.opacity='0'});
   document.querySelectorAll('.cf-q').forEach(q=>{q.style.opacity='0';q.style.transform='translateY(12px) scale(.97)'});
   document.getElementById('cf-replay').style.display='none'}
-
-function cfDrawLinks(){
-  var grid=document.getElementById('cf-cards-grid');if(!grid)return;
-  var c1=document.getElementById('cf-c1'),c2=document.getElementById('cf-c2'),c3=document.getElementById('cf-c3');
-  if(!c1||!c2||!c3)return;
-  var gRect=grid.getBoundingClientRect();
-  var r1=c1.getBoundingClientRect(),r2=c2.getBoundingClientRect(),r3=c3.getBoundingClientRect();
-  var x1=r1.right-gRect.left,y1=(r1.top+r1.bottom)/2-gRect.top;
-  var x2l=r2.left-gRect.left,x2r=r2.right-gRect.left,y2=(r2.top+r2.bottom)/2-gRect.top;
-  var x3=r3.left-gRect.left,y3=(r3.top+r3.bottom)/2-gRect.top;
-  var cpx1=(x1+x2l)/2,cpx2=(x2r+x3)/2;
-  var d12='M'+x1+','+y1+' C'+cpx1+','+y1+' '+cpx1+','+y2+' '+x2l+','+y2;
-  var d23='M'+x2r+','+y2+' C'+cpx2+','+y2+' '+cpx2+','+y3+' '+x3+','+y3;
-  ['cf-link-1-2','cf-link-1-2-glow'].forEach(id=>{var e=document.getElementById(id);if(e)e.setAttribute('d',d12)});
-  ['cf-link-2-3','cf-link-2-3-glow'].forEach(id=>{var e=document.getElementById(id);if(e)e.setAttribute('d',d23)});
-}
-function cfShowLinks(d){cfTimers.push(setTimeout(function(){
-  cfDrawLinks();
-  ['cf-link-1-2','cf-link-1-2-glow','cf-link-2-3','cf-link-2-3-glow'].forEach(id=>{var e=document.getElementById(id);if(e)e.style.opacity=id.includes('glow')?'0.3':'0.6'});
-  [1,2,3].forEach(i=>{var l=document.getElementById('cf-c'+i+'-links');if(l)l.style.opacity='1'});
-},d))}
 
 function cfShow(id,d){cfTimers.push(setTimeout(()=>{const e=document.getElementById(id);if(e){e.style.opacity='1';e.style.transform='translateY(0) scale(1)'}},d))}
 
@@ -707,12 +652,11 @@ function cfStart(mode){if(cfPlaying)return;cfMode=mode;cfPlaying=true;cfClear();
     cfDeactivateCard(1,5200);cfActivateCard(2,5400,true);
     cfDeactivateCard(2,8000);cfActivateCard(3,8200,true);
     cfDeactivateCard(3,10600);
-    cfShowLinks(10800);
     cfTimers.push(setTimeout(()=>{clearInterval(boltAnim);boltEl.style.opacity='1'},10600));
-    cfShow('cf-conn2',11400);cfShow('cf-response',11800);
+    cfShow('cf-conn2',10800);cfShow('cf-response',11200);
     cfTimers.push(setTimeout(()=>{cfPlaying=false;
       document.getElementById('cf-replay').style.display='flex';
-      var tb=document.getElementById('cf-toggle-btn');tb.textContent='✗ See without';tb.style.background='rgba(239,68,68,.08)';tb.style.borderColor='rgba(239,68,68,.2)';tb.style.color='#ef4444'},13600))
+      var tb=document.getElementById('cf-toggle-btn');tb.textContent='✗ See without';tb.style.background='rgba(239,68,68,.08)';tb.style.borderColor='rgba(239,68,68,.2)';tb.style.color='#ef4444'},13000))
   } else {
     cfShow('cf-warn',2200);
     var qs=document.querySelectorAll('.cf-q');
@@ -811,7 +755,90 @@ print(r.json())</pre>
   { headers: { <span class="str">"X-API-Key"</span>: KEY } })</pre>
   </div>
 </section>
+</div>
 
+<div id="ltab-howit" class="hidden">
+<section>
+  <div style="text-align:center;margin-bottom:24px">
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">How it works</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:12px">Three steps. That&rsquo;s the whole product.</h2>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;max-width:700px;margin-left:auto;margin-right:auto">
+      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
+        <div style="font-size:1.5rem;margin-bottom:4px">&#9312;</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Store</div>
+        <div style="font-size:.78rem;color:var(--dim)">Agent learns something? Save it as a card.</div>
+      </div>
+      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
+        <div style="font-size:1.5rem;margin-bottom:4px">&#9313;</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Search</div>
+        <div style="font-size:.78rem;color:var(--dim)">Next session, agent searches for what&rsquo;s relevant.</div>
+      </div>
+      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
+        <div style="font-size:1.5rem;margin-bottom:4px">&#9314;</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Remember</div>
+        <div style="font-size:.78rem;color:var(--dim)">Agent gets exactly the context it needs. ~350 tokens, not 6,000.</div>
+      </div>
+    </div>
+    <p style="font-family:var(--mono);font-size:.75rem;color:var(--faint)">Here&rsquo;s what that looks like in code &#8595;</p>
+  </div>
+  <div class="demo">
+    <div class="demo-bar">
+      <div class="demo-dot"></div><div class="demo-dot"></div><div class="demo-dot"></div>
+      <div class="demo-tabs">
+        <div class="demo-tab active" onclick="showCode('curl',this)">cURL</div>
+        <div class="demo-tab" onclick="showCode('python',this)">Python</div>
+        <div class="demo-tab" onclick="showCode('js',this)">JavaScript</div>
+      </div>
+    </div>
+<pre id="code-curl"><span class="cm"># 1. Store a memory</span>
+<span class="kw">curl</span> -X POST <span class="str">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \
+  -H <span class="str">"X-API-Key: YOUR_KEY"</span> -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{"slug":"project-api","title":"API","stack":"projects",
+       "keywords":["fastapi","python"],"body":"FastAPI 3.12 on AWS"}'</span>
+
+<span class="cm"># 2. Search memories</span>
+<span class="kw">curl</span> <span class="str">"https://hyperstack-cloud.vercel.app/api/search?workspace=default&q=python"</span> \
+  -H <span class="str">"X-API-Key: YOUR_KEY"</span>
+
+<span class="cm"># 3. Get all cards</span>
+<span class="kw">curl</span> <span class="str">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \
+  -H <span class="str">"X-API-Key: YOUR_KEY"</span></pre>
+<pre id="code-python" class="hidden"><span class="cm"># pip install requests</span>
+<span class="kw">import</span> requests
+
+<span class="fn">API</span> = <span class="str">"https://hyperstack-cloud.vercel.app"</span>
+<span class="fn">KEY</span> = <span class="str">"YOUR_KEY"</span>
+<span class="fn">h</span>   = {<span class="str">"X-API-Key"</span>: KEY, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>}
+
+<span class="cm"># Store</span>
+requests.<span class="fn">post</span>(f<span class="str">"{API}/api/cards?workspace=default"</span>, headers=h,
+  json={<span class="str">"slug"</span>:<span class="str">"project-api"</span>, <span class="str">"title"</span>:<span class="str">"API"</span>,
+        <span class="str">"stack"</span>:<span class="str">"projects"</span>, <span class="str">"keywords"</span>:[<span class="str">"fastapi"</span>],
+        <span class="str">"body"</span>:<span class="str">"FastAPI 3.12 on AWS"</span>})
+
+<span class="cm"># Search</span>
+r = requests.<span class="fn">get</span>(f<span class="str">"{API}/api/search?workspace=default&q=python"</span>, headers=h)
+print(r.json())</pre>
+<pre id="code-js" class="hidden"><span class="cm">// Node.js / Deno / Bun</span>
+<span class="kw">const</span> <span class="fn">API</span> = <span class="str">"https://hyperstack-cloud.vercel.app"</span>
+<span class="kw">const</span> <span class="fn">KEY</span> = <span class="str">"YOUR_KEY"</span>
+
+<span class="cm">// Store</span>
+<span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${API}/api/cards?workspace=default`</span>, {
+  method: <span class="str">"POST"</span>,
+  headers: { <span class="str">"X-API-Key"</span>: KEY, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span> },
+  body: JSON.stringify({
+    slug: <span class="str">"project-api"</span>, title: <span class="str">"API"</span>,
+    stack: <span class="str">"projects"</span>, keywords: [<span class="str">"fastapi"</span>],
+    body: <span class="str">"FastAPI 3.12 on AWS"</span>
+  })
+})
+
+<span class="cm">// Search</span>
+<span class="kw">const</span> r = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${API}/api/search?workspace=default&q=python`</span>,
+  { headers: { <span class="str">"X-API-Key"</span>: KEY } })</pre>
+  </div>
+</section>
 <section>
   <div style="text-align:center;margin-bottom:20px">
     <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The math</div>
@@ -851,11 +878,6 @@ print(r.json())</pre>
     <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Pricing based on <a href="https://www.anthropic.com/pricing" style="color:var(--dim)">Claude Sonnet 4</a> ($3/M input). GPT-4o and Opus savings are even higher.</p>
   </div>
 </section>
-
-</div>
-
-<div id="ltab-howit" class="hidden">
-
 </div>
 
 <div id="ltab-compare" class="hidden">
@@ -873,9 +895,7 @@ print(r.json())</pre>
       <tr><td>Auto-capture &amp; auto-recall</td><td class="y">✔ Built-in</td><td>Varies</td></tr>
       <tr><td>Works with</td><td class="y">MCP + SDK + REST + OpenClaw</td><td>Usually 1 platform</td></tr>
       <tr><td>Team sharing</td><td class="y">✔ Up to 20 members</td><td>Rare / enterprise only</td></tr>
-      <tr><td>Structured cards</td><td class="y">✔ Slugs, stacks, keywords, types</td><td>Unstructured blobs</td></tr>
-      <tr><td>Card types</td><td class="y">✔ person, project, decision, event&hellip;</td><td>No typing</td></tr>
-      <tr><td>Card links &amp; graph</td><td class="y">✔ Link cards, traverse connections</td><td>Flat storage, no relationships</td></tr>
+      <tr><td>Structured cards</td><td class="y">✔ Slugs, stacks, keywords</td><td>Unstructured blobs</td></tr>
       <tr><td>PII / secrets redaction</td><td class="y">✔ Built-in rules</td><td>Not enforced</td></tr>
       <tr><td>Setup time</td><td class="hs">30 seconds</td><td>2–10 minutes</td></tr>
       <tr><td>Free tier</td><td class="y">50 cards forever</td><td>Limited or paid only</td></tr>
@@ -896,29 +916,12 @@ print(r.json())</pre>
       <button onclick="go('signup')" class="btn bp">Get Free Key &rarr;</button>
       <button onclick="go('pricing')" class="btn bo">See Pricing</button>
     </div>
-
-    <!-- What 50 cards gets you -->
-    <div style="max-width:700px;margin:32px auto 0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px;text-align:left">
-      <div style="font-family:var(--mono);font-size:.7rem;letter-spacing:2px;color:var(--accent);margin-bottom:12px;text-transform:uppercase">What 50 free cards actually gets you</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;font-size:.85rem;line-height:1.7">
-        <div><span style="color:var(--accent)">8-10</span> <span style="color:var(--dim)">team member cards</span></div>
-        <div><span style="color:var(--accent)">10-15</span> <span style="color:var(--dim)">decision cards</span></div>
-        <div><span style="color:var(--accent)">5-8</span> <span style="color:var(--dim)">preference cards</span></div>
-        <div><span style="color:var(--accent)">5-8</span> <span style="color:var(--dim)">workflow cards</span></div>
-        <div><span style="color:var(--accent)">5-10</span> <span style="color:var(--dim)">project &amp; stack cards</span></div>
-        <div><span style="color:var(--accent)">1 project</span> <span style="color:var(--dim)">fully covered</span></div>
-      </div>
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-family:var(--mono);font-size:.75rem;color:var(--faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <span>50 cards = <span style="color:var(--accent)">~17,500 tokens</span> of knowledge</span>
-        <span>Replaces <span style="color:var(--accent)">~300,000 tokens</span> of history</span>
-      </div>
-    </div>
   </div>
 </section>
 
 
 
-<footer><div class="c">© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Join Discord</a><a href="https://clawhub.ai/deeqyaqub1-cmd/zero-rules" style="color:var(--accent)" target="_blank">ZeroRules</a><a href="https://clawhub.ai/deeqyaqub1-cmd/skillfence" style="color:var(--accent)" target="_blank">SkillFence</a></div></footer>
+<footer><div class="c">Â© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Join Discord</a></div></footer>
 </div>
 </div>
 
@@ -1005,8 +1008,8 @@ print(r.json())</pre>
       <ul>
         <li>50 cards</li>
         <li>1 workspace</li>
-        <li>Full search + graph API</li>
-        <li>Card types &amp; links</li>
+        <li>Full search API</li>
+        <li>94% token savings</li>
         <li>Any agent, any language</li>
       </ul>
       <button onclick="go('signup')" class="btn bo" style="width:100%">Get Free Key →</button>
@@ -1015,7 +1018,7 @@ print(r.json())</pre>
       <div class="pc-badge">Most Popular</div>
       <h3 style="color:var(--accent)">Pro Monthly</h3>
       <div class="amt">$15 <span>/mo</span></div>
-      <div class="per">billed monthly · cancel anytime</div>
+      <div class="per">billed monthly Â· cancel anytime</div>
       <ul>
         <li>Everything in Free</li>
         <li class="pro">Unlimited cards</li>
@@ -1031,7 +1034,7 @@ print(r.json())</pre>
       <div class="pc-badge green">Save 20%</div>
       <h3 style="color:var(--green)">Pro Yearly</h3>
       <div class="amt">$144 <span>/yr</span></div>
-      <div class="per">$12/mo · save $36/year</div>
+      <div class="per">$12/mo Â· save $36/year</div>
       <ul>
         <li>Everything in Pro</li>
         <li class="pro">Unlimited cards</li>
@@ -1073,8 +1076,6 @@ print(r.json())</pre>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--text)"><strong style="font-family:var(--mono);font-size:.78rem">title</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Human-readable name for the card</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--blue)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--blue)">keywords</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Tags for exact-match search</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--purple)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--purple)">stack</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Category folder (projects, people, etc)</p></div>
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #fbbf24"><strong style="font-family:var(--mono);font-size:.78rem;color:#fbbf24">cardType</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">person, project, decision, preference, workflow, event, account</p></div>
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #f87171"><strong style="font-family:var(--mono);font-size:.78rem;color:#f87171">links</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Connect cards by slug &mdash; build a knowledge graph</p></div>
       </div>
     </div>
   </div>
@@ -1094,23 +1095,6 @@ print(r.json())</pre>
       <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #eab308"><strong style="font-family:var(--mono);font-size:.78rem">&#128260; workflows</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Deploy steps, review processes</p></div>
       <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #8585a0"><strong style="font-family:var(--mono);font-size:.78rem">&#128196; general</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Everything else</p></div>
     </div>
-  </div>
-
-  <!-- Context Graph -->
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-      <span style="font-size:1rem">&#128279;</span>
-      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Context Graph</span>
-      <span style="font-family:var(--mono);font-size:.62rem;color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);padding:1px 8px;border-radius:8px;margin-left:auto">NEW</span>
-    </div>
-    <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin-bottom:12px">Cards aren&rsquo;t flat. They connect. Type your cards, link them together, and traverse the graph.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #fbbf24"><strong style="font-family:var(--mono);font-size:.78rem;color:#fbbf24">Card Types</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">person, project, decision, preference, workflow, event, account. Filter cards by type.</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #f87171"><strong style="font-family:var(--mono);font-size:.78rem;color:#f87171">Card Links</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Connect cards by slug. &ldquo;decision-auth&rdquo; links to &ldquo;team-alice&rdquo; and &ldquo;project-webapp&rdquo;.</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--accent)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--accent)">Link Resolution</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">GET a card &rarr; linked cards resolved automatically with metadata.</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--green)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--green)">Graph Traversal</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px"><code style="font-size:.65rem">GET /api/graph?from=slug&amp;depth=2</code> &mdash; follow connections up to 3 hops.</p></div>
-    </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.68rem;color:var(--dim);line-height:1.8"><span style="color:var(--faint)">// Create a typed card with links</span><br>POST /api/cards?workspace=default<br>{<br>&nbsp;&nbsp;<span style="color:#fbbf24">"cardType"</span>: <span style="color:var(--green)">"decision"</span>,<br>&nbsp;&nbsp;<span style="color:#f87171">"links"</span>: [<span style="color:var(--green)">"team-alice"</span>, <span style="color:var(--green)">"project-webapp"</span>],<br>&nbsp;&nbsp;<span style="color:var(--accent)">"slug"</span>: <span style="color:var(--green)">"decision-auth-clerk"</span>,<br>&nbsp;&nbsp;...<br>}</div>
   </div>
 
   <!-- API Reference -->
@@ -1172,15 +1156,15 @@ print(r.json())</pre>
       <div id="faq-list" style="display:grid;gap:0">
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>How does my agent use HyperStack?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Your agent calls the REST API to store and search memories. Cards can be typed (person, decision, project) and linked to other cards by slug. Before responding, the agent searches for relevant cards. When it learns something new, it creates or updates a card. It can also traverse linked cards via the graph API to follow connections between knowledge.</div>
+          <div class="faq-a">Your agent calls the REST API to store and search memories. Before responding, it searches for relevant cards. When it learns something new, it creates or updates a card. This means your agent never forgets context between sessions.</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>What counts as a &ldquo;card&rdquo;?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Any piece of knowledge &mdash; a person&rsquo;s role, a project&rsquo;s tech stack, a decision rationale, your coding preferences. Cards are small (a few lines) and focused on one topic. Each card can have a type (person, decision, project, etc) and link to other cards, so your agent builds a connected knowledge graph over time.</div>
+          <div class="faq-a">Any piece of knowledge &mdash; a person&rsquo;s role, a project&rsquo;s tech stack, a decision rationale, your coding preferences. Cards are small (a few lines) and focused on one topic. Think &ldquo;one sticky note = one card.&rdquo;</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>How is this different from other memory tools?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Most memory tools store flat text blobs and run LLM calls on your API key for every operation (~$0.002 each). HyperStack stores typed, structured cards with explicit links between them &mdash; and runs embeddings server-side at $0 per operation. You get a searchable knowledge graph, not a bucket of text. At scale, this saves $200+/month. Plus, you control what gets stored.</div>
+          <div class="faq-q"><span>How is this different from Mem0?</span><span class="faq-arrow">&#9662;</span></div>
+          <div class="faq-a">Mem0 calls an LLM internally for every memory operation (~$0.002 each). HyperStack uses pattern matching + pgvector &mdash; $0 per operation. At scale, this saves $200+/month. Plus, you control what gets stored &mdash; no AI deciding behind your back what&rsquo;s &ldquo;important.&rdquo;</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>I get &ldquo;Unauthorized&rdquo; when calling the API</span><span class="faq-arrow">&#9662;</span></div>
@@ -1188,7 +1172,7 @@ print(r.json())</pre>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>What fields does a card need?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a"><strong>Required:</strong> slug, title, body. <strong>Optional:</strong> stack (category), keywords (tags), cardType (person, project, decision, etc), links (array of card slugs to connect). If you POST the same slug again, it upserts. Use the graph API to traverse linked cards.</div>
+          <div class="faq-a"><strong>Required:</strong> slug, title, body. <strong>Optional:</strong> stack (category), keywords (array of tags). If you POST the same slug again, it upserts &mdash; updates the existing card instead of creating a duplicate.</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>How does search work?</span><span class="faq-arrow">&#9662;</span></div>
@@ -1225,7 +1209,6 @@ print(r.json())</pre>
     <div class="brand"><div class="logo" onclick="go('landing')" style="font-size:1.15rem"><img src="data:image/webp;base64,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" alt="" width="30" height="30" style="border-radius:6px;flex-shrink:0"> HyperStack</div><p>Dashboard</p></div>
     <button class="sbtn act" onclick="dt('start')" id="t-start">🚀 Get Started</button>
     <button class="sbtn" onclick="dt('cards')" id="t-cards">🃏 Cards</button>
-    <button class="sbtn" onclick="dt('graph')" id="t-graph">🔗 Graph</button>
     <button class="sbtn" onclick="dt('key')" id="t-key">🔑 API Key</button>
     <button class="sbtn" onclick="dt('ws')" id="t-ws">📁 Workspaces</button>
     <button class="sbtn" onclick="dt('team')" id="t-team">👥 Team</button>
@@ -1240,7 +1223,6 @@ print(r.json())</pre>
   <div class="mob-nav-inner" style="overflow-x:auto;justify-content:flex-start;gap:0;padding:0 8px;-webkit-overflow-scrolling:touch">
     <button class="act" onclick="dt('start')" id="mt-start"><span style="font-size:16px">🚀</span><br>Start</button>
     <button onclick="dt('cards')" id="mt-cards"><span style="font-size:16px">🃏</span><br>Cards</button>
-    <button onclick="dt('graph')" id="mt-graph"><span style="font-size:16px">🔗</span><br>Graph</button>
     <button onclick="dt('key')" id="mt-key"><span style="font-size:16px">🔑</span><br>Key</button>
     <button onclick="dt('ws')" id="mt-ws"><span style="font-size:16px">📁</span><br>Spaces</button>
     <button onclick="dt('team')" id="mt-team"><span style="font-size:16px">👥</span><br>Team</button>
