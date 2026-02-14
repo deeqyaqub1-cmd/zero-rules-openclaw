@@ -410,62 +410,233 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 
 
 <!-- ═══ THE MOAT — right after hero ═══ -->
-<section style="padding:48px 0 20px">
+<section style="padding:48px 0 20px" id="moat-section">
   <div style="max-width:720px;margin:0 auto;text-align:center">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Why this changes everything</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,4vw,1.6rem);margin-bottom:8px">Flat memory can&rsquo;t do this</h2>
-    <p style="color:var(--dim);font-size:.85rem;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.5">Every &ldquo;AI memory&rdquo; tool stores flat text and searches by keyword.<br>HyperStack stores <span style="color:var(--accent)">typed cards</span>, <span style="color:var(--accent)">linked with relations</span>, and lets your agent <span style="color:var(--accent)">traverse the graph</span>.</p>
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">The problem with every other tool</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,4vw,1.6rem);margin-bottom:24px">Your agent forgets. Ours remembers <em style="color:var(--accent);font-style:normal">why.</em></h2>
   </div>
 
-  <div style="max-width:660px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+  <!-- Interactive pain-point carousel -->
+  <div style="max-width:780px;margin:0 auto;position:relative">
 
-    <!-- Scenario 1: Decision trail -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;overflow:hidden">
-      <div style="font-family:var(--mono);font-size:.66rem;color:var(--red);margin-bottom:6px;letter-spacing:.05em">&#10007; YOUR AGENT TODAY</div>
-      <p style="font-size:.85rem;color:var(--dim);line-height:1.55;margin-bottom:12px">&ldquo;Why are we using Stripe?&rdquo; &mdash; No idea. That decision was 200 conversations ago.</p>
-      <div style="font-family:var(--mono);font-size:.66rem;color:var(--green);margin-bottom:6px;letter-spacing:.05em">&#10004; WITH HYPERSTACK</div>
-      <p style="font-size:.82rem;color:var(--text);line-height:1.5;margin-bottom:10px">One call traces the full decision trail:</p>
-      <div style="background:#0a0a0c;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.7rem;line-height:1.8;overflow-x:auto">
-        <span style="color:var(--accent)">use-stripe</span> <span style="color:#8888aa">&larr; decided &larr;</span> <span style="color:#a855f7">alice</span> <span style="color:#8888aa">&larr; approved &larr;</span> <span style="color:#a855f7">cto</span><br>
-        <span style="color:var(--faint)">reason:</span> <span style="color:var(--dim)">&ldquo;Paddle doesn&rsquo;t support per-seat billing&rdquo;</span>
-      </div>
+    <!-- Scenario tabs -->
+    <div style="display:flex;justify-content:center;gap:6px;margin-bottom:24px;flex-wrap:wrap" id="moat-tabs">
+      <button class="moat-tab act" onclick="showMoat(0,this)" style="background:rgba(255,107,43,.1);border:1px solid rgba(255,107,43,.3);border-radius:8px;padding:8px 16px;color:var(--accent);font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;transition:all .3s">🔍 Decision recall</button>
+      <button class="moat-tab" onclick="showMoat(1,this)" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;color:var(--dim);font-family:var(--mono);font-size:.72rem;font-weight:400;cursor:pointer;transition:all .3s">💥 Impact analysis</button>
+      <button class="moat-tab" onclick="showMoat(2,this)" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;color:var(--dim);font-family:var(--mono);font-size:.72rem;font-weight:400;cursor:pointer;transition:all .3s">👤 Ownership</button>
     </div>
 
-    <!-- Scenario 2: Impact analysis -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;overflow:hidden">
-      <div style="font-family:var(--mono);font-size:.66rem;color:var(--red);margin-bottom:6px;letter-spacing:.05em">&#10007; YOUR AGENT TODAY</div>
-      <p style="font-size:.85rem;color:var(--dim);line-height:1.55;margin-bottom:12px">&ldquo;If we swap auth providers, what breaks?&rdquo; &mdash; Guesses. Can&rsquo;t see dependencies.</p>
-      <div style="font-family:var(--mono);font-size:.66rem;color:var(--green);margin-bottom:6px;letter-spacing:.05em">&#10004; WITH HYPERSTACK</div>
-      <p style="font-size:.82rem;color:var(--text);line-height:1.5;margin-bottom:10px">Walk the dependency graph:</p>
-      <div style="background:#0a0a0c;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.7rem;line-height:1.8;overflow-x:auto">
-        <span style="color:var(--accent)">GET /api/graph?from=use-clerk&amp;depth=2</span><br>
-        <span style="color:#06b6d4">use-clerk</span> <span style="color:#eab308">&rarr; triggers &rarr;</span> <span style="color:#3b82f6">signup-flow</span><br>
-        <span style="color:#06b6d4">use-clerk</span> <span style="color:#eab308">&rarr; triggers &rarr;</span> <span style="color:#3b82f6">api-middleware</span><br>
-        <span style="color:#3b82f6">api-middleware</span> <span style="color:#ef4444">&rarr; blocks &rarr;</span> <span style="color:#ff6b2b">migrate-to-supabase</span>
+    <!-- Side-by-side comparison -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:16px;overflow:hidden;border:1px solid var(--border)">
+
+      <!-- LEFT: Without -->
+      <div style="background:#0c0c0e;padding:28px 24px;border-right:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red)"></div>
+          <span style="font-family:var(--mono);font-size:.65rem;color:var(--red);letter-spacing:.06em;font-weight:700">FLAT MEMORY</span>
+        </div>
+        <div id="moat-left" style="min-height:200px">
+          <!-- Content injected by JS -->
+        </div>
       </div>
-      <p style="font-size:.72rem;color:var(--faint);margin-top:8px;font-family:var(--mono)">3 things break. Your agent knows before you ask.</p>
+
+      <!-- RIGHT: With HyperStack -->
+      <div style="background:#0a0e0c;padding:28px 24px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+          <span style="font-family:var(--mono);font-size:.65rem;color:var(--green);letter-spacing:.06em;font-weight:700">HYPERSTACK</span>
+        </div>
+        <div id="moat-right" style="min-height:200px">
+          <!-- Content injected by JS -->
+        </div>
+      </div>
+
     </div>
 
-    <!-- Scenario 3: Who owns what -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;overflow:hidden">
-      <div style="font-family:var(--mono);font-size:.66rem;color:var(--red);margin-bottom:6px;letter-spacing:.05em">&#10007; YOUR AGENT TODAY</div>
-      <p style="font-size:.85rem;color:var(--dim);line-height:1.55;margin-bottom:12px">&ldquo;Who set up the database?&rdquo; &mdash; Can&rsquo;t trace ownership. Memory is just text.</p>
-      <div style="font-family:var(--mono);font-size:.66rem;color:var(--green);margin-bottom:6px;letter-spacing:.05em">&#10004; WITH HYPERSTACK</div>
-      <p style="font-size:.82rem;color:var(--text);line-height:1.5;margin-bottom:10px">Filter by relation:</p>
-      <div style="background:#0a0a0c;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.7rem;line-height:1.8;overflow-x:auto">
-        <span style="color:#a855f7">bob</span> <span style="color:#c084fc">&rarr; owns &rarr;</span> <span style="color:#3b82f6">postgres-schema</span><br>
-        <span style="color:#a855f7">alice</span> <span style="color:#22c55e">&rarr; approved &rarr;</span> <span style="color:#3b82f6">postgres-schema</span>
-      </div>
-      <p style="font-size:.72rem;color:var(--faint);margin-top:8px;font-family:var(--mono)">Bob set it up. Alice signed off. Instant.</p>
+    <!-- Bottom insight -->
+    <div style="text-align:center;margin-top:20px">
+      <p id="moat-insight" style="font-family:var(--mono);font-size:.78rem;color:var(--dim);transition:opacity .3s">Text search returns documents. <span style="color:var(--accent)">Graph traversal returns answers.</span></p>
     </div>
 
   </div>
 
-  <div style="text-align:center;margin-top:24px">
-    <p style="font-family:var(--mono);font-size:.8rem;color:var(--dim);max-width:460px;margin:0 auto 16px">Flat text returns search results. <span style="color:var(--accent)">A knowledge graph returns answers.</span></p>
+  <div style="text-align:center;margin-top:20px">
     <button onclick="go('signup')" class="btn bp">Get Free Key &rarr;</button>
   </div>
 </section>
+
+<style>
+.moat-tab.act{background:rgba(255,107,43,.1)!important;border-color:rgba(255,107,43,.3)!important;color:var(--accent)!important;font-weight:600!important}
+.moat-node{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-family:var(--mono);font-size:.72rem;font-weight:600;margin:2px 0}
+.moat-edge{font-family:var(--mono);font-size:.62rem;color:#666;padding:0 4px}
+.moat-trail{opacity:0;transform:translateX(12px);transition:all .4s cubic-bezier(.16,1,.3,1)}
+.moat-trail.show{opacity:1;transform:translateX(0)}
+.moat-fail{opacity:0;transform:translateY(8px);transition:all .4s cubic-bezier(.16,1,.3,1)}
+.moat-fail.show{opacity:1;transform:translateY(0)}
+.moat-q{font-size:.88rem;color:var(--text);font-weight:500;margin-bottom:16px;line-height:1.5}
+.moat-sad{padding:14px 16px;background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.12);border-radius:10px;margin-bottom:8px}
+.moat-win{padding:10px 14px;background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.12);border-radius:10px;margin-bottom:6px}
+@media(max-width:600px){
+  #moat-section [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+  #moat-section [style*="border-right"]{border-right:none!important;border-bottom:1px solid var(--border)!important}
+}
+</style>
+
+<script>
+var _moatTimers=[];
+var _moatScenarios=[
+  {
+    question:'"Why are we using Stripe instead of Paddle?"',
+    fail:[
+      {icon:'🔍',text:'Searching 847 messages...',delay:0},
+      {icon:'📄',text:'Found 12 mentions of "Stripe"',delay:600},
+      {icon:'💸',text:'~6,000 tokens stuffed into context — $0.18 per query',delay:1200},
+      {icon:'😐',text:'None explain the decision',delay:1800},
+      {icon:'🤷',text:'"I don\'t have context on that decision."',delay:2400,accent:true}
+    ],
+    win:[
+      {type:'trail',nodes:[
+        {label:'use-stripe',color:'#ff6b2b',type:'decision'},
+        {edge:'decided',color:'#ff8855'},
+        {label:'alice',color:'#a855f7',type:'person'},
+        {edge:'approved',color:'#4ade80'},
+        {label:'cto',color:'#a855f7',type:'person'}
+      ],delay:0},
+      {type:'reason',text:'Paddle doesn\'t support per-seat billing. Stripe Connect handles marketplace splits.',delay:800},
+      {type:'meta',text:'350 tokens · $0.001 · 1 API call · 0 follow-ups',delay:1400}
+    ],
+    insight:'6,000 tokens to get nothing vs 350 tokens for the full answer. <span style="color:var(--accent)">That\'s 94% less cost.</span>'
+  },
+  {
+    question:'"If we swap from Clerk to Supabase Auth, what breaks?"',
+    fail:[
+      {icon:'🔍',text:'Searching for "Clerk dependencies"...',delay:0},
+      {icon:'📄',text:'Found 8 scattered references',delay:600},
+      {icon:'💸',text:'Agent re-reads entire chat history — $0.24 wasted',delay:1200},
+      {icon:'🤔',text:'Maybe the signup flow? Not sure.',delay:1800},
+      {icon:'💀',text:'"I\'d recommend checking with the team."',delay:2400,accent:true}
+    ],
+    win:[
+      {type:'trail',nodes:[
+        {label:'use-clerk',color:'#06b6d4',type:'decision'},
+        {edge:'triggers',color:'#eab308'},
+        {label:'signup-flow',color:'#3b82f6',type:'project'}
+      ],delay:0},
+      {type:'trail',nodes:[
+        {label:'use-clerk',color:'#06b6d4',type:'decision'},
+        {edge:'triggers',color:'#eab308'},
+        {label:'api-auth',color:'#3b82f6',type:'project'},
+        {edge:'blocks',color:'#ef4444'},
+        {label:'migrate-supa',color:'#ff6b2b',type:'decision'}
+      ],delay:600},
+      {type:'meta',text:'3 dependencies · 1 blocker · 420 tokens · $0.001',delay:1200}
+    ],
+    insight:'Flat memory burns tokens guessing. <span style="color:var(--accent)">The graph gives certainty for 1/200th the cost.</span>'
+  },
+  {
+    question:'"Who set up our database and who approved it?"',
+    fail:[
+      {icon:'🔍',text:'Searching "database setup"...',delay:0},
+      {icon:'📄',text:'Found a conversation about Postgres',delay:600},
+      {icon:'💸',text:'5 follow-up messages to narrow it down — $0.90 total',delay:1200},
+      {icon:'😐',text:'Can\'t tell who was responsible',delay:1800},
+      {icon:'🤷',text:'"Try checking Slack or Git history."',delay:2400,accent:true}
+    ],
+    win:[
+      {type:'trail',nodes:[
+        {label:'bob',color:'#a855f7',type:'person'},
+        {edge:'owns',color:'#c084fc'},
+        {label:'postgres-db',color:'#3b82f6',type:'project'}
+      ],delay:0},
+      {type:'trail',nodes:[
+        {label:'alice',color:'#a855f7',type:'person'},
+        {edge:'approved',color:'#4ade80'},
+        {label:'postgres-db',color:'#3b82f6',type:'project'}
+      ],delay:600},
+      {type:'meta',text:'2 relations · 280 tokens · $0.001 · Instant.',delay:1200}
+    ],
+    insight:'5 messages at $0.90 vs 1 call at $0.001. <span style="color:var(--accent)">Your LLM bill drops 99%.</span>'
+  }
+];
+
+function showMoat(idx,btn){
+  _moatTimers.forEach(clearTimeout);_moatTimers=[];
+  document.querySelectorAll('.moat-tab').forEach(function(t){t.classList.remove('act')});
+  if(btn)btn.classList.add('act');
+  var s=_moatScenarios[idx];
+  var left=document.getElementById('moat-left');
+  var right=document.getElementById('moat-right');
+  var insight=document.getElementById('moat-insight');
+
+  // Question on both sides
+  var qHtml='<div class="moat-q">'+s.question+'</div>';
+
+  // LEFT: failure sequence
+  var failHtml=qHtml;
+  s.fail.forEach(function(f,i){
+    var style=f.accent?'color:var(--red);font-weight:600':'color:var(--dim)';
+    failHtml+='<div class="moat-fail moat-fail-'+i+'" style="'+style+'"><div class="moat-sad"><span style="margin-right:6px">'+f.icon+'</span><span style="font-size:.8rem">'+f.text+'</span></div></div>';
+  });
+  left.innerHTML=failHtml;
+
+  // RIGHT: graph trail
+  var winHtml=qHtml;
+  s.win.forEach(function(w,i){
+    if(w.type==='trail'){
+      var trail='<div class="moat-trail moat-trail-'+i+'" style=""><div class="moat-win">';
+      w.nodes.forEach(function(n){
+        if(n.edge){
+          trail+='<span class="moat-edge" style="color:'+n.color+'"> → '+n.edge+' → </span>';
+        }else{
+          var bg=n.color+'18';var border=n.color+'40';
+          trail+='<span class="moat-node" style="background:'+bg+';border:1px solid '+border+';color:'+n.color+'">'+n.label+'</span>';
+        }
+      });
+      trail+='</div></div>';
+      winHtml+=trail;
+    }else if(w.type==='reason'){
+      winHtml+='<div class="moat-trail moat-trail-'+i+'" style=""><div style="padding:8px 14px;background:rgba(255,107,43,.04);border:1px solid rgba(255,107,43,.12);border-radius:8px;font-size:.78rem;color:var(--dim);line-height:1.5"><span style="color:var(--accent);font-weight:600">reason:</span> '+w.text+'</div></div>';
+    }else if(w.type==='meta'){
+      winHtml+='<div class="moat-trail moat-trail-'+i+'" style=""><div style="font-family:var(--mono);font-size:.65rem;color:var(--faint);margin-top:8px">'+w.text+'</div></div>';
+    }
+  });
+  right.innerHTML=winHtml;
+
+  // Animate fails
+  s.fail.forEach(function(f,i){
+    _moatTimers.push(setTimeout(function(){
+      var el=left.querySelector('.moat-fail-'+i);
+      if(el)el.classList.add('show');
+    },400+f.delay));
+  });
+
+  // Animate wins
+  s.win.forEach(function(w,i){
+    _moatTimers.push(setTimeout(function(){
+      var el=right.querySelector('.moat-trail-'+i);
+      if(el)el.classList.add('show');
+    },400+w.delay));
+  });
+
+  // Update insight
+  insight.style.opacity='0';
+  _moatTimers.push(setTimeout(function(){
+    insight.innerHTML=s.insight;
+    insight.style.opacity='1';
+  },2400));
+}
+
+// Auto-play first scenario
+var _moatStarted=false;
+var _moatObs=new IntersectionObserver(function(entries){
+  if(entries[0].isIntersecting&&!_moatStarted){
+    _moatStarted=true;
+    showMoat(0,document.querySelector('.moat-tab'));
+  }
+},{threshold:0.3});
+var _moatSec=document.getElementById('moat-section');
+if(_moatSec)_moatObs.observe(_moatSec);
+</script>
 
 
 <!-- ═══ TAB PILLS ═══ -->
@@ -1424,6 +1595,6 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 });
 </script>
-<script src="app.js?v=28"></script>
+<script src="app.js?v=30"></script>
 </body>
 </html>

@@ -610,6 +610,13 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
     _renderStats(el,d.cards||[]);
   }).catch(function(){_renderStats(el,[])})}
 
+function toggleExplain(id){
+  var el=document.getElementById(id);if(!el)return;
+  var all=document.querySelectorAll('.stat-explain');
+  all.forEach(function(e){if(e.id!==id)e.classList.add('hidden')});
+  el.classList.toggle('hidden');
+}
+
 function _renderStats(el,cards){
   const totalCards=cards.length;
   const totalTokens=cards.reduce((s,c)=>s+(c.tokens||70),0);
@@ -628,31 +635,83 @@ function _renderStats(el,cards){
   el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Your agent's memory performance</p></div></div>
 
-  <!-- Stats grid with glow -->
+  <!-- Stats grid with 2D glow — click any number to see how it's calculated -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
-    <div style="position:relative">
-      <div style="position:absolute;inset:-1px;border-radius:12px;background:rgba(34,197,94,.15);filter:blur(8px)"></div>
-      <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.25);border-radius:12px;padding:16px;text-align:center">
-        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--green)">${savingsPct}%</div>
+    <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-savings')">
+      <div style="position:absolute;inset:-2px;border-radius:14px;background:rgba(34,197,94,.2);filter:blur(12px);animation:glowPulse 3s ease-in-out infinite"></div>
+      <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:12px;padding:16px;text-align:center;transition:transform .2s;box-shadow:0 0 20px rgba(34,197,94,.1),inset 0 1px 0 rgba(34,197,94,.1)">
+        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--green);text-shadow:0 0 20px rgba(34,197,94,.4)">${savingsPct}%</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Token Savings</div>
+        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
-    <div style="background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center">
-      <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800">${totalCards}</div>
-      <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Total Cards</div>
+    <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-cards')">
+      <div style="position:absolute;inset:-2px;border-radius:14px;background:rgba(136,136,200,.12);filter:blur(12px);animation:glowPulse 3s ease-in-out infinite .5s"></div>
+      <div style="position:relative;background:var(--surface);border:2px solid rgba(136,136,200,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(136,136,200,.05),inset 0 1px 0 rgba(136,136,200,.08)">
+        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;text-shadow:0 0 15px rgba(200,200,255,.2)">${totalCards}</div>
+        <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Total Cards</div>
+        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+      </div>
     </div>
-    <div style="position:relative">
-      <div style="position:absolute;inset:-1px;border-radius:12px;background:rgba(255,107,43,.12);filter:blur(8px)"></div>
-      <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.2);border-radius:12px;padding:16px;text-align:center">
-        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--accent)">$${monthlySavings}</div>
+    <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-saved')">
+      <div style="position:absolute;inset:-2px;border-radius:14px;background:rgba(255,107,43,.15);filter:blur(12px);animation:glowPulse 3s ease-in-out infinite 1s"></div>
+      <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.25);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(255,107,43,.08),inset 0 1px 0 rgba(255,107,43,.1)">
+        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--accent);text-shadow:0 0 20px rgba(255,107,43,.3)">$${monthlySavings}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Saved / month</div>
+        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
-    <div style="background:var(--surface);border:2px solid rgba(234,179,8,.15);border-radius:12px;padding:16px;text-align:center">
-      <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--yellow)">${staleCards.length}</div>
-      <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Stale Cards</div>
+    <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-stale')">
+      <div style="position:absolute;inset:-2px;border-radius:14px;background:rgba(234,179,8,.12);filter:blur(12px);animation:glowPulse 3s ease-in-out infinite 1.5s"></div>
+      <div style="position:relative;background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(234,179,8,.06),inset 0 1px 0 rgba(234,179,8,.08)">
+        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--yellow);text-shadow:0 0 20px rgba(234,179,8,.3)">${staleCards.length}</div>
+        <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Stale Cards</div>
+        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+      </div>
     </div>
   </div>
+
+  <!-- Expandable explanation panels -->
+  <div id="exp-savings" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:16px;margin-bottom:12px">
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--green);margin-bottom:8px">📐 How Token Savings is calculated</div>
+    <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
+      Without HyperStack: <strong style="color:var(--red)">~6,000 tokens/msg</strong> (full chat history in context)<br>
+      With HyperStack: <strong style="color:var(--green)">~${tokensWith} tokens/msg</strong> (avg ${avgTokensPerCard} tokens/card × 2 cards retrieved)<br>
+      Savings: <strong style="color:var(--green)">(6,000 - ${tokensWith}) ÷ 6,000 = ${savingsPct}%</strong>
+    </div>
+  </div>
+  <div id="exp-cards" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(136,136,200,.15);border-radius:10px;padding:16px;margin-bottom:12px">
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:8px">🃏 Total Cards</div>
+    <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
+      Cards in your default workspace: <strong>${totalCards}</strong><br>
+      Total tokens stored: <strong>${totalTokens.toLocaleString()}</strong><br>
+      Avg tokens per card: <strong>${avgTokensPerCard}</strong>
+    </div>
+  </div>
+  <div id="exp-saved" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(255,107,43,.15);border-radius:10px;padding:16px;margin-bottom:12px">
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--accent);margin-bottom:8px">💰 How Monthly Savings is calculated</div>
+    <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
+      Tokens saved per message: <strong style="color:var(--green)">${savedPerMsg.toLocaleString()}</strong><br>
+      Estimated messages/day: <strong>30</strong> (typical agent workload)<br>
+      Monthly messages: <strong>30 × 30 = 900</strong><br>
+      Cost per 1K tokens: <strong>$0.003</strong> (Claude avg input price)<br>
+      Formula: <strong>${savedPerMsg.toLocaleString()} × 900 × $0.003 / 1000 = $${monthlySavings}</strong>
+    </div>
+  </div>
+  <div id="exp-stale" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(234,179,8,.15);border-radius:10px;padding:16px;margin-bottom:12px">
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--yellow);margin-bottom:8px">⚠️ Stale Cards</div>
+    <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
+      Cards not updated in <strong>21+ days</strong> may have outdated info.<br>
+      Found: <strong>${staleCards.length}</strong> stale card${staleCards.length===1?'':'s'} out of ${totalCards} total.<br>
+      ${staleCards.length>0?'Review them below to keep your agent\'s memory accurate.':'Your memory is fresh — all cards updated recently.'}
+    </div>
+  </div>
+
+  <style>
+  @keyframes glowPulse{0%,100%{opacity:.6}50%{opacity:1}}
+  .stat-explain{transition:all .3s ease;overflow:hidden}
+  .stat-explain.hidden{display:none}
+  </style>
 
   <!-- Token comparison -->
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
@@ -683,7 +742,7 @@ function _renderStats(el,cards){
       <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">Cards not updated in 21+ days</span>
     </div>
     ${staleCards.length===0?'<div style="text-align:center;padding:16px;color:var(--dim);font-size:.82rem">✅ No stale cards. Your memory is fresh!</div>':staleCards.map(function(c){
-      var days=Math.floor((now-new Date(c.updatedAt||c.createdAt||0).getTime())/(24*60*60*1000));
+      var days=Math.floor((now-new Date(c.updatedAt||c.createdAt||now).getTime())/(24*60*60*1000));
       return '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:6px"><div style="width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 6px var(--yellow)"></div><div style="flex:1"><span style="font-family:var(--mono);font-size:.82rem;font-weight:600">'+c.slug+'</span><span style="font-size:.78rem;color:var(--dim);margin-left:8px">'+c.title+'</span></div><span style="font-family:var(--mono);font-size:.65rem;background:rgba(234,179,8,.1);color:var(--yellow);padding:3px 10px;border-radius:6px;border:1px solid rgba(234,179,8,.2);font-weight:600">'+days+' days</span></div>'}).join('')}
     <p style="font-size:.72rem;color:var(--faint);margin-top:8px;text-align:center">${staleCards.length>0?'Stale cards may contain outdated info. Consider reviewing or archiving them.':'All cards updated within the last 21 days.'}</p>
   </div>`}
@@ -776,6 +835,60 @@ function rGraph(el){
       <button id="gz-in" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">+</button>
       <button id="gz-out" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">\u2212</button>
       <button id="gz-fit" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center">\u25a3</button>
+    </div>
+  </div>
+
+  <!-- How to use the Graph — collapsible guide -->
+  <div style="margin-top:16px">
+    <button onclick="var g=document.getElementById('graph-howto');g.style.display=g.style.display==='none'?'block':'none';this.querySelector('span').textContent=g.style.display==='none'?'\u25b6':'\u25bc'" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;width:100%;cursor:pointer;display:flex;align-items:center;gap:10px;text-align:left">
+      <span style="color:var(--accent);font-size:.7rem">\u25b6</span>
+      <span style="font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text)">💡 How to use the Context Graph</span>
+      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">click to expand</span>
+    </button>
+    <div id="graph-howto" style="display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:20px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+        <div>
+          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">🚀 GETTING STARTED</div>
+          <div style="font-size:.78rem;color:var(--dim);line-height:1.7">
+            <strong style="color:var(--text)">1. Create cards with types</strong><br>
+            When your agent creates a card, add a <code style="color:var(--accent);font-size:.72rem">cardType</code> — like "person", "project", or "decision". This tells the graph what shape each node is.<br><br>
+            <strong style="color:var(--text)">2. Link cards together</strong><br>
+            Add a <code style="color:var(--accent);font-size:.72rem">links</code> array to connect cards. Each link has a target slug and a relation like "owns", "decided", or "triggers".<br><br>
+            <strong style="color:var(--text)">3. Explore visually</strong><br>
+            Open the graph and your cards appear as nodes. Drag them around, zoom in, click to highlight connections.
+          </div>
+        </div>
+
+        <div>
+          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">💡 REAL-WORLD EXAMPLES</div>
+          <div style="font-size:.78rem;color:var(--dim);line-height:1.7">
+            <strong style="color:var(--green)">"Why did we choose Stripe?"</strong><br>
+            Focus on the <em>use-stripe</em> decision card — see who decided, who approved, and why. Full audit trail, one click.<br><br>
+            <strong style="color:var(--green)">"What breaks if we change auth?"</strong><br>
+            Focus on <em>use-clerk</em> — the graph shows every project that depends on it. Instant impact analysis.<br><br>
+            <strong style="color:var(--green)">"Who owns the database?"</strong><br>
+            Filter by "owns" relation — see every ownership connection at a glance. No digging through chat history.
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:16px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
+        <div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);font-weight:700;margin-bottom:6px">⚡ QUICK API EXAMPLE</div>
+        <pre style="font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.6;margin:0;overflow-x:auto"><span style="color:var(--green)">// Create a decision card with links</span>
+POST /api/cards
+{
+  "slug": "use-stripe",
+  "title": "Payment: Stripe",
+  "cardType": "decision",
+  "links": [
+    {"target": "alice", "relation": "decided"},
+    {"target": "cto", "relation": "approved"}
+  ],
+  "meta": {"reason": "Paddle lacks per-seat billing"}
+}</pre>
+      </div>
     </div>
   </div>`;
 
