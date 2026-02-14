@@ -604,22 +604,25 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
     </div>
   </div>`;return}
 
-  const totalCards=DEMO.length;
-  const totalTokens=DEMO.reduce((s,c)=>s+(c.tokens||70),0);
-  // Average system prompt without HyperStack: ~6000 tokens (full conversation history)
-  // With HyperStack: ~350 tokens per card retrieval (just the relevant card)
+  // Fetch real cards from API for analytics
+  el.innerHTML='<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Loading analytics...</p></div></div><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
+  fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
+    _renderStats(el,d.cards||[]);
+  }).catch(function(){_renderStats(el,[])})}
+
+function _renderStats(el,cards){
+  const totalCards=cards.length;
+  const totalTokens=cards.reduce((s,c)=>s+(c.tokens||70),0);
   const tokensWithout=6000;
   const avgTokensPerCard=totalCards>0?Math.round(totalTokens/totalCards):70;
   const tokensWith=Math.max(50,Math.min(avgTokensPerCard*2,800));
   const savingsPct=totalCards>0?Math.round((1-tokensWith/tokensWithout)*100):0;
   const savedPerMsg=tokensWithout-tokensWith;
-  // Cost savings: ~30 msgs/day * 30 days * saved tokens * $0.003/1K tokens (Claude avg)
   const msgsPerDay=30;
   const monthlySavings=totalCards>0?Math.round((savedPerMsg*msgsPerDay*30*0.003)/1000):0;
-  // Stale cards: cards not updated in 21+ days
   const now=Date.now();
-  const staleCards=DEMO.filter(function(c){
-    var updated=new Date(c.updatedAt||c.createdAt||0).getTime();
+  const staleCards=cards.filter(function(c){
+    var updated=new Date(c.updatedAt||c.createdAt||now).getTime();
     return (now-updated)>(21*24*60*60*1000);
   });
   el.innerHTML=`
