@@ -110,6 +110,12 @@ function renderD(){if(!U)return;
   else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.6rem;color:var(--green);font-family:var(--mono)">→ Business</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.58rem;color:var(--faint);font-family:var(--mono)">Manage</a>';
   else if(U.plan==='BUSINESS')upgradeLink=' <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.58rem;color:var(--faint);font-family:var(--mono)">Manage subscription</a>';
   document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>')+upgradeLink;
+  // Also show in the visible top plan bar
+  var planBar=document.getElementById("d-plan-bar");
+  if(planBar&&U.plan!=='FREE'){
+    planBar.style.display='block';
+    planBar.innerHTML='Plan: '+(planBadges[U.plan]||U.plan)+upgradeLink;
+  }else if(planBar){planBar.style.display='none'}
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
 
