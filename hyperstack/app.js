@@ -106,8 +106,9 @@ function renderD(){if(!U)return;
   var planBadges={BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',PRO:'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>',TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'};
   var upgradeLink='';
   if(U.plan==='FREE')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono)">Upgrade</a>';
-  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.6rem;color:#60a5fa;font-family:var(--mono)">→ Team</a>';
-  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.6rem;color:var(--green);font-family:var(--mono)">→ Business</a>';
+  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.6rem;color:#60a5fa;font-family:var(--mono)">→ Team</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.58rem;color:var(--faint);font-family:var(--mono)">Manage</a>';
+  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.6rem;color:var(--green);font-family:var(--mono)">→ Business</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.58rem;color:var(--faint);font-family:var(--mono)">Manage</a>';
+  else if(U.plan==='BUSINESS')upgradeLink=' <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.58rem;color:var(--faint);font-family:var(--mono)">Manage subscription</a>';
   document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>')+upgradeLink;
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
@@ -1752,6 +1753,17 @@ var _pendingSuccess=false;
     },10000);
   }
 })();
+
+// Helper: open Stripe billing portal for subscription management
+async function manageSub(){
+  if(!U||!T){alert('Please log in first');return}
+  try{
+    var r=await fetch(A+'/api/stripe-portal',{method:'POST',headers:{'Authorization':'Bearer '+T,'Content-Type':'application/json'}});
+    var d=await r.json();
+    if(d.url){window.open(d.url,'_blank')}
+    else{alert(d.error||'Could not open billing portal. Contact support.')}
+  }catch(e){alert('Could not connect to server.')}
+}
 
 // Helper: open Stripe with prefilled email if logged in
 function stripeGo(url,plan){
