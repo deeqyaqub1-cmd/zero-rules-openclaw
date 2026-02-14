@@ -604,8 +604,24 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
     </div>
   </div>`;return}
 
+  const totalCards=DEMO.length;
   const totalTokens=DEMO.reduce((s,c)=>s+(c.tokens||70),0);
-  const savedPerMsg=6000-350;
+  // Average system prompt without HyperStack: ~6000 tokens (full conversation history)
+  // With HyperStack: ~350 tokens per card retrieval (just the relevant card)
+  const tokensWithout=6000;
+  const avgTokensPerCard=totalCards>0?Math.round(totalTokens/totalCards):70;
+  const tokensWith=Math.max(50,Math.min(avgTokensPerCard*2,800));
+  const savingsPct=totalCards>0?Math.round((1-tokensWith/tokensWithout)*100):0;
+  const savedPerMsg=tokensWithout-tokensWith;
+  // Cost savings: ~30 msgs/day * 30 days * saved tokens * $0.003/1K tokens (Claude avg)
+  const msgsPerDay=30;
+  const monthlySavings=totalCards>0?Math.round((savedPerMsg*msgsPerDay*30*0.003)/1000):0;
+  // Stale cards: cards not updated in 21+ days
+  const now=Date.now();
+  const staleCards=DEMO.filter(function(c){
+    var updated=new Date(c.updatedAt||c.createdAt||0).getTime();
+    return (now-updated)>(21*24*60*60*1000);
+  });
   el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Your agent's memory performance</p></div></div>
 
@@ -614,23 +630,23 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
     <div style="position:relative">
       <div style="position:absolute;inset:-1px;border-radius:12px;background:rgba(34,197,94,.15);filter:blur(8px)"></div>
       <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.25);border-radius:12px;padding:16px;text-align:center">
-        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--green)">94%</div>
+        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--green)">${savingsPct}%</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Token Savings</div>
       </div>
     </div>
     <div style="background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center">
-      <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800">${DEMO.length}</div>
+      <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800">${totalCards}</div>
       <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Total Cards</div>
     </div>
     <div style="position:relative">
       <div style="position:absolute;inset:-1px;border-radius:12px;background:rgba(255,107,43,.12);filter:blur(8px)"></div>
       <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.2);border-radius:12px;padding:16px;text-align:center">
-        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--accent)">$254</div>
+        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--accent)">$${monthlySavings}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Saved / month</div>
       </div>
     </div>
     <div style="background:var(--surface);border:2px solid rgba(234,179,8,.15);border-radius:12px;padding:16px;text-align:center">
-      <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--yellow)">1</div>
+      <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--yellow)">${staleCards.length}</div>
       <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Stale Cards</div>
     </div>
   </div>
@@ -643,14 +659,14 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
       <div style="text-align:center;padding:16px;background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:10px">
-        <div style="font-family:var(--mono);font-size:1.5rem;font-weight:800;color:var(--red)">6,000</div>
+        <div style="font-family:var(--mono);font-size:1.5rem;font-weight:800;color:var(--red)">${tokensWithout.toLocaleString()}</div>
         <div style="font-size:.72rem;color:var(--dim);margin-top:2px">Without HyperStack</div>
         <div style="width:100%;height:6px;background:rgba(239,68,68,.15);border-radius:3px;margin-top:10px"><div style="width:100%;height:100%;background:var(--red);border-radius:3px"></div></div>
       </div>
       <div style="text-align:center;padding:16px;background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);border-radius:10px">
-        <div style="font-family:var(--mono);font-size:1.5rem;font-weight:800;color:var(--green)">350</div>
+        <div style="font-family:var(--mono);font-size:1.5rem;font-weight:800;color:var(--green)">${tokensWith.toLocaleString()}</div>
         <div style="font-size:.72rem;color:var(--dim);margin-top:2px">With HyperStack</div>
-        <div style="width:100%;height:6px;background:rgba(34,197,94,.15);border-radius:3px;margin-top:10px"><div style="width:6%;height:100%;background:var(--green);border-radius:3px"></div></div>
+        <div style="width:100%;height:6px;background:rgba(34,197,94,.15);border-radius:3px;margin-top:10px"><div style="width:${Math.round(tokensWith/tokensWithout*100)}%;height:100%;background:var(--green);border-radius:3px"></div></div>
       </div>
     </div>
     <div style="text-align:center;font-family:var(--mono);font-size:.75rem;color:var(--faint)">You save <strong style="color:var(--green)">~${savedPerMsg.toLocaleString()} tokens</strong> every message</div>
@@ -663,15 +679,10 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Stale Cards</span>
       <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">Cards not updated in 21+ days</span>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
-      <div style="width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 6px var(--yellow)"></div>
-      <div style="flex:1">
-        <span style="font-family:var(--mono);font-size:.82rem;font-weight:600">decision-auth</span>
-        <span style="font-size:.78rem;color:var(--dim);margin-left:8px">Auth0 → Clerk</span>
-      </div>
-      <span style="font-family:var(--mono);font-size:.65rem;background:rgba(234,179,8,.1);color:var(--yellow);padding:3px 10px;border-radius:6px;border:1px solid rgba(234,179,8,.2);font-weight:600">26 days</span>
-    </div>
-    <p style="font-size:.72rem;color:var(--faint);margin-top:8px;text-align:center">Stale cards may contain outdated info. Consider reviewing or archiving them.</p>
+    ${staleCards.length===0?'<div style="text-align:center;padding:16px;color:var(--dim);font-size:.82rem">✅ No stale cards. Your memory is fresh!</div>':staleCards.map(function(c){
+      var days=Math.floor((now-new Date(c.updatedAt||c.createdAt||0).getTime())/(24*60*60*1000));
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:6px"><div style="width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 6px var(--yellow)"></div><div style="flex:1"><span style="font-family:var(--mono);font-size:.82rem;font-weight:600">'+c.slug+'</span><span style="font-size:.78rem;color:var(--dim);margin-left:8px">'+c.title+'</span></div><span style="font-family:var(--mono);font-size:.65rem;background:rgba(234,179,8,.1);color:var(--yellow);padding:3px 10px;border-radius:6px;border:1px solid rgba(234,179,8,.2);font-weight:600">'+days+' days</span></div>'}).join('')}
+    <p style="font-size:.72rem;color:var(--faint);margin-top:8px;text-align:center">${staleCards.length>0?'Stale cards may contain outdated info. Consider reviewing or archiving them.':'All cards updated within the last 21 days.'}</p>
   </div>`}
 
 
