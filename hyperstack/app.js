@@ -498,8 +498,8 @@ function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
       <h3 style="font-family:var(--mono);font-size:.92rem;font-weight:700;margin-bottom:6px">Multiple workspaces require Pro</h3>
       <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Separate workspaces per project so your agent only sees what's relevant. Zero cross-contamination.</p>
       <div style="display:flex;gap:8px;justify-content:center">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/test_cNi3cv5v79Xu1X34hZeUU04?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp bs">Upgrade — $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/test_dRmcN57Df9XucBH01JeUU03?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg bs">Team — $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp bs">Upgrade — $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg bs">Team — $59/mo</a>
       </div>
     </div>
   </div>`}`}
@@ -530,8 +530,8 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/test_cNi3cv5v79Xu1X34hZeUU04?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade — $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/test_dRmcN57Df9XucBH01JeUU03?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team — $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade — $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team — $59/mo</a>
       </div>
     </div>
   </div>`;return}
@@ -598,8 +598,8 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/test_cNi3cv5v79Xu1X34hZeUU04?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade — $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/test_dRmcN57Df9XucBH01JeUU03?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team — $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade — $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team — $59/mo</a>
       </div>
     </div>
   </div>`;return}
