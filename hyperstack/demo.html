@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HyperStack Ad</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#08080a;overflow:hidden;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
+canvas{display:block;cursor:pointer}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+var W=720,H=720,dpr=2;
+var cv=document.getElementById('c');
+cv.width=W*dpr;cv.height=H*dpr;
+cv.style.width=W+'px';cv.style.height=H+'px';
+var ctx=cv.getContext('2d');
+ctx.scale(dpr,dpr);
+
+// Exact dashboard colors
+var TC={person:'#a855f7',project:'#3b82f6',decision:'#ff6b2b',workflow:'#eab308'};
+var RC={owns:'#c084fc',decided:'#ff8855',approved:'#4ade80',uses:'#60a5fa',triggers:'#facc15',blocks:'#f87171','depends-on':'#22d3ee'};
+
+var startTime=0,breathPhase=0;
+function t(){return(Date.now()-startTime)/1000}
+
+// ═══════════════════════════════════════════
+// SCENE TIMING (much slower)
+// ═══════════════════════════════════════════
+// 0-7s:   Hook + Pain (compressed, punchy)
+// 7-28s:  Graph (3 phases, tighter)
+// 28-42s: Footprints (how it knows)
+// 42-54s: Answer
+// 54-68s: CTA
+var S_PAIN=0, S_GRAPH=7, S_CARDS=28, S_ANSWER=42, S_CTA=54, S_END=68;
+
+// ═══════════════════════════════════════════
+// GRAPH NODES — clear human-readable names
+// ═══════════════════════════════════════════
+// Only 5 nodes on the traversal path
+// Traversal order: Auth API (today) → v5 Update (Tue) → Alice (who) → Clerk Auth (Jan, why)
+var nodes=[
+  {slug:'auth-api',    title:'Auth API',        subtitle:'',  type:'project',  x:500,y:200, r:34},
+  {slug:'migration',   title:'Clerk v5 Update', subtitle:'',  type:'workflow', x:380,y:340, r:28},
+  {slug:'alice',       title:'Alice',           subtitle:'',  type:'person',   x:220,y:340, r:26},
+  {slug:'use-clerk',   title:'Clerk Auth',      subtitle:'',  type:'decision', x:300,y:480, r:28},
+  {slug:'broken',      title:'⚠️ 403 Errors',  subtitle:'',  type:'project',  x:620,y:340, r:30},
+];
+
+var edges=[
+  {from:'auth-api',   to:'migration',  relation:'broke after',  color:RC.triggers},
+  {from:'migration',  to:'alice',      relation:'deployed by',  color:RC.owns},
+  {from:'alice',      to:'use-clerk',  relation:'decided',      color:RC.decided},
+  {from:'use-clerk',  to:'broken',     relation:'caused',       color:RC.triggers},
+];
+
+// Agent character position (interpolated along path)
+var agentPos={x:420,y:280};
+var agentTarget={x:500,y:200};
+var agentVisible=false;
+
+// Node/edge visibility
+var nVis={},eVis={};
+nodes.forEach(function(n){nVis[n.slug]={vis:false,glow:0,scale:0,active:false}});
+edges.forEach(function(e,i){eVis[i]={vis:false,active:false}});
+
+// ═══════════════════════════════════════════
+// DRAWING — matches dashboard exactly
+// ═══════════════════════════════════════════
+function drawGrid(){
+  ctx.globalAlpha=0.025;ctx.strokeStyle='#fff';ctx.lineWidth=0.5;
+  for(var x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+  for(var y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+  ctx.globalAlpha=1;
+}
+
+function drawNode(n){
+  var ns=nVis[n.slug];if(!ns.vis)return;
+  var color=TC[n.type]||'#8888a0';
+  var r=n.r*Math.min(ns.scale,1);
+  var breath=1+Math.sin(breathPhase+n.slug.length*0.7)*0.03;
+  r*=breath;
+
+  // Glow halo
+  if(ns.glow>0.1){
+    var glowR=r*2.2;
+    var g=ctx.createRadialGradient(n.x,n.y,r*0.2,n.x,n.y,glowR);
+    var alpha=Math.round(ns.glow*80).toString(16).padStart(2,'0');
+    g.addColorStop(0,color+alpha);g.addColorStop(1,color+'00');
+    ctx.beginPath();ctx.arc(n.x,n.y,glowR,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+  }
+
+  // Outer ring
+  ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+  ctx.fillStyle=color+'18';ctx.fill();
+  ctx.strokeStyle=ns.active?color+'dd':color+'55';
+  ctx.lineWidth=ns.active?3.5:2;
+  ctx.stroke();
+
+  // Inner dot
+  ctx.beginPath();ctx.arc(n.x,n.y,Math.max(3,r*0.22),0,Math.PI*2);
+  ctx.fillStyle=color;ctx.fill();
+
+  // Pulse ring
+  if(ns.active){
+    var pr=r*(1.15+Math.sin(breathPhase*2.5)*0.08);
+    ctx.beginPath();ctx.arc(n.x,n.y,pr,0,Math.PI*2);
+    ctx.strokeStyle=color+'55';ctx.lineWidth=1.5;ctx.stroke();
+  }
+
+  // Title — clean, just the name
+  ctx.globalAlpha=1;
+  ctx.font='700 14px "JetBrains Mono"';ctx.fillStyle='#e8e8ec';ctx.textAlign='center';
+  ctx.fillText(n.title,n.x,n.y+r+18);
+}
+
+function drawEdge(e,idx){
+  var es=eVis[idx];if(!es.vis)return;
+  var fn=nodes.find(function(n){return n.slug===e.from});
+  var tn=nodes.find(function(n){return n.slug===e.to});
+  if(!nVis[e.from].vis||!nVis[e.to].vis)return;
+
+  var mx=(fn.x+tn.x)/2,my=(fn.y+tn.y)/2;
+  var dx=tn.x-fn.x,dy=tn.y-fn.y;
+  var cx=mx+dy*0.12,cy=my-dx*0.12;
+
+  ctx.beginPath();ctx.moveTo(fn.x,fn.y);ctx.quadraticCurveTo(cx,cy,tn.x,tn.y);
+  ctx.strokeStyle=e.color;
+  ctx.lineWidth=es.active?4:2;
+  ctx.globalAlpha=es.active?1:0.4;
+  ctx.setLineDash(es.active?[]:[6,4]);ctx.stroke();ctx.setLineDash([]);
+
+  // Arrow
+  var at=0.72;
+  var ax=(1-at)*(1-at)*fn.x+2*(1-at)*at*cx+at*at*tn.x;
+  var ay=(1-at)*(1-at)*fn.y+2*(1-at)*at*cy+at*at*tn.y;
+  var at2=at+0.03;
+  var ax2=(1-at2)*(1-at2)*fn.x+2*(1-at2)*at2*cx+at2*at2*tn.x;
+  var ay2=(1-at2)*(1-at2)*fn.y+2*(1-at2)*at2*cy+at2*at2*tn.y;
+  var ang=Math.atan2(ay2-ay,ax2-ax);
+  var as=es.active?12:8;
+  ctx.beginPath();
+  ctx.moveTo(ax+Math.cos(ang)*as,ay+Math.sin(ang)*as);
+  ctx.lineTo(ax+Math.cos(ang+2.5)*as*0.6,ay+Math.sin(ang+2.5)*as*0.6);
+  ctx.lineTo(ax+Math.cos(ang-2.5)*as*0.6,ay+Math.sin(ang-2.5)*as*0.6);
+  ctx.closePath();ctx.fillStyle=e.color;
+  ctx.globalAlpha=es.active?0.9:0.3;ctx.fill();
+
+  // Relation label — bigger
+  ctx.font='700 10px "JetBrains Mono"';ctx.textAlign='center';
+  ctx.globalAlpha=es.active?1:0.4;
+  var lw=ctx.measureText(e.relation).width+12;
+  ctx.fillStyle='rgba(8,8,10,0.9)';
+  roundRect(cx-lw/2,cy-10,lw,20,5);ctx.fill();
+  ctx.fillStyle=es.active?'#fff':e.color;
+  ctx.fillText(e.relation,cx,cy+4);
+  ctx.globalAlpha=1;
+}
+
+function roundRect(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+
+// Agent character — a glowing bot walking the path
+function drawAgent(){
+  if(!agentVisible)return;
+  // Lerp position — slow smooth walk
+  agentPos.x+=(agentTarget.x-agentPos.x)*0.025;
+  agentPos.y+=(agentTarget.y-agentPos.y)*0.025;
+
+  var ax=agentPos.x,ay=agentPos.y;
+
+  // Trail glow
+  var tg=ctx.createRadialGradient(ax,ay,5,ax,ay,40);
+  tg.addColorStop(0,'rgba(255,107,43,0.25)');tg.addColorStop(1,'rgba(255,107,43,0)');
+  ctx.beginPath();ctx.arc(ax,ay,40,0,Math.PI*2);ctx.fillStyle=tg;ctx.fill();
+
+  // Body (small bot)
+  var bob=Math.sin(breathPhase*3)*2;
+
+  // Head
+  ctx.beginPath();ctx.arc(ax,ay-10+bob,9,0,Math.PI*2);
+  ctx.fillStyle='#ff6b2b';ctx.fill();
+  ctx.strokeStyle='#ff8855';ctx.lineWidth=2;ctx.stroke();
+
+  // Eyes
+  ctx.fillStyle='#000';
+  ctx.beginPath();ctx.arc(ax-3,ay-11+bob,1.8,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(ax+3,ay-11+bob,1.8,0,Math.PI*2);ctx.fill();
+
+  // Eye glow
+  ctx.fillStyle='#fff';
+  ctx.beginPath();ctx.arc(ax-3,ay-11.5+bob,0.8,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(ax+3,ay-11.5+bob,0.8,0,Math.PI*2);ctx.fill();
+
+  // Antenna
+  ctx.strokeStyle='#ff6b2b';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(ax,ay-19+bob);ctx.lineTo(ax,ay-25+bob);ctx.stroke();
+  ctx.beginPath();ctx.arc(ax,ay-26+bob,2.5,0,Math.PI*2);
+  ctx.fillStyle='#ff6b2b';ctx.fill();
+  // Antenna blink
+  if(Math.sin(breathPhase*4)>0.5){
+    ctx.beginPath();ctx.arc(ax,ay-26+bob,5,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,107,43,0.3)';ctx.fill();
+  }
+
+  // Label
+  ctx.font='700 8px "JetBrains Mono"';ctx.textAlign='center';
+  ctx.fillStyle='#ff6b2b';
+  ctx.fillText('AGENT',ax,ay+8+bob);
+}
+
+// ═══════════════════════════════════════════
+// SCENE 1: THE PAIN
+// ═══════════════════════════════════════════
+function drawPain(el){
+  var g=ctx.createRadialGradient(360,360,50,360,360,400);
+  g.addColorStop(0,'rgba(239,68,68,0.06)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  // === HOOK (0-2s): Massive bold statement ===
+  if(el<2.5){
+    var ha=el<1.8?Math.min(1,el/0.4):Math.max(0,1-(el-1.8)/0.6);
+    ctx.globalAlpha=ha;
+    ctx.font='800 40px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ef4444';
+    ctx.fillText('Your AI agent',360,320);
+    ctx.fillText('has amnesia.',360,375);
+    var hg=ctx.createRadialGradient(360,345,20,360,345,250);
+    hg.addColorStop(0,'rgba(239,68,68,0.1)');hg.addColorStop(1,'transparent');
+    ctx.fillStyle=hg;ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1;
+  }
+
+  // === QUICK PAIN (2-6.5s): Question + instant failure ===
+  if(el>2){
+    var qa=Math.min(1,(el-2)/0.4);ctx.globalAlpha=qa;
+    roundRect(90,160,540,70,14);ctx.fillStyle='#111114';ctx.fill();
+    ctx.strokeStyle='#2a2a2e';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.font='700 9px "JetBrains Mono"';ctx.fillStyle='#555568';ctx.textAlign='left';
+    ctx.fillText('YOU',115,185);
+    ctx.font='700 20px "JetBrains Mono"';ctx.fillStyle='#e8e8ec';
+    ctx.fillText('"Auth API is 403ing. What changed?"',115,215);
+    ctx.globalAlpha=1;
+  }
+
+  // Agent failures — fast cascade
+  if(el>3){
+    var fa=Math.min(1,(el-3)/0.4);ctx.globalAlpha=fa;
+    roundRect(90,250,540,140,14);ctx.fillStyle='#0c0c0e';ctx.fill();
+    ctx.strokeStyle='#ef444466';ctx.lineWidth=2;ctx.stroke();
+    ctx.font='700 9px "JetBrains Mono"';ctx.fillStyle='#ef4444';ctx.textAlign='left';
+    ctx.fillText('AI AGENT',115,275);
+    ctx.globalAlpha=1;
+  }
+
+  var steps=[
+    {icon:'🔍',text:'Searching 847 messages...',t:3.3,color:'#8888a0'},
+    {icon:'💸',text:'6,000 tokens burned',t:4.0,color:'#eab308'},
+    {icon:'🤷',text:'"I don\'t have enough context."',t:4.7,color:'#ef4444'},
+  ];
+  steps.forEach(function(s,i){
+    if(el>s.t){
+      var sa=Math.min(1,(el-s.t)/0.3);ctx.globalAlpha=sa;
+      ctx.font='600 14px "JetBrains Mono"';ctx.fillStyle=s.color;ctx.textAlign='left';
+      ctx.fillText(s.icon+'  '+s.text,120,302+i*32);
+      ctx.globalAlpha=1;
+    }
+  });
+
+  // Cost slam
+  if(el>5.5){
+    var ca=Math.min(1,(el-5.5)/0.3);ctx.globalAlpha=ca;
+    roundRect(120,420,480,44,10);
+    ctx.fillStyle='rgba(239,68,68,0.08)';ctx.fill();
+    ctx.strokeStyle='rgba(239,68,68,0.25)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.font='700 14px "JetBrains Mono"';ctx.fillStyle='#ef4444';ctx.textAlign='center';
+    ctx.fillText('$0.18 wasted  ·  No answer  ·  Sound familiar?',360,447);
+    ctx.globalAlpha=1;
+  }
+}
+
+// ═══════════════════════════════════════════
+// SCENE 2: THE GRAPH — 3 clear phases
+// ═══════════════════════════════════════════
+function drawGraphScene(el){
+  drawGrid();
+
+  // Ambient
+  var g=ctx.createRadialGradient(360,320,30,360,320,380);
+  g.addColorStop(0,'rgba(255,107,43,0.04)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  // === BIG DATE DISPLAY — travels BACKWARDS: today → Tuesday → January ===
+  var currentDate='13/02/2026';
+  var dateColor='#3b82f6';
+  if(el>11){currentDate='06/01/2026';dateColor='#ff6b2b'}
+  else if(el>7){currentDate='11/02/2026';dateColor='#a855f7'}
+  else if(el>4){currentDate='11/02/2026';dateColor='#eab308'}
+
+  if(el>0.5){
+    var da=Math.min(1,(el-0.5)/0.5);
+    ctx.globalAlpha=da;
+    ctx.font='800 28px "JetBrains Mono"';ctx.textAlign='right';ctx.fillStyle=dateColor;
+    ctx.fillText('📅 '+currentDate,690,150);
+    ctx.globalAlpha=1;
+  }
+
+  // === PHASE HEADERS ===
+  // Phase A: WHAT? (el 0-4)
+  if(el>0.5&&el<5){
+    var fa=el<3.5?Math.min(1,(el-0.5)/0.6):Math.max(0,1-(el-3.5)/1);
+    ctx.globalAlpha=fa;
+    ctx.font='800 12px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ff6b2b';
+    ctx.fillText('STEP 1 — WHAT BROKE?',480,60);
+    ctx.font='700 22px "JetBrains Mono"';ctx.fillStyle='#3b82f6';
+    ctx.fillText('Auth API → 403 Errors',480,90);
+    ctx.font='500 10px "JetBrains Mono"';ctx.fillStyle='#555568';
+    ctx.fillText('Today · 13/02/2026',480,110);
+    ctx.globalAlpha=1;
+  }
+
+  // Phase B: WHAT CHANGED? (el 4-11)
+  if(el>4&&el<12){
+    var fb=el<10?Math.min(1,(el-4)/0.6):Math.max(0,1-(el-10)/1);
+    ctx.globalAlpha=fb;
+    ctx.font='800 12px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ff6b2b';
+    ctx.fillText('STEP 2 — WHAT CHANGED?',480,60);
+    ctx.font='700 22px "JetBrains Mono"';ctx.fillStyle='#eab308';
+    ctx.fillText('Clerk v5 Update',480,90);
+    ctx.font='500 10px "JetBrains Mono"';ctx.fillStyle='#ef4444';
+    ctx.fillText('⏪ Tuesday · 11/02/2026',480,110);
+    ctx.globalAlpha=1;
+  }
+
+  // Phase C: WHY? (el 11+)
+  if(el>11){
+    var fc=Math.min(1,(el-11)/0.6);
+    ctx.globalAlpha=fc;
+    ctx.font='800 12px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ff6b2b';
+    ctx.fillText('STEP 3 — WHY CLERK?',480,60);
+    ctx.font='700 22px "JetBrains Mono"';ctx.fillStyle='#ff6b2b';
+    ctx.fillText('Alice chose Clerk over Auth0',480,90);
+    ctx.font='500 10px "JetBrains Mono"';ctx.fillStyle='#a855f7';
+    ctx.fillText('⏪ January · 06/01/2026',480,110);
+    ctx.globalAlpha=1;
+  }
+
+  // === TIMELINE — compressed timing ===
+  var tlX=52,tlTop=150;
+  var tlItems=[
+    {t:1,  time:'0.0s', label:'🔍 Query received',     detail:'"Auth 403 since Tuesday"', color:'#ff6b2b', date:'13/02'},
+    {t:2,  time:'0.1s', label:'📍 Found: Auth API',     detail:'project · broken today',   color:'#3b82f6', date:'13/02'},
+    {t:4,  time:'0.2s', label:'⏪ Clerk v5 Update',     detail:'Deployed last Tuesday',     color:'#eab308', date:'11/02'},
+    {t:7,  time:'0.3s', label:'👤 Deployed by: Alice',  detail:'Lead engineer',             color:'#a855f7', date:'11/02'},
+    {t:11, time:'0.4s', label:'⏪ Original decision',   detail:'Alice chose Clerk in Jan',  color:'#ff6b2b', date:'06/01'},
+    {t:16, time:'0.5s', label:'🚨 Root cause found!',   detail:'v5 broke token format',     color:'#ef4444', date:'06/01'},
+  ];
+
+  // Timeline vertical line
+  var lastVisible=-1;
+  tlItems.forEach(function(item,i){if(el>item.t)lastVisible=i});
+  if(lastVisible>=0){
+    ctx.globalAlpha=1;
+    ctx.font='800 11px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ff6b2b';
+    ctx.fillText('TODAY',tlX,tlTop-30);
+    ctx.font='600 9px "JetBrains Mono"';ctx.fillStyle='#555568';
+    ctx.fillText('13/02/2026',tlX,tlTop-17);
+
+    ctx.strokeStyle='#1e1e24';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(tlX,tlTop);ctx.lineTo(tlX,tlTop+lastVisible*80+10);ctx.stroke();
+  }
+
+  tlItems.forEach(function(item,i){
+    if(el<=item.t)return;
+    var ia=Math.min(1,(el-item.t)/0.5);
+    var iy=tlTop+i*80;
+    ctx.globalAlpha=ia;
+
+    ctx.beginPath();ctx.arc(tlX,iy,6,0,Math.PI*2);ctx.fillStyle=item.color;ctx.fill();
+    ctx.beginPath();ctx.arc(tlX,iy,10,0,Math.PI*2);
+    ctx.strokeStyle=item.color;ctx.lineWidth=1;ctx.globalAlpha=ia*0.4;ctx.stroke();
+    ctx.globalAlpha=ia;
+
+    ctx.font='700 9px "JetBrains Mono"';ctx.textAlign='right';ctx.fillStyle='#555568';
+    ctx.fillText(item.time,tlX-14,iy+3);
+    ctx.font='700 7px "JetBrains Mono"';ctx.fillStyle=item.color;
+    ctx.fillText(item.date,tlX-14,iy+14);
+
+    ctx.textAlign='left';ctx.font='700 10px "JetBrains Mono"';ctx.fillStyle=item.color;
+    ctx.fillText(item.label,tlX+16,iy-3);
+    ctx.font='500 9px "JetBrains Mono"';ctx.fillStyle='#8888a0';
+    ctx.fillText(item.detail,tlX+16,iy+12);
+    ctx.globalAlpha=1;
+  });
+
+  // (Date is now shown in the big display above)
+
+  // === NODE REVEALS — backwards time travel, tighter timing ===
+  // Step 1: auth-api (el=1.5) — today's problem
+  if(el>1.5){nVis['auth-api'].vis=true;nVis['auth-api'].scale=Math.min(1,(el-1.5)/0.5)}
+  if(el>2&&el<5){nVis['auth-api'].active=true;nVis['auth-api'].glow=1}
+
+  // Step 2: migration (el=4) — what changed Tuesday
+  if(el>4){nVis['migration'].vis=true;nVis['migration'].scale=Math.min(1,(el-4)/0.5);eVis[0].vis=true}
+  if(el>5){eVis[0].active=true;nVis['migration'].glow=0.8}
+  if(el>4&&el<7){agentTarget={x:380,y:340}}
+
+  // Step 3: alice (el=7) — who deployed it
+  if(el>7){nVis['alice'].vis=true;nVis['alice'].scale=Math.min(1,(el-7)/0.5);eVis[1].vis=true}
+  if(el>8){eVis[1].active=true;nVis['alice'].glow=0.8}
+  if(el>7&&el<11){agentTarget={x:220,y:340}}
+
+  // Step 4: use-clerk (el=11) — the original decision in January
+  if(el>11){nVis['use-clerk'].vis=true;nVis['use-clerk'].scale=Math.min(1,(el-11)/0.5);eVis[2].vis=true}
+  if(el>12){eVis[2].active=true;nVis['use-clerk'].glow=0.8}
+  if(el>11&&el<15){agentTarget={x:300,y:480}}
+
+  // Step 5: ROOT CAUSE — agent walks to 403 Errors
+  // Edge appears at el=15 (dashed, dim) so glow path is visible during walk
+  if(el>15){
+    nVis['broken'].vis=true;nVis['broken'].scale=Math.min(1,(el-15)/0.8);
+    eVis[3].vis=true;
+    agentTarget={x:620,y:340};
+  }
+  // At el=16.5 the edge fully activates with glow
+  if(el>16.5){
+    eVis[3].active=true;
+    nVis['broken'].active=true;nVis['broken'].glow=1;
+  }
+
+  // All glow at el=18
+  if(el>18){
+    nodes.forEach(function(n){nVis[n.slug].glow=Math.max(nVis[n.slug].glow,0.5)});
+    edges.forEach(function(e,i){eVis[i].active=true});
+  }
+
+  // Agent visible
+  agentVisible=el>1.5&&el<20;
+  if(el<=1.5){agentTarget={x:500,y:200};agentPos={x:500,y:200}}
+
+  // Draw
+  edges.forEach(function(e,i){drawEdge(e,i)});
+  nodes.forEach(function(n){drawNode(n)});
+  drawAgent();
+
+  // "0.5 seconds total" badge at end
+  if(el>18){
+    var ba=Math.min(1,(el-18)/0.5);
+    ctx.globalAlpha=ba;
+    roundRect(240,600,240,40,10);
+    ctx.fillStyle='rgba(34,197,94,0.08)';ctx.fill();
+    ctx.strokeStyle='rgba(34,197,94,0.25)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.font='700 12px "JetBrains Mono"';ctx.fillStyle='#22c55e';ctx.textAlign='center';
+    ctx.fillText('✓ Root cause in 0.5 seconds',360,625);
+    ctx.globalAlpha=1;
+  }
+}
+
+// ═══════════════════════════════════════════
+// SCENE 3: THE ANSWER
+// ═══════════════════════════════════════════
+function drawAnswer(el){
+  var g=ctx.createRadialGradient(360,360,50,360,360,400);
+  g.addColorStop(0,'rgba(34,197,94,0.06)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  if(el>0.3){
+    var a=Math.min(1,(el-0.3)/0.5);ctx.globalAlpha=a;
+    ctx.font='800 14px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#22c55e';
+    ctx.fillText('ONE API CALL. FULL ANSWER.',360,80);
+    ctx.globalAlpha=1;
+  }
+
+  if(el>1.0){
+    var a2=Math.min(1,(el-1.0)/0.5);ctx.globalAlpha=a2;
+    roundRect(60,100,600,500,16);ctx.fillStyle='#111114';ctx.fill();
+    ctx.strokeStyle='rgba(34,197,94,0.3)';ctx.lineWidth=2;ctx.stroke();
+
+    ctx.font='800 10px "JetBrains Mono"';ctx.fillStyle='#22c55e';ctx.textAlign='left';
+    ctx.fillText('✦ HYPERSTACK RESPONSE',90,130);
+
+    ctx.font='700 16px "JetBrains Mono"';ctx.fillStyle='#e8e8ec';
+    ctx.fillText('"What changed with Auth API?"',90,160);
+    ctx.globalAlpha=1;
+  }
+
+  // Trail nodes — backwards time travel order
+  var trail=[
+    {label:'Auth API',color:'#3b82f6',t:2.0},
+    {edge:'broke after',color:'#facc15',t:2.6},
+    {label:'Clerk v5 Update',color:'#eab308',t:3.0},
+    {edge:'deployed by',color:'#c084fc',t:3.6},
+    {label:'Alice',color:'#a855f7',t:4.0},
+    {edge:'decided',color:'#ff8855',t:4.6},
+    {label:'Clerk Auth',color:'#ff6b2b',t:5.0},
+    {edge:'caused',color:'#ef4444',t:5.6},
+    {label:'⚠️ 403 Errors',color:'#ef4444',t:6.0},
+  ];
+
+  var tx=90,ty=195;
+  trail.forEach(function(item){
+    if(el<=item.t)return;
+    var ia=Math.min(1,(el-item.t)/0.4);ctx.globalAlpha=ia;
+    if(item.edge){
+      ctx.font='600 10px "JetBrains Mono"';ctx.fillStyle=item.color;
+      var etxt=' → '+item.edge+' → ';
+      ctx.fillText(etxt,tx,ty);tx+=ctx.measureText(etxt).width;
+    }else{
+      ctx.font='700 11px "JetBrains Mono"';
+      var tw=ctx.measureText(item.label).width+16;
+      if(tx+tw>620){tx=90;ty+=30}
+      roundRect(tx,ty-12,tw,24,6);ctx.fillStyle=item.color+'20';ctx.fill();
+      ctx.strokeStyle=item.color+'55';ctx.lineWidth=1;ctx.stroke();
+      ctx.fillStyle=item.color;ctx.textAlign='left';
+      ctx.fillText(item.label,tx+8,ty+4);tx+=tw+4;
+    }
+    ctx.globalAlpha=1;
+  });
+
+  // Root cause box
+  if(el>6.5){
+    var ra=Math.min(1,(el-6.5)/0.5);ctx.globalAlpha=ra;
+    roundRect(90,260,520,75,10);ctx.fillStyle='rgba(255,107,43,0.04)';ctx.fill();
+    ctx.strokeStyle='rgba(255,107,43,0.15)';ctx.lineWidth=1;ctx.stroke();
+    ctx.font='800 12px "JetBrains Mono"';ctx.fillStyle='#ff6b2b';ctx.textAlign='left';
+    ctx.fillText('🔍 Root Cause:',110,285);
+    ctx.font='500 12px "JetBrains Mono"';ctx.fillStyle='#c8c8d0';
+    ctx.fillText('Alice deployed Clerk v4 → v5 on Tuesday.',110,308);
+    ctx.fillText('New token format broke API middleware auth.',110,326);
+    ctx.globalAlpha=1;
+  }
+
+  // Who's handling it
+  if(el>7.5){
+    var wa=Math.min(1,(el-7.5)/0.5);ctx.globalAlpha=wa;
+    roundRect(90,350,520,55,10);ctx.fillStyle='rgba(168,85,247,0.04)';ctx.fill();
+    ctx.strokeStyle='rgba(168,85,247,0.15)';ctx.lineWidth=1;ctx.stroke();
+    ctx.font='800 12px "JetBrains Mono"';ctx.fillStyle='#a855f7';ctx.textAlign='left';
+    ctx.fillText('👤 Who\'s On It:',110,375);
+    ctx.font='500 12px "JetBrains Mono"';ctx.fillStyle='#c8c8d0';
+    ctx.fillText('Bob owns Auth API. Alice owns the migration.',110,396);
+    ctx.globalAlpha=1;
+  }
+
+  // Impact
+  if(el>8.5){
+    var ia=Math.min(1,(el-8.5)/0.5);ctx.globalAlpha=ia;
+    roundRect(90,420,520,50,10);ctx.fillStyle='rgba(59,130,246,0.04)';ctx.fill();
+    ctx.strokeStyle='rgba(59,130,246,0.15)';ctx.lineWidth=1;ctx.stroke();
+    ctx.font='800 12px "JetBrains Mono"';ctx.fillStyle='#3b82f6';ctx.textAlign='left';
+    ctx.fillText('💥 Impact:',110,445);
+    ctx.font='500 11px "JetBrains Mono"';ctx.fillStyle='#c8c8d0';
+    ctx.fillText('Frontend + API middleware affected. 2 downstream deps.',270,445);
+    ctx.globalAlpha=1;
+  }
+
+  // Cost comparison
+  if(el>9.5){
+    var ca=Math.min(1,(el-9.5)/0.5);ctx.globalAlpha=ca;
+    roundRect(90,490,260,44,10);ctx.fillStyle='rgba(34,197,94,0.06)';ctx.fill();
+    ctx.strokeStyle='rgba(34,197,94,0.2)';ctx.lineWidth=1;ctx.stroke();
+    ctx.font='700 13px "JetBrains Mono"';ctx.fillStyle='#22c55e';ctx.textAlign='left';
+    ctx.fillText('✓ 350 tokens · $0.001',105,517);
+
+    roundRect(380,490,130,44,10);ctx.fillStyle='rgba(239,68,68,0.06)';ctx.fill();
+    ctx.strokeStyle='rgba(239,68,68,0.15)';ctx.lineWidth=1;ctx.stroke();
+    ctx.font='700 13px "JetBrains Mono"';ctx.fillStyle='#ef4444';ctx.textAlign='center';
+    ctx.fillText('$0.18',445,517);
+    // Strikethrough
+    ctx.strokeStyle='#ef4444';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(420,515);ctx.lineTo(470,515);ctx.stroke();
+
+    ctx.font='600 11px "JetBrains Mono"';ctx.fillStyle='#22c55e';
+    ctx.fillText('99% less',560,517);
+    ctx.globalAlpha=1;
+  }
+}
+
+// ═══════════════════════════════════════════
+// SCENE 4: CTA
+// ═══════════════════════════════════════════
+function drawCTA(el){
+  drawGrid();
+  var g=ctx.createRadialGradient(360,360,30,360,360,350);
+  g.addColorStop(0,'rgba(255,107,43,0.08)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  // === PHASE 1: Logo + tagline (0-5s) ===
+  if(el>0.3){
+    var a=Math.min(1,(el-0.3)/0.5);ctx.globalAlpha=a;
+    ctx.font='800 42px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ff6b2b';
+    ctx.fillText('⚡ HyperStack',360,200);
+    ctx.globalAlpha=1;
+  }
+  if(el>1.0){
+    var a2=Math.min(1,(el-1.0)/0.4);ctx.globalAlpha=a2;
+    ctx.font='700 18px "JetBrains Mono"';ctx.fillStyle='#e8e8ec';
+    ctx.fillText('Your agent remembers why.',360,240);
+    ctx.globalAlpha=1;
+  }
+
+  // === PHASE 2: Differentiators (2-7s) ===
+  var diffs=[
+    {icon:'🧠',text:'Knowledge graph, not flat text',color:'#ff6b2b',t:2.0},
+    {icon:'🔗',text:'Typed cards with linked relations',color:'#a855f7',t:2.8},
+    {icon:'⚡',text:'Set up in 30 seconds. One API call.',color:'#22c55e',t:3.6},
+    {icon:'💰',text:'94% less tokens. 99% cheaper.',color:'#eab308',t:4.4},
+  ];
+  diffs.forEach(function(d,i){
+    if(el<=d.t)return;
+    var da=Math.min(1,(el-d.t)/0.5);
+    ctx.globalAlpha=da;
+    var dy=280+i*34;
+    // Pill background
+    var tw=ctx.measureText(d.text).width;
+    roundRect(180,dy-12,360,28,8);
+    ctx.fillStyle='rgba(17,17,20,0.6)';ctx.fill();
+    ctx.strokeStyle=d.color+'33';ctx.lineWidth=1;ctx.stroke();
+    ctx.font='600 12px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle=d.color;
+    ctx.fillText(d.icon+'  '+d.text,360,dy+4);
+    ctx.globalAlpha=1;
+  });
+
+  // === PHASE 3: "Works with" scrolling integrations (6-11s) ===
+  if(el>6){
+    var wa=Math.min(1,(el-6)/0.5);
+    ctx.globalAlpha=wa;
+    ctx.font='600 9px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#555568';
+    ctx.fillText('WORKS WITH EVERY AGENT FRAMEWORK',360,440);
+
+    var tools=[
+      {name:'Claude Code',icon:'⚡',color:'#ff6b2b'},
+      {name:'Cursor',icon:'🔗',color:'#3b82f6'},
+      {name:'LangChain',icon:'🤖',color:'#22c55e'},
+      {name:'CrewAI',icon:'👥',color:'#a855f7'},
+      {name:'AutoGPT',icon:'⚙️',color:'#eab308'},
+      {name:'Python',icon:'🐍',color:'#3b82f6'},
+      {name:'Node.js',icon:'💚',color:'#22c55e'},
+      {name:'REST API',icon:'🌎',color:'#06b6d4'},
+      {name:'VS Code',icon:'⚙️',color:'#3b82f6'},
+      {name:'OpenClaw',icon:'🐾',color:'#ff6b2b'},
+    ];
+
+    // Scrolling marquee
+    var scrollOffset=((el-6)*40)%720;
+    tools.forEach(function(tool,i){
+      var tx=(i*130-scrollOffset+720*2)%1300-290;
+      if(tx<-130||tx>720)return;
+      var ta2=Math.min(1,Math.min(tx+130,720-tx)/60);
+      ctx.globalAlpha=wa*Math.max(0,ta2);
+
+      roundRect(tx,455,120,30,6);
+      ctx.fillStyle='rgba(17,17,20,0.7)';ctx.fill();
+      ctx.strokeStyle=tool.color+'33';ctx.lineWidth=0.5;ctx.stroke();
+      ctx.font='600 9px "JetBrains Mono"';ctx.textAlign='center';
+      ctx.fillStyle=tool.color;
+      ctx.fillText(tool.icon+' '+tool.name,tx+60,474);
+    });
+    ctx.globalAlpha=1;
+  }
+
+  // === PHASE 4: Cost comparison (8-11s) ===
+  if(el>8){
+    var ca=Math.min(1,(el-8)/0.5);ctx.globalAlpha=ca;
+    ctx.font='700 14px "JetBrains Mono"';ctx.textAlign='center';
+    ctx.fillStyle='#ef4444';
+    var s1='6,000 tokens';
+    ctx.fillText(s1,240,520);
+    var sw=ctx.measureText(s1).width;
+    ctx.strokeStyle='#ef4444';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(240-sw/2-3,518);ctx.lineTo(240+sw/2+3,518);ctx.stroke();
+    ctx.fillStyle='#555568';ctx.fillText('→',330,520);
+    ctx.fillStyle='#22c55e';ctx.font='800 14px "JetBrains Mono"';
+    ctx.fillText('350 tokens',430,520);
+    ctx.globalAlpha=1;
+  }
+
+  // === PHASE 5: Final CTA (10s+) ===
+  if(el>10){
+    var fa=Math.min(1,(el-10)/0.5);ctx.globalAlpha=fa;
+
+    // CTA box
+    roundRect(140,555,440,55,12);
+    ctx.fillStyle='rgba(255,107,43,0.06)';ctx.fill();
+    ctx.strokeStyle='rgba(255,107,43,0.3)';ctx.lineWidth=2;ctx.stroke();
+
+    ctx.font='800 15px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ff6b2b';
+    ctx.fillText('🚀 Get your free API key',360,578);
+    ctx.font='500 10px "JetBrains Mono"';ctx.fillStyle='#8888a0';
+    ctx.fillText('Make your agent smarter in 30 seconds',360,598);
+    ctx.globalAlpha=1;
+  }
+
+  if(el>11.5){
+    var ua=Math.min(1,(el-11.5)/0.4);ctx.globalAlpha=ua;
+    ctx.font='700 16px "JetBrains Mono"';ctx.fillStyle='#ff6b2b';ctx.textAlign='center';
+    ctx.fillText('cascadeai.dev/hyperstack',360,645);
+    ctx.font='500 10px "JetBrains Mono"';ctx.fillStyle='#555568';
+    ctx.fillText('Free forever  ·  No credit card  ·  Pro from $29/mo',360,668);
+    ctx.globalAlpha=1;
+  }
+}
+
+// ═══════════════════════════════════════════
+// SCENE 2.5: HOW HYPERSTACK KNOWS THIS
+// Agent walks through daily work leaving card "footprints"
+// ═══════════════════════════════════════════
+function drawCards(el){
+  drawGrid();
+  var g=ctx.createRadialGradient(360,400,30,360,400,450);
+  g.addColorStop(0,'rgba(255,107,43,0.04)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  // === PHASE 1: BIG QUESTION (0-3.5s) ===
+  if(el<4){
+    var qa=el<3?Math.min(1,el/0.6):Math.max(0,1-(el-3)/0.8);
+    ctx.globalAlpha=qa;
+    ctx.font='800 38px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ff6b2b';
+    ctx.fillText('But how does',360,300);
+    ctx.fillText('it know all this?',360,350);
+    var pg=ctx.createRadialGradient(360,320,20,360,320,200);
+    pg.addColorStop(0,'rgba(255,107,43,0.08)');pg.addColorStop(1,'transparent');
+    ctx.fillStyle=pg;ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1;
+  }
+
+  // === PHASE 2: THE ANSWER (4-6s) — same size, orange, no overlap ===
+  if(el>=4&&el<7){
+    var aa=el<6?Math.min(1,(el-4)/0.6):Math.max(0,1-(el-6)/0.8);
+    ctx.globalAlpha=aa;
+    ctx.font='800 38px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ff6b2b';
+    ctx.fillText('Every step it takes',360,300);
+    ctx.fillText('leaves a footprint.',360,350);
+    var pg2=ctx.createRadialGradient(360,320,20,360,320,200);
+    pg2.addColorStop(0,'rgba(255,107,43,0.1)');pg2.addColorStop(1,'transparent');
+    ctx.fillStyle=pg2;ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha=1;
+  }
+
+  // === PHASE 3: AGENT WALKING, DROPPING FOOTPRINTS (6.5-13.5s) ===
+  if(el>6.5){
+    var walkProgress=Math.min(1,(el-6.5)/7);
+
+    // Path — gentle arc across screen
+    var pathPoints=[
+      {x:80, y:520},{x:220,y:470},{x:380,y:440},{x:540,y:470},{x:660,y:520}
+    ];
+
+    // Footprint cards along the path
+    var footprints=[
+      {px:0.05, dropT:7.0,  slug:'project-setup', type:'project', typeColor:'#3b82f6',
+       title:'Project Setup', detail:'Next.js + Prisma + Vercel', date:'Nov 2025'},
+      {px:0.28, dropT:8.5,  slug:'use-clerk', type:'decision', typeColor:'#ff6b2b',
+       title:'Auth: Use Clerk', detail:'links → alice (decided)', date:'Dec 2025'},
+      {px:0.52, dropT:10.0, slug:'alice', type:'person', typeColor:'#a855f7',
+       title:'Alice — Lead Eng', detail:'links → auth-api (owns)', date:'Jan 2026'},
+      {px:0.76, dropT:11.5, slug:'clerk-v5', type:'workflow', typeColor:'#eab308',
+       title:'Clerk v5 Update', detail:'links → auth-api (triggers)', date:'Tue 11 Feb'},
+    ];
+
+    // Trail dots — glowing footprints
+    for(var pi=0;pi<walkProgress*40;pi++){
+      var pt=getPathPos(pathPoints,pi/40);
+      // Outer glow
+      var dg=ctx.createRadialGradient(pt.x,pt.y,1,pt.x,pt.y,12);
+      dg.addColorStop(0,'rgba(255,107,43,0.3)');dg.addColorStop(1,'rgba(255,107,43,0)');
+      ctx.beginPath();ctx.arc(pt.x,pt.y,12,0,Math.PI*2);ctx.fillStyle=dg;ctx.fill();
+      // Core dot
+      ctx.globalAlpha=0.5;
+      ctx.beginPath();ctx.arc(pt.x,pt.y,3,0,Math.PI*2);
+      ctx.fillStyle='#ff6b2b';ctx.fill();
+    }
+    ctx.globalAlpha=1;
+
+    // Footprint cards
+    footprints.forEach(function(fp,fi){
+      if(el<fp.dropT)return;
+      var cardAge=el-fp.dropT;
+      var ca=Math.min(1,cardAge/0.6);
+      var pt=getPathPos(pathPoints,fp.px);
+      var dropY=pt.y-80-Math.max(0,(1-ca)*40);
+      drawFootprintCard(pt.x-65,dropY,130,90,ca,fp);
+
+      // Connection line from path dot to card
+      ctx.globalAlpha=ca*0.4;
+      ctx.strokeStyle=fp.typeColor;ctx.lineWidth=1;ctx.setLineDash([3,3]);
+      ctx.beginPath();ctx.moveTo(pt.x,pt.y-8);ctx.lineTo(pt.x,dropY+90);ctx.stroke();
+      ctx.setLineDash([]);ctx.globalAlpha=1;
+
+      // Big glow on path where card was dropped
+      var fg=ctx.createRadialGradient(pt.x,pt.y,3,pt.x,pt.y,35);
+      fg.addColorStop(0,fp.typeColor+'66');fg.addColorStop(0.5,fp.typeColor+'22');fg.addColorStop(1,fp.typeColor+'00');
+      ctx.beginPath();ctx.arc(pt.x,pt.y,35,0,Math.PI*2);ctx.fillStyle=fg;ctx.fill();
+      // Pulse ring
+      var pulseR=25+Math.sin(breathPhase*2+fi)*5;
+      ctx.beginPath();ctx.arc(pt.x,pt.y,pulseR,0,Math.PI*2);
+      ctx.strokeStyle=fp.typeColor+'44';ctx.lineWidth=1.5;ctx.stroke();
+    });
+
+    // Walking agent
+    if(el<14){
+      var agentPt=getPathPos(pathPoints,Math.min(walkProgress,0.95));
+      var ab=Math.sin(breathPhase*3)*3;
+      var ax=agentPt.x,ay=agentPt.y;
+
+      // Agent trail glow — big and bright
+      var ag=ctx.createRadialGradient(ax,ay,10,ax,ay,65);
+      ag.addColorStop(0,'rgba(255,107,43,0.35)');ag.addColorStop(0.5,'rgba(255,107,43,0.1)');ag.addColorStop(1,'rgba(255,107,43,0)');
+      ctx.beginPath();ctx.arc(ax,ay,65,0,Math.PI*2);ctx.fillStyle=ag;ctx.fill();
+
+      // Head
+      ctx.beginPath();ctx.arc(ax,ay-12+ab,12,0,Math.PI*2);
+      ctx.fillStyle='#ff6b2b';ctx.fill();ctx.strokeStyle='#ff8855';ctx.lineWidth=2;ctx.stroke();
+      // Eyes
+      ctx.fillStyle='#000';
+      ctx.beginPath();ctx.arc(ax-4,ay-13+ab,2,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(ax+4,ay-13+ab,2,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#fff';
+      ctx.beginPath();ctx.arc(ax-4,ay-14+ab,0.8,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(ax+4,ay-14+ab,0.8,0,Math.PI*2);ctx.fill();
+      // Antenna
+      ctx.strokeStyle='#ff6b2b';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(ax,ay-24+ab);ctx.lineTo(ax,ay-32+ab);ctx.stroke();
+      ctx.beginPath();ctx.arc(ax,ay-34+ab,3,0,Math.PI*2);ctx.fillStyle='#ff6b2b';ctx.fill();
+      if(Math.sin(breathPhase*5)>0.3){
+        ctx.beginPath();ctx.arc(ax,ay-34+ab,7,0,Math.PI*2);
+        ctx.fillStyle='rgba(255,107,43,0.25)';ctx.fill();
+      }
+      ctx.font='700 8px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ff6b2b';
+      ctx.fillText('AGENT',ax,ay+8+ab);
+    }
+
+    // Timeline dates along path
+    if(el>7.5){
+      ctx.globalAlpha=Math.min(1,(el-7.5)/0.5);
+      ctx.font='700 9px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#555568';
+      ['Nov \'25','Dec \'25','Jan \'26','Feb \'26','Today'].forEach(function(d,i){
+        var dp=getPathPos(pathPoints,i*0.25);
+        ctx.fillText(d,dp.x,dp.y+18);
+      });
+      ctx.globalAlpha=1;
+    }
+  }
+
+  // === PHASE 4: TAGLINE (12-14s) ===
+  if(el>12){
+    var ta=Math.min(1,(el-12)/0.6);ctx.globalAlpha=ta;
+    ctx.font='800 15px "JetBrains Mono"';ctx.textAlign='center';
+    ctx.fillStyle='#e8e8ec';
+    ctx.fillText('Every conversation. Every decision.',360,600);
+    ctx.fillStyle='#ff6b2b';
+    ctx.fillText('Footprints your agent can always follow back.',360,624);
+    ctx.globalAlpha=1;
+  }
+
+  if(el>13){
+    var fa=Math.min(1,(el-13)/0.6);ctx.globalAlpha=fa;
+    ctx.font='600 11px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#22c55e';
+    ctx.fillText('So when you ask a question months later...',360,660);
+    ctx.globalAlpha=1;
+  }
+}
+
+function getPathPos(pts,progress){
+  var p=Math.max(0,Math.min(1,progress));
+  var total=pts.length-1;
+  var seg=p*total;
+  var i=Math.min(Math.floor(seg),total-1);
+  var f=seg-i;
+  return{x:pts[i].x+(pts[i+1].x-pts[i].x)*f, y:pts[i].y+(pts[i+1].y-pts[i].y)*f};
+}
+
+function drawFootprintCard(x,y,w,h,alpha,data){
+  ctx.globalAlpha=alpha;
+  var sc=0.88+alpha*0.12;
+  ctx.save();
+  ctx.translate(x+w/2,y+h/2);ctx.scale(sc,sc);ctx.translate(-(x+w/2),-(y+h/2));
+
+  roundRect(x,y,w,h,8);ctx.fillStyle='rgba(17,17,20,0.92)';ctx.fill();
+  ctx.strokeStyle=data.typeColor+'33';ctx.lineWidth=1;ctx.stroke();
+
+  // Top accent
+  roundRect(x+1,y+1,w-2,2,2);ctx.fillStyle=data.typeColor+'55';ctx.fill();
+
+  // Date
+  ctx.font='600 7px "JetBrains Mono"';ctx.fillStyle='#555568';ctx.textAlign='left';
+  ctx.fillText(data.date,x+8,y+16);
+
+  // Type pill
+  ctx.font='600 7px "JetBrains Mono"';
+  var tw=ctx.measureText(data.type).width+8;
+  roundRect(x+w-tw-8,y+8,tw,13,3);
+  ctx.fillStyle=data.typeColor+'15';ctx.fill();
+  ctx.strokeStyle=data.typeColor+'44';ctx.lineWidth=0.5;ctx.stroke();
+  ctx.fillStyle=data.typeColor;ctx.fillText(data.type,x+w-tw-4,y+18);
+
+  // Title
+  ctx.font='700 10px "JetBrains Mono"';ctx.fillStyle='#e8e8ec';ctx.textAlign='left';
+  ctx.fillText(data.title,x+8,y+36);
+
+  // Detail
+  ctx.font='400 8px "JetBrains Mono"';ctx.fillStyle='#8888a0';
+  ctx.fillText(data.detail,x+8,y+52);
+
+  // Slug
+  ctx.font='500 7px "JetBrains Mono"';ctx.fillStyle=data.typeColor+'77';
+  ctx.fillText(data.slug,x+8,y+h-8);
+
+  ctx.restore();ctx.globalAlpha=1;
+}
+
+
+// ═══════════════════════════════════════════
+// MAIN LOOP
+// ═══════════════════════════════════════════
+function render(){
+  var now=t();breathPhase+=0.02;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#08080a';ctx.fillRect(0,0,W,H);
+
+  if(now<S_GRAPH){
+    drawPain(now-S_PAIN);
+  }else if(now<S_CARDS){
+    drawGraphScene(now-S_GRAPH);
+  }else if(now<S_ANSWER){
+    drawCards(now-S_CARDS);
+  }else if(now<S_CTA){
+    drawAnswer(now-S_ANSWER);
+  }else if(now<S_END){
+    drawCTA(now-S_CTA);
+  }else{
+    drawCTA(10);
+    ctx.globalAlpha=0.7;ctx.font='600 12px "JetBrains Mono"';ctx.textAlign='center';
+    ctx.fillStyle='#ff6b2b';ctx.fillText('↻ Click to replay',360,600);ctx.globalAlpha=1;
+    return;
+  }
+  requestAnimationFrame(render);
+}
+
+function start(){
+  startTime=Date.now();
+  nodes.forEach(function(n){nVis[n.slug]={vis:false,glow:0,scale:0,active:false}});
+  eVis={};edges.forEach(function(e,i){eVis[i]={vis:false,active:false}});
+  agentPos={x:500,y:200};agentTarget={x:500,y:200};agentVisible=false;
+  waiting=false;
+  render();
+}
+
+var waiting=true;
+
+function drawWaiting(){
+  ctx.fillStyle='#08080a';ctx.fillRect(0,0,W,H);
+  // Subtle grid
+  ctx.globalAlpha=0.025;ctx.strokeStyle='#fff';ctx.lineWidth=0.5;
+  for(var x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+  for(var y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+  ctx.globalAlpha=1;
+
+  // Ambient glow
+  var g=ctx.createRadialGradient(360,360,30,360,360,300);
+  g.addColorStop(0,'rgba(255,107,43,0.06)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  // Logo
+  ctx.font='800 42px "JetBrains Mono"';ctx.textAlign='center';ctx.fillStyle='#ff6b2b';
+  ctx.fillText('⚡ HyperStack',360,340);
+  ctx.font='500 13px "JetBrains Mono"';ctx.fillStyle='#555568';
+  ctx.fillText('Click play to start',360,375);
+
+  // Play button — extreme bottom-right corner, easy to click off-screen
+  var bx=700,by=700,br=16;
+  ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,107,43,0.15)';ctx.fill();
+  ctx.strokeStyle='#ff6b2b55';ctx.lineWidth=1.5;ctx.stroke();
+  // Small play triangle
+  ctx.beginPath();
+  ctx.moveTo(bx-5,by-8);ctx.lineTo(bx-5,by+8);ctx.lineTo(bx+9,by);
+  ctx.closePath();ctx.fillStyle='#ff6b2b88';ctx.fill();
+
+  requestAnimationFrame(drawWaiting);
+}
+
+// Click handler — huge hit area in bottom-right corner
+cv.addEventListener('click',function(e){
+  var rect=cv.getBoundingClientRect();
+  var mx=(e.clientX-rect.left)*(W/rect.width);
+  var my=(e.clientY-rect.top)*(H/rect.height);
+
+  if(waiting){
+    // Huge hit zone — entire bottom-right 80x80px corner
+    if(mx>640&&my>640){
+      start();
+    }
+  }else{
+    var now=t();
+    if(now>=S_END){start()}
+  }
+});
+
+drawWaiting();
+</script>
+</body>
+</html>
