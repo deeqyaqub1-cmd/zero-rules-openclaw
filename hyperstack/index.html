@@ -371,7 +371,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 <section class="hero">
   <div class="hero-pill"><span class="dot"></span> Portable memory for AI agents</div>
   <h1>Portable memory with<br><span class="hl">a knowledge graph you control.</span></h1>
-  <p>Other tools share memory across Cursor, VS Code, and Claude Desktop too. HyperStack is the only one where you set the relations explicitly (no LLM extraction cost, no hallucinated links), agents can send directed signals to each other, and every change is traceable by agent. 10 cards free. Graph from $29/mo.</p>
+  <p>You set the relations. No LLM cost. No hallucinated links. Agents signal each other in real time. Every change traceable by agent. 10 cards free. Graph from $29/mo.</p>
 
   <div class="hero-signup">
     <input type="email" id="hero-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')heroSignup()">
@@ -423,7 +423,26 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
     <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:var(--accent)">Every</div>
     <div style="font-family:var(--mono);font-size:.65rem;color:var(--dim)">change tracked by agent</div>
   </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;min-width:160px">
+    <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:var(--accent)">Real-time</div>
+    <div style="font-family:var(--mono);font-size:.65rem;color:var(--dim)">agent-to-agent orchestration</div>
+  </div>
 </div>
+
+
+<!-- ═══ REAL-TIME ORCHESTRATION — NEW MOAT ═══ -->
+<section style="padding:32px 16px 8px;text-align:center">
+  <div style="max-width:640px;margin:0 auto">
+    <div style="display:inline-block;background:rgba(255,107,43,.1);border:1px solid rgba(255,107,43,.3);border-radius:20px;padding:4px 14px;font-family:var(--mono);font-size:.65rem;color:var(--accent);font-weight:600;margin-bottom:10px">NEW — No other tool offers this</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,4vw,1.5rem);margin-bottom:10px;line-height:1.3">Real-time agent-to-agent orchestration</h2>
+    <p style="color:var(--dim);font-size:.85rem;line-height:1.5;margin-bottom:16px">LangGraph flags an issue. Cursor gets a webhook instantly. No polling. HMAC signed. Auto-disables on failures.</p>
+    <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:var(--mono);font-size:.68rem;color:var(--dim)">Webhooks</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:var(--mono);font-size:.68rem;color:var(--dim)">SSE stream</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:var(--mono);font-size:.68rem;color:var(--dim)">HMAC signatures</div>
+    </div>
+  </div>
+</section>
 
 
 <!-- ═══ THE MOAT — right after hero ═══ -->
@@ -1372,7 +1391,8 @@ print(r.json())</pre>
         <li>Unlimited workspaces</li>
         <li>Everything in Pro</li>
         <li class="pro">5 team API keys</li>
-        <li class="pro">Multi-agent coordination</li>
+        <li class="pro">Real-time webhooks &check;</li>
+        <li class="pro">SSE event stream &check;</li>
         <li class="pro">Priority support</li>
       </ul>
       <a href="javascript:void(0)" onclick="stripeGo('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06','TEAM')" class="btn bo" style="width:100%;border-color:#60a5fa;color:#60a5fa" data-plan-btn="TEAM">Get Team &rarr;</a>
@@ -1389,7 +1409,8 @@ print(r.json())</pre>
         <li>Unlimited everything</li>
         <li>Everything in Team</li>
         <li class="pro">20 team members</li>
-        <li class="pro">Webhook events <em style="font-size:.65rem;color:var(--faint)">(soon)</em></li>
+        <li class="pro">Real-time webhooks &check;</li>
+        <li class="pro">SSE event stream &check;</li>
         <li class="pro">SSO &amp; audit log <em style="font-size:.65rem;color:var(--faint)">(soon)</em></li>
       </ul>
       <a href="javascript:void(0)" onclick="stripeGo('https://buy.stripe.com/bJe7sLaPr0mUeJP8yfeUU05','BUSINESS')" class="btn bg" style="width:100%" data-plan-btn="BUSINESS">Get Business &rarr;</a>
