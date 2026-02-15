@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HyperStack — Cloud Memory for Any AI Agent</title>
-<meta name="description" content="Give any AI agent persistent memory with typed cards, links, and graph traversal. 50 free cards. Works with any framework. 30 seconds to set up.">
+<meta name="description" content="Knowledge graph memory for AI agents. Developer-controlled typed relations, zero LLM cost, time-travel debugging. MCP server, LangGraph integration, REST API. Free to start.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -384,7 +384,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   <div style="text-align:center;font-family:var(--mono);font-size:.65rem;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Works with</div>
   <div class="marquee-wrap">
     <div class="marquee-track">
-      <span class="marquee-item">&#128062; OpenClaw</span>
+      <span class="marquee-item">&#128279; LangGraph</span>
       <span class="marquee-item">&#9889; Claude Code</span>
       <span class="marquee-item">&#128279; Cursor</span>
       <span class="marquee-item">&#129302; LangChain</span>
@@ -394,7 +394,7 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
       <span class="marquee-item">&#128154; Node.js</span>
       <span class="marquee-item">&#9881;&#65039; VS Code</span>
       <span class="marquee-item">&#127758; REST API</span>
-      <span class="marquee-item">&#128062; OpenClaw</span>
+      <span class="marquee-item">&#128279; LangGraph</span>
       <span class="marquee-item">&#9889; Claude Code</span>
       <span class="marquee-item">&#128279; Cursor</span>
       <span class="marquee-item">&#129302; LangChain</span>
@@ -1109,12 +1109,12 @@ print(r.json())</pre>
     <p style="color:var(--dim);max-width:520px;margin:8px auto 0;font-size:.88rem">Other memory tools charge per operation, lock you into one platform, and need their own LLM calls. We don’t.</p>
   </div>
   <table class="ctable">
-    <thead><tr><th></th><th class="hs">HyperStack</th><th>Others</th></tr></thead>
+    <thead><tr><th></th><th class="hs">HyperStack</th><th>Mem0 / Zep</th></tr></thead>
     <tbody>
       <tr><td>Semantic + keyword search</td><td class="y">✔ Hybrid (pgvector)</td><td>Semantic only</td></tr>
       <tr><td>LLM cost per memory op</td><td class="hs">$0 to you</td><td>~$0.002/op on your API key</td></tr>
       <tr><td>Auto-capture &amp; auto-recall</td><td class="y">✔ Built-in</td><td>Varies</td></tr>
-      <tr><td>Works with</td><td class="y">MCP + SDK + REST + OpenClaw</td><td>Usually 1 platform</td></tr>
+      <tr><td>Works with</td><td class="y">MCP + LangGraph + REST</td><td>Usually 1 platform</td></tr>
       <tr><td>Team sharing</td><td class="y">✔ Up to 20 members</td><td>Rare / enterprise only</td></tr>
       <tr><td>Structured cards</td><td class="y">✔ Slugs, stacks, keywords, types</td><td>Unstructured blobs</td></tr>
       <tr><td>Card types</td><td class="y">✔ person, project, decision, event&hellip;</td><td>No typing</td></tr>
@@ -1133,6 +1133,72 @@ print(r.json())</pre>
 
 
 
+
+
+<!-- ═══════════════ INTEGRATIONS ═══════════════ -->
+<section style="padding:48px 0">
+  <div style="text-align:center;margin-bottom:28px">
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Integrations</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">Drop into your stack in 30 seconds</h2>
+    <p style="color:var(--dim);font-size:.88rem;margin-top:6px">MCP server, LangGraph integration, or raw REST API. Pick your path.</p>
+  </div>
+  
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto">
+    
+    <!-- MCP Server -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--purple))"></div>
+      <div style="font-size:1.2rem;margin-bottom:8px">&#128268;</div>
+      <h3 style="font-family:var(--mono);font-size:.88rem;font-weight:700;margin-bottom:4px">MCP Server</h3>
+      <div style="font-family:var(--mono);font-size:.62rem;color:var(--green);margin-bottom:10px">&#10003; Tested in Cursor</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px">
+        <code style="font-family:var(--mono);font-size:.72rem;color:var(--accent)">npm install -g hyperstack-mcp</code>
+      </div>
+      <p style="font-size:.72rem;color:var(--dim);line-height:1.5">Works with Cursor, Claude Desktop, VS Code, Windsurf. Add 5 lines of JSON config and your agent gets persistent memory.</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(255,107,43,.08);color:var(--accent);border:1px solid rgba(255,107,43,.2)">npm</span>
+        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.08);color:#60a5fa;border:1px solid rgba(59,130,246,.2)">v1.1.0</span>
+      </div>
+    </div>
+    
+    <!-- LangGraph -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--green))"></div>
+      <div style="font-size:1.2rem;margin-bottom:8px">&#129302;</div>
+      <h3 style="font-family:var(--mono);font-size:.88rem;font-weight:700;margin-bottom:4px">LangGraph</h3>
+      <div style="font-family:var(--mono);font-size:.62rem;color:var(--green);margin-bottom:10px">&#10003; 3 lines to add memory</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px">
+        <code style="font-family:var(--mono);font-size:.72rem;color:var(--accent)">pip install hyperstack-langgraph</code>
+      </div>
+      <p style="font-size:.72rem;color:var(--dim);line-height:1.5">Pre-built tools + ReAct agent. Zero dependencies. Your LangGraph agent gets search, store, graph traversal, and time-travel.</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(255,107,43,.08);color:var(--accent);border:1px solid rgba(255,107,43,.2)">PyPI</span>
+        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.08);color:#60a5fa;border:1px solid rgba(59,130,246,.2)">v1.0.0</span>
+      </div>
+    </div>
+    
+    <!-- REST API -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),#fbbf24)"></div>
+      <div style="font-size:1.2rem;margin-bottom:8px">&#127758;</div>
+      <h3 style="font-family:var(--mono);font-size:.88rem;font-weight:700;margin-bottom:4px">REST API</h3>
+      <div style="font-family:var(--mono);font-size:.62rem;color:var(--green);margin-bottom:10px">&#10003; Any language, any agent</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px">
+        <code style="font-family:var(--mono);font-size:.72rem;color:var(--accent)">pip install hyperstack-py</code>
+      </div>
+      <p style="font-size:.72rem;color:var(--dim);line-height:1.5">Python SDK or raw HTTP. cURL, fetch, requests &mdash; if it speaks HTTP, it works. No framework lock-in.</p>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(255,107,43,.08);color:var(--accent);border:1px solid rgba(255,107,43,.2)">PyPI</span>
+        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(34,197,94,.08);color:var(--green);border:1px solid rgba(34,197,94,.2)">REST</span>
+      </div>
+    </div>
+    
+  </div>
+  
+  <div style="text-align:center;margin-top:20px">
+    <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Also on: <a href="https://www.npmjs.com/package/hyperstack-mcp" style="color:var(--dim)" target="_blank">npm</a> &middot; <a href="https://pypi.org/project/hyperstack-langgraph/" style="color:var(--dim)" target="_blank">PyPI</a> &middot; <a href="https://clawhub.org" style="color:var(--dim)" target="_blank">ClawHub</a></p>
+  </div>
+</section>
 
 <section style="padding:40px 0">
   <div style="text-align:center">
@@ -1463,8 +1529,40 @@ print(r.json())</pre>
     </div>
   </div>
 
-  <!-- Using with OpenClaw -->
+  <!-- Using with MCP / LangGraph / OpenClaw -->
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span style="font-size:1rem">&#128268;</span>
+      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Using with MCP (Cursor / Claude Desktop / VS Code)</span>
+    </div>
+    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:12px">Install globally and add config. Your coding agent gets persistent knowledge graph memory.</p>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:16px">
+      <div style="display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
+        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">1.</div>
+        <div style="font-size:.82rem;color:var(--dim)"><code style="color:var(--accent);font-size:.78rem">npm install -g hyperstack-mcp</code></div>
+        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">2.</div>
+        <div style="font-size:.82rem;color:var(--dim)">Add to <code style="color:var(--accent);font-size:.78rem">.cursor/mcp.json</code> or <code style="color:var(--accent);font-size:.78rem">claude_desktop_config.json</code></div>
+        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">3.</div>
+        <div style="font-size:.82rem;color:var(--dim)">Set <code style="color:var(--green);font-size:.78rem">HYPERSTACK_API_KEY</code> in the config env</div>
+      </div>
+    </div>
+    
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span style="font-size:1rem">&#129302;</span>
+      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Using with LangGraph</span>
+    </div>
+    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:12px">3 lines to add knowledge graph memory to any LangGraph agent.</p>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:16px">
+      <div style="display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
+        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">1.</div>
+        <div style="font-size:.82rem;color:var(--dim)"><code style="color:var(--accent);font-size:.78rem">pip install hyperstack-langgraph</code></div>
+        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">2.</div>
+        <div style="font-size:.82rem;color:var(--dim)"><code style="color:var(--accent);font-size:.78rem">from hyperstack_langgraph import create_memory_agent</code></div>
+        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">3.</div>
+        <div style="font-size:.82rem;color:var(--dim)"><code style="color:var(--accent);font-size:.78rem">agent = create_memory_agent(your_llm)</code></div>
+      </div>
+    </div>
+    
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
       <span style="font-size:1rem">&#128062;</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Using with OpenClaw</span>
@@ -1500,7 +1598,7 @@ print(r.json())</pre>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>How is this different from other memory tools?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Most memory tools store flat text blobs and run LLM calls on your API key for every operation (~$0.002 each). HyperStack stores typed, structured cards with explicit links between them &mdash; and runs embeddings server-side at $0 per operation. You get a searchable knowledge graph, not a bucket of text. At scale, this saves $200+/month. Plus, you control what gets stored.</div>
+          <div class="faq-a">Mem0 and Zep now have knowledge graphs, but they auto-extract entities using LLM calls (~$0.002/op, risk of hallucinated relationships). HyperStack lets you explicitly define cards and links &mdash; precise, zero LLM cost, instant. Plus time-travel debugging: reconstruct the entire graph at any timestamp to see what your agent knew when it made a bad decision.</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>I get &ldquo;Unauthorized&rdquo; when calling the API</span><span class="faq-arrow">&#9662;</span></div>
@@ -1516,7 +1614,7 @@ print(r.json())</pre>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>Can I use any AI agent?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Yes. HyperStack is a REST API. If your agent can make HTTP requests, it works &mdash; Claude Code, Cursor, LangChain, CrewAI, AutoGPT, OpenClaw, custom agents, or even a simple Python script.</div>
+          <div class="faq-a">Yes. Use the MCP server for Cursor/Claude Desktop/VS Code (npm install -g hyperstack-mcp), the LangGraph integration (pip install hyperstack-langgraph) for Python agents, or the raw REST API from any language. Works with Claude Code, LangChain, CrewAI, custom agents, or a simple script.</div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q"><span>Is my data safe?</span><span class="faq-arrow">&#9662;</span></div>
