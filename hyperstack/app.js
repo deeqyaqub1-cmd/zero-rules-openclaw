@@ -1896,7 +1896,7 @@ class ConversationalOnboarding {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://hyperstack-cloud.vercel.app/api/onboarding/from-description', {
+      const response = await fetch('https://hyperstack-cloud.vercel.app/api/cards?workspace=default&onboard=true', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
