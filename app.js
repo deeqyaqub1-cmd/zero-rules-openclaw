@@ -2014,3 +2014,241 @@ if (typeof go === 'function') {
     }
   };
 }
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// STANDALONE ONBOARDING SCRIPT - Dark Theme
+// Add this to the END of app.js (won't break existing code)
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+(function() {
+  'use strict';
+  
+  // Only run if not already initialized
+  if (window.hyperstackOnboardingLoaded) return;
+  window.hyperstackOnboardingLoaded = true;
+
+  class ConversationalOnboarding {
+    constructor() {
+      this.hasCompleted = localStorage.getItem('hyperstack_onboarded') === 'true';
+    }
+
+    start() {
+      if (this.hasCompleted) return;
+      setTimeout(() => this.show(), 1500);
+    }
+
+    show() {
+      // Remove existing modal if any
+      const existing = document.getElementById('onboard-modal');
+      if (existing) existing.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'onboard-modal';
+      modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;display:flex;align-items:center;justify-content:center;';
+      
+      modal.innerHTML = `
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);"></div>
+        <div style="position:relative;background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:40px;max-width:550px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+          <h2 style="margin:0 0 12px 0;font-size:28px;font-weight:600;color:#fff;font-family:inherit;">ðŸ¤– Let's set up your memory</h2>
+          <p style="line-height:1.6;color:#999;margin:0 0 24px 0;font-size:15px;">
+            Tell me about your project and I'll create memory cards for your AI agents.
+          </p>
+
+          <textarea 
+            id="project-description" 
+            placeholder="Example: Building a SaaS with Next.js and PostgreSQL. Using Clerk for auth. Currently migrating from REST to tRPC."
+            rows="5"
+            style="width:100%;padding:14px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;margin:0 0 20px 0;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.5;"
+          ></textarea>
+
+          <div style="background:#0f1419;border-left:3px solid #3b82f6;padding:14px 16px;margin:0 0 24px 0;border-radius:6px;font-size:13px;line-height:1.6;color:#9ca3af;">
+            ðŸ’¡ <strong style="color:#fff;">Include:</strong> frameworks, databases, tools, architecture decisions, or current work
+          </div>
+
+          <div style="display:flex;gap:12px;">
+            <button id="onboard-skip-btn"
+                    style="flex:1;padding:14px 24px;border:1px solid #333;background:transparent;color:#999;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:all 0.2s;">
+              Skip for Now
+            </button>
+            <button id="onboard-create-btn"
+                    style="flex:2;padding:14px 24px;border:none;background:#3b82f6;color:#fff;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:all 0.2s;">
+              Create Cards â†’
+            </button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+
+      // Add event listeners
+      document.getElementById('onboard-skip-btn').onclick = () => this.skip();
+      document.getElementById('onboard-create-btn').onclick = () => this.create();
+
+      // Hover effects
+      const skipBtn = document.getElementById('onboard-skip-btn');
+      skipBtn.onmouseover = () => { skipBtn.style.background = '#1a1a1a'; skipBtn.style.color = '#fff'; };
+      skipBtn.onmouseout = () => { skipBtn.style.background = 'transparent'; skipBtn.style.color = '#999'; };
+
+      const createBtn = document.getElementById('onboard-create-btn');
+      createBtn.onmouseover = () => { createBtn.style.background = '#2563eb'; };
+      createBtn.onmouseout = () => { createBtn.style.background = '#3b82f6'; };
+      
+      setTimeout(() => {
+        const textarea = document.getElementById('project-description');
+        if (textarea) textarea.focus();
+      }, 100);
+    }
+
+    async create() {
+      const description = document.getElementById('project-description')?.value?.trim();
+      
+      if (!description) {
+        alert('Please describe your project first');
+        return;
+      }
+
+      const modal = document.getElementById('onboard-modal');
+      if (!modal) return;
+      
+      const modalContent = modal.querySelector('div[style*="position:relative"]');
+      if (!modalContent) return;
+      
+      modalContent.innerHTML = `
+        <h2 style="margin:0 0 12px 0;font-size:28px;font-weight:600;color:#fff;font-family:inherit;">ðŸ¤– Creating your memory cards...</h2>
+        <div style="text-align:center;padding:50px 0;">
+          <div style="margin:0 auto;border:4px solid #1a1a1a;border-top:4px solid #3b82f6;border-radius:50%;width:56px;height:56px;animation:onboard-spin 1s linear infinite;"></div>
+          <p style="margin-top:24px;color:#999;font-size:15px;">Analyzing your project with AI...</p>
+        </div>
+      `;
+
+      if (!document.getElementById('onboard-spinner-style')) {
+        const style = document.createElement('style');
+        style.id = 'onboard-spinner-style';
+        style.textContent = '@keyframes onboard-spin { to { transform: rotate(360deg); } }';
+        document.head.appendChild(style);
+      }
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('https://hyperstack-cloud.vercel.app/api/cards?workspace=default&onboard=true', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ description })
+        });
+
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+          this.showSuccess(result.cards);
+        } else {
+          this.showError(result.error || 'Something went wrong. Please try again.');
+        }
+      } catch (error) {
+        console.error('Onboarding error:', error);
+        this.showError('Network error. Please check your connection and try again.');
+      }
+    }
+
+    showSuccess(cards) {
+      const modal = document.getElementById('onboard-modal');
+      if (!modal) return;
+      
+      const modalContent = modal.querySelector('div[style*="position:relative"]');
+      if (!modalContent) return;
+      
+      modalContent.innerHTML = `
+        <h2 style="margin:0 0 12px 0;font-size:28px;font-weight:600;color:#fff;font-family:inherit;">âœ… Created ${cards.length} card${cards.length > 1 ? 's' : ''}</h2>
+        
+        <div style="margin:24px 0;max-height:300px;overflow-y:auto;">
+          ${cards.map(c => `
+            <div style="background:#0a0a0a;border-left:3px solid #3b82f6;padding:14px 16px;margin-bottom:12px;border-radius:6px;">
+              <div style="font-weight:500;color:#fff;font-size:15px;margin-bottom:4px;">${c.title}</div>
+              <div style="font-size:12px;color:#6b7280;text-transform:capitalize;">
+                ${c.cardType}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div style="background:#064e3b;border-left:3px solid #10b981;padding:16px;margin:24px 0;border-radius:6px;font-size:14px;line-height:1.6;color:#d1fae5;">
+          <strong style="color:#fff;">âœ¨ Your memory is ready!</strong><br>
+          Your agents (Cursor, Claude Desktop, LangGraph) can now access these cards.
+        </div>
+
+        <button id="onboard-complete-btn"
+                style="width:100%;padding:14px 24px;border:none;background:#3b82f6;color:#fff;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:all 0.2s;">
+          Go to Dashboard â†’
+        </button>
+      `;
+
+      const completeBtn = document.getElementById('onboard-complete-btn');
+      completeBtn.onclick = () => this.complete();
+      completeBtn.onmouseover = () => { completeBtn.style.background = '#2563eb'; };
+      completeBtn.onmouseout = () => { completeBtn.style.background = '#3b82f6'; };
+
+      localStorage.setItem('hyperstack_onboarded', 'true');
+      
+      setTimeout(() => {
+        if (window.loadCards && typeof window.loadCards === 'function') {
+          window.loadCards();
+        }
+      }, 1500);
+    }
+
+    showError(errorMsg) {
+      const modal = document.getElementById('onboard-modal');
+      if (!modal) return;
+      
+      const modalContent = modal.querySelector('div[style*="position:relative"]');
+      if (!modalContent) return;
+      
+      modalContent.innerHTML = `
+        <h2 style="margin:0 0 12px 0;font-size:28px;font-weight:600;color:#fff;font-family:inherit;">âš ï¸ Something went wrong</h2>
+        <p style="margin:24px 0;color:#ef4444;line-height:1.6;font-size:15px;">
+          ${errorMsg}
+        </p>
+        <div style="display:flex;gap:12px;margin-top:24px;">
+          <button id="onboard-retry-btn"
+                  style="flex:1;padding:14px 24px;border:1px solid #333;background:transparent;color:#999;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">
+            Try Again
+          </button>
+          <button id="onboard-skip-error-btn"
+                  style="flex:1;padding:14px 24px;border:none;background:#3b82f6;color:#fff;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">
+            Continue to Dashboard
+          </button>
+        </div>
+      `;
+
+      document.getElementById('onboard-retry-btn').onclick = () => this.show();
+      document.getElementById('onboard-skip-error-btn').onclick = () => this.skip();
+    }
+
+    skip() {
+      localStorage.setItem('hyperstack_onboarded', 'true');
+      this.complete();
+    }
+
+    complete() {
+      const modal = document.getElementById('onboard-modal');
+      if (modal) modal.remove();
+    }
+  }
+
+  // Initialize
+  window.conversationalOnboard = new ConversationalOnboarding();
+
+  // Auto-trigger with multiple attempts
+  function tryShow() {
+    if (!localStorage.getItem('hyperstack_onboarded')) {
+      window.conversationalOnboard.start();
+    }
+  }
+
+  // Try at different intervals to catch page load
+  setTimeout(tryShow, 1500);
+  setTimeout(tryShow, 3000);
+  setTimeout(tryShow, 5000);
+
+})();
