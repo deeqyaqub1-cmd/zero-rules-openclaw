@@ -1,5 +1,5 @@
-
-// HyperStack Dashboard v6 — with Graph Explorer
+﻿
+// HyperStack Dashboard v6 â€” with Graph Explorer
 // Rate limiting
 var _rl={};function rlCheck(key,ms){var now=Date.now();if(_rl[key]&&now-_rl[key]<ms)return false;_rl[key]=now;return true}
 const A="https://hyperstack-cloud.vercel.app";let U=null,T=null,DV="start";
@@ -7,11 +7,11 @@ const ADMINS=["deeq.yaqub1@gmail.com"];
 function adminCheck(){if(U&&ADMINS.includes(U.email))U.plan="PRO";}
 
 const SC={projects:"#3b82f6",people:"#a855f7",decisions:"#ff6b2b",preferences:"#22c55e",workflows:"#eab308"};
-const SE={projects:"📦",people:"👤",decisions:"⚖️",preferences:"⚙️",workflows:"🔄",general:"📄"};
+const SE={projects:"ðŸ“¦",people:"ðŸ‘¤",decisions:"âš–ï¸",preferences:"âš™ï¸",workflows:"ðŸ”„",general:"ðŸ“„"};
 const DEMO=[
-  {slug:"project-webapp",title:"WebApp",stack:"projects",keywords:["nextjs","prisma","vercel","clerk"],body:"- Next.js 15 + Prisma + PostgreSQL\n- Auth: Clerk\n- CI: GitHub Actions → Vercel",updated:"2026-02-09",ver:3},
+  {slug:"project-webapp",title:"WebApp",stack:"projects",keywords:["nextjs","prisma","vercel","clerk"],body:"- Next.js 15 + Prisma + PostgreSQL\n- Auth: Clerk\n- CI: GitHub Actions â†’ Vercel",updated:"2026-02-09",ver:3},
   {slug:"person-alice",title:"Alice Chen",stack:"people",keywords:["backend","postgresql","fastapi"],body:"- Senior Engineer, backend\n- Owns API service\n- EST timezone, morning standups",updated:"2026-02-10",ver:2},
-  {slug:"decision-auth",title:"Auth: Auth0 → Clerk",stack:"decisions",keywords:["clerk","auth0","migration"],body:"- Chose Clerk (DX + pricing)\n- 3 day migration, zero downtime\n- Saves $400/month",updated:"2026-01-15",ver:1},
+  {slug:"decision-auth",title:"Auth: Auth0 â†’ Clerk",stack:"decisions",keywords:["clerk","auth0","migration"],body:"- Chose Clerk (DX + pricing)\n- 3 day migration, zero downtime\n- Saves $400/month",updated:"2026-01-15",ver:1},
   {slug:"prefs-editor",title:"Editor Prefs",stack:"preferences",keywords:["neovim","typescript","fish"],body:"- TypeScript strict, 2-space indent\n- Neovim + LazyVim\n- Fish shell + starship",updated:"2026-02-10",ver:1},
 ];
 
@@ -106,8 +106,8 @@ function renderD(){if(!U)return;
   var planBadges={BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',PRO:'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>',TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'};
   var upgradeLink='';
   if(U.plan==='FREE')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono)">Upgrade</a>';
-  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:#60a5fa;font-family:var(--mono)">→ Team</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
-  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:var(--green);font-family:var(--mono)">→ Business</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
+  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:#60a5fa;font-family:var(--mono)">â†’ Team</a> Â· <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
+  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:var(--green);font-family:var(--mono)">â†’ Business</a> Â· <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
   else if(U.plan==='BUSINESS')upgradeLink=' <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage subscription</a>';
   document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>')+upgradeLink;
   // Also show in the visible top plan bar
@@ -119,9 +119,9 @@ function renderD(){if(!U)return;
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
 
-/* ═══════════════════════════════════════════
-   🚀 GET STARTED — Premium animated onboarding
-   ═══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ðŸš€ GET STARTED â€” Premium animated onboarding
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rStart(el){
   el.innerHTML=`
   <div style="text-align:center;padding:20px 0 24px">
@@ -132,7 +132,7 @@ function rStart(el){
 
   <!-- Animated step indicators -->
   <div class="ob-steps" id="ob-steps-wrap">
-    <div class="ob-step done" id="obs-1"><div class="num">✓</div><div class="stxt">Sign up</div></div>
+    <div class="ob-step done" id="obs-1"><div class="num">âœ“</div><div class="stxt">Sign up</div></div>
     <div class="ob-step active" id="obs-2"><div class="num">2</div><div class="stxt">Copy key</div></div>
     <div class="ob-step" id="obs-3"><div class="num">3</div><div class="stxt">Paste & go</div></div>
   </div>
@@ -153,24 +153,24 @@ function rStart(el){
     </div>
   </div>
 
-  <!-- Step 3: Setup — animated code paste -->
+  <!-- Step 3: Setup â€” animated code paste -->
   <div style="position:relative;margin-bottom:16px">
     <div style="position:relative;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;overflow:hidden;transition:border-color .3s" id="setup-wrap">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
         <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:1rem">⚡</span>
+          <span style="font-size:1rem">âš¡</span>
           <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick setup</span>
         </div>
-        <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">Pick your tool ↓</span>
+        <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">Pick your tool â†“</span>
       </div>
 
       <div class="plat-tabs">
-        <button class="plat-tab act" onclick="showPlatform('mcp',this)">🔌 MCP Server</button>
-        <button class="plat-tab" onclick="showPlatform('openclaw',this)">🐾 OpenClaw</button>
-        <button class="plat-tab" onclick="showPlatform('claude',this)">🤖 Claude Code</button>
-        <button class="plat-tab" onclick="showPlatform('python',this)">🐍 Python</button>
-        <button class="plat-tab" onclick="showPlatform('js',this)">⚡ JS</button>
-        <button class="plat-tab" onclick="showPlatform('curl',this)">💻 cURL</button>
+        <button class="plat-tab act" onclick="showPlatform('mcp',this)">ðŸ”Œ MCP Server</button>
+        <button class="plat-tab" onclick="showPlatform('openclaw',this)">ðŸ¾ OpenClaw</button>
+        <button class="plat-tab" onclick="showPlatform('claude',this)">ðŸ¤– Claude Code</button>
+        <button class="plat-tab" onclick="showPlatform('python',this)">ðŸ Python</button>
+        <button class="plat-tab" onclick="showPlatform('js',this)">âš¡ JS</button>
+        <button class="plat-tab" onclick="showPlatform('curl',this)">ðŸ’» cURL</button>
       </div>
 
       <div id="ob-plat-mcp" class="code-block"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
@@ -186,7 +186,7 @@ function rStart(el){
     }
   }
 }
-<span style="color:var(--faint)">// Claude Desktop · Cursor · VS Code · Windsurf</span></pre></div>
+<span style="color:var(--faint)">// Claude Desktop Â· Cursor Â· VS Code Â· Windsurf</span></pre></div>
 
       <div id="ob-plat-openclaw" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
 <pre><span style="color:var(--faint)"># Add skill + set env</span>
@@ -231,47 +231,47 @@ await fetch("${A}/api/cards?workspace=default", {
   <!-- Quick links with card aesthetic -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px" class="ql-grid">
     <div class="ql-card" onclick="dt('cards')">
-      <span class="ql-icon">🃏</span>
+      <span class="ql-icon">ðŸƒ</span>
       <div class="ql-label">Cards</div>
     </div>
     <div class="ql-card" onclick="dt('key')">
-      <span class="ql-icon">🔑</span>
+      <span class="ql-icon">ðŸ”‘</span>
       <div class="ql-label">API Key</div>
     </div>
     <div class="ql-card" onclick="dt('ws')">
-      <span class="ql-icon">📁</span>
+      <span class="ql-icon">ðŸ“</span>
       <div class="ql-label">Workspaces</div>
     </div>
     <div class="ql-card" onclick="go('docs')">
-      <span class="ql-icon">📖</span>
+      <span class="ql-icon">ðŸ“–</span>
       <div class="ql-label">Docs</div>
     </div>
   </div>`;
 }
 
-/* ═══════════════════════════════════════════
-   🃏 CARDS — Premium card grid with glow
-   ═══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ðŸƒ CARDS â€” Premium card grid with glow
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rCards(el){
-  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🃏 Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
+  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸƒ Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
-    document.querySelector('.dh p').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
+    document.querySelector('.dh p').textContent=cards.length+' cards Â· '+d.plan+' ('+cards.length+'/'+d.limit+')';
     const cl=document.getElementById('cl');
     if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:48px 20px">
       <div style="position:relative;display:inline-block;margin-bottom:16px">
         <div style="position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,43,.15),transparent);filter:blur(8px)"></div>
-        <span style="font-size:3rem;position:relative">🃏</span>
+        <span style="font-size:3rem;position:relative">ðŸƒ</span>
       </div>
       <h3 style="font-family:var(--mono);margin:0 0 8px;font-size:1rem">No cards yet</h3>
       <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:360px;margin-left:auto;margin-right:auto">Cards are how your agent remembers. Create one manually or let your agent create them via the API.</p>
       <div style="display:flex;gap:8px;justify-content:center">
         <button class="btn bp bs" onclick="showCardForm()">+ Create First Card</button>
-        <button class="btn bo bs" onclick="dt('start')">← Setup Guide</button>
+        <button class="btn bo bs" onclick="dt('start')">â† Setup Guide</button>
       </div>
     </div>`;return}
     const stacks=[...new Set(cards.map(c=>c.stack))];
-    const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)" style="border-color:${SC[s]||'#555'}30">${SE[s]||'📄'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
+    const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)" style="border-color:${SC[s]||'#555'}30">${SE[s]||'ðŸ“„'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
     const cardsHtml=`<div class="card-grid">${cards.map((c,i)=>{
       const bc=SC[c.stack]||'#555';
       const kw=(c.keywords||[]).slice(0,3);
@@ -279,11 +279,11 @@ function rCards(el){
       return`<div class="hsc" data-s="${c.stack}" data-q="${(c.title+' '+(c.keywords||[]).join(' ')+' '+(c.body||'')).toLowerCase()}" onclick="expandCard(${JSON.stringify(c).replace(/"/g,'&quot;')})" style="animation-delay:${i*60}ms">
         <div class="hsc-glow" style="background:linear-gradient(135deg,${bc},${bc}88,transparent)"></div>
         <div class="hsc-border" style="border-color:${bc}44">
-          <button class="hsc-del" onclick="event.stopPropagation();if(confirm('Delete ${c.slug}?'))delCard('${c.slug}')" title="Delete">✕</button>
+          <button class="hsc-del" onclick="event.stopPropagation();if(confirm('Delete ${c.slug}?'))delCard('${c.slug}')" title="Delete">âœ•</button>
           <div class="hsc-header" style="border-color:${bc}25">
             <div style="display:flex;align-items:center;gap:6px">
               <div style="width:7px;height:7px;border-radius:50%;background:${bc};box-shadow:0 0 6px ${bc}"></div>
-              <span style="font-family:var(--mono);font-size:.55rem;color:${bc};letter-spacing:.06em;font-weight:600">${(SE[c.stack]||'📄')} ${(c.stack||'').toUpperCase()}</span>
+              <span style="font-family:var(--mono);font-size:.55rem;color:${bc};letter-spacing:.06em;font-weight:600">${(SE[c.stack]||'ðŸ“„')} ${(c.stack||'').toUpperCase()}</span>
             </div>
             <span style="font-family:var(--mono);font-size:.5rem;color:var(--faint)">${c.tokens||0}t</span>
           </div>
@@ -305,7 +305,7 @@ function rCards(el){
           </div>
         </div>
       </div>`}).join('')}</div>`;
-    cl.innerHTML=filtersHtml+cardsHtml+`<div style="text-align:center;margin-top:16px"><button class="btn bo bs" onclick="rCards(document.getElementById('dm'))">↻ Refresh</button></div>`;
+    cl.innerHTML=filtersHtml+cardsHtml+`<div style="text-align:center;margin-top:16px"><button class="btn bo bs" onclick="rCards(document.getElementById('dm'))">â†» Refresh</button></div>`;
   }).catch(err=>{
     document.getElementById('cl').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red)">Failed to load: ${err.message}<br><button class="btn bo bs" style="margin-top:10px" onclick="rCards(document.getElementById('dm'))">Retry</button></div>`;
   })}
@@ -321,9 +321,9 @@ function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
   ov.innerHTML=`<div class="card-expand-inner" style="border:2px solid ${bc}44;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px ${bc}15">
     <div style="display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid ${bc}25;margin-bottom:14px">
       <div style="width:8px;height:8px;border-radius:50%;background:${bc};box-shadow:0 0 8px ${bc}"></div>
-      <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:600">${SE[c.stack]||'📄'} ${(c.stack||'').toUpperCase()}</span>
+      <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:600">${SE[c.stack]||'ðŸ“„'} ${(c.stack||'').toUpperCase()}</span>
       <span style="margin-left:auto;font-family:var(--mono);font-size:.55rem;color:var(--faint)">~${c.tokens||0} tokens</span>
-      <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px;margin-left:8px">✕</button>
+      <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px;margin-left:8px">âœ•</button>
     </div>
     <div style="margin-bottom:6px">
       <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">slug</div>
@@ -336,7 +336,7 @@ function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
     <div style="display:flex;gap:16px;margin-bottom:10px">
       <div>
         <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">stack</div>
-        <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'📄'} ${c.stack}</span>
+        <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'ðŸ“„'} ${c.stack}</span>
       </div>
       <div>
         <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">keywords</div>
@@ -350,20 +350,20 @@ function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
       </div>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)">
-      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} · ${c.updated||'just now'}</span>
+      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} Â· ${c.updated||'just now'}</span>
       <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3);font-size:.72rem" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">Delete</button>
     </div>
   </div>`;
   document.body.appendChild(ov)}
 
-function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='✓ Copied';btn.classList.add('copied-btn');
+function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='âœ“ Copied';btn.classList.add('copied-btn');
   setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied-btn')},2000);
   const s2=document.getElementById('obs-2'),s3=document.getElementById('obs-3');
-  if(s2){s2.classList.add('done');s2.classList.remove('active');s2.querySelector('.num').textContent='✓'}
+  if(s2){s2.classList.add('done');s2.classList.remove('active');s2.querySelector('.num').textContent='âœ“'}
   if(s3)s3.classList.add('active')}
 
 function cpBlock(btn){const pre=btn.parentElement.querySelector('pre');
-  navigator.clipboard.writeText(pre.textContent);btn.textContent='✓ Copied';
+  navigator.clipboard.writeText(pre.textContent);btn.textContent='âœ“ Copied';
   setTimeout(()=>{btn.textContent='Copy'},2000)}
 
 function showCardForm(){const w=document.getElementById('card-form-wrap');
@@ -381,13 +381,13 @@ function showCardForm(){const w=document.getElementById('card-form-wrap');
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div class="fg"><label>Stack</label><select id="cf-stack" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none">
-          <option value="projects">📦 projects</option><option value="people">👤 people</option><option value="decisions">⚖️ decisions</option>
-          <option value="preferences">⚙️ preferences</option><option value="workflows">🔄 workflows</option><option value="general" selected>📄 general</option>
+          <option value="projects">ðŸ“¦ projects</option><option value="people">ðŸ‘¤ people</option><option value="decisions">âš–ï¸ decisions</option>
+          <option value="preferences">âš™ï¸ preferences</option><option value="workflows">ðŸ”„ workflows</option><option value="general" selected>ðŸ“„ general</option>
         </select></div>
         <div class="fg"><label>Keywords (comma-separated)</label><input id="cf-kw" placeholder="react, vercel, auth"></div>
       </div>
       <div class="fg" style="margin-bottom:12px"><label>Body</label><textarea id="cf-body" rows="3" placeholder="What should your agent remember?" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.85rem;outline:none;resize:vertical"></textarea></div>
-      <div style="display:flex;gap:8px"><button class="btn bp bs" onclick="createCard()">Create Card →</button><button class="btn bo bs" onclick="document.getElementById('card-form-wrap').innerHTML=''">Cancel</button></div>
+      <div style="display:flex;gap:8px"><button class="btn bp bs" onclick="createCard()">Create Card â†’</button><button class="btn bo bs" onclick="document.getElementById('card-form-wrap').innerHTML=''">Cancel</button></div>
       <div id="cf-err" class="ferr hidden" style="margin-top:6px"></div>
     </div>
   </div>`}
@@ -403,11 +403,11 @@ function createCard(){const slug=document.getElementById('cf-slug').value.trim()
     document.getElementById('card-form-wrap').innerHTML='';rCards(document.getElementById('dm'));
   }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden')})}
 
-/* ═══════════════════════════════════════════
-   🔑 API KEY — Premium display
-   ═══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ðŸ”‘ API KEY â€” Premium display
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rKey(el){el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🔑 API Key</h1><p>Use this key in any agent or integration</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ”‘ API Key</h1><p>Use this key in any agent or integration</p></div></div>
 
   <div style="position:relative;margin-bottom:16px">
     <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.3),rgba(168,85,247,.2));opacity:.25;filter:blur(16px)"></div>
@@ -419,14 +419,14 @@ function rKey(el){el.innerHTML=`
       </div>
       <div class="key-display">
         <code>${U.apiKey}</code>
-        <button onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='✓ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
+        <button onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='âœ“ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
       </div>
     </div>
   </div>
 
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">📋</span>
+      <span style="font-size:1rem">ðŸ“‹</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Environment variables</span>
     </div>
     <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative">
@@ -438,7 +438,7 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
 
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">🧪</span>
+      <span style="font-size:1rem">ðŸ§ª</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick test</span>
       <span style="font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-left:auto">paste in terminal</span>
     </div>
@@ -449,15 +449,15 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
     </div>
   </div>`}
 
-/* ═══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    UNCHANGED TABS (Phase 2)
-   ═══════════════════════════════════════════ */
-/* ═══════════════════════════════════════════
-   📁 WORKSPACES — Premium display
-   ═══════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ðŸ“ WORKSPACES â€” Premium display
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📁 Workspaces</h1><p>${pro?'Unlimited workspaces':'1 workspace'} on ${U.plan} plan</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“ Workspaces</h1><p>${pro?'Unlimited workspaces':'1 workspace'} on ${U.plan} plan</p></div></div>
 
   <!-- Active workspace card with glow -->
   <div style="position:relative;margin-bottom:16px">
@@ -465,7 +465,7 @@ function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
     <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:14px;padding:20px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
         <div style="display:flex;align-items:center;gap:10px">
-          <div style="width:36px;height:36px;border-radius:10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;font-size:18px">📁</div>
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;font-size:18px">ðŸ“</div>
           <div>
             <div style="font-family:var(--mono);font-weight:700;font-size:.95rem">default</div>
             <div style="font-family:var(--mono);font-size:.7rem;color:var(--dim)">Primary workspace</div>
@@ -501,49 +501,49 @@ function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   </div>`:`
   <div style="position:relative;margin-bottom:16px">
     <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:28px;text-align:center">
-      <div style="font-size:1.8rem;margin-bottom:10px">🔒</div>
+      <div style="font-size:1.8rem;margin-bottom:10px">ðŸ”’</div>
       <h3 style="font-family:var(--mono);font-size:.92rem;font-weight:700;margin-bottom:6px">Multiple workspaces require Pro</h3>
       <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Separate workspaces per project so your agent only sees what's relevant. Zero cross-contamination.</p>
       <div style="display:flex;gap:8px;justify-content:center">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp bs">Upgrade — $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg bs">Team — $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp bs">Upgrade â€” $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg bs">Team â€” $59/mo</a>
       </div>
     </div>
   </div>`}`}
 
-/* ═══════════════════════════════════════════
-   👥 TEAM — Premium display
-   ═══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ðŸ‘¥ TEAM â€” Premium display
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ‘¥ Team</h1><p>Shared memory across your team</p></div></div>
   <div style="position:relative;margin-bottom:16px">
     <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
-      <div style="font-size:2rem;margin-bottom:12px">👥</div>
+      <div style="font-size:2rem;margin-bottom:12px">ðŸ‘¥</div>
       <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Team Memory requires Pro</h3>
       <p style="color:var(--dim);font-size:.85rem;margin-bottom:8px;max-width:400px;margin-left:auto;margin-right:auto">When Alice's agent learns something, Bob's agent knows it too. Shared cards sync instantly across your entire team.</p>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px auto;max-width:420px">
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">🔄</div>
+          <div style="font-size:1.2rem;margin-bottom:4px">ðŸ”„</div>
           <div style="font-size:.7rem;color:var(--dim)">Instant sync</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">🔒</div>
+          <div style="font-size:1.2rem;margin-bottom:4px">ðŸ”’</div>
           <div style="font-size:.7rem;color:var(--dim)">Private cards stay private</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">👤</div>
+          <div style="font-size:1.2rem;margin-bottom:4px">ðŸ‘¤</div>
           <div style="font-size:.7rem;color:var(--dim)">Up to 20 members</div>
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade — $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team — $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade â€” $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team â€” $59/mo</a>
       </div>
     </div>
   </div>`;return}
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ‘¥ Team</h1><p>Shared memory across your team</p></div></div>
 
   <!-- Team members -->
   <div style="position:relative;margin-bottom:16px">
@@ -567,23 +567,23 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
 
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:18px;border-left:3px solid var(--accent)">
     <div style="display:flex;align-items:start;gap:10px">
-      <span style="font-size:1rem;flex-shrink:0">💡</span>
+      <span style="font-size:1rem;flex-shrink:0">ðŸ’¡</span>
       <div>
         <div style="font-family:var(--mono);font-size:.82rem;font-weight:600;margin-bottom:4px">How team sharing works</div>
-        <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin:0">Set any card to <strong style="color:var(--text)">shared</strong> and it syncs to every team member's workspace. Private cards stay private — only you can see them.</p>
+        <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin:0">Set any card to <strong style="color:var(--text)">shared</strong> and it syncs to every team member's workspace. Private cards stay private â€” only you can see them.</p>
       </div>
     </div>
   </div>`}
 
-/* ═══════════════════════════════════════════
-   📊 ANALYTICS — Premium display
-   ═══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ðŸ“Š ANALYTICS â€” Premium display
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Track your agent's memory usage</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Track your agent's memory usage</p></div></div>
   <div style="position:relative;margin-bottom:16px">
     <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
-      <div style="font-size:2rem;margin-bottom:12px">📊</div>
+      <div style="font-size:2rem;margin-bottom:12px">ðŸ“Š</div>
       <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Analytics requires Pro</h3>
       <p style="color:var(--dim);font-size:.85rem;margin-bottom:8px;max-width:400px;margin-left:auto;margin-right:auto">Track token savings, find stale cards, see usage patterns, and measure how much money your agent is saving you.</p>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px auto;max-width:480px">
@@ -596,23 +596,23 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
           <div style="font-size:.6rem;color:var(--faint)">Saved/mo</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
-          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">📈</div>
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">ðŸ“ˆ</div>
           <div style="font-size:.6rem;color:var(--faint)">Usage trends</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
-          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">⚠️</div>
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">âš ï¸</div>
           <div style="font-size:.6rem;color:var(--faint)">Stale alerts</div>
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade — $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team — $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade â€” $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team â€” $59/mo</a>
       </div>
     </div>
   </div>`;return}
 
   // Fetch real cards from API for analytics
-  el.innerHTML='<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Loading analytics...</p></div></div><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
+  el.innerHTML='<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Loading analytics...</p></div></div><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
     _renderStats(el,d.cards||[]);
   }).catch(function(){_renderStats(el,[])})}
@@ -640,16 +640,16 @@ function _renderStats(el,cards){
     return (now-updated)>(21*24*60*60*1000);
   });
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Your agent's memory performance</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Your agent's memory performance</p></div></div>
 
-  <!-- Stats grid with 2D glow — click any number to see how it's calculated -->
+  <!-- Stats grid with 2D glow â€” click any number to see how it's calculated -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-savings')">
       <div style="position:absolute;inset:-2px;border-radius:14px;background:rgba(34,197,94,.2);filter:blur(12px);animation:glowPulse 3s ease-in-out infinite"></div>
       <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:12px;padding:16px;text-align:center;transition:transform .2s;box-shadow:0 0 20px rgba(34,197,94,.1),inset 0 1px 0 rgba(34,197,94,.1)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--green);text-shadow:0 0 20px rgba(34,197,94,.4)">${savingsPct}%</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Token Savings</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how â†“</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-cards')">
@@ -657,7 +657,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(136,136,200,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(136,136,200,.05),inset 0 1px 0 rgba(136,136,200,.08)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;text-shadow:0 0 15px rgba(200,200,255,.2)">${totalCards}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Total Cards</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how â†“</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-saved')">
@@ -665,7 +665,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.25);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(255,107,43,.08),inset 0 1px 0 rgba(255,107,43,.1)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--accent);text-shadow:0 0 20px rgba(255,107,43,.3)">$${monthlySavings}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Saved / month</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how â†“</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-stale')">
@@ -673,22 +673,22 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(234,179,8,.06),inset 0 1px 0 rgba(234,179,8,.08)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--yellow);text-shadow:0 0 20px rgba(234,179,8,.3)">${staleCards.length}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Stale Cards</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how â†“</div>
       </div>
     </div>
   </div>
 
   <!-- Expandable explanation panels -->
   <div id="exp-savings" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--green);margin-bottom:8px">📐 How Token Savings is calculated</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--green);margin-bottom:8px">ðŸ“ How Token Savings is calculated</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Without HyperStack: <strong style="color:var(--red)">~6,000 tokens/msg</strong> (full chat history in context)<br>
-      With HyperStack: <strong style="color:var(--green)">~${tokensWith} tokens/msg</strong> (avg ${avgTokensPerCard} tokens/card × 2 cards retrieved)<br>
-      Savings: <strong style="color:var(--green)">(6,000 - ${tokensWith}) ÷ 6,000 = ${savingsPct}%</strong>
+      With HyperStack: <strong style="color:var(--green)">~${tokensWith} tokens/msg</strong> (avg ${avgTokensPerCard} tokens/card Ã— 2 cards retrieved)<br>
+      Savings: <strong style="color:var(--green)">(6,000 - ${tokensWith}) Ã· 6,000 = ${savingsPct}%</strong>
     </div>
   </div>
   <div id="exp-cards" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(136,136,200,.15);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:8px">🃏 Total Cards</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:8px">ðŸƒ Total Cards</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Cards in your default workspace: <strong>${totalCards}</strong><br>
       Total tokens stored: <strong>${totalTokens.toLocaleString()}</strong><br>
@@ -696,21 +696,21 @@ function _renderStats(el,cards){
     </div>
   </div>
   <div id="exp-saved" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(255,107,43,.15);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--accent);margin-bottom:8px">💰 How Monthly Savings is calculated</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--accent);margin-bottom:8px">ðŸ’° How Monthly Savings is calculated</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Tokens saved per message: <strong style="color:var(--green)">${savedPerMsg.toLocaleString()}</strong><br>
       Estimated messages/day: <strong>30</strong> (typical agent workload)<br>
-      Monthly messages: <strong>30 × 30 = 900</strong><br>
+      Monthly messages: <strong>30 Ã— 30 = 900</strong><br>
       Cost per 1K tokens: <strong>$0.003</strong> (Claude avg input price)<br>
-      Formula: <strong>${savedPerMsg.toLocaleString()} × 900 × $0.003 / 1000 = $${monthlySavings}</strong>
+      Formula: <strong>${savedPerMsg.toLocaleString()} Ã— 900 Ã— $0.003 / 1000 = $${monthlySavings}</strong>
     </div>
   </div>
   <div id="exp-stale" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(234,179,8,.15);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--yellow);margin-bottom:8px">⚠️ Stale Cards</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--yellow);margin-bottom:8px">âš ï¸ Stale Cards</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Cards not updated in <strong>21+ days</strong> may have outdated info.<br>
       Found: <strong>${staleCards.length}</strong> stale card${staleCards.length===1?'':'s'} out of ${totalCards} total.<br>
-      ${staleCards.length>0?'Review them below to keep your agent\'s memory accurate.':'Your memory is fresh — all cards updated recently.'}
+      ${staleCards.length>0?'Review them below to keep your agent\'s memory accurate.':'Your memory is fresh â€” all cards updated recently.'}
     </div>
   </div>
 
@@ -723,7 +723,7 @@ function _renderStats(el,cards){
   <!-- Token comparison -->
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
-      <span style="font-size:1rem">⚡</span>
+      <span style="font-size:1rem">âš¡</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Token Usage Per Message</span>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
@@ -744,20 +744,20 @@ function _renderStats(el,cards){
   <!-- Stale cards alert -->
   <div style="background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:14px;padding:20px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">⚠️</span>
+      <span style="font-size:1rem">âš ï¸</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Stale Cards</span>
       <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">Cards not updated in 21+ days</span>
     </div>
-    ${staleCards.length===0?'<div style="text-align:center;padding:16px;color:var(--dim);font-size:.82rem">✅ No stale cards. Your memory is fresh!</div>':staleCards.map(function(c){
+    ${staleCards.length===0?'<div style="text-align:center;padding:16px;color:var(--dim);font-size:.82rem">âœ… No stale cards. Your memory is fresh!</div>':staleCards.map(function(c){
       var days=Math.floor((now-new Date(c.updatedAt||c.createdAt||now).getTime())/(24*60*60*1000));
       return '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:6px"><div style="width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 6px var(--yellow)"></div><div style="flex:1"><span style="font-family:var(--mono);font-size:.82rem;font-weight:600">'+c.slug+'</span><span style="font-size:.78rem;color:var(--dim);margin-left:8px">'+c.title+'</span></div><span style="font-family:var(--mono);font-size:.65rem;background:rgba(234,179,8,.1);color:var(--yellow);padding:3px 10px;border-radius:6px;border:1px solid rgba(234,179,8,.2);font-weight:600">'+days+' days</span></div>'}).join('')}
     <p style="font-size:.72rem;color:var(--faint);margin-top:8px;text-align:center">${staleCards.length>0?'Stale cards may contain outdated info. Consider reviewing or archiving them.':'All cards updated within the last 21 days.'}</p>
   </div>`}
 
 
-/* ═══════════════════════════════════════════
-   CONTEXT GRAPH — Bubblemaps-style interactive
-   ═══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   CONTEXT GRAPH â€” Bubblemaps-style interactive
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 var _graphAnim=null; // animation frame id
 
 var _REL_DESC={
@@ -788,15 +788,15 @@ function rGraph(el){
     </select>
     <select id="gf-rel" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none">
       <option value="">All relations</option>
-      <option value="related">\ud83d\udd17 related — general connection</option>
-      <option value="owns">\ud83d\udc51 owns — ownership</option>
-      <option value="decided">\u2696\ufe0f decided — made a decision</option>
-      <option value="approved">\u2705 approved — gave approval</option>
-      <option value="uses">\ud83d\udd27 uses — depends on</option>
-      <option value="triggers">\u26a1 triggers — causes</option>
-      <option value="blocks">\ud83d\udeab blocks — prevents</option>
-      <option value="depends-on">\ud83d\udd04 depends-on — requires</option>
-      <option value="reviews">\ud83d\udd0d reviews — evaluates</option>
+      <option value="related">\ud83d\udd17 related â€” general connection</option>
+      <option value="owns">\ud83d\udc51 owns â€” ownership</option>
+      <option value="decided">\u2696\ufe0f decided â€” made a decision</option>
+      <option value="approved">\u2705 approved â€” gave approval</option>
+      <option value="uses">\ud83d\udd27 uses â€” depends on</option>
+      <option value="triggers">\u26a1 triggers â€” causes</option>
+      <option value="blocks">\ud83d\udeab blocks â€” prevents</option>
+      <option value="depends-on">\ud83d\udd04 depends-on â€” requires</option>
+      <option value="reviews">\ud83d\udd0d reviews â€” evaluates</option>
     </select>
     <button class="btn bo bs" onclick="rGraph(document.getElementById('dm'))" style="font-size:.75rem">\u21bb Refresh</button>
   </div></div>
@@ -845,21 +845,21 @@ function rGraph(el){
     </div>
   </div>
 
-  <!-- How to use the Graph — collapsible guide -->
+  <!-- How to use the Graph â€” collapsible guide -->
   <div style="margin-top:16px">
     <button onclick="var g=document.getElementById('graph-howto');g.style.display=g.style.display==='none'?'block':'none';this.querySelector('span').textContent=g.style.display==='none'?'\u25b6':'\u25bc'" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;width:100%;cursor:pointer;display:flex;align-items:center;gap:10px;text-align:left">
       <span style="color:var(--accent);font-size:.7rem">\u25b6</span>
-      <span style="font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text)">💡 How to use the Context Graph</span>
+      <span style="font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text)">ðŸ’¡ How to use the Context Graph</span>
       <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">click to expand</span>
     </button>
     <div id="graph-howto" style="display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:20px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
 
         <div>
-          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">🚀 GETTING STARTED</div>
+          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">ðŸš€ GETTING STARTED</div>
           <div style="font-size:.78rem;color:var(--dim);line-height:1.7">
             <strong style="color:var(--text)">1. Create cards with types</strong><br>
-            When your agent creates a card, add a <code style="color:var(--accent);font-size:.72rem">cardType</code> — like "person", "project", or "decision". This tells the graph what shape each node is.<br><br>
+            When your agent creates a card, add a <code style="color:var(--accent);font-size:.72rem">cardType</code> â€” like "person", "project", or "decision". This tells the graph what shape each node is.<br><br>
             <strong style="color:var(--text)">2. Link cards together</strong><br>
             Add a <code style="color:var(--accent);font-size:.72rem">links</code> array to connect cards. Each link has a target slug and a relation like "owns", "decided", or "triggers".<br><br>
             <strong style="color:var(--text)">3. Explore visually</strong><br>
@@ -868,21 +868,21 @@ function rGraph(el){
         </div>
 
         <div>
-          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">💡 REAL-WORLD EXAMPLES</div>
+          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">ðŸ’¡ REAL-WORLD EXAMPLES</div>
           <div style="font-size:.78rem;color:var(--dim);line-height:1.7">
             <strong style="color:var(--green)">"Why did we choose Stripe?"</strong><br>
-            Focus on the <em>use-stripe</em> decision card — see who decided, who approved, and why. Full audit trail, one click.<br><br>
+            Focus on the <em>use-stripe</em> decision card â€” see who decided, who approved, and why. Full audit trail, one click.<br><br>
             <strong style="color:var(--green)">"What breaks if we change auth?"</strong><br>
-            Focus on <em>use-clerk</em> — the graph shows every project that depends on it. Instant impact analysis.<br><br>
+            Focus on <em>use-clerk</em> â€” the graph shows every project that depends on it. Instant impact analysis.<br><br>
             <strong style="color:var(--green)">"Who owns the database?"</strong><br>
-            Filter by "owns" relation — see every ownership connection at a glance. No digging through chat history.
+            Filter by "owns" relation â€” see every ownership connection at a glance. No digging through chat history.
           </div>
         </div>
 
       </div>
 
       <div style="margin-top:16px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
-        <div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);font-weight:700;margin-bottom:6px">⚡ QUICK API EXAMPLE</div>
+        <div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);font-weight:700;margin-bottom:6px">âš¡ QUICK API EXAMPLE</div>
         <pre style="font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.6;margin:0;overflow-x:auto"><span style="color:var(--green)">// Create a decision card with links</span>
 POST /api/cards
 {
@@ -961,7 +961,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
   var edges=allEdges.slice();
   if(filterRel)edges=edges.filter(function(e){return e.relation===filterRel});
 
-  // Focus mode — only show cards connected to the focus card (depth 2)
+  // Focus mode â€” only show cards connected to the focus card (depth 2)
   if(focusSlug){
     var focusSet=new Set([focusSlug]);
     // Depth 1
@@ -1015,7 +1015,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
     return Math.max(20,Math.min(45,16+(linkCount+inLinks)*3));
   }
 
-  // Initialize positions — circular with jitter
+  // Initialize positions â€” circular with jitter
   var pos={};
   nodes.forEach(function(n,i){
     var angle=(i/nodes.length)*Math.PI*2;
@@ -1029,7 +1029,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
 
   // Physics state
   var physics={cooling:1,running:true,tick:0};
-  var pinned={};  // slugs that user dragged — they stay put
+  var pinned={};  // slugs that user dragged â€” they stay put
   var hovNode=null,selNode=null,dragNode=null,dragStart=null,isPanning=false,panStart=null,camStart=null;
 
   // Live force simulation
@@ -1060,7 +1060,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
       if(!pinned[e.from]){a.vx+=fx;a.vy+=fy}
       if(!pinned[e.to]){b.vx-=fx;b.vy-=fy}
     });
-    // Very light centering — only during first 80 ticks, then none
+    // Very light centering â€” only during first 80 ticks, then none
     var centerForce=physics.tick<80?0.001:0;
     nodes.forEach(function(n){
       var p=pos[n.slug];
@@ -1129,7 +1129,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
       ctx.globalAlpha=active?0.9:(dimmed?0.08:0.4);
       ctx.fill();
 
-      // Relation label — always show, brighter when active
+      // Relation label â€” always show, brighter when active
       var fs=Math.max(7,(active?11:9)*cam.z);
       ctx.font='600 '+fs+'px "JetBrains Mono"';ctx.textAlign='center';
       ctx.globalAlpha=active?1:(dimmed?0.08:0.4);
@@ -1289,10 +1289,10 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
       var w=evtToWorld(e);
       var moved=dragStart?Math.hypot(w.x-dragStart.x,w.y-dragStart.y):0;
       if(moved>8){
-        // Real drag — pin the node where it was dropped
+        // Real drag â€” pin the node where it was dropped
         pinned[dragNode.slug]=true;
       }else{
-        // Tiny move = click — toggle selection highlight
+        // Tiny move = click â€” toggle selection highlight
         selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode;
       }
     }
@@ -1438,9 +1438,9 @@ function _gDetail(node,nodes,edges,TC,RC){
 (async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
   const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);document.getElementById("nd").classList.toggle("hidden",!l);document.getElementById("no").classList.toggle("hidden",!l)})();
 
-// ═══════════════════════════════════════════════════════
-// ANIMATED GRAPH TRAVERSAL DEMO — landing page
-// ═══════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ANIMATED GRAPH TRAVERSAL DEMO â€” landing page
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 var _demoTimer=null;
 function demoGraphPlay(){
@@ -1605,7 +1605,7 @@ function demoGraphPlay(){
     pEl.style.opacity='1';
   });
 
-  // Step 3: Traverse — who decided?
+  // Step 3: Traverse â€” who decided?
   step(3000,function(){
     activeNodes.add('alice');
     activeEdges.add(0); // alice->use-stripe decided
@@ -1674,9 +1674,9 @@ var _demoObserver=null;
   }
 })();
 
-// ═══════════════════════════════════════════════════════
-// STRIPE SUCCESS — poll for plan upgrade
-// ═══════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// STRIPE SUCCESS â€” poll for plan upgrade
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function checkSuccess(){
   if(!U||!T)return;
@@ -1704,7 +1704,7 @@ function checkSuccess(){
           loading.style.display='none';
           done.style.display='block';
         }else if(attempts>=maxAttempts){
-          // Timeout — show fallback
+          // Timeout â€” show fallback
           loading.style.display='none';
           err.style.display='block';
         }else{
@@ -1732,10 +1732,10 @@ var _pendingSuccess=false;
     _pendingSuccess=true;
     // Clean the URL so refreshes don't re-trigger
     window.history.replaceState({},document.title,window.location.pathname);
-    // Check if we have a token — if so, auto-login should work
+    // Check if we have a token â€” if so, auto-login should work
     var hasToken=!!localStorage.getItem("hs_t");
     if(!hasToken){
-      // No token — user needs to log in, _pendingSuccess will redirect after
+      // No token â€” user needs to log in, _pendingSuccess will redirect after
       return;
     }
     // Wait for auto-login to complete (it runs on DOMContentLoaded)
@@ -1747,7 +1747,7 @@ var _pendingSuccess=false;
         checkSuccess();
       }
     },300);
-    // Safety timeout — 10s should be plenty for auto-login
+    // Safety timeout â€” 10s should be plenty for auto-login
     setTimeout(function(){
       clearInterval(waitForLogin);
       if(U&&T){
@@ -1788,7 +1788,7 @@ function updatePricingButtons(){
   btns.forEach(function(btn){
     var plan=btn.getAttribute('data-plan-btn');
     if(U.plan===plan){
-      btn.textContent='Current Plan ✓';
+      btn.textContent='Current Plan âœ“';
       btn.style.opacity='0.5';
       btn.style.pointerEvents='none';
       btn.style.background='var(--surface)';
@@ -1797,10 +1797,10 @@ function updatePricingButtons(){
     }
   });
 }
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 // CONVERSATIONAL ONBOARDING - Add to end of app.js
 // Shows on first dashboard load, uses Groq API to parse project description
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 
 class ConversationalOnboarding {
   constructor() {
@@ -1825,7 +1825,7 @@ class ConversationalOnboarding {
     modal.innerHTML = `
       <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);"></div>
       <div style="position:relative;background:white;border-radius:12px;padding:32px;max-width:550px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-height:90vh;overflow-y:auto;">
-        <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">ðŸ¤– Let's set up your memory</h2>
+        <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">Ã°Å¸Â¤â€“ Let's set up your memory</h2>
         <p style="line-height:1.6;color:#6b7280;margin:12px 0 24px 0;">
           Tell me about your project and I'll create memory cards for your AI agents.
         </p>
@@ -1838,7 +1838,7 @@ class ConversationalOnboarding {
         ></textarea>
 
         <div style="background:#f0f9ff;border-left:4px solid #3b82f6;padding:12px;margin:16px 0;border-radius:4px;font-size:13px;line-height:1.5;">
-          ðŸ’¡ Include: frameworks, databases, tools, decisions, or current work
+          Ã°Å¸â€™Â¡ Include: frameworks, databases, tools, decisions, or current work
         </div>
 
         <div style="display:flex;gap:12px;margin-top:20px;">
@@ -1848,7 +1848,7 @@ class ConversationalOnboarding {
           </button>
           <button onclick="conversationalOnboard.create()" 
                   style="flex:2;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-            Create Cards â†’
+            Create Cards Ã¢â€ â€™
           </button>
         </div>
       </div>
@@ -1879,7 +1879,7 @@ class ConversationalOnboarding {
     if (!modalContent) return;
     
     modalContent.innerHTML = `
-      <h2 style="margin:0;font-size:24px;font-weight:600;color:#1a1a1a;">ðŸ¤– Creating your memory cards...</h2>
+      <h2 style="margin:0;font-size:24px;font-weight:600;color:#1a1a1a;">Ã°Å¸Â¤â€“ Creating your memory cards...</h2>
       <div style="text-align:center;padding:40px 0;">
         <div style="margin:0 auto;border:4px solid #f3f4f6;border-top:4px solid #3b82f6;border-radius:50%;width:48px;height:48px;animation:spin 1s linear infinite;"></div>
         <p style="margin-top:20px;color:#6b7280;">Analyzing your project...</p>
@@ -1926,7 +1926,7 @@ class ConversationalOnboarding {
     if (!modalContent) return;
     
     modalContent.innerHTML = `
-      <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">âœ… Created ${cards.length} card${cards.length > 1 ? 's' : ''}</h2>
+      <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">Ã¢Å“â€¦ Created ${cards.length} card${cards.length > 1 ? 's' : ''}</h2>
       
       <div style="margin:20px 0;">
         ${cards.map(c => `
@@ -1940,13 +1940,13 @@ class ConversationalOnboarding {
       </div>
 
       <div style="background:#f0fdf4;border-left:4px solid #10b981;padding:16px;margin:20px 0;border-radius:4px;font-size:14px;line-height:1.6;">
-        <strong>âœ¨ Your memory is ready!</strong><br>
+        <strong>Ã¢Å“Â¨ Your memory is ready!</strong><br>
         Your agents (Cursor, Claude Desktop, LangGraph) can now access these cards.
       </div>
 
       <button onclick="conversationalOnboard.complete()" 
               style="width:100%;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-        Go to Dashboard â†’
+        Go to Dashboard Ã¢â€ â€™
       </button>
     `;
 
@@ -1968,7 +1968,7 @@ class ConversationalOnboarding {
     if (!modalContent) return;
     
     modalContent.innerHTML = `
-      <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">âš ï¸ Something went wrong</h2>
+      <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">Ã¢Å¡Â Ã¯Â¸Â Something went wrong</h2>
       <p style="margin:20px 0;color:#ef4444;line-height:1.6;">
         ${error}
       </p>
@@ -2014,63 +2014,82 @@ if (typeof go === 'function') {
     }
   };
 }
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 // STANDALONE ONBOARDING SCRIPT - Dark Theme
 // Add this to the END of app.js (won't break existing code)
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// HYPERSTACK ONBOARDING - Client-Side (No Backend Changes Needed)
+// Matches cascadeai.dev styling exactly
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 (function() {
   'use strict';
   
-  // Only run if not already initialized
   if (window.hyperstackOnboardingLoaded) return;
   window.hyperstackOnboardingLoaded = true;
 
-  class ConversationalOnboarding {
+  class HyperStackOnboarding {
     constructor() {
-      this.hasCompleted = localStorage.getItem('hyperstack_onboarded') === 'true';
+      // NO ONE-TIME CAP - Users can use this anytime
+      this.isFirstTime = !localStorage.getItem('hyperstack_has_cards');
     }
 
     start() {
-      if (this.hasCompleted) return;
-      setTimeout(() => this.show(), 1500);
+      // Wait 5 seconds after page load (not too fast)
+      setTimeout(() => {
+        // Only show if user has NO cards yet
+        if (this.isFirstTime) {
+          this.show();
+        }
+      }, 5000);
     }
 
     show() {
-      // Remove existing modal if any
-      const existing = document.getElementById('onboard-modal');
+      const existing = document.getElementById('hs-onboard-modal');
       if (existing) existing.remove();
 
       const modal = document.createElement('div');
-      modal.id = 'onboard-modal';
-      modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;display:flex;align-items:center;justify-content:center;';
+      modal.id = 'hs-onboard-modal';
+      modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,sans-serif;';
       
+      // Matches cascadeai.dev styling
       modal.innerHTML = `
-        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);"></div>
-        <div style="position:relative;background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:40px;max-width:550px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
-          <h2 style="margin:0 0 12px 0;font-size:28px;font-weight:600;color:#fff;font-family:inherit;">ðŸ¤– Let's set up your memory</h2>
-          <p style="line-height:1.6;color:#999;margin:0 0 24px 0;font-size:15px;">
-            Tell me about your project and I'll create memory cards for your AI agents.
-          </p>
-
-          <textarea 
-            id="project-description" 
-            placeholder="Example: Building a SaaS with Next.js and PostgreSQL. Using Clerk for auth. Currently migrating from REST to tRPC."
-            rows="5"
-            style="width:100%;padding:14px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;margin:0 0 20px 0;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.5;"
-          ></textarea>
-
-          <div style="background:#0f1419;border-left:3px solid #3b82f6;padding:14px 16px;margin:0 0 24px 0;border-radius:6px;font-size:13px;line-height:1.6;color:#9ca3af;">
-            ðŸ’¡ <strong style="color:#fff;">Include:</strong> frameworks, databases, tools, architecture decisions, or current work
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);"></div>
+        <div style="position:relative;background:#0a0a0a;border:1px solid #333;border-radius:16px;padding:48px;max-width:580px;width:90%;box-shadow:0 25px 80px rgba(0,0,0,0.6);">
+          
+          <div style="margin-bottom:32px;">
+            <h2 style="margin:0 0 16px 0;font-size:32px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:-0.02em;">
+              Let's set up your memory
+            </h2>
+            <p style="margin:0;font-size:17px;line-height:1.6;color:#999;">
+              Describe your project and I'll create memory cards for your AI agents.
+            </p>
           </div>
 
-          <div style="display:flex;gap:12px;">
-            <button id="onboard-skip-btn"
-                    style="flex:1;padding:14px 24px;border:1px solid #333;background:transparent;color:#999;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:all 0.2s;">
-              Skip for Now
+          <textarea 
+            id="hs-project-desc" 
+            placeholder="Example: I'm building a marketing agency for content creators. Using Next.js, Supabase, and Stripe. I prefer TypeScript strict mode."
+            rows="4"
+            style="width:100%;padding:16px;background:#000;border:1px solid #333;border-radius:12px;color:#fff;font-size:15px;margin:0 0 24px 0;font-family:inherit;resize:vertical;box-sizing:border-box;line-height:1.6;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#3b82f6'"
+            onblur="this.style.borderColor='#333'"
+          ></textarea>
+
+          <div style="background:#0f1419;border-left:3px solid #3b82f6;padding:16px 20px;margin:0 0 32px 0;border-radius:8px;font-size:14px;line-height:1.7;color:#9ca3af;">
+            <strong style="color:#fff;display:block;margin-bottom:4px;">Include:</strong>
+            Tech stack â€¢ Frameworks â€¢ Databases â€¢ Design preferences â€¢ Current work
+          </div>
+
+          <div style="display:flex;gap:16px;">
+            <button id="hs-skip-btn"
+                    style="flex:1;padding:16px 28px;border:1px solid #333;background:transparent;color:#999;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;">
+              Skip
             </button>
-            <button id="onboard-create-btn"
-                    style="flex:2;padding:14px 24px;border:none;background:#3b82f6;color:#fff;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:all 0.2s;">
+            <button id="hs-create-btn"
+                    style="flex:2;padding:16px 28px;border:none;background:#3b82f6;color:#fff;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;">
               Create Cards â†’
             </button>
           </div>
@@ -2079,116 +2098,210 @@ if (typeof go === 'function') {
       
       document.body.appendChild(modal);
 
-      // Add event listeners
-      document.getElementById('onboard-skip-btn').onclick = () => this.skip();
-      document.getElementById('onboard-create-btn').onclick = () => this.create();
+      // Event listeners
+      document.getElementById('hs-skip-btn').onclick = () => this.skip();
+      document.getElementById('hs-create-btn').onclick = () => this.create();
 
       // Hover effects
-      const skipBtn = document.getElementById('onboard-skip-btn');
-      skipBtn.onmouseover = () => { skipBtn.style.background = '#1a1a1a'; skipBtn.style.color = '#fff'; };
-      skipBtn.onmouseout = () => { skipBtn.style.background = 'transparent'; skipBtn.style.color = '#999'; };
+      const skipBtn = document.getElementById('hs-skip-btn');
+      skipBtn.onmouseover = () => { 
+        skipBtn.style.background = '#1a1a1a'; 
+        skipBtn.style.color = '#fff';
+        skipBtn.style.borderColor = '#444';
+      };
+      skipBtn.onmouseout = () => { 
+        skipBtn.style.background = 'transparent'; 
+        skipBtn.style.color = '#999';
+        skipBtn.style.borderColor = '#333';
+      };
 
-      const createBtn = document.getElementById('onboard-create-btn');
+      const createBtn = document.getElementById('hs-create-btn');
       createBtn.onmouseover = () => { createBtn.style.background = '#2563eb'; };
       createBtn.onmouseout = () => { createBtn.style.background = '#3b82f6'; };
       
       setTimeout(() => {
-        const textarea = document.getElementById('project-description');
+        const textarea = document.getElementById('hs-project-desc');
         if (textarea) textarea.focus();
       }, 100);
     }
 
     async create() {
-      const description = document.getElementById('project-description')?.value?.trim();
+      const description = document.getElementById('hs-project-desc')?.value?.trim();
       
       if (!description) {
         alert('Please describe your project first');
         return;
       }
 
-      const modal = document.getElementById('onboard-modal');
+      const modal = document.getElementById('hs-onboard-modal');
       if (!modal) return;
       
       const modalContent = modal.querySelector('div[style*="position:relative"]');
       if (!modalContent) return;
       
       modalContent.innerHTML = `
-        <h2 style="margin:0 0 12px 0;font-size:28px;font-weight:600;color:#fff;font-family:inherit;">ðŸ¤– Creating your memory cards...</h2>
-        <div style="text-align:center;padding:50px 0;">
-          <div style="margin:0 auto;border:4px solid #1a1a1a;border-top:4px solid #3b82f6;border-radius:50%;width:56px;height:56px;animation:onboard-spin 1s linear infinite;"></div>
-          <p style="margin-top:24px;color:#999;font-size:15px;">Analyzing your project with AI...</p>
+        <div style="text-align:center;padding:60px 40px;">
+          <div style="margin:0 auto 32px;border:4px solid #1a1a1a;border-top:4px solid #3b82f6;border-radius:50%;width:64px;height:64px;animation:hs-spin 1s linear infinite;"></div>
+          <h3 style="margin:0 0 12px 0;font-size:24px;font-weight:600;color:#fff;">Creating your cards...</h3>
+          <p style="margin:0;color:#999;font-size:15px;">Analyzing your project</p>
         </div>
       `;
 
-      if (!document.getElementById('onboard-spinner-style')) {
+      if (!document.getElementById('hs-spinner-style')) {
         const style = document.createElement('style');
-        style.id = 'onboard-spinner-style';
-        style.textContent = '@keyframes onboard-spin { to { transform: rotate(360deg); } }';
+        style.id = 'hs-spinner-style';
+        style.textContent = '@keyframes hs-spin { to { transform: rotate(360deg); } }';
         document.head.appendChild(style);
       }
 
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('https://hyperstack-cloud.vercel.app/api/cards?workspace=default&onboard=true', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ description })
-        });
-
-        const result = await response.json();
+        // Parse description client-side (no Groq needed)
+        const cards = this.parseDescription(description);
         
-        if (response.ok && result.success) {
-          this.showSuccess(result.cards);
+        // Create cards via regular API
+        const token = localStorage.getItem('token');
+        const createdCards = [];
+        
+        for (const card of cards) {
+          try {
+            const response = await fetch('https://hyperstack-cloud.vercel.app/api/cards?workspace=default', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(card)
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              createdCards.push({
+                slug: card.slug,
+                title: card.title,
+                cardType: card.cardType
+              });
+            }
+          } catch (err) {
+            console.error('Failed to create card:', err);
+          }
+        }
+
+        if (createdCards.length > 0) {
+          this.showSuccess(createdCards);
         } else {
-          this.showError(result.error || 'Something went wrong. Please try again.');
+          this.showError('Could not create cards. Please check your connection.');
         }
       } catch (error) {
         console.error('Onboarding error:', error);
-        this.showError('Network error. Please check your connection and try again.');
+        this.showError('Something went wrong. Please try again.');
       }
     }
 
+    parseDescription(text) {
+      const timestamp = Date.now();
+      const cards = [];
+      
+      // Extract tech stack
+      const techKeywords = ['next.js', 'nextjs', 'react', 'vue', 'angular', 'django', 'rails', 'laravel', 'express', 'fastapi', 'supabase', 'firebase', 'postgresql', 'postgres', 'mysql', 'mongodb', 'redis', 'stripe', 'clerk', 'auth0'];
+      const foundTech = [];
+      
+      techKeywords.forEach(tech => {
+        if (text.toLowerCase().includes(tech)) {
+          foundTech.push(tech);
+        }
+      });
+
+      if (foundTech.length > 0) {
+        cards.push({
+          slug: `tech-stack-${timestamp}`,
+          title: 'Tech Stack',
+          body: `Using ${foundTech.join(', ')}. ${text.substring(0, 150)}`,
+          cardType: 'project',
+          stack: 'projects',
+          keywords: foundTech,
+          sourceAgent: 'dashboard',
+          targetAgent: 'all'
+        });
+      }
+
+      // Extract preferences
+      const prefKeywords = ['prefer', 'like', 'use', 'always', 'strict mode', 'typescript', 'eslint', 'prettier'];
+      const hasPreferences = prefKeywords.some(kw => text.toLowerCase().includes(kw));
+      
+      if (hasPreferences) {
+        cards.push({
+          slug: `preferences-${timestamp}`,
+          title: 'Project Preferences',
+          body: text.substring(0, 200),
+          cardType: 'preference',
+          stack: 'preferences',
+          keywords: ['coding-style', 'preferences'],
+          sourceAgent: 'dashboard',
+          targetAgent: 'all'
+        });
+      }
+
+      // Always create a project overview card
+      cards.push({
+        slug: `project-${timestamp}`,
+        title: 'Project Overview',
+        body: text.substring(0, 250),
+        cardType: 'project',
+        stack: 'projects',
+        keywords: ['project', 'overview'],
+        sourceAgent: 'dashboard',
+        targetAgent: 'all'
+      });
+
+      return cards;
+    }
+
     showSuccess(cards) {
-      const modal = document.getElementById('onboard-modal');
+      const modal = document.getElementById('hs-onboard-modal');
       if (!modal) return;
       
       const modalContent = modal.querySelector('div[style*="position:relative"]');
       if (!modalContent) return;
       
       modalContent.innerHTML = `
-        <h2 style="margin:0 0 12px 0;font-size:28px;font-weight:600;color:#fff;font-family:inherit;">âœ… Created ${cards.length} card${cards.length > 1 ? 's' : ''}</h2>
+        <div style="margin-bottom:32px;">
+          <h2 style="margin:0 0 12px 0;font-size:32px;font-weight:700;color:#fff;line-height:1.2;">
+            âœ“ Created ${cards.length} card${cards.length > 1 ? 's' : ''}
+          </h2>
+          <p style="margin:0;font-size:17px;color:#999;">
+            Your memory is ready
+          </p>
+        </div>
         
-        <div style="margin:24px 0;max-height:300px;overflow-y:auto;">
+        <div style="margin:0 0 32px 0;max-height:280px;overflow-y:auto;">
           ${cards.map(c => `
-            <div style="background:#0a0a0a;border-left:3px solid #3b82f6;padding:14px 16px;margin-bottom:12px;border-radius:6px;">
-              <div style="font-weight:500;color:#fff;font-size:15px;margin-bottom:4px;">${c.title}</div>
-              <div style="font-size:12px;color:#6b7280;text-transform:capitalize;">
+            <div style="background:#000;border-left:3px solid #3b82f6;padding:16px 20px;margin-bottom:12px;border-radius:8px;">
+              <div style="font-weight:600;color:#fff;font-size:16px;margin-bottom:6px;">${c.title}</div>
+              <div style="font-size:13px;color:#6b7280;text-transform:capitalize;">
                 ${c.cardType}
               </div>
             </div>
           `).join('')}
         </div>
 
-        <div style="background:#064e3b;border-left:3px solid #10b981;padding:16px;margin:24px 0;border-radius:6px;font-size:14px;line-height:1.6;color:#d1fae5;">
-          <strong style="color:#fff;">âœ¨ Your memory is ready!</strong><br>
-          Your agents (Cursor, Claude Desktop, LangGraph) can now access these cards.
+        <div style="background:#064e3b;border-left:3px solid #10b981;padding:20px 24px;margin:0 0 32px 0;border-radius:8px;font-size:15px;line-height:1.7;color:#d1fae5;">
+          <strong style="color:#fff;display:block;margin-bottom:4px;">Your agents can now access these cards</strong>
+          Cursor â€¢ Claude Desktop â€¢ LangGraph â€¢ Any MCP tool
         </div>
 
-        <button id="onboard-complete-btn"
-                style="width:100%;padding:14px 24px;border:none;background:#3b82f6;color:#fff;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:all 0.2s;">
+        <button id="hs-complete-btn"
+                style="width:100%;padding:16px 28px;border:none;background:#3b82f6;color:#fff;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;">
           Go to Dashboard â†’
         </button>
       `;
 
-      const completeBtn = document.getElementById('onboard-complete-btn');
+      const completeBtn = document.getElementById('hs-complete-btn');
       completeBtn.onclick = () => this.complete();
       completeBtn.onmouseover = () => { completeBtn.style.background = '#2563eb'; };
       completeBtn.onmouseout = () => { completeBtn.style.background = '#3b82f6'; };
 
-      localStorage.setItem('hyperstack_onboarded', 'true');
+      // Mark that user has cards now
+      localStorage.setItem('hyperstack_has_cards', 'true');
       
       setTimeout(() => {
         if (window.loadCards && typeof window.loadCards === 'function') {
@@ -2198,57 +2311,57 @@ if (typeof go === 'function') {
     }
 
     showError(errorMsg) {
-      const modal = document.getElementById('onboard-modal');
+      const modal = document.getElementById('hs-onboard-modal');
       if (!modal) return;
       
       const modalContent = modal.querySelector('div[style*="position:relative"]');
       if (!modalContent) return;
       
       modalContent.innerHTML = `
-        <h2 style="margin:0 0 12px 0;font-size:28px;font-weight:600;color:#fff;font-family:inherit;">âš ï¸ Something went wrong</h2>
-        <p style="margin:24px 0;color:#ef4444;line-height:1.6;font-size:15px;">
-          ${errorMsg}
-        </p>
-        <div style="display:flex;gap:12px;margin-top:24px;">
-          <button id="onboard-retry-btn"
-                  style="flex:1;padding:14px 24px;border:1px solid #333;background:transparent;color:#999;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">
+        <div style="margin-bottom:32px;">
+          <h2 style="margin:0 0 12px 0;font-size:32px;font-weight:700;color:#fff;">
+            Something went wrong
+          </h2>
+          <p style="margin:0;color:#ef4444;font-size:17px;line-height:1.6;">
+            ${errorMsg}
+          </p>
+        </div>
+        
+        <div style="display:flex;gap:16px;">
+          <button id="hs-retry-btn"
+                  style="flex:1;padding:16px 28px;border:1px solid #333;background:transparent;color:#999;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">
             Try Again
           </button>
-          <button id="onboard-skip-error-btn"
-                  style="flex:1;padding:14px 24px;border:none;background:#3b82f6;color:#fff;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">
-            Continue to Dashboard
+          <button id="hs-skip-error-btn"
+                  style="flex:1;padding:16px 28px;border:none;background:#3b82f6;color:#fff;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">
+            Continue
           </button>
         </div>
       `;
 
-      document.getElementById('onboard-retry-btn').onclick = () => this.show();
-      document.getElementById('onboard-skip-error-btn').onclick = () => this.skip();
+      document.getElementById('hs-retry-btn').onclick = () => this.show();
+      document.getElementById('hs-skip-error-btn').onclick = () => this.skip();
     }
 
     skip() {
-      localStorage.setItem('hyperstack_onboarded', 'true');
+      localStorage.setItem('hyperstack_has_cards', 'true');
       this.complete();
     }
 
     complete() {
-      const modal = document.getElementById('onboard-modal');
+      const modal = document.getElementById('hs-onboard-modal');
       if (modal) modal.remove();
     }
   }
 
   // Initialize
-  window.conversationalOnboard = new ConversationalOnboarding();
+  window.hyperstackOnboard = new HyperStackOnboarding();
 
-  // Auto-trigger with multiple attempts
-  function tryShow() {
-    if (!localStorage.getItem('hyperstack_onboarded')) {
-      window.conversationalOnboard.start();
+  // Auto-trigger after 5 seconds
+  setTimeout(() => {
+    if (!localStorage.getItem('hyperstack_has_cards')) {
+      window.hyperstackOnboard.start();
     }
-  }
-
-  // Try at different intervals to catch page load
-  setTimeout(tryShow, 1500);
-  setTimeout(tryShow, 3000);
-  setTimeout(tryShow, 5000);
+  }, 5000);
 
 })();
