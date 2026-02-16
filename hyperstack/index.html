@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HyperStack — Cloud Memory for Any AI Agent</title>
-<meta name="description" content="Knowledge graph memory for AI agents. Developer-controlled typed relations, zero LLM cost, time-travel debugging. MCP server, LangGraph integration, REST API. Free to start.">
+<title>HyperStack — Deterministic Memory for Multi-Agent Teams</title>
+<meta name="description" content="Deterministic cross-tool memory for AI agents. Developer-controlled schema, zero LLM cost, directed agent signals. Your Cursor, Claude, and LangGraph agents share one typed knowledge graph.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -369,16 +369,15 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 <div class="w">
 
 <section class="hero">
-  <div class="hero-pill"><span class="dot"></span> Portable memory for AI agents</div>
-  <h1>Portable memory with<br><span class="hl">a knowledge graph you control.</span></h1>
-  <p>You set the relations. No LLM cost. No hallucinated links. Agents signal each other in real time. Every change traceable by agent. 10 cards free. Graph from $29/mo.</p>
+  <div class="hero-pill"><span class="dot"></span> Deterministic · Cross-tool · Directed signals</div>
+  <h1>Your agents use different tools.<br>They need <span class="hl">one shared graph.</span></h1>
+  <p>Cursor, Claude Desktop, and LangGraph each silo memory. HyperStack gives them a shared typed knowledge graph &mdash; developer-controlled schema, $0 LLM cost, and directed agent-to-agent signals.</p>
 
   <div class="hero-signup">
     <input type="email" id="hero-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')heroSignup()">
     <button class="btn bp" onclick="heroSignup()">Get Free Key →</button>
   </div>
   <div class="hero-note" id="hero-note">No credit card. Takes 30 seconds. Cancel anytime.</div>
-  <div style="text-align:center;margin-top:12px"><a href="/hyperstack/demo.html" target="_blank" style="font-family:var(--mono);font-size:.75rem;color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(255,107,43,.3)">▶ Watch the demo</a></div>
 </section>
 
 <div style="overflow:hidden;position:relative;padding:18px 0 8px">
@@ -409,50 +408,40 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
   </div>
 </div>
 
-<!-- ═══ KEY DIFFERENTIATORS ═══ -->
-<div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;padding:24px 16px 0">
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;min-width:160px">
-    <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:var(--accent)">$0</div>
-    <div style="font-family:var(--mono);font-size:.65rem;color:var(--dim)">LLM cost to you</div>
-  </div>
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;min-width:160px">
-    <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:var(--accent)">10</div>
-    <div style="font-family:var(--mono);font-size:.65rem;color:var(--dim)">typed relations you control</div>
-  </div>
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;min-width:160px">
-    <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:var(--accent)">Every</div>
-    <div style="font-family:var(--mono);font-size:.65rem;color:var(--dim)">change tracked by agent</div>
-  </div>
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;min-width:160px">
-    <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:var(--accent)">Real-time</div>
-    <div style="font-family:var(--mono);font-size:.65rem;color:var(--dim)">agent-to-agent orchestration</div>
-  </div>
-</div>
-
-
-<!-- ═══ REAL-TIME ORCHESTRATION — NEW MOAT ═══ -->
-<section style="padding:32px 16px 8px;text-align:center">
-  <div style="max-width:640px;margin:0 auto">
-    <div style="display:inline-block;background:rgba(255,107,43,.1);border:1px solid rgba(255,107,43,.3);border-radius:20px;padding:4px 14px;font-family:var(--mono);font-size:.65rem;color:var(--accent);font-weight:600;margin-bottom:10px">NEW — No other tool offers this</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,4vw,1.5rem);margin-bottom:10px;line-height:1.3">Real-time agent-to-agent orchestration</h2>
-    <p style="color:var(--dim);font-size:.85rem;line-height:1.5;margin-bottom:16px">LangGraph flags an issue. Cursor gets a webhook instantly. No polling. HMAC signed. Auto-disables on failures.</p>
-    <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:var(--mono);font-size:.68rem;color:var(--dim)">Webhooks</div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:var(--mono);font-size:.68rem;color:var(--dim)">SSE stream</div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-family:var(--mono);font-size:.68rem;color:var(--dim)">HMAC signatures</div>
-    </div>
-  </div>
-</section>
-
 
 <!-- ═══ THE MOAT — right after hero ═══ -->
 <section style="padding:48px 0 20px" id="moat-section">
   <div style="max-width:720px;margin:0 auto;text-align:center">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">The problem with every other tool</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,4vw,1.6rem);margin-bottom:24px">Your agent forgets. Ours remembers <em style="color:var(--accent);font-style:normal">why.</em></h2>
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Why HyperStack</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,4vw,1.6rem);margin-bottom:12px">Three things no other memory tool does <em style="color:var(--accent);font-style:normal">together.</em></h2>
   </div>
 
-  <!-- Interactive pain-point carousel -->
+  <!-- THREE PILLARS -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:860px;margin:0 auto 36px">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)"></div>
+      <div style="font-size:1.3rem;margin-bottom:8px">&#9881;&#65039;</div>
+      <h3 style="font-family:var(--mono);font-size:.9rem;font-weight:800;margin-bottom:6px;color:var(--accent)">Deterministic</h3>
+      <p style="font-size:.78rem;color:var(--dim);line-height:1.6;margin-bottom:10px">You define card types (person, project, decision) and relations (owns, triggers, blocks). No LLM extraction. No hallucinated links.</p>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--faint);line-height:1.6">Mem0 uses LLM calls (~$0.002/op) to auto-extract entities. Risk of hallucinated relations.<br><strong style="color:var(--accent)">HyperStack: $0 per operation. You set it, it&rsquo;s exact.</strong></div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)"></div>
+      <div style="font-size:1.3rem;margin-bottom:8px">&#128279;</div>
+      <h3 style="font-family:var(--mono);font-size:.9rem;font-weight:800;margin-bottom:6px;color:var(--blue)">Cross-tool</h3>
+      <p style="font-size:.78rem;color:var(--dim);line-height:1.6;margin-bottom:10px">Your Cursor agent, Claude Desktop, and LangGraph agent all read and write to the same graph. <code style="font-size:.65rem;color:var(--purple)">sourceAgent</code> auto-detected.</p>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--faint);line-height:1.6">Every other tool silos memory per-tool. Cursor can&rsquo;t read what Claude Desktop knows.<br><strong style="color:var(--blue)">HyperStack: one graph, any tool, always in sync.</strong></div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--green)"></div>
+      <div style="font-size:1.3rem;margin-bottom:8px">&#128225;</div>
+      <h3 style="font-family:var(--mono);font-size:.9rem;font-weight:800;margin-bottom:6px;color:var(--green)">Directed signals</h3>
+      <p style="font-size:.78rem;color:var(--dim);line-height:1.6;margin-bottom:10px">Agent A signals Agent B with a typed card. <code style="font-size:.65rem;color:var(--green)">targetAgent: "cursor-mcp"</code> &rarr; Cursor gets a webhook instantly.</p>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--faint);line-height:1.6">Mem0 has memory-event webhooks, but no directed agent-to-agent signals.<br><strong style="color:var(--green)">HyperStack: typed signals + HMAC signed + auto-disable.</strong></div>
+    </div>
+  </div>
+
+  <!-- Interactive pain-point carousel (kept from original) -->
   <div style="max-width:780px;margin:0 auto;position:relative">
 
     <!-- Scenario tabs -->
@@ -512,6 +501,11 @@ footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
 .moat-q{font-size:.88rem;color:var(--text);font-weight:500;margin-bottom:16px;line-height:1.5}
 .moat-sad{padding:14px 16px;background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.12);border-radius:10px;margin-bottom:8px}
 .moat-win{padding:10px 14px;background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.12);border-radius:10px;margin-bottom:6px}
+
+@media(max-width:700px){
+  #moat-section [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr!important}
+  .ctable th:nth-child(4),.ctable td:nth-child(4),.ctable th:nth-child(5),.ctable td:nth-child(5){display:none}
+}
 @media(max-width:600px){
   #moat-section [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
   #moat-section [style*="border-right"]{border-right:none!important;border-bottom:1px solid var(--border)!important}
@@ -1140,28 +1134,27 @@ print(r.json())</pre>
 <div id="ltab-compare" class="hidden">
 <section>
   <div style="text-align:center;margin-bottom:24px">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Why HyperStack</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">Built different. Built better.</h2>
-    <p style="color:var(--dim);max-width:520px;margin:8px auto 0;font-size:.88rem">Other memory tools charge per operation, lock you into one platform, and need their own LLM calls. We don’t.</p>
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Honest comparison</div>
+    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">How we actually differ.</h2>
+    <p style="color:var(--dim);max-width:520px;margin:8px auto 0;font-size:.88rem">Mem0 has graph memory and webhooks. Here’s what’s different.</p>
   </div>
   <table class="ctable">
-    <thead><tr><th></th><th class="hs">HyperStack</th><th>Mem0 / Zep</th></tr></thead>
+    <thead><tr><th></th><th class="hs">HyperStack</th><th>Mem0</th><th>Zep</th><th>LangGraph</th></tr></thead>
     <tbody>
-      <tr><td>Semantic + keyword search</td><td class="y">✔ Hybrid (pgvector)</td><td>Semantic only</td></tr>
-      <tr><td>LLM cost per memory op</td><td class="hs">$0 to you</td><td>~$0.002/op on your API key</td></tr>
-      <tr><td>Auto-capture &amp; auto-recall</td><td class="y">✔ Built-in</td><td>Varies</td></tr>
-      <tr><td>Works with</td><td class="y">MCP + LangGraph + REST</td><td>Usually 1 platform</td></tr>
-      <tr><td>Team sharing</td><td class="y">✔ Up to 20 members</td><td>Rare / enterprise only</td></tr>
-      <tr><td>Structured cards</td><td class="y">✔ Slugs, stacks, keywords, types</td><td>Unstructured blobs</td></tr>
-      <tr><td>Card types</td><td class="y">✔ person, project, decision, event&hellip;</td><td>No typing</td></tr>
-      <tr><td>Card links &amp; graph</td><td class="y">✔ Link cards, traverse connections</td><td>Flat storage, no relationships</td></tr>
-      <tr><td>PII / secrets redaction</td><td class="y">✔ Built-in rules</td><td>Not enforced</td></tr>
-      <tr><td>Setup time</td><td class="hs">30 seconds</td><td>2–10 minutes</td></tr>
-      <tr><td>Free tier</td><td class="y">10 cards forever</td><td>Limited or paid only</td></tr>
-      <tr><td>Pro price</td><td class="hs">$29/mo &mdash; graph included</td><td>$99+/mo usage-based</td></tr>
-      <tr><td>Funding required</td><td class="hs">$0 — self-funded</td><td>$23M+ in VC</td></tr>
+      <tr><td>Graph type</td><td class="hs">Developer-controlled typed</td><td>LLM-extracted</td><td>Temporal</td><td>Framework state</td></tr>
+      <tr><td>LLM cost per op</td><td class="hs">$0</td><td>~$0.002/op</td><td>~$0.002/op</td><td>$0 (locked)</td></tr>
+      <tr><td>Cross-tool sharing</td><td class="y">✔ Any agent, any tool</td><td>Per-project</td><td>Per-project</td><td>LangGraph only</td></tr>
+      <tr><td>Agent attribution</td><td class="y">✔ sourceAgent / targetAgent</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>Directed agent signals</td><td class="y">✔ Webhooks + SSE</td><td>Memory event hooks</td><td>—</td><td>—</td></tr>
+      <tr><td>Typed relations</td><td class="y">✔ owns, triggers, blocks&hellip;</td><td>LLM decides</td><td>—</td><td>—</td></tr>
+      <tr><td>Semantic + keyword</td><td class="y">✔ Hybrid (pgvector)</td><td>Semantic</td><td>Semantic</td><td>—</td></tr>
+      <tr><td>Version history</td><td class="y">✔ Time-travel any card</td><td>—</td><td>—</td><td>Checkpoints</td></tr>
+      <tr><td>Graph memory price</td><td class="hs">$29/mo</td><td>$249/mo (Pro)</td><td>Cloud only</td><td>Free (locked)</td></tr>
     </tbody>
   </table>
+  <div style="text-align:center;margin-top:16px">
+    <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Mem0 webhooks fire on memory events (add/update/delete). HyperStack webhooks are <strong style="color:var(--accent)">directed agent-to-agent signals</strong> &mdash; Agent A targets Agent B.</p>
+  </div>
 </section>
 </div>
 
@@ -1190,10 +1183,10 @@ print(r.json())</pre>
       <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px">
         <code style="font-family:var(--mono);font-size:.72rem;color:var(--accent)">npm install -g hyperstack-mcp</code>
       </div>
-      <p style="font-size:.72rem;color:var(--dim);line-height:1.5">Works with Cursor, Claude Desktop, VS Code, Windsurf. Add 5 lines of JSON config and your agent gets persistent memory.</p>
+      <p style="font-size:.72rem;color:var(--dim);line-height:1.5">Works with Cursor, Claude Desktop, VS Code, Windsurf. Auto-detects sourceAgent. Your agent shares memory across tools.</p>
       <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
         <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(255,107,43,.08);color:var(--accent);border:1px solid rgba(255,107,43,.2)">npm</span>
-        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.08);color:#60a5fa;border:1px solid rgba(59,130,246,.2)">v1.1.0</span>
+        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.08);color:#60a5fa;border:1px solid rgba(59,130,246,.2)">v1.3.2</span>
       </div>
     </div>
     
@@ -1206,10 +1199,10 @@ print(r.json())</pre>
       <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px">
         <code style="font-family:var(--mono);font-size:.72rem;color:var(--accent)">pip install hyperstack-langgraph</code>
       </div>
-      <p style="font-size:.72rem;color:var(--dim);line-height:1.5">Pre-built tools + ReAct agent. Zero dependencies. Your LangGraph agent gets search, store, graph traversal, and time-travel.</p>
+      <p style="font-size:.72rem;color:var(--dim);line-height:1.5">Pre-built tools + ReAct agent. Same graph as your MCP agents. Cross-tool memory with agent attribution and webhooks.</p>
       <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
         <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(255,107,43,.08);color:var(--accent);border:1px solid rgba(255,107,43,.2)">PyPI</span>
-        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.08);color:#60a5fa;border:1px solid rgba(59,130,246,.2)">v1.0.0</span>
+        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.08);color:#60a5fa;border:1px solid rgba(59,130,246,.2)">v1.2.0</span>
       </div>
     </div>
     
@@ -1232,14 +1225,14 @@ print(r.json())</pre>
   </div>
   
   <div style="text-align:center;margin-top:20px">
-    <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Also on: <a href="https://www.npmjs.com/package/hyperstack-mcp" style="color:var(--dim)" target="_blank">npm</a> &middot; <a href="https://pypi.org/project/hyperstack-langgraph/" style="color:var(--dim)" target="_blank">PyPI</a> &middot; <a href="https://clawhub.ai/deeqyaqub1-cmd/hyperstack" style="color:var(--dim)" target="_blank">ClawHub</a></p>
+    <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Also on: <a href="https://www.npmjs.com/package/hyperstack-mcp" style="color:var(--dim)" target="_blank">npm</a> &middot; <a href="https://pypi.org/project/hyperstack-langgraph/" style="color:var(--dim)" target="_blank">PyPI</a> &middot; <a href="https://clawhub.org" style="color:var(--dim)" target="_blank">ClawHub</a></p>
   </div>
 </section>
 
 <section style="padding:40px 0">
   <div style="text-align:center">
     <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:8px">Ready?</h2>
-    <p style="color:var(--dim);font-size:.9rem;margin-bottom:16px">10 cards free. Graph from $29/mo. Start free, upgrade when ready.</p>
+    <p style="color:var(--dim);font-size:.9rem;margin-bottom:16px">Deterministic memory. Cross-tool graph. Directed signals. Start free.</p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <button onclick="go('signup')" class="btn bp">Get Free Key &rarr;</button>
       <button onclick="go('pricing')" class="btn bo">See Pricing</button>
@@ -1373,8 +1366,6 @@ print(r.json())</pre>
         <li>Semantic search</li>
         <li class="pro">Graph traversal API &check;</li>
         <li class="pro">Visual graph explorer &check;</li>
-        <li class="pro">Version history &check;</li>
-        <li class="pro">Agent traceability &check;</li>
         <li class="pro">Analytics dashboard</li>
       </ul>
       <a href="javascript:void(0)" onclick="stripeGo('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07','PRO')" class="btn bp" style="width:100%" data-plan-btn="PRO">Get Pro &rarr;</a>
@@ -1391,8 +1382,7 @@ print(r.json())</pre>
         <li>Unlimited workspaces</li>
         <li>Everything in Pro</li>
         <li class="pro">5 team API keys</li>
-        <li class="pro">Real-time webhooks &check;</li>
-        <li class="pro">SSE event stream &check;</li>
+        <li class="pro">Version history</li>
         <li class="pro">Priority support</li>
       </ul>
       <a href="javascript:void(0)" onclick="stripeGo('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06','TEAM')" class="btn bo" style="width:100%;border-color:#60a5fa;color:#60a5fa" data-plan-btn="TEAM">Get Team &rarr;</a>
@@ -1409,8 +1399,7 @@ print(r.json())</pre>
         <li>Unlimited everything</li>
         <li>Everything in Team</li>
         <li class="pro">20 team members</li>
-        <li class="pro">Real-time webhooks &check;</li>
-        <li class="pro">SSE event stream &check;</li>
+        <li class="pro">Agent-to-agent webhooks</li>
         <li class="pro">SSO &amp; audit log <em style="font-size:.65rem;color:var(--faint)">(soon)</em></li>
       </ul>
       <a href="javascript:void(0)" onclick="stripeGo('https://buy.stripe.com/bJe7sLaPr0mUeJP8yfeUU05','BUSINESS')" class="btn bg" style="width:100%" data-plan-btn="BUSINESS">Get Business &rarr;</a>
