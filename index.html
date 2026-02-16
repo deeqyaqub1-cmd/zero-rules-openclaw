@@ -22,6 +22,12 @@ a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 .hidden{display:none!important}
 
+/* Mobile: Reduce padding */
+@media (max-width:768px){
+.w{padding:0 16px}
+section{padding:40px 0}
+}
+
 /* Nav */
 nav{padding:14px 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,10,.85);backdrop-filter:blur(12px);z-index:100}
 .logo{font-family:var(--mono);font-weight:800;font-size:1.4rem;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:8px;text-shadow:0 0 20px rgba(255,107,43,.3);letter-spacing:-.02em}
@@ -31,6 +37,15 @@ nav{padding:14px 0;display:flex;justify-content:space-between;align-items:center
 .navr a,.navr button{color:var(--dim);font-size:.82rem;font-family:var(--mono);background:none;border:none;cursor:pointer;transition:color .15s;text-decoration:none}
 .navr a:hover,.navr button:hover{color:var(--text);text-decoration:none}
 .nav-links{display:contents}
+
+/* Mobile: Simplified nav */
+@media (max-width:768px){
+.logo{font-size:1.1rem}
+.logo small{display:none}
+.navr{gap:8px}
+.navr a,.navr button{font-size:.75rem}
+.nav-links a:not(:first-child){display:none}
+}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 22px;border:none;border-radius:6px;font-family:var(--mono);font-size:.85rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap}
@@ -51,12 +66,28 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 .hl{color:var(--accent)}
 .hero p{font-size:1.1rem;color:var(--dim);max-width:520px;margin:16px auto 0}
 
+/* Mobile: Adjusted hero */
+@media (max-width:768px){
+.hero{padding:50px 0 30px}
+.hero-pill{font-size:.68rem;padding:4px 12px}
+h1{font-size:1.8rem;line-height:1.15}
+.hero p{font-size:.95rem;padding:0 10px}
+}
+
 /* Inline Signup */
 .hero-signup{display:flex;gap:8px;max-width:440px;margin:28px auto 0;align-items:center}
 .hero-signup input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none;min-width:0}
 .hero-signup input:focus{border-color:var(--accent)}
 .hero-signup input::placeholder{color:var(--faint)}
 .hero-note{font-size:.78rem;color:var(--faint);margin-top:8px;text-align:center}
+
+/* Mobile: Stack signup form */
+@media (max-width:768px){
+.hero-signup{flex-direction:column;width:100%;max-width:100%;padding:0 10px}
+.hero-signup input{width:100%;font-size:.85rem;padding:11px 14px}
+.hero-signup .btn{width:100%}
+.hero-note{font-size:.75rem}
+}
 
 /* Platform Logos */
 .logos{display:flex;gap:24px;justify-content:center;align-items:center;flex-wrap:wrap;padding:20px 0 0;opacity:.5}
@@ -68,6 +99,14 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 .sbar .sn{font-family:var(--mono);font-weight:800;font-size:1.4rem}
 .sbar .sl{font-size:.75rem;color:var(--dim)}
 
+/* Mobile: Compact stats */
+@media (max-width:768px){
+.sbar{gap:24px;padding:20px 0;flex-wrap:wrap}
+.sbar .si{flex:1;min-width:80px}
+.sbar .sn{font-size:1.2rem}
+.sbar .sl{font-size:.7rem}
+}
+
 /* Code Demo (interactive feel) */
 .demo{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;max-width:680px;margin:0 auto}
 .demo-bar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface2)}
@@ -78,6 +117,16 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 .demo pre{padding:20px;font-family:var(--mono);font-size:.78rem;line-height:1.9;color:var(--dim);overflow-x:auto;margin:0}
 .demo .cm{color:#444}.demo .kw{color:var(--accent)}.demo .str{color:var(--green)}.demo .fn{color:var(--blue)}
 
+/* Mobile: Smaller code */
+@media (max-width:768px){
+.demo{margin:0 -10px}
+.demo-bar{padding:8px 12px}
+.demo-dot{width:8px;height:8px}
+.demo-tabs{margin-left:8px}
+.demo-tab{padding:4px 8px;font-size:.65rem}
+.demo pre{padding:16px;font-size:.7rem;line-height:1.7}
+}
+
 /* Before/After */
 .ba{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin:30px 0}
 .ba-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px;text-align:center}
@@ -85,6 +134,16 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 .ba-card .num{font-family:var(--mono);font-weight:800;font-size:2.6rem;letter-spacing:-.04em}
 .ba-card .sub{font-size:.82rem;color:var(--dim);margin-top:4px}
 .ba-arrow{display:flex;align-items:center;justify-content:center;font-size:1.6rem;padding:0 16px;color:var(--accent)}
+
+/* Mobile: Stack before/after */
+@media (max-width:768px){
+.ba{grid-template-columns:1fr;gap:12px}
+.ba-arrow{padding:8px 0;transform:rotate(90deg)}
+.ba-card{padding:20px}
+.ba-card .num{font-size:2rem}
+.ba-card h3{font-size:.85rem}
+.ba-card .sub{font-size:.78rem}
+}
 
 /* Features */
 .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -95,12 +154,27 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 .fc p{font-size:.82rem;color:var(--dim);line-height:1.5}
 .fc .pro-tag{display:inline-block;padding:1px 6px;border-radius:3px;background:var(--glow);color:var(--accent);font-family:var(--mono);font-size:9px;font-weight:600;margin-left:4px}
 
+/* Mobile: Single column features */
+@media (max-width:768px){
+.fgrid{grid-template-columns:1fr;gap:12px}
+.fc{padding:20px}
+.fc h3{font-size:.95rem}
+.fc p{font-size:.88rem;line-height:1.6}
+}
+
 /* Comparison Table */
 .ctable{width:100%;border-collapse:collapse;margin:24px 0}
 .ctable th,.ctable td{padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);font-size:.82rem}
 .ctable th{font-family:var(--mono);font-weight:600;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;background:var(--surface)}
 .ctable td{color:var(--dim)}.ctable .y{color:var(--green)}.ctable .n{color:var(--faint);opacity:.4}
 .ctable .hs{color:var(--accent);font-weight:600}
+
+/* Mobile: Scrollable table */
+@media (max-width:768px){
+.ctable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -24px;padding:0 24px}
+.ctable{min-width:600px}
+.ctable th,.ctable td{padding:8px 12px;font-size:.75rem;white-space:nowrap}
+}
 
 /* Pricing */
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -115,6 +189,11 @@ h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);lett
 .pc ul li{font-size:.8rem;padding:3px 0;color:var(--dim)}
 .pc ul li::before{content:'✓ ';color:var(--green);font-weight:700}
 .pc ul li.pro{color:var(--text)}.pc ul li.pro::before{color:var(--accent)}
+
+/* Mobile: Single column pricing */
+@media (max-width:768px){
+.pgrid{grid-template-columns:1fr;gap:14px}
+}
 
 /* Auth */
 .auth{max-width:380px;margin:50px auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px}
