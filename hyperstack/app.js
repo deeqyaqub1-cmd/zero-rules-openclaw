@@ -1797,3 +1797,220 @@ function updatePricingButtons(){
     }
   });
 }
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// CONVERSATIONAL ONBOARDING - Add to end of app.js
+// Shows on first dashboard load, uses Groq API to parse project description
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+class ConversationalOnboarding {
+  constructor() {
+    this.hasCompleted = localStorage.getItem('hyperstack_onboarded') === 'true';
+  }
+
+  start() {
+    // Only show if not completed
+    if (this.hasCompleted) return;
+    
+    // Wait for dashboard to load
+    setTimeout(() => {
+      this.show();
+    }, 1000);
+  }
+
+  show() {
+    const modal = document.createElement('div');
+    modal.id = 'onboard-modal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;display:flex;align-items:center;justify-content:center;';
+    
+    modal.innerHTML = `
+      <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);"></div>
+      <div style="position:relative;background:white;border-radius:12px;padding:32px;max-width:550px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-height:90vh;overflow-y:auto;">
+        <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">ðŸ¤– Let's set up your memory</h2>
+        <p style="line-height:1.6;color:#6b7280;margin:12px 0 24px 0;">
+          Tell me about your project and I'll create memory cards for your AI agents.
+        </p>
+
+        <textarea 
+          id="project-description" 
+          placeholder="Example: Building a SaaS with Next.js and PostgreSQL. Using Clerk for auth. Currently migrating from REST to tRPC."
+          rows="4"
+          style="width:100%;padding:12px;border:1px solid #e5e7eb;border-radius:6px;font-size:14px;margin:16px 0;font-family:inherit;resize:vertical;box-sizing:border-box;"
+        ></textarea>
+
+        <div style="background:#f0f9ff;border-left:4px solid #3b82f6;padding:12px;margin:16px 0;border-radius:4px;font-size:13px;line-height:1.5;">
+          ðŸ’¡ Include: frameworks, databases, tools, decisions, or current work
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:20px;">
+          <button onclick="conversationalOnboard.skip()" 
+                  style="flex:1;padding:12px 20px;border:1px solid #e5e7eb;background:#fff;color:#374151;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
+            Skip for Now
+          </button>
+          <button onclick="conversationalOnboard.create()" 
+                  style="flex:2;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
+            Create Cards â†’
+          </button>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Auto-focus textarea
+    setTimeout(() => {
+      const textarea = document.getElementById('project-description');
+      if (textarea) textarea.focus();
+    }, 100);
+  }
+
+  async create() {
+    const description = document.getElementById('project-description')?.value?.trim();
+    
+    if (!description) {
+      alert('Please describe your project first');
+      return;
+    }
+
+    // Show loading
+    const modal = document.getElementById('onboard-modal');
+    if (!modal) return;
+    
+    const modalContent = modal.querySelector('div[style*="position:relative"]');
+    if (!modalContent) return;
+    
+    modalContent.innerHTML = `
+      <h2 style="margin:0;font-size:24px;font-weight:600;color:#1a1a1a;">ðŸ¤– Creating your memory cards...</h2>
+      <div style="text-align:center;padding:40px 0;">
+        <div style="margin:0 auto;border:4px solid #f3f4f6;border-top:4px solid #3b82f6;border-radius:50%;width:48px;height:48px;animation:spin 1s linear infinite;"></div>
+        <p style="margin-top:20px;color:#6b7280;">Analyzing your project...</p>
+      </div>
+    `;
+
+    // Add spinner animation
+    if (!document.getElementById('onboard-spinner-style')) {
+      const style = document.createElement('style');
+      style.id = 'onboard-spinner-style';
+      style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+      document.head.appendChild(style);
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('https://hyperstack-cloud.vercel.app/api/onboarding/from-description', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ description })
+      });
+
+      const result = await response.json();
+      
+      if (response.ok) {
+        this.showSuccess(result.cards, result.fallback);
+      } else {
+        this.showError(result.error || 'Something went wrong');
+      }
+    } catch (error) {
+      console.error('Onboarding error:', error);
+      this.showError('Network error. Please check your connection and try again.');
+    }
+  }
+
+  showSuccess(cards, isFallback) {
+    const modal = document.getElementById('onboard-modal');
+    if (!modal) return;
+    
+    const modalContent = modal.querySelector('div[style*="position:relative"]');
+    if (!modalContent) return;
+    
+    modalContent.innerHTML = `
+      <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">âœ… Created ${cards.length} card${cards.length > 1 ? 's' : ''}</h2>
+      
+      <div style="margin:20px 0;">
+        ${cards.map(c => `
+          <div style="background:#fafafa;border-left:3px solid #3b82f6;padding:12px;margin-bottom:10px;border-radius:4px;">
+            <div style="font-weight:500;color:#1a1a1a;">${c.title}</div>
+            <div style="font-size:12px;color:#6b7280;margin-top:4px;text-transform:capitalize;">
+              ${c.cardType}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="background:#f0fdf4;border-left:4px solid #10b981;padding:16px;margin:20px 0;border-radius:4px;font-size:14px;line-height:1.6;">
+        <strong>âœ¨ Your memory is ready!</strong><br>
+        Your agents (Cursor, Claude Desktop, LangGraph) can now access these cards.
+      </div>
+
+      <button onclick="conversationalOnboard.complete()" 
+              style="width:100%;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
+        Go to Dashboard â†’
+      </button>
+    `;
+
+    localStorage.setItem('hyperstack_onboarded', 'true');
+    
+    // Reload cards in background
+    setTimeout(() => {
+      if (window.loadCards && typeof window.loadCards === 'function') {
+        window.loadCards();
+      }
+    }, 1500);
+  }
+
+  showError(error) {
+    const modal = document.getElementById('onboard-modal');
+    if (!modal) return;
+    
+    const modalContent = modal.querySelector('div[style*="position:relative"]');
+    if (!modalContent) return;
+    
+    modalContent.innerHTML = `
+      <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">âš ï¸ Something went wrong</h2>
+      <p style="margin:20px 0;color:#ef4444;line-height:1.6;">
+        ${error}
+      </p>
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button onclick="conversationalOnboard.show()" 
+                style="flex:1;padding:12px 20px;border:1px solid #e5e7eb;background:#fff;color:#374151;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
+          Try Again
+        </button>
+        <button onclick="conversationalOnboard.skip()" 
+                style="flex:1;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
+          Continue to Dashboard
+        </button>
+      </div>
+    `;
+  }
+
+  skip() {
+    localStorage.setItem('hyperstack_onboarded', 'true');
+    this.complete();
+  }
+
+  complete() {
+    const modal = document.getElementById('onboard-modal');
+    if (modal) modal.remove();
+  }
+}
+
+// Initialize onboarding
+const conversationalOnboard = new ConversationalOnboarding();
+
+// Trigger on dashboard page load
+if (window.location.hash && window.location.hash.includes('dashboard')) {
+  conversationalOnboard.start();
+}
+
+// Also hook into page navigation if using go() function
+if (typeof go === 'function') {
+  const originalGo = go;
+  window.go = function(page) {
+    originalGo(page);
+    if (page === 'dashboard') {
+      setTimeout(() => conversationalOnboard.start(), 500);
+    }
+  };
+}
