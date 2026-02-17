@@ -253,7 +253,7 @@ await fetch("${A}/api/cards?workspace=default", {
    🃏 CARDS — Premium card grid with glow
    ═══════════════════════════════════════════ */
 function rCards(el){
-  if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:4px}.hsc{position:relative;border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .25s;animation:cardIn .35s ease both;box-shadow:0 2px 12px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3)}.hsc:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(68,255,136,.08)}.hsc-glow{position:absolute;inset:0;opacity:.12;pointer-events:none;transition:opacity .3s;border-radius:14px}.hsc:hover .hsc-glow{opacity:.22}.hsc-border{border:1px solid rgba(255,255,255,.07);border-radius:14px;background:linear-gradient(160deg,#14141a 0%,#0e0e13 100%);position:relative;height:100%;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.05)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer;font-size:.75rem;padding:2px 6px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ef4444;background:rgba(239,68,68,.12)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}.fb{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;color:rgba(255,255,255,.5);font-family:var(--mono);font-size:.72rem;padding:5px 14px;cursor:pointer;transition:all .2s}.fb:hover{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.2)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;font-family:var(--mono);font-size:.78rem;padding:7px 14px;outline:none;width:200px;transition:border-color .2s}.sinput:focus{border-color:var(--accent)}.dh{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.15rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.01em}.dh p{color:rgba(255,255,255,.45);font-size:.78rem;margin:4px 0 0}.loading-dots{display:inline-flex;gap:4px;margin-bottom:8px}.loading-dots span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:ldot .8s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.15s}.loading-dots span:nth-child(3){animation-delay:.3s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(8px)}.card-expand-inner{background:#13131a;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px;max-width:520px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.6)}@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes ldot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
+  if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}.hsc{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .3s;animation:cardIn .4s ease both}.hsc:hover{transform:translateY(-4px)}.hsc-glow{position:absolute;inset:0;opacity:.18;pointer-events:none;transition:opacity .3s;border-radius:16px}.hsc:hover .hsc-glow{opacity:.35}.hsc-border{border-radius:16px;background:linear-gradient(145deg,#1a1a24 0%,#12121a 100%);position:relative;height:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}.hsc:hover .hsc-border{border-color:rgba(255,255,255,.2);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.06)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.8rem;padding:3px 7px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ff6b6b;background:rgba(239,68,68,.15)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.fb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:.75rem;padding:6px 16px;cursor:pointer;transition:all .2s;font-weight:500}.fb:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:var(--mono);font-size:.8rem;padding:8px 16px;outline:none;width:200px;transition:all .2s}.sinput:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}.sinput::placeholder{color:rgba(255,255,255,.3)}.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em}.dh p{color:rgba(255,255,255,.4);font-size:.8rem;margin:5px 0 0}.loading-dots{display:inline-flex;gap:5px;margin-bottom:10px}.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px)}.card-expand-inner{background:#16161f;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;max-width:540px;width:92%;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
   el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🃏 Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
@@ -284,24 +284,24 @@ function rCards(el){
           <div class="hsc-header" style="border-color:${bc}25">
             <div style="display:flex;align-items:center;gap:6px">
               <div style="width:7px;height:7px;border-radius:50%;background:${bc};box-shadow:0 0 6px ${bc}"></div>
-              <span style="font-family:var(--mono);font-size:.55rem;color:${bc};letter-spacing:.06em;font-weight:600">${(SE[c.stack]||'📄')} ${(c.stack||'').toUpperCase()}</span>
+              <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:700;text-shadow:0 0 8px ${bc}44">${(SE[c.stack]||'📄')} ${(c.stack||'').toUpperCase()}</span>
             </div>
-            <span style="font-family:var(--mono);font-size:.5rem;color:var(--faint)">${c.tokens||0}t</span>
+            <span style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35)">${c.tokens||0}t</span>
           </div>
           <div style="padding:8px 14px 0">
-            <div style="font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:700;letter-spacing:-.01em">${c.slug}</div>
+            <div style="font-family:var(--mono);font-size:.75rem;color:var(--accent);font-weight:700;letter-spacing:-.01em">${c.slug}</div>
           </div>
           <div style="padding:4px 14px 0">
-            <div style="font-size:.88rem;font-weight:700;color:#ffffff">${c.title||c.slug}</div>
+            <div style="font-size:.95rem;font-weight:700;color:#ffffff;line-height:1.3">${c.title||c.slug}</div>
           </div>
           <div style="padding:6px 14px 0;display:flex;gap:3px;flex-wrap:wrap">
             ${kw.map(k=>`<span style="font-family:var(--mono);font-size:.55rem;background:${bc}10;color:${bc};padding:2px 7px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}
           </div>
           <div style="padding:6px 14px 0">
-            <div style="font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.5;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:6px 8px;font-family:var(--mono);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${body}</div>
+            <div style="font-size:.78rem;color:rgba(255,255,255,.75);line-height:1.6;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 10px;font-family:var(--mono);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${body}</div>
           </div>
           <div style="padding:8px 14px 10px;display:flex;align-items:center;justify-content:space-between">
-            <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint)">v${c.ver||1}</span>
+            <span style="font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.4)">v${c.ver||1}</span>
             <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint)">${c.updated||''}</span>
           </div>
         </div>
@@ -650,7 +650,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:12px;padding:16px;text-align:center;transition:transform .2s;box-shadow:0 0 20px rgba(34,197,94,.1),inset 0 1px 0 rgba(34,197,94,.1)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--green);text-shadow:0 0 20px rgba(34,197,94,.4)">${savingsPct}%</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Token Savings</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-cards')">
@@ -658,7 +658,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(136,136,200,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(136,136,200,.05),inset 0 1px 0 rgba(136,136,200,.08)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;text-shadow:0 0 15px rgba(200,200,255,.2)">${totalCards}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Total Cards</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-saved')">
@@ -666,7 +666,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.25);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(255,107,43,.08),inset 0 1px 0 rgba(255,107,43,.1)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--accent);text-shadow:0 0 20px rgba(255,107,43,.3)">$${monthlySavings}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Saved / month</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-stale')">
@@ -674,7 +674,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(234,179,8,.06),inset 0 1px 0 rgba(234,179,8,.08)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--yellow);text-shadow:0 0 20px rgba(234,179,8,.3)">${staleCards.length}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Stale Cards</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
   </div>
