@@ -1895,7 +1895,7 @@ class ConversationalOnboarding {
     }
 
     try {
-      const token = localStorage.getItem('hs_t');
+      const token = localStorage.getItem('token');
       const response = await fetch('https://hyperstack-cloud.vercel.app/api/cards?workspace=default&onboard=true', {
         method: 'POST',
         headers: {
@@ -2009,7 +2009,7 @@ if (typeof go === 'function') {
   const originalGo = go;
   window.go = function(page) {
     originalGo(page);
-    if (page === 'dash') {
+    if (page === 'dashboard') {
       setTimeout(() => conversationalOnboard.start(), 500);
     }
   };
