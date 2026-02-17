@@ -253,7 +253,6 @@ await fetch("${A}/api/cards?workspace=default", {
    🃏 CARDS — Premium card grid with glow
    ═══════════════════════════════════════════ */
 function rCards(el){
-  if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:4px}.hsc{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;animation:cardIn .35s ease both}.hsc:hover{transform:translateY(-2px)}.hsc-glow{position:absolute;inset:0;opacity:.07;pointer-events:none;transition:opacity .3s}.hsc:hover .hsc-glow{opacity:.13}.hsc-border{border:1px solid var(--border);border-radius:12px;background:var(--surface);position:relative;height:100%}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--faint);cursor:pointer;font-size:.75rem;padding:2px 6px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:var(--red);background:rgba(239,68,68,.1)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.fb{background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--dim);font-family:var(--mono);font-size:.72rem;padding:5px 12px;cursor:pointer;transition:all .2s}.fb.act{background:var(--accent);color:#000;border-color:var(--accent)}.sinput{background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:.78rem;padding:6px 12px;outline:none;width:180px}.sinput:focus{border-color:var(--accent)}.dh{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.1rem;font-weight:800;margin:0}.dh p{color:var(--dim);font-size:.78rem;margin:4px 0 0}.loading-dots{display:inline-flex;gap:4px;margin-bottom:8px}.loading-dots span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:ldot .8s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.15s}.loading-dots span:nth-child(3){animation-delay:.3s}.cpbtn{position:absolute;top:10px;right:10px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;color:var(--dim);font-family:var(--mono);font-size:.65rem;padding:3px 10px;cursor:pointer}.cpbtn:hover{color:var(--accent)}.ql-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .2s}.ql-card:hover{border-color:var(--accent);background:var(--surface2)}.ql-icon{font-size:1.4rem;display:block;margin-bottom:6px}.ql-label{font-family:var(--mono);font-size:.7rem;color:var(--dim)}.plat-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px}.plat-tab{background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--dim);font-family:var(--mono);font-size:.7rem;padding:5px 10px;cursor:pointer;transition:all .2s}.plat-tab.act{background:var(--accent);color:#000;border-color:var(--accent)}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(6px)}.card-expand-inner{background:var(--surface);border-radius:14px;padding:24px;max-width:520px;width:90%;max-height:85vh;overflow-y:auto}@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}@keyframes ldot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
   el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🃏 Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
@@ -1896,7 +1895,7 @@ class ConversationalOnboarding {
     }
 
     try {
-      const token = localStorage.getItem('hs_t');
+      const token = localStorage.getItem('token');
       const response = await fetch('https://hyperstack-cloud.vercel.app/api/cards?workspace=default&onboard=true', {
         method: 'POST',
         headers: {
@@ -2010,7 +2009,7 @@ if (typeof go === 'function') {
   const originalGo = go;
   window.go = function(page) {
     originalGo(page);
-    if (page === 'dash') {
+    if (page === 'dashboard') {
       setTimeout(() => conversationalOnboard.start(), 500);
     }
   };
