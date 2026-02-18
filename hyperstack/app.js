@@ -117,7 +117,7 @@ function renderD(){if(!U)return;
     planBar.innerHTML='Plan: '+(planBadges[U.plan]||U.plan)+upgradeLink;
   }else if(planBar){planBar.style.display='none'}
   const m=document.getElementById("dm");
-  if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
+  if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m);else if(DV==="agent")rAgent(m)}
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ðŸš€ GET STARTED â€” Premium animated onboarding
@@ -757,6 +757,111 @@ function _renderStats(el,cards){
       return '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:6px"><div style="width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 6px var(--yellow)"></div><div style="flex:1"><span style="font-family:var(--mono);font-size:.82rem;font-weight:600">'+c.slug+'</span><span style="font-size:.78rem;color:var(--dim);margin-left:8px">'+c.title+'</span></div><span style="font-family:var(--mono);font-size:.65rem;background:rgba(234,179,8,.1);color:var(--yellow);padding:3px 10px;border-radius:6px;border:1px solid rgba(234,179,8,.2);font-weight:600">'+days+' days</span></div>'}).join('')}
     <p style="font-size:.72rem;color:var(--faint);margin-top:8px;text-align:center">${staleCards.length>0?'Stale cards may contain outdated info. Consider reviewing or archiving them.':'All cards updated within the last 21 days.'}</p>
   </div>`}
+
+
+
+
+/* ═══════════════════════════════════════════════════
+   🤖 AGENT TOKENS
+   ═══════════════════════════════════════════════════ */
+function rAgent(el){
+  const team=U.plan==="TEAM"||U.plan==="BUSINESS";
+  if(!team){
+    el.innerHTML=`
+    <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agent Tokens</h1><p>Scoped permissions per agent</p></div></div>
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
+      <div style="font-size:2rem;margin-bottom:12px">🔐</div>
+      <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Agent Tokens require Team plan</h3>
+      <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto">Give each agent its own scoped token. Control exactly what each agent can read and write.</p>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade to Team — $59/mo</a>
+      </div>
+    </div>`;return}
+
+  el.innerHTML='<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agent Tokens</h1><p>Loading tokens...</p></div></div><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
+  fetch(A+"/api/agent-tokens?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
+    const tokens=d.tokens||[];
+    el.innerHTML=`
+    <div class="dh">
+      <div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agent Tokens</h1><p>${tokens.length} scoped token${tokens.length!==1?'s':''}</p></div>
+      <button class="btn bp bs" onclick="showAgentTokenForm()">+ New Token</button>
+    </div>
+    <div id="agent-token-form-wrap"></div>
+    <div id="agent-token-list">${tokens.length===0?
+      '<div style="text-align:center;padding:40px;color:var(--dim);font-size:.85rem">No agent tokens yet. Create one to give an agent scoped access.</div>':
+      tokens.map(t=>`
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px">
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <span style="font-family:var(--mono);font-weight:700;font-size:.88rem">${t.name}</span>
+              <span style="font-family:var(--mono);font-size:.62rem;background:rgba(255,107,43,.1);color:var(--accent);padding:2px 8px;border-radius:4px;border:1px solid rgba(255,107,43,.2)">${t.agentId}</span>
+            </div>
+            <div style="font-family:var(--mono);font-size:.7rem;color:var(--faint);margin-bottom:6px">
+              <code style="color:var(--accent);font-size:.68rem">${t.token}</code>
+            </div>
+            <div style="font-size:.7rem;color:var(--faint)">
+              Read: <span style="color:var(--dim)">${t.canRead.join(', ')}</span> &nbsp;|&nbsp;
+              Write: <span style="color:var(--dim)">${t.canWrite.join(', ')}</span> &nbsp;|&nbsp;
+              Stacks: <span style="color:var(--dim)">${t.allowedStacks.join(', ')}</span>
+            </div>
+          </div>
+          <button onclick="deleteAgentToken('${t.id}')" style="background:none;border:1px solid rgba(239,68,68,.3);color:var(--red);font-family:var(--mono);font-size:.7rem;padding:4px 10px;border-radius:6px;cursor:pointer">Revoke</button>
+        </div>
+      `).join('')
+    }</div>`;
+  }).catch(()=>{})
+}
+
+function showAgentTokenForm(){
+  const wrap=document.getElementById('agent-token-form-wrap');if(!wrap)return;
+  wrap.innerHTML=`
+  <div style="background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:20px;margin-bottom:16px">
+    <div style="font-family:var(--mono);font-size:.75rem;font-weight:700;margin-bottom:14px;color:var(--accent)">New Agent Token</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <div><label style="font-family:var(--mono);font-size:.7rem;color:var(--dim);display:block;margin-bottom:4px">Name</label>
+        <input id="at-name" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none" placeholder="e.g. Researcher Agent"></div>
+      <div><label style="font-family:var(--mono);font-size:.7rem;color:var(--dim);display:block;margin-bottom:4px">Agent ID</label>
+        <input id="at-agent" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none" placeholder="e.g. researcher"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+      <div><label style="font-family:var(--mono);font-size:.7rem;color:var(--dim);display:block;margin-bottom:4px">Can Read</label>
+        <input id="at-read" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none" value="*"></div>
+      <div><label style="font-family:var(--mono);font-size:.7rem;color:var(--dim);display:block;margin-bottom:4px">Can Write</label>
+        <input id="at-write" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none" value="*"></div>
+      <div><label style="font-family:var(--mono);font-size:.7rem;color:var(--dim);display:block;margin-bottom:4px">Stacks</label>
+        <input id="at-stacks" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none" value="*"></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn bp" onclick="createAgentToken()">Create Token</button>
+      <button class="btn bo" onclick="document.getElementById('agent-token-form-wrap').innerHTML=''">Cancel</button>
+    </div>
+  </div>`;
+}
+
+function createAgentToken(){
+  const name=document.getElementById('at-name').value.trim();
+  const agentId=document.getElementById('at-agent').value.trim();
+  const canRead=document.getElementById('at-read').value.trim();
+  const canWrite=document.getElementById('at-write').value.trim();
+  const allowedStacks=document.getElementById('at-stacks').value.trim();
+  if(!name||!agentId){alert('Name and Agent ID required');return}
+  const toArr=v=>v==='*'?['*']:v.split(',').map(s=>s.trim()).filter(Boolean);
+  fetch(A+"/api/agent-tokens?workspace=default",{method:'POST',headers:{'X-API-Key':U.apiKey,'Content-Type':'application/json'},
+    body:JSON.stringify({name,agentId,canRead:toArr(canRead),canWrite:toArr(canWrite),allowedStacks:toArr(allowedStacks)})
+  }).then(r=>r.json()).then(d=>{
+    if(d.error){alert('Error: '+d.error);return}
+    alert('Token created!\n\n'+d.token+'\n\nStore this securely — it will not be shown again.');
+    dt('agent');
+  }).catch(()=>alert('Network error'))
+}
+
+function deleteAgentToken(id){
+  if(!confirm('Revoke this token? This cannot be undone.'))return;
+  fetch(A+"/api/agent-tokens?workspace=default&id="+id,{method:'DELETE',headers:{'X-API-Key':U.apiKey}})
+    .then(r=>r.json()).then(d=>{if(d.error){alert('Error: '+d.error);return}dt('agent')})
+    .catch(()=>alert('Network error'))
+}
+
 
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
