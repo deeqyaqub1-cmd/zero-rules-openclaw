@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/hyperstack/device", "destination": "/hyperstack/device.html" }
+  ]
+}
