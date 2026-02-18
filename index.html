@@ -27,7 +27,13 @@ nav{padding:16px 0;display:flex;justify-content:space-between;align-items:center
 .navr a,.navr button{color:var(--dim);font-size:.82rem;font-family:var(--mono);background:none;border:none;cursor:pointer;transition:color .2s;text-decoration:none}
 .navr a:hover,.navr button:hover{color:var(--text);text-decoration:none}
 .nav-links{display:contents}
-@media(max-width:768px){.logo{font-size:1.05rem}.logo small{display:none}.navr{gap:8px}.navr a,.navr button{font-size:.72rem}.nav-links a:not(:first-child){display:none}}
+@media(max-width:768px){.logo{font-size:1.05rem}.logo small{display:none}.navr{gap:6px}.navr a,.navr button{font-size:.72rem}.nav-links{display:none}
+  /* When logged in on mobile: hide 'Log Out' text, show icon only */
+  #no{font-size:0!important;padding:6px 10px!important}
+  #no::after{content:'→ Out';font-size:.72rem;color:var(--red)}
+  /* Dashboard button stays readable but compact */
+  #nd{padding:6px 12px!important;font-size:.72rem!important}
+}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;font-family:var(--mono);font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--border);transition:all .25s;line-height:1.4;text-decoration:none}

@@ -21,6 +21,9 @@ function go(p){document.querySelectorAll('[id^="p-"]').forEach(e=>e.classList.ad
   document.getElementById("nd").classList.toggle("hidden",!l);
   document.getElementById("no").classList.toggle("hidden",!l);
   document.querySelectorAll('.dash-back-link').forEach(a=>{a.style.display=l?'inline':'none'});
+  // On mobile, hide the top nav bar inside the dashboard (bottom nav handles it)
+  const topNav=document.querySelector('nav');
+  if(topNav){topNav.style.display=(p==='dash'&&window.innerWidth<=768)?'none':'';}
   if(p==="dash"&&U){DV="start";dt("start")}
   if(p==="pricing"&&typeof updatePricingButtons==='function'){updatePricingButtons()}}
 
@@ -82,7 +85,9 @@ async function doReset(){
     setTimeout(()=>go("login"),2000);
   }catch(err){er.textContent="Cannot connect to server.";er.classList.remove("hidden")}}
 
-function out(){U=null;T=null;localStorage.removeItem("hs_t");go("landing")}
+function out(){U=null;T=null;localStorage.removeItem("hs_t");
+  const topNav=document.querySelector('nav');if(topNav)topNav.style.display='';
+  go("landing")}
 
 function dt(t){DV=t;document.querySelectorAll(".sbtn").forEach(b=>b.classList.remove("act"));
   const b=document.getElementById("t-"+t);if(b)b.classList.add("act");
