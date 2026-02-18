@@ -1139,9 +1139,9 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
   // Canvas setup
   var canvas=document.getElementById('graph-canvas');
   var wrap=document.getElementById('graph-wrap');
-  var W=wrap.clientWidth||wrap.offsetWidth||Math.min(window.innerWidth-32,800);
-  var H=Math.max(400,Math.min(600,nodes.length*50+200));
-  if(W<100)W=Math.min(window.innerWidth-32,800);
+  var W=wrap.offsetWidth||Math.min(window.innerWidth,800);
+  var H=Math.max(360,Math.min(520,nodes.length*50+200));
+  if(W<100)W=window.innerWidth;
   var dpr=window.devicePixelRatio||1;
   canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';canvas.style.width=W+'px';
   var ctx=canvas.getContext('2d');
