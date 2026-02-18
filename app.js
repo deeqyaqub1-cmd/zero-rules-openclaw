@@ -95,6 +95,13 @@ function dt(t){DV=t;document.querySelectorAll(".sbtn").forEach(b=>b.classList.re
   const mb=document.getElementById("mt-"+t);if(mb)mb.classList.add("act");
   var dc=document.getElementById("dm");if(dc)dc.scrollTop=0;
   window.scrollTo(0,0);
+  var mobBar=document.getElementById('mob-dash-bar');
+  var mobTitle=document.getElementById('mob-dash-title');
+  if(mobBar){
+    var titles={start:'Dashboard',cards:'Cards',graph:'Graph',key:'API Key',ws:'Workspaces',team:'Team',stats:'Analytics',agents:'Agents',docs:'Docs'};
+    if(mobTitle)mobTitle.textContent=titles[t]||'Dashboard';
+    mobBar.style.display=window.innerWidth<=768?(t==='start'?'none':'flex'):'none';
+  }
   renderD()}
 
 function showCode(lang,btn){document.querySelectorAll('[id^="code-"]').forEach(e=>e.classList.add("hidden"));
@@ -2275,7 +2282,7 @@ function _renderAgents(el,cards){
     <button class="btn bo bs" onclick="rAgents(document.getElementById('dm'))" style="font-size:.72rem">&#x21BB; Refresh</button>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:16px">
+  <div class="ag-health-grid">
     <div style="position:relative">
       <div style="position:absolute;inset:-2px;border-radius:14px;background:${hc};opacity:.1;filter:blur(16px)"></div>
       <div style="position:relative;background:var(--surface);border:2px solid ${hc}44;border-radius:14px;padding:20px;text-align:center">
@@ -2374,5 +2381,7 @@ function _renderAgents(el,cards){
   .loading-dots span:nth-child(2){animation-delay:.18s}
   .loading-dots span:nth-child(3){animation-delay:.36s}
   @keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}
+  .ag-health-grid{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:16px}
+  @media(max-width:600px){.ag-health-grid{grid-template-columns:1fr!important}}
   </style>`;
 }

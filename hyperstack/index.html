@@ -126,7 +126,7 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 .faq-q{padding:14px 18px;font-family:var(--mono);font-size:.82rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s;padding:0 18px}
 .faq-item.open .faq-a{max-height:500px;padding:0 18px 14px}
-@media(max-width:768px){.sb{display:none}.dc{margin-left:0}.mob-nav{display:block;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:100;padding:6px 0}.mob-nav-inner{display:flex;justify-content:space-around}.mob-nav button{background:none;border:none;color:var(--dim);font-size:.6rem;font-family:var(--mono);padding:4px 8px;cursor:pointer}.mob-nav button.act{color:var(--accent)}}
+  <div class="mob-nav-inner" style="overflow-x:auto;display:flex;justify-content:flex-start;gap:0;padding:0 4px;-webkit-overflow-scrolling:touch">
 
 /* ── Sidebar brand + nav buttons ── */
 .brand{padding:16px 16px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
@@ -769,16 +769,21 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
     <button class="sbtn" onclick="dt('ws')" id="t-ws">📁 Workspaces</button>
     <button class="sbtn" onclick="dt('team')" id="t-team">👥 Team</button>
     <button class="sbtn" onclick="dt('stats')" id="t-stats">📊 Analytics</button>
-    <button class="sbtn" onclick="dt('agents')" id="t-agents">🤖 Agents</button>
+    <button class="sbtn" onclick="dt('agents')" id="t-agents">&#x1F916; Agents</button>
     <button class="sbtn" onclick="go('docs')" id="t-docs">📖 Docs</button>
     <div class="bot"><div class="em" id="d-em">—</div><div id="d-pt" style="margin-top:4px"></div></div>
   </div>
   <div class="dc" id="dm"></div>
+  <div id="mob-dash-bar" style="display:none;position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08);padding:10px 16px;align-items:center;justify-content:space-between">
+    <button onclick="dt('start')" style="background:none;border:none;color:rgba(255,255,255,.7);font-family:var(--mono);font-size:.8rem;cursor:pointer;padding:0">&#x2190; Home</button>
+    <span style="font-family:var(--mono);font-size:.75rem;color:rgba(255,255,255,.4)" id="mob-dash-title">Dashboard</span>
+    <button onclick="out()" style="background:none;border:none;color:rgba(255,255,255,.35);font-family:var(--mono);font-size:.72rem;cursor:pointer;padding:0">Log out</button>
+  </div>
   <div id="d-plan-bar" style="display:none;padding:8px 16px;background:rgba(255,107,43,0.05);border:1px solid rgba(255,107,43,0.15);border-radius:8px;margin:8px 16px;font-family:var(--mono);font-size:.75rem;color:var(--dim);text-align:right"></div>
 </div>
 <!-- Mobile bottom nav -->
 <div class="mob-nav">
-  <div class="mob-nav-inner" style="overflow-x:auto;justify-content:flex-start;gap:0;padding:0 8px;-webkit-overflow-scrolling:touch">
+  <div class="mob-nav-inner" style="overflow-x:auto;display:flex;justify-content:flex-start;gap:0;padding:0 4px;-webkit-overflow-scrolling:touch">
     <button class="act" onclick="dt('start')" id="mt-start"><span style="font-size:16px">🚀</span><br>Start</button>
     <button onclick="dt('cards')" id="mt-cards"><span style="font-size:16px">🃏</span><br>Cards</button>
     <button onclick="dt('graph')" id="mt-graph"><span style="font-size:16px">🔗</span><br>Graph</button>
@@ -786,7 +791,7 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
     <button onclick="dt('ws')" id="mt-ws"><span style="font-size:16px">📁</span><br>Spaces</button>
     <button onclick="dt('team')" id="mt-team"><span style="font-size:16px">👥</span><br>Team</button>
     <button onclick="dt('stats')" id="mt-stats"><span style="font-size:16px">📊</span><br>Stats</button>
-    <button onclick="dt('agents')" id="mt-agents"><span style="font-size:16px">??</span><br>Agents</button>
+    <button onclick="dt('agents')" id="mt-agents"><span style="font-size:16px">&#x1F916;</span><br>Agents</button>
     <button onclick="go('docs')" id="mt-docs"><span style="font-size:16px">📖</span><br>Docs</button>
   </div>
 </div>
