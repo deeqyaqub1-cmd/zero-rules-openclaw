@@ -253,6 +253,7 @@ await fetch("${A}/api/cards?workspace=default", {
    🃏 CARDS — Premium card grid with glow
    ═══════════════════════════════════════════ */
 function rCards(el){
+  if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}.hsc{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .3s;animation:cardIn .4s ease both}.hsc:hover{transform:translateY(-4px)}.hsc-glow{position:absolute;inset:0;opacity:.18;pointer-events:none;transition:opacity .3s;border-radius:16px}.hsc:hover .hsc-glow{opacity:.35}.hsc-border{border-radius:16px;background:linear-gradient(145deg,#1a1a24 0%,#12121a 100%);position:relative;height:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}.hsc:hover .hsc-border{border-color:rgba(255,255,255,.2);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.06)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.8rem;padding:3px 7px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ff6b6b;background:rgba(239,68,68,.15)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.fb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:.75rem;padding:6px 16px;cursor:pointer;transition:all .2s;font-weight:500}.fb:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:var(--mono);font-size:.8rem;padding:8px 16px;outline:none;width:200px;transition:all .2s}.sinput:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}.sinput::placeholder{color:rgba(255,255,255,.3)}.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em}.dh p{color:rgba(255,255,255,.4);font-size:.8rem;margin:5px 0 0}.loading-dots{display:inline-flex;gap:5px;margin-bottom:10px}.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px)}.card-expand-inner{background:#16161f;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;max-width:540px;width:92%;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
   el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🃏 Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
@@ -283,24 +284,24 @@ function rCards(el){
           <div class="hsc-header" style="border-color:${bc}25">
             <div style="display:flex;align-items:center;gap:6px">
               <div style="width:7px;height:7px;border-radius:50%;background:${bc};box-shadow:0 0 6px ${bc}"></div>
-              <span style="font-family:var(--mono);font-size:.55rem;color:${bc};letter-spacing:.06em;font-weight:600">${(SE[c.stack]||'📄')} ${(c.stack||'').toUpperCase()}</span>
+              <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:700;text-shadow:0 0 8px ${bc}44">${(SE[c.stack]||'📄')} ${(c.stack||'').toUpperCase()}</span>
             </div>
-            <span style="font-family:var(--mono);font-size:.5rem;color:var(--faint)">${c.tokens||0}t</span>
+            <span style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35)">${c.tokens||0}t</span>
           </div>
           <div style="padding:8px 14px 0">
-            <div style="font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:600">${c.slug}</div>
+            <div style="font-family:var(--mono);font-size:.75rem;color:var(--accent);font-weight:700;letter-spacing:-.01em">${c.slug}</div>
           </div>
           <div style="padding:4px 14px 0">
-            <div style="font-size:.84rem;font-weight:600;color:var(--text)">${c.title||c.slug}</div>
+            <div style="font-size:.95rem;font-weight:700;color:#ffffff;line-height:1.3">${c.title||c.slug}</div>
           </div>
           <div style="padding:6px 14px 0;display:flex;gap:3px;flex-wrap:wrap">
             ${kw.map(k=>`<span style="font-family:var(--mono);font-size:.55rem;background:${bc}10;color:${bc};padding:2px 7px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}
           </div>
           <div style="padding:6px 14px 0">
-            <div style="font-size:.72rem;color:var(--dim);line-height:1.5;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-family:var(--mono);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${body}</div>
+            <div style="font-size:.78rem;color:rgba(255,255,255,.75);line-height:1.6;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 10px;font-family:var(--mono);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${body}</div>
           </div>
           <div style="padding:8px 14px 10px;display:flex;align-items:center;justify-content:space-between">
-            <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint)">v${c.ver||1}</span>
+            <span style="font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.4)">v${c.ver||1}</span>
             <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint)">${c.updated||''}</span>
           </div>
         </div>
@@ -649,7 +650,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:12px;padding:16px;text-align:center;transition:transform .2s;box-shadow:0 0 20px rgba(34,197,94,.1),inset 0 1px 0 rgba(34,197,94,.1)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--green);text-shadow:0 0 20px rgba(34,197,94,.4)">${savingsPct}%</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Token Savings</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-cards')">
@@ -657,7 +658,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(136,136,200,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(136,136,200,.05),inset 0 1px 0 rgba(136,136,200,.08)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;text-shadow:0 0 15px rgba(200,200,255,.2)">${totalCards}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Total Cards</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-saved')">
@@ -665,7 +666,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.25);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(255,107,43,.08),inset 0 1px 0 rgba(255,107,43,.1)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--accent);text-shadow:0 0 20px rgba(255,107,43,.3)">$${monthlySavings}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Saved / month</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-stale')">
@@ -673,7 +674,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(234,179,8,.06),inset 0 1px 0 rgba(234,179,8,.08)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--yellow);text-shadow:0 0 20px rgba(234,179,8,.3)">${staleCards.length}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Stale Cards</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
   </div>
@@ -1801,216 +1802,3 @@ function updatePricingButtons(){
 // CONVERSATIONAL ONBOARDING - Add to end of app.js
 // Shows on first dashboard load, uses Groq API to parse project description
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-
-class ConversationalOnboarding {
-  constructor() {
-    this.hasCompleted = localStorage.getItem('hyperstack_onboarded') === 'true';
-  }
-
-  start() {
-    // Only show if not completed
-    if (this.hasCompleted) return;
-    
-    // Wait for dashboard to load
-    setTimeout(() => {
-      this.show();
-    }, 1000);
-  }
-
-  show() {
-    const modal = document.createElement('div');
-    modal.id = 'onboard-modal';
-    modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;display:flex;align-items:center;justify-content:center;';
-    
-    modal.innerHTML = `
-      <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);"></div>
-      <div style="position:relative;background:white;border-radius:12px;padding:32px;max-width:550px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-height:90vh;overflow-y:auto;">
-        <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">ðŸ¤– Let's set up your memory</h2>
-        <p style="line-height:1.6;color:#6b7280;margin:12px 0 24px 0;">
-          Tell me about your project and I'll create memory cards for your AI agents.
-        </p>
-
-        <textarea 
-          id="project-description" 
-          placeholder="Example: Building a SaaS with Next.js and PostgreSQL. Using Clerk for auth. Currently migrating from REST to tRPC."
-          rows="4"
-          style="width:100%;padding:12px;border:1px solid #e5e7eb;border-radius:6px;font-size:14px;margin:16px 0;font-family:inherit;resize:vertical;box-sizing:border-box;"
-        ></textarea>
-
-        <div style="background:#f0f9ff;border-left:4px solid #3b82f6;padding:12px;margin:16px 0;border-radius:4px;font-size:13px;line-height:1.5;">
-          ðŸ’¡ Include: frameworks, databases, tools, decisions, or current work
-        </div>
-
-        <div style="display:flex;gap:12px;margin-top:20px;">
-          <button onclick="conversationalOnboard.skip()" 
-                  style="flex:1;padding:12px 20px;border:1px solid #e5e7eb;background:#fff;color:#374151;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-            Skip for Now
-          </button>
-          <button onclick="conversationalOnboard.create()" 
-                  style="flex:2;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-            Create Cards â†’
-          </button>
-        </div>
-      </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // Auto-focus textarea
-    setTimeout(() => {
-      const textarea = document.getElementById('project-description');
-      if (textarea) textarea.focus();
-    }, 100);
-  }
-
-  async create() {
-    const description = document.getElementById('project-description')?.value?.trim();
-    
-    if (!description) {
-      alert('Please describe your project first');
-      return;
-    }
-
-    // Show loading
-    const modal = document.getElementById('onboard-modal');
-    if (!modal) return;
-    
-    const modalContent = modal.querySelector('div[style*="position:relative"]');
-    if (!modalContent) return;
-    
-    modalContent.innerHTML = `
-      <h2 style="margin:0;font-size:24px;font-weight:600;color:#1a1a1a;">ðŸ¤– Creating your memory cards...</h2>
-      <div style="text-align:center;padding:40px 0;">
-        <div style="margin:0 auto;border:4px solid #f3f4f6;border-top:4px solid #3b82f6;border-radius:50%;width:48px;height:48px;animation:spin 1s linear infinite;"></div>
-        <p style="margin-top:20px;color:#6b7280;">Analyzing your project...</p>
-      </div>
-    `;
-
-    // Add spinner animation
-    if (!document.getElementById('onboard-spinner-style')) {
-      const style = document.createElement('style');
-      style.id = 'onboard-spinner-style';
-      style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
-      document.head.appendChild(style);
-    }
-
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://hyperstack-cloud.vercel.app/api/cards?workspace=default&onboard=true', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ description })
-      });
-
-      const result = await response.json();
-      
-      if (response.ok) {
-        this.showSuccess(result.cards, result.fallback);
-      } else {
-        this.showError(result.error || 'Something went wrong');
-      }
-    } catch (error) {
-      console.error('Onboarding error:', error);
-      this.showError('Network error. Please check your connection and try again.');
-    }
-  }
-
-  showSuccess(cards, isFallback) {
-    const modal = document.getElementById('onboard-modal');
-    if (!modal) return;
-    
-    const modalContent = modal.querySelector('div[style*="position:relative"]');
-    if (!modalContent) return;
-    
-    modalContent.innerHTML = `
-      <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">âœ… Created ${cards.length} card${cards.length > 1 ? 's' : ''}</h2>
-      
-      <div style="margin:20px 0;">
-        ${cards.map(c => `
-          <div style="background:#fafafa;border-left:3px solid #3b82f6;padding:12px;margin-bottom:10px;border-radius:4px;">
-            <div style="font-weight:500;color:#1a1a1a;">${c.title}</div>
-            <div style="font-size:12px;color:#6b7280;margin-top:4px;text-transform:capitalize;">
-              ${c.cardType}
-            </div>
-          </div>
-        `).join('')}
-      </div>
-
-      <div style="background:#f0fdf4;border-left:4px solid #10b981;padding:16px;margin:20px 0;border-radius:4px;font-size:14px;line-height:1.6;">
-        <strong>âœ¨ Your memory is ready!</strong><br>
-        Your agents (Cursor, Claude Desktop, LangGraph) can now access these cards.
-      </div>
-
-      <button onclick="conversationalOnboard.complete()" 
-              style="width:100%;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-        Go to Dashboard â†’
-      </button>
-    `;
-
-    localStorage.setItem('hyperstack_onboarded', 'true');
-    
-    // Reload cards in background
-    setTimeout(() => {
-      if (window.loadCards && typeof window.loadCards === 'function') {
-        window.loadCards();
-      }
-    }, 1500);
-  }
-
-  showError(error) {
-    const modal = document.getElementById('onboard-modal');
-    if (!modal) return;
-    
-    const modalContent = modal.querySelector('div[style*="position:relative"]');
-    if (!modalContent) return;
-    
-    modalContent.innerHTML = `
-      <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">âš ï¸ Something went wrong</h2>
-      <p style="margin:20px 0;color:#ef4444;line-height:1.6;">
-        ${error}
-      </p>
-      <div style="display:flex;gap:12px;margin-top:20px;">
-        <button onclick="conversationalOnboard.show()" 
-                style="flex:1;padding:12px 20px;border:1px solid #e5e7eb;background:#fff;color:#374151;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-          Try Again
-        </button>
-        <button onclick="conversationalOnboard.skip()" 
-                style="flex:1;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-          Continue to Dashboard
-        </button>
-      </div>
-    `;
-  }
-
-  skip() {
-    localStorage.setItem('hyperstack_onboarded', 'true');
-    this.complete();
-  }
-
-  complete() {
-    const modal = document.getElementById('onboard-modal');
-    if (modal) modal.remove();
-  }
-}
-
-// Initialize onboarding
-const conversationalOnboard = new ConversationalOnboarding();
-
-// Trigger on dashboard page load
-if (window.location.hash && window.location.hash.includes('dashboard')) {
-  conversationalOnboard.start();
-}
-
-// Also hook into page navigation if using go() function
-if (typeof go === 'function') {
-  const originalGo = go;
-  window.go = function(page) {
-    originalGo(page);
-    if (page === 'dashboard') {
-      setTimeout(() => conversationalOnboard.start(), 500);
-    }
-  };
-}

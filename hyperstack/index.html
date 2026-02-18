@@ -1,1345 +1,358 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HyperStack — Deterministic Memory for Multi-Agent Teams</title>
-<meta name="description" content="Deterministic cross-tool memory for AI agents. Developer-controlled schema, zero LLM cost, directed agent signals. Your Cursor, Claude, and LangGraph agents share one typed knowledge graph.">
+<title>HyperStack — Typed Graph Memory for AI Agents</title>
+<meta name="description" content="Typed graph memory for AI agents. Ask 'what blocks deploy?' and get exact typed answers. Zero LLM cost. Works with OpenClaw, Cursor, Claude, LangGraph.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#08080a;--surface:#111114;--surface2:#19191e;--card:#141417;--border:#252529;--border2:#35353b;--text:#ededf0;--dim:#8585a0;--faint:#505068;--accent:#ff6b2b;--accent2:#ff8f5a;--glow:rgba(255,107,43,.12);--green:#22c55e;--greend:rgba(34,197,94,.1);--red:#ef4444;--redd:rgba(239,68,68,.1);--blue:#3b82f6;--blued:rgba(59,130,246,.1);--purple:#a855f7;--yellow:#eab308;--mono:'JetBrains Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;--r:8px}
+:root{--bg:#060608;--surface:#0c0c10;--surface2:#111116;--card:#0e0e13;--border:#1a1a22;--border2:#252530;--text:#ededf0;--dim:#7a7a95;--faint:#45455a;--accent:#44ff88;--accent2:#33ee77;--accent-dim:rgba(68,255,136,.08);--accent-glow:rgba(68,255,136,.15);--orange:#ff6b2b;--green:#44ff88;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;--yellow:#eab308;--mono:'JetBrains Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;--r:10px;--glow:rgba(68,255,136,.12)}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -20%,rgba(255,107,43,.06),transparent 70%);pointer-events:none;z-index:0}
-::selection{background:var(--accent);color:#fff}
-
-/* Layout */
-.w{max-width:1020px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
-section{padding:60px 0}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
+::selection{background:var(--accent);color:#000}
+.w{max-width:1080px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+section{padding:80px 0}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .hidden{display:none!important}
-
-/* Mobile: Reduce padding */
-@media (max-width:768px){
-.w{padding:0 16px}
-section{padding:40px 0}
-}
+@media(max-width:768px){.w{padding:0 16px}section{padding:48px 0}}
 
 /* Nav */
-nav{padding:14px 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,10,.85);backdrop-filter:blur(12px);z-index:100}
-.logo{font-family:var(--mono);font-weight:800;font-size:1.4rem;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:8px;text-shadow:0 0 20px rgba(255,107,43,.3);letter-spacing:-.02em}
-.logo span.licon{font-size:1.5rem;filter:drop-shadow(0 0 6px rgba(255,107,43,.4))}
-.logo small{color:var(--faint);font-weight:400;font-size:.75rem}
+nav{padding:16px 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(6,6,8,.88);backdrop-filter:blur(16px);z-index:100}
+.logo{font-family:var(--mono);font-weight:800;font-size:1.3rem;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:10px;text-shadow:0 0 30px rgba(68,255,136,.4);letter-spacing:-.02em}
+.logo small{color:var(--faint);font-weight:400;font-size:.72rem}
 .navr{display:flex;gap:16px;align-items:center}
-.navr a,.navr button{color:var(--dim);font-size:.82rem;font-family:var(--mono);background:none;border:none;cursor:pointer;transition:color .15s;text-decoration:none}
+.navr a,.navr button{color:var(--dim);font-size:.82rem;font-family:var(--mono);background:none;border:none;cursor:pointer;transition:color .2s;text-decoration:none}
 .navr a:hover,.navr button:hover{color:var(--text);text-decoration:none}
 .nav-links{display:contents}
-
-/* Mobile: Simplified nav */
-@media (max-width:768px){
-.logo{font-size:1.1rem}
-.logo small{display:none}
-.navr{gap:8px}
-.navr a,.navr button{font-size:.75rem}
-.nav-links a:not(:first-child){display:none}
-}
+@media(max-width:768px){.logo{font-size:1.05rem}.logo small{display:none}.navr{gap:8px}.navr a,.navr button{font-size:.72rem}.nav-links a:not(:first-child){display:none}}
 
 /* Buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 22px;border:none;border-radius:6px;font-family:var(--mono);font-size:.85rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;font-family:var(--mono);font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--border);transition:all .25s;line-height:1.4;text-decoration:none}
 .btn:hover{text-decoration:none}
-.bp{background:var(--accent);color:#000}.bp:hover{background:var(--accent2);box-shadow:0 0 24px var(--glow)}
-.bo{background:transparent;border:1px solid var(--border);color:var(--text)}.bo:hover{border-color:var(--dim);background:var(--surface2)}
+.bs{font-size:.75rem;padding:6px 14px}
+.bo{background:transparent;color:var(--text)}.bo:hover{border-color:var(--accent);color:var(--accent)}
+.bp{background:var(--accent);color:#000;border-color:var(--accent)}.bp:hover{background:var(--accent2);box-shadow:0 0 32px rgba(68,255,136,.2),0 0 80px rgba(68,255,136,.06)}
 .bg{background:var(--green);color:#000}
-.bs{padding:7px 14px;font-size:.78rem}
-.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:600}
-.tag{padding:4px 12px;border-radius:20px;font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.02em}
+
+/* Glow orbs */
+.glow-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(100px);z-index:0}
 
 /* Hero */
-.hero{padding:80px 0 40px;text-align:center}
-.hero-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;background:var(--greend);border:1px solid rgba(34,197,94,.25);color:var(--green);font-family:var(--mono);font-size:.72rem;font-weight:600;margin-bottom:20px}
-.hero-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-h1{font-family:var(--mono);font-weight:800;font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.045em;line-height:1.08}
-.hl{color:var(--accent)}
-.hero p{font-size:1.1rem;color:var(--dim);max-width:520px;margin:16px auto 0}
+.hero{text-align:center;padding:100px 0 60px;position:relative}
+.hero::before{content:'';position:absolute;top:-150px;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse at center,rgba(68,255,136,.06) 0%,rgba(68,255,136,.015) 40%,transparent 65%);pointer-events:none}
+.hero h1{font-family:var(--mono);font-weight:800;font-size:clamp(1.8rem,5vw,3rem);line-height:1.15;margin-bottom:20px;letter-spacing:-.03em;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 .hl{color:var(--accent);text-shadow:0 0 40px rgba(68,255,136,.3)}
+.hero .sub{color:var(--dim);font-size:clamp(.92rem,2vw,1.1rem);max-width:540px;margin:0 auto 36px;line-height:1.65}
 
-/* Mobile: Adjusted hero */
-@media (max-width:768px){
-.hero{padding:50px 0 30px}
-.hero-pill{font-size:.68rem;padding:4px 12px}
-h1{font-size:1.8rem;line-height:1.15}
-.hero p{font-size:.95rem;padding:0 10px}
-}
+/* Marquee */
+.marquee-wrap{overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.marquee-track{display:flex;gap:32px;width:max-content;animation:marq 30s linear infinite}
+.marquee-item{font-family:var(--mono);font-size:.78rem;color:#8080a8;white-space:nowrap;padding:10px 0}
+@keyframes marq{to{transform:translateX(-50%)}}
 
-/* Inline Signup */
-.hero-signup{display:flex;gap:8px;max-width:440px;margin:28px auto 0;align-items:center}
-.hero-signup input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none;min-width:0}
-.hero-signup input:focus{border-color:var(--accent)}
-.hero-signup input::placeholder{color:var(--faint)}
-.hero-note{font-size:.78rem;color:var(--faint);margin-top:8px;text-align:center}
+/* Feature grid */
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+.feat-card{background:var(--surface);padding:40px 36px;position:relative;overflow:hidden;transition:all .3s}
+.feat-card:hover{background:var(--surface2)}
+.feat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(68,255,136,.15),transparent);opacity:0;transition:opacity .3s}
+.feat-card:hover::after{opacity:1}
+.feat-icon{font-size:1.5rem;margin-bottom:14px}
+.feat-card h3{font-family:var(--mono);font-size:.95rem;font-weight:700;margin-bottom:8px}
+.feat-card p{color:var(--dim);font-size:.86rem;line-height:1.6}
+.feat-card.wide{grid-column:1/-1}
+@media(max-width:700px){.feat-grid{grid-template-columns:1fr}.feat-card{padding:28px 22px}}
 
-/* Mobile: Stack signup form */
-@media (max-width:768px){
-.hero-signup{flex-direction:column;width:100%;max-width:100%;padding:0 10px}
-.hero-signup input{width:100%;font-size:.85rem;padding:11px 14px}
-.hero-signup .btn{width:100%}
-.hero-note{font-size:.75rem}
-}
+/* Code blocks */
+.code-block{background:#08080c;border:1px solid var(--border);border-radius:12px;padding:24px;font-family:var(--mono);font-size:.78rem;line-height:1.7;color:#a0a0c0;overflow-x:auto;position:relative}
+.code-block::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(68,255,136,.12),transparent)}
+.code-block .kw{color:var(--accent)}.code-block .str{color:#fcd34d}.code-block .cm{color:#6b7280}.code-block .fn{color:#60a5fa}
 
-/* Platform Logos */
-.logos{display:flex;gap:24px;justify-content:center;align-items:center;flex-wrap:wrap;padding:20px 0 0;opacity:.5}
-.logos span{font-family:var(--mono);font-size:.7rem;color:var(--dim);letter-spacing:.04em}
+/* Comparison table */
+.cmp-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.76rem}
+.cmp-table th{text-align:left;padding:12px 14px;color:var(--faint);font-weight:600;border-bottom:1px solid var(--border);font-size:.68rem;text-transform:uppercase;letter-spacing:.05em}
+.cmp-table td{padding:11px 14px;border-bottom:1px solid var(--border)}
+.cmp-table tr:hover td{background:rgba(68,255,136,.02)}
+.cmp-table .hs-col{color:var(--accent);font-weight:700}
+.cmp-table .win{background:rgba(68,255,136,.04);color:var(--accent)}
 
-/* Stats Bar */
-.sbar{display:flex;justify-content:center;gap:40px;padding:28px 0;margin:20px 0 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.sbar .si{text-align:center}
-.sbar .sn{font-family:var(--mono);font-weight:800;font-size:1.4rem}
-.sbar .sl{font-size:.75rem;color:var(--dim)}
-
-/* Mobile: Compact stats */
-@media (max-width:768px){
-.sbar{gap:24px;padding:20px 0;flex-wrap:wrap}
-.sbar .si{flex:1;min-width:80px}
-.sbar .sn{font-size:1.2rem}
-.sbar .sl{font-size:.7rem}
-}
-
-/* Code Demo (interactive feel) */
-.demo{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;max-width:680px;margin:0 auto}
-.demo-bar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface2)}
-.demo-dot{width:10px;height:10px;border-radius:50%;background:var(--border2)}
-.demo-tabs{display:flex;gap:0;margin-left:12px}
-.demo-tab{padding:4px 12px;font-family:var(--mono);font-size:.7rem;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
-.demo-tab.active{color:var(--accent);border-color:var(--accent)}
-.demo pre{padding:20px;font-family:var(--mono);font-size:.78rem;line-height:1.9;color:var(--dim);overflow-x:auto;margin:0}
-.demo .cm{color:#444}.demo .kw{color:var(--accent)}.demo .str{color:var(--green)}.demo .fn{color:var(--blue)}
-
-/* Mobile: Smaller code */
-@media (max-width:768px){
-.demo{margin:0 -10px}
-.demo-bar{padding:8px 12px}
-.demo-dot{width:8px;height:8px}
-.demo-tabs{margin-left:8px}
-.demo-tab{padding:4px 8px;font-size:.65rem}
-.demo pre{padding:16px;font-size:.7rem;line-height:1.7}
-}
-
-/* Before/After */
-.ba{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin:30px 0}
-.ba-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px;text-align:center}
-.ba-card h3{font-family:var(--mono);font-size:.88rem;margin-bottom:12px}
-.ba-card .num{font-family:var(--mono);font-weight:800;font-size:2.6rem;letter-spacing:-.04em}
-.ba-card .sub{font-size:.82rem;color:var(--dim);margin-top:4px}
-.ba-arrow{display:flex;align-items:center;justify-content:center;font-size:1.6rem;padding:0 16px;color:var(--accent)}
-
-/* Mobile: Stack before/after */
-@media (max-width:768px){
-.ba{grid-template-columns:1fr;gap:12px}
-.ba-arrow{padding:8px 0;transform:rotate(90deg)}
-.ba-card{padding:20px}
-.ba-card .num{font-size:2rem}
-.ba-card h3{font-size:.85rem}
-.ba-card .sub{font-size:.78rem}
-}
-
-/* Features */
-.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.fc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;transition:border .2s}
-.fc:hover{border-color:var(--border2)}
-.fc .icon{font-size:1.3rem;margin-bottom:8px}
-.fc h3{font-family:var(--mono);font-size:.88rem;font-weight:600;margin-bottom:5px}
-.fc p{font-size:.82rem;color:var(--dim);line-height:1.5}
-.fc .pro-tag{display:inline-block;padding:1px 6px;border-radius:3px;background:var(--glow);color:var(--accent);font-family:var(--mono);font-size:9px;font-weight:600;margin-left:4px}
-
-/* Mobile: Single column features */
-@media (max-width:768px){
-.fgrid{grid-template-columns:1fr;gap:12px}
-.fc{padding:20px}
-.fc h3{font-size:.95rem}
-.fc p{font-size:.88rem;line-height:1.6}
-}
-
-/* Comparison Table */
-.ctable{width:100%;border-collapse:collapse;margin:24px 0}
-.ctable th,.ctable td{padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);font-size:.82rem}
-.ctable th{font-family:var(--mono);font-weight:600;color:var(--faint);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;background:var(--surface)}
-.ctable td{color:var(--dim)}.ctable .y{color:var(--green)}.ctable .n{color:var(--faint);opacity:.4}
-.ctable .hs{color:var(--accent);font-weight:600}
-
-/* Mobile: Scrollable table */
-@media (max-width:768px){
-.ctable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -24px;padding:0 24px}
-.ctable{min-width:600px}
-.ctable th,.ctable td{padding:8px 12px;font-size:.75rem;white-space:nowrap}
-}
+/* Install tabs */
+.install-tabs{display:flex;gap:2px;border-radius:10px 10px 0 0;overflow:hidden}
+.install-tab{background:var(--surface);color:var(--dim);font-family:var(--mono);font-size:.75rem;padding:10px 20px;cursor:pointer;border:none;transition:all .2s;flex:1;text-align:center}
+.install-tab.act{background:var(--surface2);color:var(--accent)}
+.install-panel{display:none;background:var(--surface2);border-radius:0 0 10px 10px;padding:24px;border:1px solid var(--border);border-top:none}
+.install-panel.act{display:block}
 
 /* Pricing */
-.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.pc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;position:relative}
-.pc.feat{border-color:var(--accent);box-shadow:0 0 40px var(--glow)}
-.pc-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.63rem;font-weight:600;color:#000;background:var(--accent);padding:2px 12px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
-.pc-badge.green{background:var(--green)}
-.pc h3{font-family:var(--mono);font-weight:600;font-size:.95rem;margin-bottom:4px}
-.pc .amt{font-family:var(--mono);font-weight:800;font-size:2.4rem;letter-spacing:-.04em}.pc .amt span{font-size:.85rem;font-weight:400;color:var(--dim)}
-.pc .per{font-size:.78rem;color:var(--dim);margin-bottom:14px}
-.pc ul{list-style:none;margin-bottom:18px}
-.pc ul li{font-size:.8rem;padding:3px 0;color:var(--dim)}
-.pc ul li::before{content:'✓ ';color:var(--green);font-weight:700}
-.pc ul li.pro{color:var(--text)}.pc ul li.pro::before{color:var(--accent)}
-
-/* Mobile: Single column pricing */
-@media (max-width:768px){
-.pgrid{grid-template-columns:1fr;gap:14px}
-}
-
-/* Auth */
-.auth{max-width:380px;margin:50px auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px}
-.auth h2{font-family:var(--mono);font-size:1.1rem;font-weight:800;text-align:center;margin-bottom:20px}
-.fg{margin-bottom:14px}.fg label{display:block;font-family:var(--mono);font-size:.75rem;color:var(--dim);margin-bottom:4px}
-.fg input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none}
-.fg input:focus{border-color:var(--accent)}
-.ferr{color:var(--red);font-size:.78rem;font-family:var(--mono);margin-top:4px}
-.aswitch{text-align:center;margin-top:14px;font-size:.82rem;color:var(--dim)}.aswitch a{cursor:pointer}
-
-/* Dashboard */
-.dash{display:flex;min-height:100vh}
-.sb{width:200px;background:linear-gradient(180deg,var(--surface) 0%,#0d0d12 100%);border-right:1px solid var(--border);padding:14px 0;position:fixed;height:100vh;display:flex;flex-direction:column;z-index:50}
-.sb .brand{padding:0 14px 14px;border-bottom:1px solid var(--border);margin-bottom:6px}
-.sb .brand p{font-family:var(--mono);font-size:.65rem;color:var(--faint);margin-top:2px}
-.sbtn{display:flex;align-items:center;gap:8px;padding:10px 16px;border:none;background:transparent;color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:.82rem;width:100%;text-align:left;transition:all .15s;border-left:3px solid transparent;border-radius:0 6px 6px 0;margin:1px 0}
-.sbtn:hover{color:var(--text);background:rgba(255,255,255,.03)}
-.sbtn.act{color:var(--accent);background:var(--glow);border-left-color:var(--accent);font-weight:600}
-.sb .bot{margin-top:auto;padding:12px 14px;border-top:1px solid var(--border)}
-.sb .bot .em{font-family:var(--mono);font-size:.72rem;color:var(--text);overflow:hidden;text-overflow:ellipsis}
-.dc{margin-left:200px;flex:1;padding:24px 32px;max-width:900px}
-.dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800}
-.dh p{font-family:var(--mono);font-size:.75rem;color:var(--dim);margin-top:2px}
-
-/* Onboarding banner */
-.onboard{background:linear-gradient(135deg,rgba(255,107,43,.08),rgba(59,130,246,.08));border:1px solid rgba(255,107,43,.2);border-radius:10px;padding:20px 24px;margin-bottom:20px}
-.onboard h3{font-family:var(--mono);font-size:.95rem;font-weight:700;margin-bottom:10px;color:var(--accent)}
-.onboard .steps{display:flex;gap:12px}
-.onboard .step{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;transition:all .2s}
-.onboard .step:hover{border-color:var(--accent);transform:translateY(-2px)}
-.onboard .step .num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-family:var(--mono);font-size:.7rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px}
-.onboard .step p{font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.4}
-.onboard .step strong{color:var(--text);font-size:.78rem}
-
-/* Cards - upgraded */
-.ci{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:10px;transition:all .2s;cursor:default}
-.ci:hover{border-color:var(--accent);box-shadow:0 0 20px rgba(255,107,43,.05);transform:translateY(-1px)}
-.ci-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-.ci-title{font-family:var(--mono);font-weight:700;font-size:.92rem}
-.ci-body{font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;white-space:pre-wrap;padding:10px 12px;background:var(--bg);border-radius:6px;border:1px solid var(--border)}
-.ci-acts{display:flex;gap:8px;margin-top:10px;align-items:center}
-.ci-acts button{background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;cursor:pointer;transition:all .15s}
-.ci-acts button:hover{border-color:var(--accent);color:var(--accent)}
-.ci-acts .date{font-family:var(--mono);font-size:.68rem;color:var(--faint);margin-left:auto}
-.filters{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.fb{background:var(--surface);border:1px solid var(--border);color:var(--dim);padding:5px 12px;border-radius:20px;font-family:var(--mono);font-size:.72rem;cursor:pointer;transition:all .15s}
-.fb:hover{color:var(--text);border-color:var(--dim)}.fb.act{background:var(--glow);border-color:var(--accent);color:var(--accent);font-weight:600}
-.sinput{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-family:var(--mono);font-size:.82rem;width:240px;outline:none;transition:border .15s}
-.sinput:focus{border-color:var(--accent);box-shadow:0 0 12px rgba(255,107,43,.1)}
-
-/* Stats */
-.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.sc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;transition:all .2s}
-.sc:hover{border-color:var(--border2);transform:translateY(-1px)}
-.sc .n{font-family:var(--mono);font-size:1.6rem;font-weight:800}
-.sc .l{font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px}
-
-/* API Key */
-.akbox{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin:14px 0}
-.akbox .key{font-family:var(--mono);font-size:.88rem;color:var(--accent);background:var(--bg);padding:10px 16px;border-radius:6px;border:1px solid rgba(255,107,43,.2);display:inline-block;margin:6px 0}
+.price-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+.price-card{background:var(--surface);padding:32px 24px;text-align:center;position:relative}
+.price-card.pop{background:var(--surface2);box-shadow:inset 0 2px 0 var(--accent),0 0 40px rgba(68,255,136,.03)}
+.price-card .tier{font-family:var(--mono);font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.price-card .amt{font-family:var(--mono);font-size:2rem;font-weight:800;margin-bottom:4px}
+.price-card .per{font-size:.7rem;color:var(--faint);margin-bottom:18px}
+.price-card ul{list-style:none;text-align:left;margin-bottom:20px}
+.price-card li{font-size:.8rem;color:var(--dim);padding:4px 0;display:flex;gap:8px}
+.price-card li::before{content:'✓';color:var(--accent);font-weight:700;font-size:.7rem;margin-top:2px}
+.pop-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-family:var(--mono);font-size:.58rem;font-weight:800;padding:2px 14px;border-radius:0 0 8px 8px;text-transform:uppercase;letter-spacing:.06em}
+@media(max-width:700px){.price-row{grid-template-columns:1fr}}
 
 /* Footer */
-footer{padding:36px 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-footer .c{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
-footer .l{display:flex;gap:16px}
-footer .l a{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
+footer{border-top:1px solid var(--border);padding:24px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+footer .c{font-family:var(--mono);font-size:.7rem;color:var(--faint)}
+footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7rem;color:var(--dim)}
 
-@media(max-width:700px){
-  nav{padding:10px 0;gap:6px;flex-wrap:wrap}
-  .logo{font-size:.85rem}
-  .navr{flex-wrap:wrap;justify-content:center}
-  .navr{gap:8px}
-  .navr a,.navr button{font-size:.68rem;padding:4px 8px}
-  h1{font-size:1.8rem!important}
-  .fgrid,.pgrid{grid-template-columns:1fr}
-  .ba{grid-template-columns:1fr;gap:8px}.ba-arrow{transform:rotate(90deg);padding:8px 0}
-  .sgrid{grid-template-columns:1fr 1fr}
-  .hero{padding:50px 0 30px}
-  .hero-signup{flex-direction:column;max-width:100%}
-  .hero-signup input{width:100%}
-  .hero-signup .btn{width:100%}
-  .nav-links{display:flex;gap:10px;font-size:.68rem}
-  .navr{gap:8px}
-  .sb{display:none}.dc{margin-left:0;padding:16px 16px 80px}
-  .mob-nav{display:block!important}
-  #graph-detail{width:200px!important;font-size:.85em}
-  #graph-wrap{min-height:350px!important}
-  .sbar{gap:16px;flex-wrap:wrap}.sbar .si{min-width:60px}
-  .ctable{font-size:.72rem}.ctable th,.ctable td{padding:6px 8px}
-  .logos{gap:8px}.logos span{font-size:.62rem}
-  .demo pre{font-size:.68rem;padding:14px}
-  .dh{flex-direction:column;align-items:flex-start;gap:8px}
-  .dh .sinput{width:100%}
-  .fifty-grid{grid-template-columns:1fr!important;gap:4px!important;font-size:.8rem!important}
-  .fifty-stats{flex-direction:column!important;align-items:flex-start!important;font-size:.68rem!important}
-  #p-docs [style*="repeat(3"]{grid-template-columns:1fr 1fr!important}
-  #p-pricing .pgrid{grid-template-columns:1fr!important}
-@media(max-width:800px){#pricing .pc{min-width:0}#pricing>div:nth-child(2){grid-template-columns:1fr 1fr!important}}
-  .card-grid{grid-template-columns:1fr 1fr}
-  .ob-savings{grid-template-columns:1fr 1fr}
-  .ob-save-card .big{font-size:1.4rem}
-  .dc{overflow-x:hidden}
-  .dc pre,.dc code{overflow-x:auto;max-width:100%;word-break:break-all}
-  #cf-cards-grid{grid-template-columns:1fr!important;gap:10px!important;max-width:320px;margin:0 auto 24px!important}
-  #cf-cards-grid>div{min-height:auto}
-  .ql-card{padding:12px}
-  .ql-grid{grid-template-columns:repeat(2,1fr)!important}
-}
-
-@media(max-width:880px){
-  #cf-cards-grid{grid-template-columns:1fr 1fr 1fr;gap:8px!important;padding:0!important}
-  #cf-cards-grid div[style*="font-size:.8rem"]{font-size:.7rem!important}
-  #cf-cards-grid div[style*="font-size:.84rem"]{font-size:.76rem!important}
-}
-@media(max-width:600px){
-  .dc{overflow-x:hidden}
-  .dc pre,.dc code{overflow-x:auto;max-width:100%;word-break:break-all}
-  #cf-cards-grid{grid-template-columns:1fr!important;gap:10px!important;max-width:300px;margin-left:auto!important;margin-right:auto!important}
-}
-@media(max-width:400px){
-  .card-grid{grid-template-columns:1fr}
-  .sbar{gap:12px}
-}
-/* â•â•â• COMPACT CARD GRID â•â•â• */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
-.cc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:all .2s;cursor:pointer;position:relative;overflow:hidden}
-.cc:hover{border-color:var(--accent);box-shadow:0 0 20px rgba(255,107,43,.05);transform:translateY(-1px)}
-.cc .cc-stripe{position:absolute;top:0;left:0;right:0;height:3px}
-.cc .cc-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.cc .cc-icon{font-size:16px;flex-shrink:0}
-.cc .cc-title{font-family:var(--mono);font-weight:700;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cc .cc-body{font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px}
-.cc .cc-footer{display:flex;align-items:center;justify-content:space-between;gap:4px}
-.cc .cc-tags{display:flex;gap:3px;flex-wrap:wrap;overflow:hidden;max-height:18px}
-.cc .cc-tag{padding:1px 6px;border-radius:8px;font-family:var(--mono);font-size:.58rem;font-weight:600}
-.cc .cc-meta{font-family:var(--mono);font-size:.58rem;color:var(--faint);white-space:nowrap}
-.cc .cc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--faint);cursor:pointer;font-size:11px;opacity:0;transition:opacity .15s;padding:2px 4px}
-.cc:hover .cc-del{opacity:1}
-.cc .cc-del:hover{color:var(--red)}
-
-/* Card expand overlay */
-.card-expand{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
-.card-expand-inner{background:var(--surface);border:1px solid var(--border);border-radius:12px;max-width:560px;width:100%;max-height:80vh;overflow-y:auto;padding:24px}
-
-/* â•â•â• ONBOARDING â•â•â• */
-.ob-savings{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.ob-save-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
-.ob-save-card .big{font-family:var(--mono);font-weight:800;font-size:1.8rem;letter-spacing:-.03em}
-.ob-save-card .lbl{font-size:.72rem;color:var(--dim);margin-top:2px}
-.ob-steps{display:flex;gap:0;margin:20px 0;position:relative}
-.ob-steps::before{content:'';position:absolute;top:16px;left:32px;right:32px;height:2px;background:var(--border);z-index:0}
-.ob-step{flex:1;text-align:center;position:relative;z-index:1}
-.ob-step .num{width:32px;height:32px;border-radius:50%;background:var(--surface);border:2px solid var(--border);color:var(--dim);font-family:var(--mono);font-size:.75rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px;transition:all .3s}
-.ob-step.done .num{background:var(--green);border-color:var(--green);color:#000}
+/* ═══ PRESERVED STYLES for signup/login/dash/pricing/docs pages ═══ */
+.fg{margin-bottom:16px}.fg label{display:block;font-family:var(--mono);font-size:.75rem;color:var(--dim);margin-bottom:6px}
+.fg input{width:100%;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:.88rem}
+.fg input:focus{outline:none;border-color:var(--accent)}
+.err{color:var(--red);font-family:var(--mono);font-size:.75rem;margin-top:8px}
+.ok{color:var(--accent);font-family:var(--mono);font-size:.75rem;margin-top:8px}
+.dash-back-link{display:none;font-family:var(--mono);font-size:.75rem}
+.sb{width:200px;background:linear-gradient(180deg,var(--surface) 0%,#0d0d12 100%);border-right:1px solid var(--border);padding:14px 0;position:fixed;height:100vh;display:flex;flex-direction:column;z-index:50}
+.sb .si{padding:6px 16px;font-family:var(--mono);font-size:.72rem;color:var(--dim);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .15s;border-left:2px solid transparent}
+.sb .si:hover{color:var(--text);background:var(--surface2)}
+.sb .si.act{color:var(--accent);border-left-color:var(--accent);background:rgba(68,255,136,.04)}
+.dc{margin-left:200px;padding:20px 24px;min-height:100vh}
+.mob-nav{display:none}
+.onboard .step .num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-family:var(--mono);font-size:.7rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px}
+.ob-step .num{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.75rem;font-weight:700;color:var(--dim)}
+.ob-step.done .num{background:var(--accent);border-color:var(--accent);color:#000}
 .ob-step.active .num{background:var(--accent);border-color:var(--accent);color:#000}
-.ob-step .stxt{font-family:var(--mono);font-size:.68rem;color:var(--dim)}
-.ob-step.active .stxt{color:var(--text)}
-.setup-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px}
-.setup-card h3{font-family:var(--mono);font-size:.88rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.key-display{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid rgba(255,107,43,.2);border-radius:8px;padding:10px 14px;margin:8px 0}
-.key-display code{font-family:var(--mono);font-size:.82rem;color:var(--accent);flex:1;overflow:hidden;text-overflow:ellipsis}
-.key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s}
-.key-display button:hover{background:var(--accent2)}
-.copied-btn{background:var(--green)!important}
-.plat-tabs{display:flex;gap:4px;margin:10px 0 12px;flex-wrap:wrap}
-.plat-tab{padding:5px 10px;border-radius:6px;font-family:var(--mono);font-size:.68rem;cursor:pointer;border:1px solid var(--border);color:var(--dim);background:transparent;transition:all .15s}
-.plat-tab:hover{color:var(--text);border-color:var(--dim)}
-.plat-tab.act{background:var(--glow);border-color:var(--accent);color:var(--accent);font-weight:600}
-.code-block{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;position:relative}
-.code-block pre{font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap;word-break:break-all}
-.code-block .cpbtn{position:absolute;top:6px;right:6px;background:var(--surface2);border:1px solid var(--border);color:var(--dim);border-radius:4px;padding:3px 8px;font-family:var(--mono);font-size:.62rem;cursor:pointer}
-.code-block .cpbtn:hover{color:var(--accent);border-color:var(--accent)}
+.key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer}
+.pc-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.63rem;font-weight:600;color:#000;background:var(--accent);padding:2px 12px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
+.faq-item{border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
+.faq-q{padding:14px 18px;font-family:var(--mono);font-size:.82rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s;padding:0 18px}
+.faq-item.open .faq-a{max-height:500px;padding:0 18px 14px}
+@media(max-width:768px){.sb{display:none}.dc{margin-left:0}.mob-nav{display:block;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:100;padding:6px 0}.mob-nav-inner{display:flex;justify-content:space-around}.mob-nav button{background:none;border:none;color:var(--dim);font-size:.6rem;font-family:var(--mono);padding:4px 8px;cursor:pointer}.mob-nav button.act{color:var(--accent)}}
 
-/* â•â•â• MOBILE BOTTOM NAV â•â•â• */
-.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(17,17,20,.95);border-top:1px solid var(--border);padding:6px 0 env(safe-area-inset-bottom,6px);z-index:100;backdrop-filter:blur(12px)}
-.mob-nav-inner{display:flex;justify-content:space-around;align-items:center}
-.mob-nav button{background:none;border:none;color:var(--dim);padding:6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--mono);font-size:.55rem;transition:color .15s}
-.mob-nav button.act{color:var(--accent)}
+/* ── Sidebar brand + nav buttons ── */
+.brand{padding:16px 16px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
+.brand .logo{font-size:1rem!important;margin-bottom:2px}
+.brand p{font-family:var(--mono);font-size:.65rem;color:var(--faint);margin:0;padding-left:2px}
+.sbtn{width:100%;background:none;border:none;border-left:2px solid transparent;color:var(--dim);font-family:var(--mono);font-size:.75rem;padding:9px 16px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:9px;transition:all .15s;line-height:1}
+.sbtn:hover{color:var(--text);background:var(--surface2)}
+.sbtn.act{color:var(--accent);border-left-color:var(--accent);background:rgba(68,255,136,.05)}
+.bot{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border)}
+.em{font-family:var(--mono);font-size:.72rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.hs-card-glow{animation:cardGlow 4s ease-in-out infinite}
-.hs-card-wrap:hover .hs-card-glow{opacity:.5!important;filter:blur(28px)!important}
-@keyframes cardGlow{0%,100%{opacity:.25;transform:scale(1)}50%{opacity:.4;transform:scale(1.01)}}
+/* ── Auth pages ── */
+.auth{max-width:400px;margin:80px auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px}
+.auth h2{font-family:var(--mono);font-weight:800;font-size:1.2rem;margin-bottom:20px}
+.aswitch{font-size:.82rem;color:var(--dim);margin-top:14px;text-align:center}
+.aswitch a{color:var(--accent);cursor:pointer}
+.ferr{color:var(--red);font-family:var(--mono);font-size:.75rem;margin-top:8px}
 
-/* ═══ PREMIUM CARD GRID ═══ */
-.hsc{position:relative;cursor:pointer;animation:cardFadeIn .5s ease both}
-.hsc-glow{position:absolute;inset:-2px;border-radius:16px;opacity:0;filter:blur(14px);transition:opacity .4s;z-index:0}
-.hsc:hover .hsc-glow{opacity:.3}
-.hsc-border{position:relative;z-index:1;background:var(--surface);border:2px solid;border-radius:14px;overflow:hidden;transition:all .3s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.hsc:hover .hsc-border{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.4)}
-.hsc-header{padding:8px 14px 6px;border-bottom:1px solid;display:flex;align-items:center;justify-content:space-between}
-.hsc-del{position:absolute;top:6px;right:6px;background:none;border:none;color:var(--faint);cursor:pointer;font-size:11px;opacity:0;transition:opacity .15s;padding:2px 4px;z-index:2}
-.hsc:hover .hsc-del{opacity:1}.hsc-del:hover{color:var(--red)!important}
-@keyframes cardFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-
-/* Quick link cards */
-.ql-card{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .25s}
-.ql-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 24px rgba(255,107,43,.08)}
-.ql-icon{font-size:1.3rem;display:block;margin-bottom:4px}
-.ql-label{font-family:var(--mono);font-size:.75rem;font-weight:600;color:var(--dim)}
-.ql-card:hover .ql-label{color:var(--accent)}
-
-/* Loading dots */
-.loading-dots{display:flex;gap:4px;justify-content:center;margin-bottom:8px}
-.loading-dots span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:ldot 1.2s ease-in-out infinite}
-.loading-dots span:nth-child(2){animation-delay:.2s}
-.loading-dots span:nth-child(3){animation-delay:.4s}
-@keyframes ldot{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1.1)}}
-
-/* FAQ accordion */
-.faq-item{border-top:1px solid var(--border);cursor:pointer;transition:background .2s}
-.faq-item:first-child{border-top:none}
-.faq-item:hover{background:rgba(255,255,255,.02)}
-.faq-q{display:flex;justify-content:space-between;align-items:center;padding:14px 0;font-family:var(--mono);font-size:.85rem;font-weight:600;color:var(--text)}
-.faq-arrow{color:var(--faint);font-size:.8rem;transition:transform .3s}
-.faq-item.open .faq-arrow{transform:rotate(180deg);color:var(--accent)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;padding:0 0;font-size:.82rem;color:var(--dim);line-height:1.65}
-.faq-item.open .faq-a{max-height:200px;padding:0 0 14px}
-
-/* Sliding marquee */
-.marquee-wrap{overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
-.marquee-track{display:flex;gap:8px;width:max-content;animation:marquee 25s linear infinite}
-.marquee-item{flex-shrink:0;font-family:var(--mono);font-size:.78rem;color:var(--text);background:var(--surface);border:1px solid var(--border);padding:6px 16px;border-radius:20px;white-space:nowrap;transition:all .3s}
-.marquee-item:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 12px rgba(255,107,43,.15)}
-@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-.ltab{font-family:var(--mono);font-size:.82rem;padding:10px 24px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;transition:all .25s;font-weight:500}
-.ltab:hover{border-color:var(--accent);color:var(--text)}
-.ltab.act{background:rgba(255,107,43,.1);border-color:var(--accent);color:var(--accent);font-weight:700;box-shadow:0 0 12px rgba(255,107,43,.08)}
-@media(max-width:700px){.ltab{font-size:.72rem;padding:8px 16px}}
+/* ── Premium card list styles (injected by app.js, mirrored here) ── */
+.card-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;position:relative;transition:border-color .2s,box-shadow .2s;cursor:default}
+.card-item:hover{border-color:var(--border2);box-shadow:0 0 20px rgba(68,255,136,.04)}
+.card-item .card-slug{font-family:var(--mono);font-size:.72rem;color:var(--accent);margin-bottom:4px;font-weight:600}
+.card-item .card-title{font-weight:600;font-size:.9rem;margin-bottom:6px}
+.card-item .card-body{font-size:.8rem;color:var(--dim);line-height:1.5;margin-bottom:10px}
+.card-item .card-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.card-type-badge{font-family:var(--mono);font-size:.62rem;padding:2px 8px;border-radius:4px;background:var(--surface2);border:1px solid var(--border);color:var(--dim);text-transform:uppercase;letter-spacing:.04em}
+.card-type-badge.decision{border-color:rgba(234,179,8,.3);color:#eab308;background:rgba(234,179,8,.06)}
+.card-type-badge.person{border-color:rgba(168,85,247,.3);color:#a855f7;background:rgba(168,85,247,.06)}
+.card-type-badge.project{border-color:rgba(59,130,246,.3);color:#3b82f6;background:rgba(59,130,246,.06)}
+.card-type-badge.preference{border-color:rgba(68,255,136,.3);color:var(--accent);background:rgba(68,255,136,.06)}
+.card-type-badge.workflow{border-color:rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.06)}
+.card-type-badge.signal{border-color:rgba(239,68,68,.3);color:#ef4444;background:rgba(239,68,68,.06)}
+.card-type-badge.agent{border-color:rgba(34,211,238,.3);color:#22d3ee;background:rgba(34,211,238,.06)}
+.card-del{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--faint);cursor:pointer;font-size:.8rem;padding:2px 6px;border-radius:4px;transition:all .15s}
+.card-del:hover{color:var(--red);background:rgba(239,68,68,.08)}
+.dash-section-title{font-family:var(--mono);font-weight:700;font-size:.85rem;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.dash-section-title span{color:var(--faint);font-weight:400;font-size:.72rem}
+@media(max-width:600px){#p-docs [style*="repeat(3"]{grid-template-columns:1fr 1fr!important}#p-pricing .pgrid{grid-template-columns:1fr!important}}
 </style>
-<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
+<!-- NAV -->
 <div class="w">
 <nav>
-  <div class="logo" onclick="go('landing')"><img src="data:image/webp;base64,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" alt="" width="38" height="38" style="border-radius:8px;flex-shrink:0"> HyperStack</div>
-  <div class="navr">
-    <span class="nav-links"><a href="javascript:void(0)" onclick="go('landing');setTimeout(function(){showLTab('problem',document.querySelectorAll('.ltab')[0])},100)">Features</a>
-    <a href="javascript:void(0)" onclick="go('pricing')">Pricing</a>
-    <a href="javascript:void(0)" onclick="go('docs')">Docs</a></span>
-    <button onclick="go('login')" id="nl" class="btn bo bs">Sign In</button>
-    <button onclick="go('dash')" id="nd" class="hidden btn bp bs">Dashboard</button>
-    <button onclick="out()" id="no" class="hidden btn bo bs" style="color:var(--red)">Log Out</button>
-  </div>
+<div class="logo" onclick="go('landing')"><img src="data:image/webp;base64,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" alt="" width="38" height="38" style="border-radius:8px;flex-shrink:0"> HyperStack</div>
+<div class="navr">
+<span class="nav-links"><a href="javascript:void(0)" onclick="go('landing')">Features</a>
+<a href="javascript:void(0)" onclick="go('pricing')">Pricing</a>
+<a href="javascript:void(0)" onclick="go('docs')">Docs</a></span>
+<button onclick="go('login')" id="nl" class="btn bo bs">Sign In</button>
+<button onclick="go('dash')" id="nd" class="hidden btn bp bs">Dashboard</button>
+<button onclick="out()" id="no" class="hidden btn bo bs" style="color:var(--red)">Log Out</button>
+</div>
 </nav>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• LANDING â•â•â•â•â•â•â•â•â•â•â•â• -->
-<div id="p-landing">
-<div class="w">
+<!-- ═══ LANDING ═══ -->
+<div id="p-landing" style="position:relative;overflow:hidden">
+<div class="glow-orb" style="width:500px;height:500px;background:rgba(68,255,136,.04);top:-100px;right:-150px"></div>
+<div class="glow-orb" style="width:350px;height:350px;background:rgba(68,255,136,.025);bottom:400px;left:-100px"></div>
+<div class="glow-orb" style="width:400px;height:400px;background:rgba(59,130,246,.02);bottom:-100px;right:-100px"></div>
 
 <section class="hero">
-  <div class="hero-pill"><span class="dot"></span> Deterministic · Cross-tool · Directed signals</div>
-  <h1>Your agents use different tools.<br>They need <span class="hl">one shared graph.</span></h1>
-  <p>Cursor, Claude Desktop, and LangGraph each silo memory. HyperStack gives them a shared typed knowledge graph &mdash; developer-controlled schema, $0 LLM cost, and directed agent-to-agent signals.</p>
-
-  <div class="hero-signup">
-    <input type="email" id="hero-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')heroSignup()">
-    <button class="btn bp" onclick="heroSignup()">Get Free Key →</button>
-  </div>
-  <div class="hero-note" id="hero-note">No credit card. Takes 30 seconds. Cancel anytime.</div>
-</section>
-
-<div style="overflow:hidden;position:relative;padding:18px 0 8px">
-  <div style="text-align:center;font-family:var(--mono);font-size:.65rem;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Works with</div>
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <span class="marquee-item">&#128279; LangGraph</span>
-      <span class="marquee-item">&#9889; Claude Code</span>
-      <span class="marquee-item">&#128279; Cursor</span>
-      <span class="marquee-item">&#129302; LangChain</span>
-      <span class="marquee-item">&#128101; CrewAI</span>
-      <span class="marquee-item">&#9881;&#65039; AutoGPT</span>
-      <span class="marquee-item">&#128013; Python</span>
-      <span class="marquee-item">&#128154; Node.js</span>
-      <span class="marquee-item">&#9881;&#65039; VS Code</span>
-      <span class="marquee-item">&#127758; REST API</span>
-      <span class="marquee-item">&#128279; LangGraph</span>
-      <span class="marquee-item">&#9889; Claude Code</span>
-      <span class="marquee-item">&#128279; Cursor</span>
-      <span class="marquee-item">&#129302; LangChain</span>
-      <span class="marquee-item">&#128101; CrewAI</span>
-      <span class="marquee-item">&#9881;&#65039; AutoGPT</span>
-      <span class="marquee-item">&#128013; Python</span>
-      <span class="marquee-item">&#128154; Node.js</span>
-      <span class="marquee-item">&#9881;&#65039; VS Code</span>
-      <span class="marquee-item">&#127758; REST API</span>
-    </div>
-  </div>
+<div class="w">
+<div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);margin-bottom:16px;letter-spacing:.1em;text-transform:uppercase;opacity:.8">TYPED GRAPH MEMORY FOR AI AGENTS</div>
+<h1>Your agents ask questions.<br>Your graph has <span class="hl">exact answers.</span></h1>
+<p class="sub">Replace DECISIONS.md with typed cards and relations. Ask "what blocks deploy?" and get the 2 exact blockers — not 17 fuzzy results. Zero LLM cost.</p>
+<div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:14px">
+<button onclick="go('signup')" class="btn bp" style="padding:12px 28px;font-size:.88rem">Get Free API Key →</button>
+<button onclick="go('docs')" class="btn bo" style="padding:12px 28px;font-size:.88rem">Read Docs</button>
 </div>
-
-
-<!-- ═══ THE MOAT — right after hero ═══ -->
-<section style="padding:48px 0 20px" id="moat-section">
-  <div style="max-width:720px;margin:0 auto;text-align:center">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Why HyperStack</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,4vw,1.6rem);margin-bottom:12px">Three things no other memory tool does <em style="color:var(--accent);font-style:normal">together.</em></h2>
-  </div>
-
-  <!-- THREE PILLARS -->
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:860px;margin:0 auto 36px">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)"></div>
-      <div style="font-size:1.3rem;margin-bottom:8px">&#9881;&#65039;</div>
-      <h3 style="font-family:var(--mono);font-size:.9rem;font-weight:800;margin-bottom:6px;color:var(--accent)">Deterministic</h3>
-      <p style="font-size:.78rem;color:var(--dim);line-height:1.6;margin-bottom:10px">You define card types (person, project, decision) and relations (owns, triggers, blocks). No LLM extraction. No hallucinated links.</p>
-      <div style="font-family:var(--mono);font-size:.65rem;color:var(--faint);line-height:1.6">Mem0 uses LLM calls (~$0.002/op) to auto-extract entities. Risk of hallucinated relations.<br><strong style="color:var(--accent)">HyperStack: $0 per operation. You set it, it&rsquo;s exact.</strong></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)"></div>
-      <div style="font-size:1.3rem;margin-bottom:8px">&#128279;</div>
-      <h3 style="font-family:var(--mono);font-size:.9rem;font-weight:800;margin-bottom:6px;color:var(--blue)">Cross-tool</h3>
-      <p style="font-size:.78rem;color:var(--dim);line-height:1.6;margin-bottom:10px">Your Cursor agent, Claude Desktop, and LangGraph agent all read and write to the same graph. <code style="font-size:.65rem;color:var(--purple)">sourceAgent</code> auto-detected.</p>
-      <div style="font-family:var(--mono);font-size:.65rem;color:var(--faint);line-height:1.6">Every other tool silos memory per-tool. Cursor can&rsquo;t read what Claude Desktop knows.<br><strong style="color:var(--blue)">HyperStack: one graph, any tool, always in sync.</strong></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--green)"></div>
-      <div style="font-size:1.3rem;margin-bottom:8px">&#128225;</div>
-      <h3 style="font-family:var(--mono);font-size:.9rem;font-weight:800;margin-bottom:6px;color:var(--green)">Directed signals</h3>
-      <p style="font-size:.78rem;color:var(--dim);line-height:1.6;margin-bottom:10px">Agent A signals Agent B with a typed card. <code style="font-size:.65rem;color:var(--green)">targetAgent: "cursor-mcp"</code> &rarr; Cursor gets a webhook instantly.</p>
-      <div style="font-family:var(--mono);font-size:.65rem;color:var(--faint);line-height:1.6">Mem0 has memory-event webhooks, but no directed agent-to-agent signals.<br><strong style="color:var(--green)">HyperStack: typed signals + HMAC signed + auto-disable.</strong></div>
-    </div>
-  </div>
-
-  <!-- Interactive pain-point carousel (kept from original) -->
-  <div style="max-width:780px;margin:0 auto;position:relative">
-
-    <!-- Scenario tabs -->
-    <div style="display:flex;justify-content:center;gap:6px;margin-bottom:24px;flex-wrap:wrap" id="moat-tabs">
-      <button class="moat-tab act" onclick="showMoat(0,this)" style="background:rgba(255,107,43,.1);border:1px solid rgba(255,107,43,.3);border-radius:8px;padding:8px 16px;color:var(--accent);font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;transition:all .3s">🔍 Decision recall</button>
-      <button class="moat-tab" onclick="showMoat(1,this)" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;color:var(--dim);font-family:var(--mono);font-size:.72rem;font-weight:400;cursor:pointer;transition:all .3s">💥 Impact analysis</button>
-      <button class="moat-tab" onclick="showMoat(2,this)" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;color:var(--dim);font-family:var(--mono);font-size:.72rem;font-weight:400;cursor:pointer;transition:all .3s">👤 Ownership</button>
-    </div>
-
-    <!-- Side-by-side comparison -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:16px;overflow:hidden;border:1px solid var(--border)">
-
-      <!-- LEFT: Without -->
-      <div style="background:#0c0c0e;padding:28px 24px;border-right:1px solid var(--border)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red)"></div>
-          <span style="font-family:var(--mono);font-size:.65rem;color:var(--red);letter-spacing:.06em;font-weight:700">FLAT MEMORY</span>
-        </div>
-        <div id="moat-left" style="min-height:200px">
-          <!-- Content injected by JS -->
-        </div>
-      </div>
-
-      <!-- RIGHT: With HyperStack -->
-      <div style="background:#0a0e0c;padding:28px 24px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
-          <span style="font-family:var(--mono);font-size:.65rem;color:var(--green);letter-spacing:.06em;font-weight:700">HYPERSTACK</span>
-        </div>
-        <div id="moat-right" style="min-height:200px">
-          <!-- Content injected by JS -->
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Bottom insight -->
-    <div style="text-align:center;margin-top:20px">
-      <p id="moat-insight" style="font-family:var(--mono);font-size:.78rem;color:var(--dim);transition:opacity .3s">Text search returns documents. <span style="color:var(--accent)">Graph traversal returns answers.</span></p>
-    </div>
-
-  </div>
-
-  <div style="text-align:center;margin-top:20px">
-    <button onclick="go('signup')" class="btn bp">Get Free Key &rarr;</button>
-  </div>
+<div id="hero-note" style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">Free forever · 10 cards · No credit card</div>
+<div style="display:flex;gap:12px;justify-content:center;margin-top:14px;flex-wrap:wrap">
+<a href="https://www.npmjs.com/package/hyperstack-core" target="_blank" style="font-family:var(--mono);font-size:.68rem;color:var(--dim);text-decoration:none;display:flex;align-items:center;gap:5px;border:1px solid var(--border);padding:5px 12px;border-radius:6px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">📦 npm · hyperstack-core</a>
+<a href="https://github.com/deeqyaqub1-cmd/hyperstack-core" target="_blank" style="font-family:var(--mono);font-size:.68rem;color:var(--dim);text-decoration:none;display:flex;align-items:center;gap:5px;border:1px solid var(--border);padding:5px 12px;border-radius:6px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">⭐ GitHub · hyperstack-core</a>
+<a href="https://clawhub.ai/deeqyaqub1-cmd/hyperstack" target="_blank" style="font-family:var(--mono);font-size:.68rem;color:var(--dim);text-decoration:none;display:flex;align-items:center;gap:5px;border:1px solid var(--border);padding:5px 12px;border-radius:6px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">🦞 ClawHub · hyperstack</a>
+</div>
+</div>
 </section>
 
-<style>
-.moat-tab.act{background:rgba(255,107,43,.1)!important;border-color:rgba(255,107,43,.3)!important;color:var(--accent)!important;font-weight:600!important}
-.moat-node{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-family:var(--mono);font-size:.72rem;font-weight:600;margin:2px 0}
-.moat-edge{font-family:var(--mono);font-size:.62rem;color:#666;padding:0 4px}
-.moat-trail{opacity:0;transform:translateX(12px);transition:all .4s cubic-bezier(.16,1,.3,1)}
-.moat-trail.show{opacity:1;transform:translateX(0)}
-.moat-fail{opacity:0;transform:translateY(8px);transition:all .4s cubic-bezier(.16,1,.3,1)}
-.moat-fail.show{opacity:1;transform:translateY(0)}
-.moat-q{font-size:.88rem;color:var(--text);font-weight:500;margin-bottom:16px;line-height:1.5}
-.moat-sad{padding:14px 16px;background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.12);border-radius:10px;margin-bottom:8px}
-.moat-win{padding:10px 14px;background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.12);border-radius:10px;margin-bottom:6px}
+<!-- Stats bar -->
+<div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 0">
+<div class="w">
+<div style="display:flex;justify-content:center;gap:48px;flex-wrap:wrap;align-items:center">
+<div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">$0</strong> per operation</div>
+<div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">9</strong> typed relations</div>
+<div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">30s</strong> setup</div>
+<div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">94%</strong> token savings</div>
+<div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">4</strong> SDKs live</div>
+</div></div></div>
 
-@media(max-width:700px){
-  #moat-section [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr!important}
-  .ctable th:nth-child(4),.ctable td:nth-child(4),.ctable th:nth-child(5),.ctable td:nth-child(5){display:none}
-}
-@media(max-width:600px){
-  #moat-section [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
-  #moat-section [style*="border-right"]{border-right:none!important;border-bottom:1px solid var(--border)!important}
-}
-</style>
+<!-- Marquee -->
+<div class="marquee-wrap" style="padding:14px 0;border-bottom:1px solid var(--border)">
+<div class="marquee-track">
+<span class="marquee-item">🔗 OpenClaw</span><span class="marquee-item">⚡ Claude Code</span><span class="marquee-item">🔗 Cursor</span><span class="marquee-item">🤖 LangChain</span><span class="marquee-item">👥 CrewAI</span><span class="marquee-item">🐍 Python</span><span class="marquee-item">💚 Node.js</span><span class="marquee-item">⚙️ VS Code</span><span class="marquee-item">🌐 REST API</span><span class="marquee-item">🔗 LangGraph</span>
+<span class="marquee-item">🔗 OpenClaw</span><span class="marquee-item">⚡ Claude Code</span><span class="marquee-item">🔗 Cursor</span><span class="marquee-item">🤖 LangChain</span><span class="marquee-item">👥 CrewAI</span><span class="marquee-item">🐍 Python</span><span class="marquee-item">💚 Node.js</span><span class="marquee-item">⚙️ VS Code</span><span class="marquee-item">🌐 REST API</span><span class="marquee-item">🔗 LangGraph</span>
+</div></div>
+
+<!-- Problem/Solution -->
+<section><div class="w">
+<div style="text-align:center;margin-bottom:48px">
+<div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">THE PROBLEM</div>
+<h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,3.5vw,1.7rem);line-height:1.3">Multi-agent coordination is held together<br>with <span style="color:var(--red);text-decoration:line-through">markdown files</span></h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px">
+<div style="font-family:var(--mono);font-size:.68rem;color:var(--red);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">❌ Before (DECISIONS.md)</div>
+<div class="code-block" style="border:none;padding:14px;font-size:.72rem;background:rgba(0,0,0,.3)"><span style="color:#6b7280"># DECISIONS.md (append-only)</span>
+<span class="str">- 2026-02-15: Use Clerk for auth</span>
+<span class="str">- 2026-02-16: Tests block deploy</span>
+
+<span style="color:#e2e8f0"># "What blocks deploy?"</span>
+<span style="color:#9ca3af"># → grep returns text blobs</span></div></div>
+<div style="background:var(--surface);border:1px solid rgba(68,255,136,.12);border-radius:12px;padding:24px;box-shadow:0 0 40px rgba(68,255,136,.02)">
+<div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">✓ After (HyperStack)</div>
+<div class="code-block" style="border:none;padding:14px;font-size:.72rem;background:rgba(0,0,0,.3)"><span class="kw">const</span> result = <span class="kw">await</span> hs.<span class="fn">blockers</span>(<span class="str">"deploy-prod"</span>);
+<span style="color:#e2e8f0">// → [migration-23] Auth migration</span>
+<span style="color:#e2e8f0">//   blocks → deploy-prod</span>
+<span style="color:#e2e8f0">// → [staging-tests] 3 tests failing</span>
+<span style="color:#e2e8f0">//   blocks → deploy-prod</span></div></div>
+</div>
+<p style="text-align:center;font-family:var(--mono);font-size:.8rem;color:var(--dim)">Typed relations. <span style="color:var(--accent)">task→blocks→deploy</span> is queryable. Markdown is not.</p>
+</div></section>
+
+<!-- Features -->
+<section><div class="w">
+<div style="text-align:center;margin-bottom:48px">
+<div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">FEATURES</div>
+<h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,3.5vw,1.7rem)">Three things no other memory tool does together.</h2>
+</div>
+<div class="feat-grid">
+<div class="feat-card"><div class="feat-icon">⚙️</div><h3>Deterministic</h3><p>Developer-defined schema. You control card types, relation types, and graph structure. No LLM hallucinating phantom relationships. $0 extraction cost.</p></div>
+<div class="feat-card"><div class="feat-icon">🔗</div><h3>Cross-Tool</h3><p>Cursor, Claude Desktop, OpenClaw, and LangGraph agents share one graph. Store from any tool. Query from any tool. One source of truth.</p></div>
+<div class="feat-card"><div class="feat-icon">📡</div><h3>Directed Signals</h3><p>9 typed relations: owns, blocks, triggers, depends-on. Query "what blocks X?" and get exactly the cards with that relation — not fuzzy similarity.</p></div>
+<div class="feat-card"><div class="feat-icon">⏳</div><h3>Time-Travel</h3><p>Every change versioned. Reconstruct the graph at any timestamp. See what your agent knew when it made a decision. Git blame for memory.</p></div>
+<div class="feat-card wide"><div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center"><div><div class="feat-icon">🔍</div><h3>Hybrid Search + Graph Traversal</h3><p>Semantic + keyword for discovery. Graph traversal for relational queries no vector store can answer. Combined in one API.</p></div>
+<div class="code-block" style="font-size:.72rem"><span class="kw">await</span> hs.<span class="fn">search</span>(<span class="str">"auth setup"</span>);
+<span class="kw">await</span> hs.<span class="fn">graph</span>(<span class="str">"auth-api"</span>, { <span class="str">depth</span>: 2 });
+<span class="kw">await</span> hs.<span class="fn">blockers</span>(<span class="str">"deploy-prod"</span>);
+<span class="kw">await</span> hs.<span class="fn">decide</span>({ <span class="str">slug</span>: <span class="str">"use-clerk"</span>, ... });</div></div></div>
+</div>
+</div></section>
+
+<!-- Comparison -->
+<section style="padding:60px 0"><div class="w">
+<div style="text-align:center;margin-bottom:32px">
+<div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">COMPARISON</div>
+<h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.1rem,3vw,1.5rem)">How we actually differ.</h2>
+</div>
+<div style="overflow-x:auto;border:1px solid var(--border);border-radius:12px">
+<table class="cmp-table"><tr><th></th><th class="hs-col">HyperStack</th><th>Mem0</th><th>Backboard</th><th>Cognee</th></tr>
+<tr><td style="color:var(--dim)">"What blocks deploy?"</td><td class="win">Exact: 2 typed blockers</td><td>Fuzzy: 17 similar tasks</td><td>RAG similarity</td><td>Generic entities</td></tr>
+<tr><td style="color:var(--dim)">Relations</td><td class="win">9 typed (blocks, owns…)</td><td>Auto-extracted</td><td>Threads only</td><td>Generic graph</td></tr>
+<tr><td style="color:var(--dim)">Cost per op</td><td class="win">$0 deterministic</td><td>~$0.002 LLM</td><td>Usage-based</td><td>~$0.002 LLM</td></tr>
+<tr><td style="color:var(--dim)">Time-travel</td><td class="win">Full graph at any timestamp</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td style="color:var(--dim)">Setup</td><td class="win">30 seconds</td><td>5-10min + Docker</td><td>5 min</td><td>5+ min + Neo4j</td></tr>
+<tr><td style="color:var(--dim)">Multi-agent</td><td class="win">Agent-tagged cards</td><td>Shared userId issues</td><td>Thread-based</td><td>No agent awareness</td></tr></table>
+</div></div></section>
+
+<!-- Install -->
+<section style="padding:60px 0"><div class="w">
+<div style="text-align:center;margin-bottom:32px">
+<div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">INSTALL</div>
+<h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.1rem,3vw,1.5rem)">Drop into your stack in 30 seconds.</h2>
+</div>
+<div style="max-width:640px;margin:0 auto">
+<div class="install-tabs">
+<button class="install-tab act" onclick="showInstall('mcp',this)">MCP</button>
+<button class="install-tab" onclick="showInstall('oc',this)">OpenClaw</button>
+<button class="install-tab" onclick="showInstall('py',this)">Python</button>
+<button class="install-tab" onclick="showInstall('rest',this)">REST</button>
+</div>
+<div id="inst-mcp" class="install-panel act"><div class="code-block" style="border:none;padding:0;background:transparent;font-size:.76rem"><span class="cm">// Claude Desktop / Cursor / VS Code</span>
+<span class="kw">npx</span> hyperstack-mcp
+<span class="str">HYPERSTACK_API_KEY</span>=hs_your_key</div></div>
+<div id="inst-oc" class="install-panel"><div class="code-block" style="border:none;padding:0;background:transparent;font-size:.76rem"><span class="kw">npm</span> i hyperstack-core
+<span class="kw">npx</span> hyperstack-core login
+<span class="kw">npx</span> hyperstack-core init openclaw-multiagent</div></div>
+<div id="inst-py" class="install-panel"><div class="code-block" style="border:none;padding:0;background:transparent;font-size:.76rem"><span class="kw">pip</span> install hyperstack-py
+<span class="kw">from</span> hyperstack <span class="kw">import</span> HyperStack
+hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
+<div id="inst-rest" class="install-panel"><div class="code-block" style="border:none;padding:0;background:transparent;font-size:.76rem"><span class="kw">curl</span> -X POST <span class="str">"https://hyperstack-cloud.vercel.app/api/cards"</span> \
+  -H <span class="str">"X-API-Key: hs_your_key"</span> \
+  -d <span class="str">'{"slug":"use-clerk","title":"Use Clerk"}'</span></div></div>
+</div></div></section>
+
+<!-- Pricing -->
+<section style="padding:60px 0"><div class="w">
+<div style="text-align:center;margin-bottom:32px">
+<div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">PRICING</div>
+<h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.1rem,3vw,1.5rem)">Start free. Scale when ready.</h2>
+</div>
+<div class="price-row" style="max-width:800px;margin:0 auto">
+<div class="price-card"><div class="tier">Free</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>0</div><div class="per">forever</div>
+<ul><li>10 cards</li><li>Keyword search</li><li>1 workspace</li><li>REST API + MCP</li></ul>
+<button onclick="go('signup')" class="btn bp" style="width:100%">Get Started</button></div>
+<div class="price-card pop"><div class="pop-badge">Popular</div><div class="tier">Pro</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>29<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
+<ul><li>100 cards</li><li>Semantic search</li><li>Graph traversal</li><li>Time-travel</li><li>3 workspaces</li></ul>
+<button onclick="go('signup')" class="btn bp" style="width:100%">Start Pro →</button></div>
+<div class="price-card"><div class="tier">Team</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>59<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
+<ul><li>500 cards</li><li>Everything in Pro</li><li>5 team API keys</li><li>Unlimited workspaces</li></ul>
+<button onclick="go('signup')" class="btn bo" style="width:100%">Start Team</button></div>
+</div></div></section>
+
+<!-- Final CTA -->
+<section style="text-align:center;padding:80px 0;position:relative">
+<div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(68,255,136,.04),transparent 60%);pointer-events:none"></div>
+<div class="w">
+<h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.3rem,4vw,1.9rem);margin-bottom:12px">Memory is infrastructure,<br>not a feature.</h2>
+<p style="color:var(--dim);max-width:480px;margin:0 auto 28px">Your agents deserve exact answers. Not fuzzy approximations.</p>
+<div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+<button onclick="go('signup')" class="btn bp" style="padding:14px 32px;font-size:.9rem">Get Free API Key →</button>
+<a href="https://discord.gg/tdnXaV6e" class="btn bo" style="padding:14px 32px;font-size:.9rem" target="_blank">Join Discord</a>
+</div>
+<div style="font-family:var(--mono);font-size:.7rem;color:var(--faint);margin-top:16px">Free: 10 cards. <a href="javascript:void(0)" onclick="go('pricing')" style="color:var(--accent)">$29/mo unlocks graph + 100 cards →</a></div>
+</div></section>
+
+<div class="w"><footer><div class="c">© 2026 CascadeAI · <span style="color:var(--accent)">DETERMINISTIC BY DESIGN</span></div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Discord</a><a href="https://clawhub.ai/deeqyaqub1-cmd/zero-rules" style="color:var(--accent)" target="_blank">ZeroRules</a><a href="https://clawhub.ai/deeqyaqub1-cmd/skillfence" style="color:var(--accent)" target="_blank">SkillFence</a></div></footer></div>
+</div><!-- end p-landing -->
 
 <script>
-var _moatTimers=[];
-var _moatScenarios=[
-  {
-    question:'"Why are we using Stripe instead of Paddle?"',
-    fail:[
-      {icon:'🔍',text:'Searching 847 messages...',delay:0},
-      {icon:'📄',text:'Found 12 mentions of "Stripe"',delay:600},
-      {icon:'💸',text:'~6,000 tokens stuffed into context — $0.18 per query',delay:1200},
-      {icon:'😐',text:'None explain the decision',delay:1800},
-      {icon:'🤷',text:'"I don\'t have context on that decision."',delay:2400,accent:true}
-    ],
-    win:[
-      {type:'trail',nodes:[
-        {label:'use-stripe',color:'#ff6b2b',type:'decision'},
-        {edge:'decided',color:'#ff8855'},
-        {label:'alice',color:'#a855f7',type:'person'},
-        {edge:'approved',color:'#4ade80'},
-        {label:'cto',color:'#a855f7',type:'person'}
-      ],delay:0},
-      {type:'reason',text:'Paddle doesn\'t support per-seat billing. Stripe Connect handles marketplace splits.',delay:800},
-      {type:'meta',text:'350 tokens · $0.001 · 1 API call · 0 follow-ups',delay:1400}
-    ],
-    insight:'6,000 tokens to get nothing vs 350 tokens for the full answer. <span style="color:var(--accent)">That\'s 94% less cost.</span>'
-  },
-  {
-    question:'"If we swap from Clerk to Supabase Auth, what breaks?"',
-    fail:[
-      {icon:'🔍',text:'Searching for "Clerk dependencies"...',delay:0},
-      {icon:'📄',text:'Found 8 scattered references',delay:600},
-      {icon:'💸',text:'Agent re-reads entire chat history — $0.24 wasted',delay:1200},
-      {icon:'🤔',text:'Maybe the signup flow? Not sure.',delay:1800},
-      {icon:'💀',text:'"I\'d recommend checking with the team."',delay:2400,accent:true}
-    ],
-    win:[
-      {type:'trail',nodes:[
-        {label:'use-clerk',color:'#06b6d4',type:'decision'},
-        {edge:'triggers',color:'#eab308'},
-        {label:'signup-flow',color:'#3b82f6',type:'project'}
-      ],delay:0},
-      {type:'trail',nodes:[
-        {label:'use-clerk',color:'#06b6d4',type:'decision'},
-        {edge:'triggers',color:'#eab308'},
-        {label:'api-auth',color:'#3b82f6',type:'project'},
-        {edge:'blocks',color:'#ef4444'},
-        {label:'migrate-supa',color:'#ff6b2b',type:'decision'}
-      ],delay:600},
-      {type:'meta',text:'3 dependencies · 1 blocker · 420 tokens · $0.001',delay:1200}
-    ],
-    insight:'Flat memory burns tokens guessing. <span style="color:var(--accent)">The graph gives certainty for 1/200th the cost.</span>'
-  },
-  {
-    question:'"Who set up our database and who approved it?"',
-    fail:[
-      {icon:'🔍',text:'Searching "database setup"...',delay:0},
-      {icon:'📄',text:'Found a conversation about Postgres',delay:600},
-      {icon:'💸',text:'5 follow-up messages to narrow it down — $0.90 total',delay:1200},
-      {icon:'😐',text:'Can\'t tell who was responsible',delay:1800},
-      {icon:'🤷',text:'"Try checking Slack or Git history."',delay:2400,accent:true}
-    ],
-    win:[
-      {type:'trail',nodes:[
-        {label:'bob',color:'#a855f7',type:'person'},
-        {edge:'owns',color:'#c084fc'},
-        {label:'postgres-db',color:'#3b82f6',type:'project'}
-      ],delay:0},
-      {type:'trail',nodes:[
-        {label:'alice',color:'#a855f7',type:'person'},
-        {edge:'approved',color:'#4ade80'},
-        {label:'postgres-db',color:'#3b82f6',type:'project'}
-      ],delay:600},
-      {type:'meta',text:'2 relations · 280 tokens · $0.001 · Instant.',delay:1200}
-    ],
-    insight:'5 messages at $0.90 vs 1 call at $0.001. <span style="color:var(--accent)">Your LLM bill drops 99%.</span>'
-  }
-];
-
-function showMoat(idx,btn){
-  _moatTimers.forEach(clearTimeout);_moatTimers=[];
-  document.querySelectorAll('.moat-tab').forEach(function(t){t.classList.remove('act')});
-  if(btn)btn.classList.add('act');
-  var s=_moatScenarios[idx];
-  var left=document.getElementById('moat-left');
-  var right=document.getElementById('moat-right');
-  var insight=document.getElementById('moat-insight');
-
-  // Question on both sides
-  var qHtml='<div class="moat-q">'+s.question+'</div>';
-
-  // LEFT: failure sequence
-  var failHtml=qHtml;
-  s.fail.forEach(function(f,i){
-    var style=f.accent?'color:var(--red);font-weight:600':'color:var(--dim)';
-    failHtml+='<div class="moat-fail moat-fail-'+i+'" style="'+style+'"><div class="moat-sad"><span style="margin-right:6px">'+f.icon+'</span><span style="font-size:.8rem">'+f.text+'</span></div></div>';
-  });
-  left.innerHTML=failHtml;
-
-  // RIGHT: graph trail
-  var winHtml=qHtml;
-  s.win.forEach(function(w,i){
-    if(w.type==='trail'){
-      var trail='<div class="moat-trail moat-trail-'+i+'" style=""><div class="moat-win">';
-      w.nodes.forEach(function(n){
-        if(n.edge){
-          trail+='<span class="moat-edge" style="color:'+n.color+'"> → '+n.edge+' → </span>';
-        }else{
-          var bg=n.color+'18';var border=n.color+'40';
-          trail+='<span class="moat-node" style="background:'+bg+';border:1px solid '+border+';color:'+n.color+'">'+n.label+'</span>';
-        }
-      });
-      trail+='</div></div>';
-      winHtml+=trail;
-    }else if(w.type==='reason'){
-      winHtml+='<div class="moat-trail moat-trail-'+i+'" style=""><div style="padding:8px 14px;background:rgba(255,107,43,.04);border:1px solid rgba(255,107,43,.12);border-radius:8px;font-size:.78rem;color:var(--dim);line-height:1.5"><span style="color:var(--accent);font-weight:600">reason:</span> '+w.text+'</div></div>';
-    }else if(w.type==='meta'){
-      winHtml+='<div class="moat-trail moat-trail-'+i+'" style=""><div style="font-family:var(--mono);font-size:.65rem;color:var(--faint);margin-top:8px">'+w.text+'</div></div>';
-    }
-  });
-  right.innerHTML=winHtml;
-
-  // Animate fails
-  s.fail.forEach(function(f,i){
-    _moatTimers.push(setTimeout(function(){
-      var el=left.querySelector('.moat-fail-'+i);
-      if(el)el.classList.add('show');
-    },400+f.delay));
-  });
-
-  // Animate wins
-  s.win.forEach(function(w,i){
-    _moatTimers.push(setTimeout(function(){
-      var el=right.querySelector('.moat-trail-'+i);
-      if(el)el.classList.add('show');
-    },400+w.delay));
-  });
-
-  // Update insight
-  insight.style.opacity='0';
-  _moatTimers.push(setTimeout(function(){
-    insight.innerHTML=s.insight;
-    insight.style.opacity='1';
-  },2400));
-}
-
-// Auto-play first scenario
-var _moatStarted=false;
-var _moatObs=new IntersectionObserver(function(entries){
-  if(entries[0].isIntersecting&&!_moatStarted){
-    _moatStarted=true;
-    showMoat(0,document.querySelector('.moat-tab'));
-  }
-},{threshold:0.3});
-var _moatSec=document.getElementById('moat-section');
-if(_moatSec)_moatObs.observe(_moatSec);
+function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=document.getElementById('inst-'+t);if(p)p.classList.toggle('act',t===id)});document.querySelectorAll('.install-tab').forEach(function(b){b.classList.remove('act')});if(btn)btn.classList.add('act')}
 </script>
 
-
-<!-- ═══ TAB PILLS ═══ -->
-<div style="display:flex;justify-content:center;gap:8px;padding:24px 24px 8px">
-  <button class="ltab act" onclick="showLTab('problem',this)">See It In Action</button>
-  <button class="ltab" onclick="showLTab('howit',this)">How It Works</button>
-  <button class="ltab" onclick="showLTab('compare',this)">Compare</button>
-</div>
-
-<div id="ltab-problem">
-
-<!-- ANIMATED GRAPH TRAVERSAL DEMO -->
-<section style="padding:48px 0 20px;position:relative;overflow:hidden">
-  <div style="text-align:center;margin-bottom:24px;position:relative;z-index:1">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">See it in action</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.1rem,3.5vw,1.5rem);margin-bottom:10px;line-height:1.3">Watch your agent traverse the graph</h2>
-    <p style="color:var(--dim);font-size:.85rem;max-width:520px;margin:0 auto;line-height:1.5">Your agent asks &ldquo;Why Stripe?&rdquo; &mdash; and follows the links to find who decided, why, and what depends on it.</p>
-  </div>
-
-  <div style="max-width:700px;margin:0 auto;position:relative">
-    <canvas id="demo-graph" style="width:100%;height:360px;border-radius:12px;background:#0a0a0c;border:1px solid var(--border);display:block"></canvas>
-    <!-- Query bar overlay -->
-    <div id="dg-query" style="position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(15,15,18,.9);border:1px solid var(--border);border-radius:20px;padding:6px 16px;font-family:var(--mono);font-size:.72rem;color:var(--faint);backdrop-filter:blur(8px);white-space:nowrap;opacity:0;transition:opacity .5s">
-      <span style="color:var(--accent)">agent:</span> &ldquo;Why are we using Stripe?&rdquo;
-    </div>
-    <!-- Traversal path overlay -->
-    <div id="dg-path" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(15,15,18,.9);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-family:var(--mono);font-size:.66rem;color:var(--dim);backdrop-filter:blur(8px);opacity:0;transition:opacity .5s;text-align:center;max-width:90%"></div>
-    <!-- Replay button -->
-    <button id="dg-replay" onclick="demoGraphPlay()" style="position:absolute;bottom:14px;right:14px;background:rgba(255,107,43,.15);border:1px solid rgba(255,107,43,.3);border-radius:8px;padding:6px 12px;color:var(--accent);font-family:var(--mono);font-size:.65rem;cursor:pointer;display:none;z-index:5">&#8635; Replay</button>
-  </div>
-
-  <div style="text-align:center;margin-top:16px">
-    <p style="font-family:var(--mono);font-size:.72rem;color:var(--faint)">This is what the Graph Explorer does. <a href="javascript:void(0)" onclick="go('pricing')" style="color:var(--accent)">From $29/mo &rarr;</a></p>
-  </div>
-</section>
-
-<!-- EXISTING CARD FLOW DEMO -->
-<section style="padding:28px 0 56px;position:relative;overflow:hidden" id="card-flow-section">
-  <!-- Ambient glow -->
-  <div id="cf-ambient" style="position:absolute;top:30%;left:50%;width:600px;height:600px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,107,43,.06) 0%,transparent 70%);pointer-events:none;transition:background 1s"></div>
-
-  <div style="text-align:center;margin-bottom:36px;position:relative;z-index:1">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">See it in action</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:10px;line-height:1.3">One question. Three linked cards. Zero follow-ups.</h2>
-    <p style="color:var(--dim);font-size:.88rem;max-width:520px;margin:0 auto;line-height:1.6">Your agent pulls typed cards, follows the links between them, and responds in one shot.</p>
-  </div>
-
-  <!-- Mode toggle -->
-  <div style="display:flex;justify-content:center;gap:6px;margin-bottom:32px;position:relative;z-index:1">
-    <button id="cf-btn-with" onclick="cfStart('with')" style="background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:10px 20px;color:#22c55e;font-family:var(--mono);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .3s">&#10022; With HyperStack</button>
-    <button id="cf-btn-without" onclick="cfStart('without')" style="background:#111113;border:1px solid #2a2a2e;border-radius:8px;padding:10px 20px;color:#555568;font-family:var(--mono);font-size:.78rem;font-weight:400;cursor:pointer;transition:all .3s">&#10007; Without HyperStack</button>
-  </div>
-
-  <div style="max-width:880px;margin:0 auto;position:relative;z-index:1">
-    <!-- User message -->
-    <div id="cf-user" style="display:flex;justify-content:center;margin-bottom:24px;opacity:0;transform:translateY(16px);transition:all .6s cubic-bezier(.16,1,.3,1)">
-      <div style="background:#1a1a1e;border:1px solid #3a3a3e;border-radius:16px;padding:16px 24px;max-width:520px;width:100%;position:relative">
-        <div style="position:absolute;top:-10px;left:24px;background:#ff6b2b;color:#000;font-family:var(--mono);font-size:.6rem;font-weight:800;padding:2px 10px;border-radius:6px;letter-spacing:.04em">YOU</div>
-        <div style="font-size:1rem;color:#e8e8ec;font-weight:500;line-height:1.5;margin-top:4px">&ldquo;Set up the new payments service and get it reviewed&rdquo;</div>
-      </div>
-    </div>
-
-    <!-- Connector -->
-    <div id="cf-conn1" style="display:flex;justify-content:center;margin-bottom:20px;opacity:0;transition:opacity .4s">
-      <div id="cf-conn1-line" style="width:2px;height:28px;background:linear-gradient(to bottom,#3a3a3e,#ff6b2b);border-radius:1px"></div>
-    </div>
-
-    <!-- WITH PATH -->
-    <div id="cf-with-path">
-      <!-- Search indicator -->
-      <div id="cf-search" style="display:flex;justify-content:center;margin-bottom:20px;opacity:0;transform:translateY(12px);transition:all .6s cubic-bezier(.16,1,.3,1)">
-        <div style="background:#111113;border:1px solid #2a2a2e;border-radius:10px;padding:10px 20px;display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.76rem;color:#8888a0">
-          <span id="cf-bolt" style="color:#ff6b2b">&#9889;</span>
-          <span>Agent searching HyperStack...</span>
-          <span style="font-family:var(--mono);font-size:.65rem;color:#555568;background:#0a0a0b;padding:2px 8px;border-radius:4px">q=&quot;payments service setup review&quot;</span>
-        </div>
-      </div>
-
-      <!-- Three cards -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;padding:0 4px;position:relative" id="cf-cards-grid">
-        <!-- SVG connection lines between cards -->
-        <svg id="cf-links-svg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible">
-          <defs>
-            <linearGradient id="link-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#a855f7" stop-opacity="0.7"/>
-              <stop offset="50%" stop-color="#ff6b2b" stop-opacity="0.9"/>
-              <stop offset="100%" stop-color="#22c55e" stop-opacity="0.7"/>
-            </linearGradient>
-            <linearGradient id="link-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#a855f7" stop-opacity="0.6"/>
-              <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.6"/>
-            </linearGradient>
-            <filter id="link-blur"><feGaussianBlur in="SourceGraphic" stdDeviation="2"/></filter>
-          </defs>
-          <!-- C1 ↔ C2 -->
-          <path id="cf-link-1-2" d="" stroke="url(#link-grad-1)" stroke-width="2" fill="none" stroke-dasharray="6,4" opacity="0" style="transition:opacity .8s"/>
-          <path id="cf-link-1-2-glow" d="" stroke="url(#link-grad-1)" stroke-width="6" fill="none" stroke-dasharray="6,4" opacity="0" filter="url(#link-blur)" style="transition:opacity .8s"/>
-          <!-- C2 ↔ C3 -->
-          <path id="cf-link-2-3" d="" stroke="url(#link-grad-2)" stroke-width="2" fill="none" stroke-dasharray="6,4" opacity="0" style="transition:opacity .8s"/>
-          <path id="cf-link-2-3-glow" d="" stroke="url(#link-grad-2)" stroke-width="6" fill="none" stroke-dasharray="6,4" opacity="0" filter="url(#link-blur)" style="transition:opacity .8s"/>
-        </svg>
-
-        <!-- Card 1: Preferences (preference type, links to alice) -->
-        <div id="cf-c1" style="opacity:.08;transform:translateY(24px) scale(.94);transition:all .8s cubic-bezier(.16,1,.3,1)">
-          <div style="position:relative">
-            <div id="cf-c1-glow" style="position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,#22c55e,#22c55e88,transparent);opacity:0;filter:blur(10px);transition:all 1s;z-index:0"></div>
-            <div id="cf-c1-border" style="position:relative;z-index:1;background:#111113;border:2px solid #2a2a2e;border-radius:14px;overflow:hidden;transition:all .7s cubic-bezier(.16,1,.3,1)">
-              <div style="padding:10px 14px 8px;border-bottom:1px solid #2a2a2e;display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:#22c55e"></div><span style="font-family:var(--mono);font-size:.55rem;color:#555568;letter-spacing:.06em;font-weight:600">&#9881;&#65039; PREFERENCES</span></div>
-                <span style="font-family:var(--mono);font-size:.5rem;color:#000;background:#fbbf24;padding:1px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em">preference</span>
-              </div>
-              <div style="padding:10px 14px 0"><div style="font-family:var(--mono);font-size:.8rem;color:#ff6b2b;font-weight:600">prefers-typescript</div></div>
-              <div style="padding:4px 14px 0"><div style="font-size:.84rem;font-weight:600;color:#e8e8ec">TypeScript strict + Zod</div></div>
-              <div style="padding:8px 14px 0;display:flex;gap:3px;flex-wrap:wrap">
-                <span style="font-family:var(--mono);font-size:.58rem;background:#22c55e10;color:#22c55e;padding:2px 7px;border-radius:4px;border:1px solid #22c55e20">typescript</span>
-                <span style="font-family:var(--mono);font-size:.58rem;background:#22c55e10;color:#22c55e;padding:2px 7px;border-radius:4px;border:1px solid #22c55e20">strict</span>
-                <span style="font-family:var(--mono);font-size:.58rem;background:#22c55e10;color:#22c55e;padding:2px 7px;border-radius:4px;border:1px solid #22c55e20">zod</span>
-              </div>
-              <div style="padding:8px 14px 0"><div style="font-size:.74rem;color:#8888a0;line-height:1.55;background:#0a0a0b;border:1px solid #2a2a2e;border-radius:6px;padding:8px 10px;white-space:pre-line;min-height:56px">Always TypeScript strict mode.
-Zod for validation. No any types.</div></div>
-              <div id="cf-c1-links" style="padding:6px 14px 0;opacity:0;transition:opacity .6s .2s">
-                <div style="display:flex;align-items:center;gap:4px"><span style="font-size:.55rem;color:#555568">&#128279;</span><span style="font-family:var(--mono);font-size:.52rem;color:#a855f7;opacity:.7">team-alice-backend</span></div>
-              </div>
-              <div id="cf-c1-use" style="padding:6px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
-                <div style="font-family:var(--mono);font-size:.68rem;color:#22c55e;font-weight:600;display:flex;align-items:center;gap:4px"><span>&rarr;</span> TypeScript strict with Zod &#10004;</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 2: People (person type, links to preferences + workflow) -->
-        <div id="cf-c2" style="opacity:.08;transform:translateY(24px) scale(.94);transition:all .8s cubic-bezier(.16,1,.3,1) .05s">
-          <div style="position:relative">
-            <div id="cf-c2-glow" style="position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,#a855f7,#a855f788,transparent);opacity:0;filter:blur(10px);transition:all 1s;z-index:0"></div>
-            <div id="cf-c2-border" style="position:relative;z-index:1;background:#111113;border:2px solid #2a2a2e;border-radius:14px;overflow:hidden;transition:all .7s cubic-bezier(.16,1,.3,1)">
-              <div style="padding:10px 14px 8px;border-bottom:1px solid #2a2a2e;display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:#a855f7"></div><span style="font-family:var(--mono);font-size:.55rem;color:#555568;letter-spacing:.06em;font-weight:600">&#128100; PEOPLE</span></div>
-                <span style="font-family:var(--mono);font-size:.5rem;color:#000;background:#c084fc;padding:1px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em">person</span>
-              </div>
-              <div style="padding:10px 14px 0"><div style="font-family:var(--mono);font-size:.8rem;color:#ff6b2b;font-weight:600">team-alice-backend</div></div>
-              <div style="padding:4px 14px 0"><div style="font-size:.84rem;font-weight:600;color:#e8e8ec">Alice &mdash; Backend Lead</div></div>
-              <div style="padding:8px 14px 0;display:flex;gap:3px;flex-wrap:wrap">
-                <span style="font-family:var(--mono);font-size:.58rem;background:#a855f710;color:#a855f7;padding:2px 7px;border-radius:4px;border:1px solid #a855f720">alice</span>
-                <span style="font-family:var(--mono);font-size:.58rem;background:#a855f710;color:#a855f7;padding:2px 7px;border-radius:4px;border:1px solid #a855f720">backend</span>
-                <span style="font-family:var(--mono);font-size:.58rem;background:#a855f710;color:#a855f7;padding:2px 7px;border-radius:4px;border:1px solid #a855f720">review</span>
-              </div>
-              <div style="padding:8px 14px 0"><div style="font-size:.74rem;color:#8888a0;line-height:1.55;background:#0a0a0b;border:1px solid #2a2a2e;border-radius:6px;padding:8px 10px;white-space:pre-line;min-height:56px">Alice owns backend services.
-Review PRs within 24h.
-Prefers async comms.</div></div>
-              <div id="cf-c2-links" style="padding:6px 14px 0;opacity:0;transition:opacity .6s .2s">
-                <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap"><span style="font-size:.55rem;color:#555568">&#128279;</span><span style="font-family:var(--mono);font-size:.52rem;color:#22c55e;opacity:.7">prefers-typescript</span><span style="font-family:var(--mono);font-size:.52rem;color:#3b82f6;opacity:.7">deploy-process-prod</span></div>
-              </div>
-              <div id="cf-c2-use" style="padding:6px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
-                <div style="font-family:var(--mono);font-size:.68rem;color:#a855f7;font-weight:600;display:flex;align-items:center;gap:4px"><span>&rarr;</span> PR assigned to Alice &#10004;</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 3: Workflows (workflow type, links to alice) -->
-        <div id="cf-c3" style="opacity:.08;transform:translateY(24px) scale(.94);transition:all .8s cubic-bezier(.16,1,.3,1) .1s">
-          <div style="position:relative">
-            <div id="cf-c3-glow" style="position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,#3b82f6,#3b82f688,transparent);opacity:0;filter:blur(10px);transition:all 1s;z-index:0"></div>
-            <div id="cf-c3-border" style="position:relative;z-index:1;background:#111113;border:2px solid #2a2a2e;border-radius:14px;overflow:hidden;transition:all .7s cubic-bezier(.16,1,.3,1)">
-              <div style="padding:10px 14px 8px;border-bottom:1px solid #2a2a2e;display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:#3b82f6"></div><span style="font-family:var(--mono);font-size:.55rem;color:#555568;letter-spacing:.06em;font-weight:600">&#128260; WORKFLOWS</span></div>
-                <span style="font-family:var(--mono);font-size:.5rem;color:#000;background:#60a5fa;padding:1px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em">workflow</span>
-              </div>
-              <div style="padding:10px 14px 0"><div style="font-family:var(--mono);font-size:.8rem;color:#ff6b2b;font-weight:600">deploy-process-prod</div></div>
-              <div style="padding:4px 14px 0"><div style="font-size:.84rem;font-weight:600;color:#e8e8ec">Deploy: Production flow</div></div>
-              <div style="padding:8px 14px 0;display:flex;gap:3px;flex-wrap:wrap">
-                <span style="font-family:var(--mono);font-size:.58rem;background:#3b82f610;color:#3b82f6;padding:2px 7px;border-radius:4px;border:1px solid #3b82f620">deploy</span>
-                <span style="font-family:var(--mono);font-size:.58rem;background:#3b82f610;color:#3b82f6;padding:2px 7px;border-radius:4px;border:1px solid #3b82f620">staging</span>
-                <span style="font-family:var(--mono);font-size:.58rem;background:#3b82f610;color:#3b82f6;padding:2px 7px;border-radius:4px;border:1px solid #3b82f620">checklist</span>
-              </div>
-              <div style="padding:8px 14px 0"><div style="font-size:.74rem;color:#8888a0;line-height:1.55;background:#0a0a0b;border:1px solid #2a2a2e;border-radius:6px;padding:8px 10px;white-space:pre-line;min-height:56px">PR &rarr; staging auto-deploys &rarr;
-QA signs off in #releases &rarr;
-Merge to main &rarr; prod.</div></div>
-              <div id="cf-c3-links" style="padding:6px 14px 0;opacity:0;transition:opacity .6s .2s">
-                <div style="display:flex;align-items:center;gap:4px"><span style="font-size:.55rem;color:#555568">&#128279;</span><span style="font-family:var(--mono);font-size:.52rem;color:#a855f7;opacity:.7">team-alice-backend</span></div>
-              </div>
-              <div id="cf-c3-use" style="padding:6px 14px 12px;opacity:0;transform:translateY(4px);transition:all .6s .4s">
-                <div style="font-family:var(--mono);font-size:.68rem;color:#3b82f6;font-weight:600;display:flex;align-items:center;gap:4px"><span>&rarr;</span> Staging deploy triggered &#10004;</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Connector to response -->
-      <div id="cf-conn2" style="display:flex;justify-content:center;margin-bottom:20px;opacity:0;transition:opacity .4s">
-        <div style="width:2px;height:20px;background:linear-gradient(to bottom,#22c55e55,#22c55e);border-radius:1px"></div>
-      </div>
-
-      <!-- Agent response -->
-      <div id="cf-response" style="display:flex;justify-content:center;opacity:0;transform:translateY(16px);transition:all .6s cubic-bezier(.16,1,.3,1)">
-        <div style="background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(34,197,94,.02));border:1px solid rgba(34,197,94,.25);border-radius:16px;padding:18px 24px;max-width:600px;width:100%;position:relative;box-shadow:0 8px 32px rgba(34,197,94,.08)">
-          <div style="position:absolute;top:-10px;left:24px;background:#22c55e;color:#000;font-family:var(--mono);font-size:.6rem;font-weight:800;padding:2px 10px;border-radius:6px">AGENT</div>
-          <div style="font-size:.92rem;color:#e8e8ec;line-height:1.65;margin-top:4px">&ldquo;Created <strong style="color:#22c55e">payments service</strong> in TypeScript strict with Zod validation. PR assigned to <strong style="color:#a855f7">Alice</strong> for backend review. <strong style="color:#3b82f6">Staging auto-deploys</strong> &mdash; I&rsquo;ll ping #releases for QA sign-off.&rdquo;</div>
-          <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
-            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">3 cards loaded</span>
-            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">3 cards linked</span>
-            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">~195 tokens</span>
-            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(34,197,94,.1);color:#22c55e;padding:3px 10px;border-radius:6px;border:1px solid rgba(34,197,94,.2)">0 follow-ups</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- WITHOUT PATH (hidden by default) -->
-    <div id="cf-without-path" style="display:none">
-      <div id="cf-warn" style="display:flex;justify-content:center;margin-bottom:16px;opacity:0;transform:translateY(12px);transition:all .6s cubic-bezier(.16,1,.3,1)">
-        <div style="background:#111113;border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:10px 20px;display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.76rem;color:#8888a0">
-          <span style="color:#ef4444">&#9888;</span><span>Agent has no context about your project...</span>
-        </div>
-      </div>
-      <div style="max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:8px;margin-bottom:24px" id="cf-questions">
-        <div class="cf-q" style="opacity:0;transform:translateY(12px) scale(.97);transition:all .5s cubic-bezier(.16,1,.3,1)"><div style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#ef4444;font-family:var(--mono);font-weight:700;flex-shrink:0">?</div><span style="font-size:.86rem;color:#8888a0">What language should I use for this?</span></div></div>
-        <div class="cf-q" style="opacity:0;transform:translateY(12px) scale(.97);transition:all .5s cubic-bezier(.16,1,.3,1)"><div style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#ef4444;font-family:var(--mono);font-weight:700;flex-shrink:0">?</div><span style="font-size:.86rem;color:#8888a0">Do you have a preferred framework?</span></div></div>
-        <div class="cf-q" style="opacity:0;transform:translateY(12px) scale(.97);transition:all .5s cubic-bezier(.16,1,.3,1)"><div style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#ef4444;font-family:var(--mono);font-weight:700;flex-shrink:0">?</div><span style="font-size:.86rem;color:#8888a0">Who should review backend changes?</span></div></div>
-        <div class="cf-q" style="opacity:0;transform:translateY(12px) scale(.97);transition:all .5s cubic-bezier(.16,1,.3,1)"><div style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#ef4444;font-family:var(--mono);font-weight:700;flex-shrink:0">?</div><span style="font-size:.86rem;color:#8888a0">What&rsquo;s your deploy process?</span></div></div>
-        <div class="cf-q" style="opacity:0;transform:translateY(12px) scale(.97);transition:all .5s cubic-bezier(.16,1,.3,1)"><div style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px"><div style="width:24px;height:24px;border-radius:50%;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#ef4444;font-family:var(--mono);font-weight:700;flex-shrink:0">?</div><span style="font-size:.86rem;color:#8888a0">Do you have a staging environment?</span></div></div>
-      </div>
-      <div id="cf-stuck" style="display:flex;justify-content:center;opacity:0;transform:translateY(12px);transition:all .6s cubic-bezier(.16,1,.3,1) .2s">
-        <div style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.2);border-radius:16px;padding:18px 24px;max-width:520px;width:100%;position:relative">
-          <div style="position:absolute;top:-10px;left:24px;background:#ef4444;color:#fff;font-family:var(--mono);font-size:.6rem;font-weight:800;padding:2px 10px;border-radius:6px">STUCK</div>
-          <div style="font-size:.88rem;color:#8888a0;line-height:1.6;margin-top:4px;margin-bottom:14px">Agent can&rsquo;t proceed until you answer 5 questions. You&rsquo;re doing the work the agent should be doing.</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(239,68,68,.1);color:#ef4444;padding:3px 10px;border-radius:6px;border:1px solid rgba(239,68,68,.2)">5 follow-up questions</span>
-            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(239,68,68,.1);color:#ef4444;padding:3px 10px;border-radius:6px;border:1px solid rgba(239,68,68,.2)">~6,000 tokens wasted</span>
-            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(239,68,68,.1);color:#ef4444;padding:3px 10px;border-radius:6px;border:1px solid rgba(239,68,68,.2)">3+ LLM round-trips</span>
-            <span style="font-family:var(--mono);font-size:.66rem;background:rgba(239,68,68,.1);color:#ef4444;padding:3px 10px;border-radius:6px;border:1px solid rgba(239,68,68,.2)">2 min of your time</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Replay -->
-    <div id="cf-replay" style="display:none;justify-content:center;margin-top:28px;gap:10px">
-      <button onclick="cfStart(cfMode)" style="background:#111113;border:1px solid #2a2a2e;border-radius:8px;padding:8px 18px;color:#8888a0;font-family:var(--mono);font-size:.74rem;cursor:pointer">&#8635; Replay</button>
-      <button id="cf-toggle-btn" onclick="cfStart(cfMode==='with'?'without':'with')" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:8px 18px;color:#ef4444;font-family:var(--mono);font-size:.74rem;cursor:pointer">&#10007; See without</button>
-    </div>
-  </div>
-</section>
-
-<script>
-var cfMode='with',cfPlaying=false,cfTimers=[];
-function cfClear(){cfTimers.forEach(clearTimeout);cfTimers=[];
-  ['cf-user','cf-conn1','cf-search','cf-conn2','cf-response','cf-warn','cf-stuck'].forEach(id=>{const e=document.getElementById(id);if(e){e.style.opacity='0';e.style.transform='translateY(16px)'}});
-  [1,2,3].forEach(i=>{const c=document.getElementById('cf-c'+i);c.style.opacity='.08';c.style.transform='translateY(24px) scale(.94)';
-    const g=document.getElementById('cf-c'+i+'-glow');g.style.opacity='0';g.style.filter='blur(10px)';
-    const b=document.getElementById('cf-c'+i+'-border');b.style.border='2px solid #2a2a2e';b.style.background='#111113';b.style.boxShadow='none';
-    const u=document.getElementById('cf-c'+i+'-use');u.style.opacity='0';
-    const l=document.getElementById('cf-c'+i+'-links');if(l)l.style.opacity='0'});
-  ['cf-link-1-2','cf-link-1-2-glow','cf-link-2-3','cf-link-2-3-glow'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.opacity='0'});
-  document.querySelectorAll('.cf-q').forEach(q=>{q.style.opacity='0';q.style.transform='translateY(12px) scale(.97)'});
-  document.getElementById('cf-replay').style.display='none'}
-
-function cfDrawLinks(){
-  var grid=document.getElementById('cf-cards-grid');if(!grid)return;
-  var c1=document.getElementById('cf-c1'),c2=document.getElementById('cf-c2'),c3=document.getElementById('cf-c3');
-  if(!c1||!c2||!c3)return;
-  var gRect=grid.getBoundingClientRect();
-  var r1=c1.getBoundingClientRect(),r2=c2.getBoundingClientRect(),r3=c3.getBoundingClientRect();
-  var x1=r1.right-gRect.left,y1=(r1.top+r1.bottom)/2-gRect.top;
-  var x2l=r2.left-gRect.left,x2r=r2.right-gRect.left,y2=(r2.top+r2.bottom)/2-gRect.top;
-  var x3=r3.left-gRect.left,y3=(r3.top+r3.bottom)/2-gRect.top;
-  var cpx1=(x1+x2l)/2,cpx2=(x2r+x3)/2;
-  var d12='M'+x1+','+y1+' C'+cpx1+','+y1+' '+cpx1+','+y2+' '+x2l+','+y2;
-  var d23='M'+x2r+','+y2+' C'+cpx2+','+y2+' '+cpx2+','+y3+' '+x3+','+y3;
-  ['cf-link-1-2','cf-link-1-2-glow'].forEach(id=>{var e=document.getElementById(id);if(e)e.setAttribute('d',d12)});
-  ['cf-link-2-3','cf-link-2-3-glow'].forEach(id=>{var e=document.getElementById(id);if(e)e.setAttribute('d',d23)});
-}
-function cfShowLinks(d){cfTimers.push(setTimeout(function(){
-  cfDrawLinks();
-  ['cf-link-1-2','cf-link-1-2-glow','cf-link-2-3','cf-link-2-3-glow'].forEach(id=>{var e=document.getElementById(id);if(e)e.style.opacity=id.includes('glow')?'0.3':'0.6'});
-  [1,2,3].forEach(i=>{var l=document.getElementById('cf-c'+i+'-links');if(l)l.style.opacity='1'});
-},d))}
-
-function cfShow(id,d){cfTimers.push(setTimeout(()=>{const e=document.getElementById(id);if(e){e.style.opacity='1';e.style.transform='translateY(0) scale(1)'}},d))}
-
-function cfActivateCard(n,d,hl){cfTimers.push(setTimeout(()=>{const c=document.getElementById('cf-c'+n);c.style.opacity='1';
-  c.style.transform=hl?'translateY(-6px) scale(1.03)':'translateY(0) scale(1)';
-  const colors=['#22c55e','#a855f7','#3b82f6'];const clr=colors[n-1];
-  const g=document.getElementById('cf-c'+n+'-glow');g.style.opacity=hl?'.5':'.15';g.style.filter=hl?'blur(16px)':'blur(10px)';
-  const b=document.getElementById('cf-c'+n+'-border');b.style.border='2px solid '+(hl?clr+'aa':clr+'44');b.style.background=hl?'#151517':'#111113';
-  b.style.boxShadow=hl?'0 12px 40px '+clr+'30':'0 4px 16px rgba(0,0,0,.4)';
-  document.getElementById('cf-c'+n+'-use').style.opacity='1';document.getElementById('cf-c'+n+'-use').style.transform='translateY(0)';
-  const sp=document.getElementById('cf-c'+n+'-border').querySelector('span');if(sp)sp.style.color=clr},d))}
-
-function cfDeactivateCard(n,d){cfTimers.push(setTimeout(()=>{const c=document.getElementById('cf-c'+n);c.style.transform='translateY(0) scale(1)';
-  const g=document.getElementById('cf-c'+n+'-glow');g.style.opacity='.15';g.style.filter='blur(10px)';
-  const colors=['#22c55e','#a855f7','#3b82f6'];const clr=colors[n-1];
-  const b=document.getElementById('cf-c'+n+'-border');b.style.border='2px solid '+clr+'44';b.style.background='#111113';b.style.boxShadow='0 4px 16px rgba(0,0,0,.4)'},d))}
-
-function cfStart(mode){if(cfPlaying)return;cfMode=mode;cfPlaying=true;cfClear();
-  var sec=document.getElementById('card-flow-section');if(sec&&window.innerWidth<700){sec.scrollIntoView({behavior:'smooth',block:'start'});}
-  const bw=document.getElementById('cf-btn-with'),bwo=document.getElementById('cf-btn-without');
-  bw.style.background=mode==='with'?'rgba(34,197,94,.12)':'#111113';bw.style.borderColor=mode==='with'?'rgba(34,197,94,.35)':'#2a2a2e';bw.style.color=mode==='with'?'#22c55e':'#555568';bw.style.fontWeight=mode==='with'?'700':'400';
-  bwo.style.background=mode==='without'?'rgba(239,68,68,.1)':'#111113';bwo.style.borderColor=mode==='without'?'rgba(239,68,68,.3)':'#2a2a2e';bwo.style.color=mode==='without'?'#ef4444':'#555568';bwo.style.fontWeight=mode==='without'?'700':'400';
-  document.getElementById('cf-ambient').style.background=mode==='with'?'radial-gradient(circle,rgba(255,107,43,.06) 0%,transparent 70%)':'radial-gradient(circle,rgba(239,68,68,.04) 0%,transparent 70%)';
-  document.getElementById('cf-conn1-line').style.background=mode==='with'?'linear-gradient(to bottom,#3a3a3e,#ff6b2b)':'linear-gradient(to bottom,#3a3a3e,#ef4444)';
-  document.getElementById('cf-with-path').style.display=mode==='with'?'block':'none';
-  document.getElementById('cf-without-path').style.display=mode==='without'?'block':'none';
-  cfShow('cf-user',400);cfShow('cf-conn1',1800);
-  if(mode==='with'){
-    cfShow('cf-search',2200);
-    var boltEl=document.getElementById('cf-bolt');
-    var boltAnim=setInterval(()=>{boltEl.style.opacity=boltEl.style.opacity==='0.4'?'1':'0.4'},750);cfTimers.push(boltAnim);
-    cfActivateCard(1,2800,true);
-    cfDeactivateCard(1,5200);cfActivateCard(2,5400,true);
-    cfDeactivateCard(2,8000);cfActivateCard(3,8200,true);
-    cfDeactivateCard(3,10600);
-    cfShowLinks(10800);
-    cfTimers.push(setTimeout(()=>{clearInterval(boltAnim);boltEl.style.opacity='1'},10600));
-    cfShow('cf-conn2',11400);cfShow('cf-response',11800);
-    cfTimers.push(setTimeout(()=>{cfPlaying=false;
-      document.getElementById('cf-replay').style.display='flex';
-      var tb=document.getElementById('cf-toggle-btn');tb.textContent='✗ See without';tb.style.background='rgba(239,68,68,.08)';tb.style.borderColor='rgba(239,68,68,.2)';tb.style.color='#ef4444'},13600))
-  } else {
-    cfShow('cf-warn',2200);
-    var qs=document.querySelectorAll('.cf-q');
-    qs.forEach((q,i)=>{cfTimers.push(setTimeout(()=>{q.style.opacity='1';q.style.transform='translateY(0) scale(1)'},3000+i*800))});
-    cfShow('cf-stuck',3000+qs.length*800+400);
-    cfTimers.push(setTimeout(()=>{cfPlaying=false;
-      document.getElementById('cf-replay').style.display='flex';
-      var tb=document.getElementById('cf-toggle-btn');tb.textContent='✦ See with HyperStack';tb.style.background='rgba(34,197,94,.08)';tb.style.borderColor='rgba(34,197,94,.2)';tb.style.color='#22c55e'},3000+qs.length*800+1500))
-  }
-}
-// Auto-start when section scrolls into view
-var cfStarted=false;
-var cfObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting&&!cfStarted){cfStarted=true;cfStart('with')}})},{threshold:0.3});
-var cfSec=document.getElementById('card-flow-section');if(cfSec)cfObs.observe(cfSec);
-</script>
-
-
-<section>
-  <div style="text-align:center;margin-bottom:24px">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">How it works</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:12px">Three steps. That&rsquo;s the whole product.</h2>
-    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;max-width:700px;margin-left:auto;margin-right:auto">
-      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
-        <div style="font-size:1.5rem;margin-bottom:4px">&#9312;</div>
-        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Store</div>
-        <div style="font-size:.78rem;color:var(--dim)">Agent learns something? Save it as a card.</div>
-      </div>
-      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
-        <div style="font-size:1.5rem;margin-bottom:4px">&#9313;</div>
-        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Search</div>
-        <div style="font-size:.78rem;color:var(--dim)">Next session, agent searches for what&rsquo;s relevant.</div>
-      </div>
-      <div style="flex:1;min-width:180px;text-align:center;padding:12px">
-        <div style="font-size:1.5rem;margin-bottom:4px">&#9314;</div>
-        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text);font-weight:700;margin-bottom:2px">Remember</div>
-        <div style="font-size:.78rem;color:var(--dim)">Agent gets exactly the context it needs. ~350 tokens, not 6,000.</div>
-      </div>
-    </div>
-    <p style="font-family:var(--mono);font-size:.75rem;color:var(--faint)">Here&rsquo;s what that looks like in code &#8595;</p>
-  </div>
-  <div class="demo">
-    <div class="demo-bar">
-      <div class="demo-dot"></div><div class="demo-dot"></div><div class="demo-dot"></div>
-      <div class="demo-tabs">
-        <div class="demo-tab active" onclick="showCode('curl',this)">cURL</div>
-        <div class="demo-tab" onclick="showCode('python',this)">Python</div>
-        <div class="demo-tab" onclick="showCode('js',this)">JavaScript</div>
-      </div>
-    </div>
-<pre id="code-curl"><span class="cm"># 1. Store a memory</span>
-<span class="kw">curl</span> -X POST <span class="str">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \
-  -H <span class="str">"X-API-Key: YOUR_KEY"</span> -H <span class="str">"Content-Type: application/json"</span> \
-  -d <span class="str">'{"slug":"project-api","title":"API","stack":"projects",
-       "keywords":["fastapi","python"],"body":"FastAPI 3.12 on AWS"}'</span>
-
-<span class="cm"># 2. Search memories</span>
-<span class="kw">curl</span> <span class="str">"https://hyperstack-cloud.vercel.app/api/search?workspace=default&q=python"</span> \
-  -H <span class="str">"X-API-Key: YOUR_KEY"</span>
-
-<span class="cm"># 3. Get all cards</span>
-<span class="kw">curl</span> <span class="str">"https://hyperstack-cloud.vercel.app/api/cards?workspace=default"</span> \
-  -H <span class="str">"X-API-Key: YOUR_KEY"</span></pre>
-<pre id="code-python" class="hidden"><span class="cm"># pip install requests</span>
-<span class="kw">import</span> requests
-
-<span class="fn">API</span> = <span class="str">"https://hyperstack-cloud.vercel.app"</span>
-<span class="fn">KEY</span> = <span class="str">"YOUR_KEY"</span>
-<span class="fn">h</span>   = {<span class="str">"X-API-Key"</span>: KEY, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>}
-
-<span class="cm"># Store</span>
-requests.<span class="fn">post</span>(f<span class="str">"{API}/api/cards?workspace=default"</span>, headers=h,
-  json={<span class="str">"slug"</span>:<span class="str">"project-api"</span>, <span class="str">"title"</span>:<span class="str">"API"</span>,
-        <span class="str">"stack"</span>:<span class="str">"projects"</span>, <span class="str">"keywords"</span>:[<span class="str">"fastapi"</span>],
-        <span class="str">"body"</span>:<span class="str">"FastAPI 3.12 on AWS"</span>})
-
-<span class="cm"># Search</span>
-r = requests.<span class="fn">get</span>(f<span class="str">"{API}/api/search?workspace=default&q=python"</span>, headers=h)
-print(r.json())</pre>
-<pre id="code-js" class="hidden"><span class="cm">// Node.js / Deno / Bun</span>
-<span class="kw">const</span> <span class="fn">API</span> = <span class="str">"https://hyperstack-cloud.vercel.app"</span>
-<span class="kw">const</span> <span class="fn">KEY</span> = <span class="str">"YOUR_KEY"</span>
-
-<span class="cm">// Store</span>
-<span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${API}/api/cards?workspace=default`</span>, {
-  method: <span class="str">"POST"</span>,
-  headers: { <span class="str">"X-API-Key"</span>: KEY, <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span> },
-  body: JSON.stringify({
-    slug: <span class="str">"project-api"</span>, title: <span class="str">"API"</span>,
-    stack: <span class="str">"projects"</span>, keywords: [<span class="str">"fastapi"</span>],
-    body: <span class="str">"FastAPI 3.12 on AWS"</span>
-  })
-})
-
-<span class="cm">// Search</span>
-<span class="kw">const</span> r = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${API}/api/search?workspace=default&q=python`</span>,
-  { headers: { <span class="str">"X-API-Key"</span>: KEY } })</pre>
-  </div>
-</section>
-
-<section>
-  <div style="text-align:center;margin-bottom:20px">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">The math</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:6px">Real savings, real math</h2>
-    <p style="color:var(--dim);font-size:.85rem;max-width:560px;margin:0 auto">Based on Claude Sonnet at $3/M input tokens, 100 agent messages/day.</p>
-  </div>
-
-  <div class="ba">
-    <div class="ba-card" style="border-color:rgba(239,68,68,.3)">
-      <h3 style="color:var(--red)">Without HyperStack</h3>
-      <div class="num" style="color:var(--red)">~6,000</div>
-      <div class="sub">tokens every message</div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:12px;font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.7">
-        6,000 tok &times; 100 msgs/day<br>
-        = 600K tokens/day<br>
-        &times; 30 days = <strong style="color:var(--red)">18M tokens/mo</strong><br>
-        &times; $3/M = <strong style="color:var(--red)">$54/mo input alone</strong><br>
-        <span style="font-size:.62rem;color:var(--faint)">+ output tokens &amp; re-explanations &asymp; $270/mo</span>
-      </div>
-    </div>
-    <div class="ba-arrow">&rarr;</div>
-    <div class="ba-card" style="border-color:rgba(34,197,94,.3)">
-      <h3 style="color:var(--green)">With HyperStack</h3>
-      <div class="num" style="color:var(--green)">~350</div>
-      <div class="sub">tokens per message</div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:12px;font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.7">
-        350 tok &times; 100 msgs/day<br>
-        = 35K tokens/day<br>
-        &times; 30 days = <strong style="color:var(--green)">1.05M tokens/mo</strong><br>
-        &times; $3/M = <strong style="color:var(--green)">$3.15/mo input</strong><br>
-        <span style="font-size:.62rem;color:var(--faint)">+ $29 Pro plan = $32/mo total &mdash; <strong style="color:var(--green)">96% less</strong></span>
-      </div>
-    </div>
-  </div>
-
-  <div style="text-align:center;margin-top:14px">
-    <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Pricing based on <a href="https://www.anthropic.com/pricing" style="color:var(--dim)">Claude Sonnet 4</a> ($3/M input). GPT-4o and Opus savings are even higher.</p>
-  </div>
-</section>
-
-</div>
-
-<div id="ltab-howit" class="hidden">
-
-</div>
-
-<div id="ltab-compare" class="hidden">
-<section>
-  <div style="text-align:center;margin-bottom:24px">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Honest comparison</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">How we actually differ.</h2>
-    <p style="color:var(--dim);max-width:520px;margin:8px auto 0;font-size:.88rem">Mem0 has graph memory and webhooks. Here’s what’s different.</p>
-  </div>
-  <table class="ctable">
-    <thead><tr><th></th><th class="hs">HyperStack</th><th>Mem0</th><th>Zep</th><th>LangGraph</th></tr></thead>
-    <tbody>
-      <tr><td>Graph type</td><td class="hs">Developer-controlled typed</td><td>LLM-extracted</td><td>Temporal</td><td>Framework state</td></tr>
-      <tr><td>LLM cost per op</td><td class="hs">$0</td><td>~$0.002/op</td><td>~$0.002/op</td><td>$0 (locked)</td></tr>
-      <tr><td>Cross-tool sharing</td><td class="y">✔ Any agent, any tool</td><td>Per-project</td><td>Per-project</td><td>LangGraph only</td></tr>
-      <tr><td>Agent attribution</td><td class="y">✔ sourceAgent / targetAgent</td><td>—</td><td>—</td><td>—</td></tr>
-      <tr><td>Directed agent signals</td><td class="y">✔ Webhooks + SSE</td><td>Memory event hooks</td><td>—</td><td>—</td></tr>
-      <tr><td>Typed relations</td><td class="y">✔ owns, triggers, blocks&hellip;</td><td>LLM decides</td><td>—</td><td>—</td></tr>
-      <tr><td>Semantic + keyword</td><td class="y">✔ Hybrid (pgvector)</td><td>Semantic</td><td>Semantic</td><td>—</td></tr>
-      <tr><td>Version history</td><td class="y">✔ Time-travel any card</td><td>—</td><td>—</td><td>Checkpoints</td></tr>
-      <tr><td>Graph memory price</td><td class="hs">$29/mo</td><td>$249/mo (Pro)</td><td>Cloud only</td><td>Free (locked)</td></tr>
-    </tbody>
-  </table>
-  <div style="text-align:center;margin-top:16px">
-    <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Mem0 webhooks fire on memory events (add/update/delete). HyperStack webhooks are <strong style="color:var(--accent)">directed agent-to-agent signals</strong> &mdash; Agent A targets Agent B.</p>
-  </div>
-</section>
-</div>
-
-
-
-
-
-
-
-<!-- ═══════════════ INTEGRATIONS ═══════════════ -->
-<section style="padding:48px 0">
-  <div style="text-align:center;margin-bottom:28px">
-    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Integrations</div>
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">Drop into your stack in 30 seconds</h2>
-    <p style="color:var(--dim);font-size:.88rem;margin-top:6px">MCP server, LangGraph integration, or raw REST API. Pick your path.</p>
-  </div>
-  
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto">
-    
-    <!-- MCP Server -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--purple))"></div>
-      <div style="font-size:1.2rem;margin-bottom:8px">&#128268;</div>
-      <h3 style="font-family:var(--mono);font-size:.88rem;font-weight:700;margin-bottom:4px">MCP Server</h3>
-      <div style="font-family:var(--mono);font-size:.62rem;color:var(--green);margin-bottom:10px">&#10003; Tested in Cursor</div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px">
-        <code style="font-family:var(--mono);font-size:.72rem;color:var(--accent)">npm install -g hyperstack-mcp</code>
-      </div>
-      <p style="font-size:.72rem;color:var(--dim);line-height:1.5">Works with Cursor, Claude Desktop, VS Code, Windsurf. Auto-detects sourceAgent. Your agent shares memory across tools.</p>
-      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
-        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(255,107,43,.08);color:var(--accent);border:1px solid rgba(255,107,43,.2)">npm</span>
-        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.08);color:#60a5fa;border:1px solid rgba(59,130,246,.2)">v1.3.2</span>
-      </div>
-    </div>
-    
-    <!-- LangGraph -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--green))"></div>
-      <div style="font-size:1.2rem;margin-bottom:8px">&#129302;</div>
-      <h3 style="font-family:var(--mono);font-size:.88rem;font-weight:700;margin-bottom:4px">LangGraph</h3>
-      <div style="font-family:var(--mono);font-size:.62rem;color:var(--green);margin-bottom:10px">&#10003; 3 lines to add memory</div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px">
-        <code style="font-family:var(--mono);font-size:.72rem;color:var(--accent)">pip install hyperstack-langgraph</code>
-      </div>
-      <p style="font-size:.72rem;color:var(--dim);line-height:1.5">Pre-built tools + ReAct agent. Same graph as your MCP agents. Cross-tool memory with agent attribution and webhooks.</p>
-      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
-        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(255,107,43,.08);color:var(--accent);border:1px solid rgba(255,107,43,.2)">PyPI</span>
-        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.08);color:#60a5fa;border:1px solid rgba(59,130,246,.2)">v1.2.0</span>
-      </div>
-    </div>
-    
-    <!-- REST API -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),#fbbf24)"></div>
-      <div style="font-size:1.2rem;margin-bottom:8px">&#127758;</div>
-      <h3 style="font-family:var(--mono);font-size:.88rem;font-weight:700;margin-bottom:4px">REST API</h3>
-      <div style="font-family:var(--mono);font-size:.62rem;color:var(--green);margin-bottom:10px">&#10003; Any language, any agent</div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px">
-        <code style="font-family:var(--mono);font-size:.72rem;color:var(--accent)">pip install hyperstack-py</code>
-      </div>
-      <p style="font-size:.72rem;color:var(--dim);line-height:1.5">Python SDK or raw HTTP. cURL, fetch, requests &mdash; if it speaks HTTP, it works. No framework lock-in.</p>
-      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
-        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(255,107,43,.08);color:var(--accent);border:1px solid rgba(255,107,43,.2)">PyPI</span>
-        <span style="font-family:var(--mono);font-size:.58rem;padding:2px 6px;border-radius:4px;background:rgba(34,197,94,.08);color:var(--green);border:1px solid rgba(34,197,94,.2)">REST</span>
-      </div>
-    </div>
-    
-  </div>
-  
-  <div style="text-align:center;margin-top:20px">
-    <p style="font-family:var(--mono);font-size:.68rem;color:var(--faint)">Also on: <a href="https://www.npmjs.com/package/hyperstack-mcp" style="color:var(--dim)" target="_blank">npm</a> &middot; <a href="https://pypi.org/project/hyperstack-langgraph/" style="color:var(--dim)" target="_blank">PyPI</a> &middot; <a href="https://clawhub.org" style="color:var(--dim)" target="_blank">ClawHub</a></p>
-  </div>
-</section>
-
-<section style="padding:40px 0">
-  <div style="text-align:center">
-    <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem;margin-bottom:8px">Ready?</h2>
-    <p style="color:var(--dim);font-size:.9rem;margin-bottom:16px">Deterministic memory. Cross-tool graph. Directed signals. Start free.</p>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-      <button onclick="go('signup')" class="btn bp">Get Free Key &rarr;</button>
-      <button onclick="go('pricing')" class="btn bo">See Pricing</button>
-    </div>
-
-    <!-- What 10 free cards gets you -->
-    <div style="max-width:480px;margin:32px auto 0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center">
-      <div style="font-family:var(--mono);font-size:.7rem;letter-spacing:2px;color:var(--accent);margin-bottom:14px;text-transform:uppercase">What 10 free cards gets you</div>
-      <div class="fifty-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:.85rem;line-height:1.7;text-align:left;max-width:360px;margin:0 auto">
-        <div><span style="color:var(--accent)">2-3</span> <span style="color:var(--dim)">team members</span></div>
-        <div><span style="color:var(--accent)">2-3</span> <span style="color:var(--dim)">decisions</span></div>
-        <div><span style="color:var(--accent)">2-3</span> <span style="color:var(--dim)">preferences</span></div>
-        <div><span style="color:var(--accent)">1-2</span> <span style="color:var(--dim)">projects</span></div>
-      </div>
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-family:var(--mono);font-size:.72rem;color:var(--faint)">
-        <span>Enough to try it. <a href="javascript:void(0)" onclick="go('pricing')" style="color:var(--accent)">$29/mo unlocks graph + 100 cards &rarr;</a></span>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-<footer><div class="c">© 2026 CascadeAI</div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Join Discord</a><a href="https://clawhub.ai/deeqyaqub1-cmd/zero-rules" style="color:var(--accent)" target="_blank">ZeroRules</a><a href="https://clawhub.ai/deeqyaqub1-cmd/skillfence" style="color:var(--accent)" target="_blank">SkillFence</a></div></footer>
-</div>
-</div>
-
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• SIGNUP â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══ PRESERVED SPA PAGES (signup/login/forgot/reset/pricing/success/docs/dash) ═══ -->
 <div id="p-signup" class="hidden">
 <div class="w">
   <div class="auth">
@@ -1748,7 +761,7 @@ print(r.json())</pre>
 <div id="p-dash" class="hidden">
 <div class="dash">
   <div class="sb">
-    <div class="brand"><div class="logo" onclick="go('landing')" style="font-size:1.15rem"><img src="data:image/webp;base64,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" alt="" width="30" height="30" style="border-radius:6px;flex-shrink:0"> HyperStack</div><p>Dashboard</p></div>
+    <div class="brand"><p>Dashboard</p></div>
     <button class="sbtn act" onclick="dt('start')" id="t-start">🚀 Get Started</button>
     <button class="sbtn" onclick="dt('cards')" id="t-cards">🃏 Cards</button>
     <button class="sbtn" onclick="dt('graph')" id="t-graph">🔗 Graph</button>
@@ -1776,7 +789,6 @@ print(r.json())</pre>
   </div>
 </div>
 </div>
-
 <script>
 function toggleFaq(el){el.classList.toggle('open')}
 </script>
@@ -1788,12 +800,10 @@ function showLTab(id,btn){
   });
   document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('act')});
   if(btn)btn.classList.add('act');
-  // Trigger graph demo when See It In Action tab shown
   if(id==='problem'&&typeof demoGraphPlay==='function'){setTimeout(demoGraphPlay,100)}
 }
 </script>
 <script>
-// Auto-fill reset token if available from verification
 document.addEventListener('DOMContentLoaded',function(){
   var t=sessionStorage.getItem('_rst');
   if(t){
@@ -1802,6 +812,6 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 });
 </script>
-<script src="app.js?v=32"></script>
+<script src="app.js?v=34"></script>
 </body>
 </html>
