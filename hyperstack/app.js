@@ -2151,45 +2151,47 @@ function updatePricingButtons(){
 /* ═══════════════════════════════════════════
    🤖 AGENTS — Activity feed + Memory health
    ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   AGENTS v2 — fixes: icon, contrast, explanation
+   ═══════════════════════════════════════════ */
 function rAgents(el){
   var pro=U.plan==='PRO'||U.plan==='TEAM'||U.plan==='BUSINESS';
   if(!pro){
     el.innerHTML=`
-    <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agents</h1><p>Debug failures and track memory health</p></div></div>
+    <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px"><span style="font-size:1.3rem">&#x1F916;</span> Agents</h1><p>Debug failures and track memory health</p></div></div>
     <div style="position:relative;margin-bottom:16px">
       <div style="position:absolute;inset:-2px;border-radius:16px;background:linear-gradient(135deg,rgba(68,255,136,.2),rgba(59,130,246,.15));opacity:.2;filter:blur(20px)"></div>
       <div style="position:relative;background:var(--surface);border:2px solid rgba(68,255,136,.15);border-radius:14px;padding:36px 28px;text-align:center">
-        <div style="font-size:2rem;margin-bottom:12px">🤖</div>
-        <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Agent Insights requires Pro</h3>
-        <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:420px;margin-left:auto;margin-right:auto">See exactly what your agents wrote, when, and what changed. Get a memory health score with specific recommendations.</p>
+        <div style="font-size:2rem;margin-bottom:12px">&#x1F916;</div>
+        <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px;color:#fff">Agent Insights requires Pro</h3>
+        <p style="color:rgba(255,255,255,.55);font-size:.85rem;margin-bottom:20px;max-width:420px;margin-left:auto;margin-right:auto">See exactly what your agents wrote, when, and what changed. Get a memory health score with specific recommendations.</p>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 auto 20px;max-width:480px">
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--accent)">📋</div>
-            <div style="font-size:.65rem;color:var(--faint);margin-top:4px">Activity feed</div>
+            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--accent)">&#x1F4CB;</div>
+            <div style="font-size:.65rem;color:rgba(255,255,255,.4);margin-top:4px">Activity feed</div>
           </div>
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--green)">💚</div>
-            <div style="font-size:.65rem;color:var(--faint);margin-top:4px">Health score</div>
+            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--green)">&#x1F49A;</div>
+            <div style="font-size:.65rem;color:rgba(255,255,255,.4);margin-top:4px">Health score</div>
           </div>
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--blue)">🔍</div>
-            <div style="font-size:.65rem;color:var(--faint);margin-top:4px">Debug failures</div>
+            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:#60a5fa">&#x1F50D;</div>
+            <div style="font-size:.65rem;color:rgba(255,255,255,.4);margin-top:4px">Debug failures</div>
           </div>
         </div>
         <div style="display:flex;gap:8px;justify-content:center">
-          <a href="javascript:void(0)" onclick="go('pricing')" class="btn bp">Upgrade to Pro →</a>
+          <a href="javascript:void(0)" onclick="go('pricing')" class="btn bp">Upgrade to Pro &#x2192;</a>
         </div>
       </div>
     </div>`;
     return;
   }
 
-  // Loading state
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agents</h1><p id="agents-status">Loading agent data...</p></div>
-    <button class="btn bo bs" onclick="rAgents(document.getElementById('dm'))" style="font-size:.72rem">↻ Refresh</button>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px"><span style="font-size:1.3rem">&#x1F916;</span> Agents</h1><p id="agents-status">Loading agent data...</p></div>
+    <button class="btn bo bs" onclick="rAgents(document.getElementById('dm'))" style="font-size:.72rem">&#x21BB; Refresh</button>
   </div>
-  <div style="text-align:center;padding:40px;color:var(--dim)">
+  <div style="text-align:center;padding:40px;color:rgba(255,255,255,.4)">
     <div class="loading-dots"><span></span><span></span><span></span></div>
     <div style="font-family:var(--mono);font-size:.78rem;margin-top:8px">Fetching agent activity...</div>
   </div>`;
@@ -2203,169 +2205,167 @@ function rAgents(el){
 function _renderAgents(el,cards){
   var now=Date.now();
   var totalCards=cards.length;
-  var limit=cards.length>0?({FREE:10,PRO:100,TEAM:500,BUSINESS:2000}[U.plan]||100):100;
+  var limit={FREE:10,PRO:100,TEAM:500,BUSINESS:2000}[U.plan]||100;
 
-  // ── Health score calculation ──
-  var staleCards=cards.filter(function(c){
-    var upd=new Date(c.updatedAt||c.createdAt||now).getTime();
-    return (now-upd)>(21*24*60*60*1000);
-  });
+  var staleCards=cards.filter(function(c){return(now-new Date(c.updatedAt||c.createdAt||now).getTime())>(21*864e5)});
   var linkedCards=cards.filter(function(c){return c.links&&c.links.length>0});
   var typedCards=cards.filter(function(c){return c.cardType&&c.cardType!=='general'});
   var keywordedCards=cards.filter(function(c){return c.keywords&&c.keywords.length>0});
-  var freshCards=cards.filter(function(c){
-    var upd=new Date(c.updatedAt||c.createdAt||now).getTime();
-    return (now-upd)<(7*24*60*60*1000);
-  });
 
-  // Score components (out of 100)
-  var scoreComponents={
-    freshness: totalCards>0?Math.round((1-staleCards.length/totalCards)*25):25,
-    structure: totalCards>0?Math.round((typedCards.length/totalCards)*20):0,
-    keywords:  totalCards>0?Math.round((keywordedCards.length/totalCards)*20):0,
-    links:     totalCards>0?Math.round((linkedCards.length/totalCards)*20):0,
-    volume:    Math.min(20,Math.round((totalCards/Math.max(1,limit*0.3))*20))
+  var sc={
+    freshness:totalCards>0?Math.round((1-staleCards.length/totalCards)*25):25,
+    structure:totalCards>0?Math.round((typedCards.length/totalCards)*20):0,
+    keywords: totalCards>0?Math.round((keywordedCards.length/totalCards)*20):0,
+    links:    totalCards>0?Math.round((linkedCards.length/totalCards)*20):0,
+    volume:   Math.min(20,Math.round((totalCards/Math.max(1,limit*0.3))*20))
   };
-  var healthScore=Object.values(scoreComponents).reduce(function(a,b){return a+b},0);
-  healthScore=Math.min(100,Math.max(0,healthScore));
+  var healthScore=Math.min(100,Math.max(0,Object.values(sc).reduce(function(a,b){return a+b},0)));
+  var hc=healthScore>=80?'var(--green)':healthScore>=60?'var(--accent)':healthScore>=40?'var(--yellow)':'var(--red)';
+  var hl=healthScore>=80?'Excellent':healthScore>=60?'Good':healthScore>=40?'Fair':'Needs attention';
+  var he=healthScore>=80?'&#x1F49A;':healthScore>=60?'&#x1F7E1;':'&#x1F534;';
 
-  var healthColor=healthScore>=80?'var(--green)':healthScore>=60?'var(--accent)':healthScore>=40?'var(--yellow)':'var(--red)';
-  var healthLabel=healthScore>=80?'Excellent':healthScore>=60?'Good':healthScore>=40?'Fair':'Needs attention';
-  var healthEmoji=healthScore>=80?'💚':healthScore>=60?'🟡':'🔴';
-
-  // Build recommendations
   var recs=[];
-  if(staleCards.length>0)recs.push({icon:'⚠️',color:'var(--yellow)',text:staleCards.length+' card'+(staleCards.length>1?'s are':' is')+' stale (21+ days). Review or archive them.',action:null});
-  if(typedCards.length<totalCards*0.5&&totalCards>2)recs.push({icon:'🏷️',color:'var(--blue)',text:'Only '+typedCards.length+'/'+totalCards+' cards have a type. Add cardType to improve graph traversal.',action:null});
-  if(linkedCards.length<totalCards*0.3&&totalCards>3)recs.push({icon:'🔗',color:'var(--purple)',text:'Only '+linkedCards.length+' cards have links. Connect related cards to unlock graph queries.',action:null});
-  if(keywordedCards.length<totalCards*0.7&&totalCards>2)recs.push({icon:'🔍',color:'var(--accent)',text:(totalCards-keywordedCards.length)+' cards have no keywords. Keywords improve search precision.',action:null});
-  if(totalCards===0)recs.push({icon:'📭',color:'var(--dim)',text:'No cards yet. Create your first card to start tracking agent memory.',action:'dt(\'cards\')'});
-  if(recs.length===0)recs.push({icon:'✅',color:'var(--green)',text:'Memory looks healthy! All cards are fresh, typed, and well-connected.',action:null});
+  if(staleCards.length>0)recs.push({icon:'&#x26A0;&#xFE0F;',text:staleCards.length+' card'+(staleCards.length>1?'s are':' is')+' stale (21+ days old). Review or archive them.'});
+  if(typedCards.length<totalCards*0.5&&totalCards>2)recs.push({icon:'&#x1F3F7;&#xFE0F;',text:'Only '+typedCards.length+'/'+totalCards+' cards have a cardType. Add types to improve graph traversal.'});
+  if(linkedCards.length<totalCards*0.3&&totalCards>3)recs.push({icon:'&#x1F517;',text:'Only '+linkedCards.length+' cards have links. Connect related cards to unlock graph queries.'});
+  if(keywordedCards.length<totalCards*0.7&&totalCards>2)recs.push({icon:'&#x1F50D;',text:(totalCards-keywordedCards.length)+' cards have no keywords. Keywords improve search precision.'});
+  if(totalCards===0)recs.push({icon:'&#x1F4ED;',text:'No cards yet. Create your first card to start tracking agent memory.',action:"dt('cards')"});
+  if(recs.length===0)recs.push({icon:'&#x2705;',text:'Memory looks healthy! All cards are fresh, typed, and well-connected.'});
 
-  // ── Activity feed (simulate from cards data) ──
-  // Sort cards by updatedAt to create a timeline
   var activityCards=cards.slice().sort(function(a,b){
-    var ta=new Date(a.updatedAt||a.createdAt||0).getTime();
-    var tb=new Date(b.updatedAt||b.createdAt||0).getTime();
-    return tb-ta;
+    return new Date(b.updatedAt||b.createdAt||0).getTime()-new Date(a.updatedAt||a.createdAt||0).getTime();
   }).slice(0,12);
 
+  var typeColors={person:'#a855f7',project:'#3b82f6',decision:'#ff6b2b',preference:'#22c55e',workflow:'#eab308',signal:'#ef4444',general:'#6b7280'};
+
   var activityHtml=activityCards.length===0
-    ?'<div style="text-align:center;padding:28px;color:var(--dim);font-size:.82rem">No activity yet — create some cards to see what your agent has been doing.</div>'
+    ?'<div style="text-align:center;padding:28px;color:rgba(255,255,255,.4);font-size:.82rem">No activity yet.</div>'
     :activityCards.map(function(c){
-      var upd=new Date(c.updatedAt||c.createdAt||now);
-      var daysAgo=Math.floor((now-upd.getTime())/(24*60*60*1000));
+      var daysAgo=Math.floor((now-new Date(c.updatedAt||c.createdAt||now).getTime())/864e5);
       var timeLabel=daysAgo===0?'Today':daysAgo===1?'Yesterday':daysAgo+'d ago';
-      var sourceAgent=c.sourceAgent||c.authorId||null;
-      var agentLabel=sourceAgent?('<span style="font-family:var(--mono);font-size:.6rem;color:var(--accent);background:rgba(68,255,136,.08);border:1px solid rgba(68,255,136,.15);padding:1px 7px;border-radius:4px">'+sourceAgent+'</span>'):'<span style="font-family:var(--mono);font-size:.6rem;color:var(--dim);background:var(--surface2);border:1px solid var(--border);padding:1px 7px;border-radius:4px">manual</span>';
-      var typeColors={person:'#a855f7',project:'#3b82f6',decision:'#ff6b2b',preference:'#22c55e',workflow:'#eab308',signal:'#ef4444',general:'#6b7280'};
+      var sourceAgent=c.sourceAgent||null;
+      var agentLabel=sourceAgent
+        ?'<span style="font-family:var(--mono);font-size:.6rem;color:var(--accent);background:rgba(68,255,136,.1);border:1px solid rgba(68,255,136,.2);padding:1px 7px;border-radius:4px">'+sourceAgent+'</span>'
+        :'<span style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.5);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:1px 7px;border-radius:4px">manual</span>';
       var tc=typeColors[c.cardType]||typeColors.general;
-      var hasLinks=c.links&&c.links.length>0;
-      var ver=c.ver||c._count||1;
+      var ver=c.ver||1;
       var action=ver>1?'updated':'created';
       var actionColor=ver>1?'var(--yellow)':'var(--green)';
-
-      return'<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;transition:border-color .2s" onmouseover="this.style.borderColor=\''+tc+'44\'" onmouseout="this.style.borderColor=\'var(--border)\'">'
+      var hasLinks=c.links&&c.links.length>0;
+      return'<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;margin-bottom:6px;transition:border-color .2s" onmouseover="this.style.borderColor=\''+tc+'66\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,.08)\'">'
         +'<div style="width:7px;height:7px;border-radius:50%;background:'+actionColor+';box-shadow:0 0 6px '+actionColor+';margin-top:5px;flex-shrink:0"></div>'
         +'<div style="flex:1;min-width:0">'
           +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px">'
             +agentLabel
             +'<span style="font-family:var(--mono);font-size:.65rem;color:'+actionColor+'">'+action+'</span>'
-            +'<span style="font-family:var(--mono);font-size:.72rem;color:var(--text);font-weight:600">'+c.slug+'</span>'
-            +(hasLinks?'<span style="font-family:var(--mono);font-size:.58rem;color:var(--purple)">+'+c.links.length+' link'+(c.links.length>1?'s':'')+'</span>':'')
+            +'<span style="font-family:var(--mono);font-size:.72rem;color:#e8e8ec;font-weight:600">'+c.slug+'</span>'
+            +(hasLinks?'<span style="font-family:var(--mono);font-size:.58rem;color:#c084fc">+'+c.links.length+' link'+(c.links.length>1?'s':'')+'</span>':'')
           +'</div>'
-          +'<div style="font-size:.75rem;color:var(--dim);display:flex;align-items:center;gap:8px">'
-            +'<span style="background:'+tc+'12;color:'+tc+';font-family:var(--mono);font-size:.58rem;padding:1px 6px;border-radius:4px;border:1px solid '+tc+'20">'+(c.cardType||'general')+'</span>'
+          +'<div style="font-size:.75rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:8px">'
+            +'<span style="background:'+tc+'20;color:'+tc+';font-family:var(--mono);font-size:.58rem;padding:1px 6px;border-radius:4px;border:1px solid '+tc+'30">'+(c.cardType||'general')+'</span>'
             +'<span>'+c.title+'</span>'
           +'</div>'
         +'</div>'
-        +'<span style="font-family:var(--mono);font-size:.6rem;color:var(--faint);white-space:nowrap;flex-shrink:0">'+timeLabel+'</span>'
+        +'<span style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.3);white-space:nowrap;flex-shrink:0">'+timeLabel+'</span>'
       +'</div>';
     }).join('');
 
-  // ── Render full UI ──
-  document.getElementById('agents-status').textContent=totalCards+' cards · '+U.plan+' plan';
-
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agents</h1><p id="agents-status">${totalCards} cards · ${U.plan} plan</p></div>
-    <button class="btn bo bs" onclick="rAgents(document.getElementById('dm'))" style="font-size:.72rem">↻ Refresh</button>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px"><span style="font-size:1.3rem">&#x1F916;</span> Agents</h1><p style="color:rgba(255,255,255,.5)">${totalCards} cards &middot; ${U.plan} plan</p></div>
+    <button class="btn bo bs" onclick="rAgents(document.getElementById('dm'))" style="font-size:.72rem">&#x21BB; Refresh</button>
   </div>
 
-  <!-- ── Health Score ── -->
-  <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:20px">
-
-    <!-- Score ring card -->
+  <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:16px">
     <div style="position:relative">
-      <div style="position:absolute;inset:-2px;border-radius:14px;background:${healthColor};opacity:.08;filter:blur(16px)"></div>
-      <div style="position:relative;background:var(--surface);border:2px solid ${healthColor}33;border-radius:14px;padding:20px;text-align:center">
-        <div style="font-family:var(--mono);font-size:.62rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">MEMORY HEALTH</div>
-
-        <!-- SVG ring -->
+      <div style="position:absolute;inset:-2px;border-radius:14px;background:${hc};opacity:.1;filter:blur(16px)"></div>
+      <div style="position:relative;background:var(--surface);border:2px solid ${hc}44;border-radius:14px;padding:20px;text-align:center">
+        <div style="font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">MEMORY HEALTH</div>
         <div style="position:relative;display:inline-block;margin-bottom:8px">
           <svg width="90" height="90" viewBox="0 0 90 90" style="transform:rotate(-90deg)">
             <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="8"/>
-            <circle cx="45" cy="45" r="36" fill="none" stroke="${healthColor}" stroke-width="8"
+            <circle cx="45" cy="45" r="36" fill="none" stroke="${hc}" stroke-width="8"
               stroke-dasharray="${Math.round(healthScore/100*226.2)} 226.2"
-              stroke-linecap="round" style="transition:stroke-dasharray .8s ease;filter:drop-shadow(0 0 6px ${healthColor})"/>
+              stroke-linecap="round" style="filter:drop-shadow(0 0 6px ${hc})"/>
           </svg>
           <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column">
-            <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${healthColor};line-height:1">${healthScore}</div>
-            <div style="font-family:var(--mono);font-size:.55rem;color:var(--faint)">/ 100</div>
+            <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${hc};line-height:1">${healthScore}</div>
+            <div style="font-family:var(--mono);font-size:.55rem;color:rgba(255,255,255,.35)">/ 100</div>
           </div>
         </div>
-
-        <div style="font-family:var(--mono);font-size:.78rem;font-weight:600;color:${healthColor}">${healthEmoji} ${healthLabel}</div>
-        <div style="font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-top:4px">Updated just now</div>
+        <div style="font-family:var(--mono);font-size:.78rem;font-weight:600;color:${hc}">${he} ${hl}</div>
+        <div style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.3);margin-top:4px">Updated just now</div>
       </div>
     </div>
 
-    <!-- Score breakdown -->
-    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px">
-      <div style="font-family:var(--mono);font-size:.68rem;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">SCORE BREAKDOWN</div>
+    <div style="background:var(--surface);border:2px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
+      <div style="font-family:var(--mono);font-size:.68rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">SCORE BREAKDOWN</div>
       ${[
-        {label:'Freshness',val:scoreComponents.freshness,max:25,color:'var(--green)',tip:'Cards updated in last 21 days'},
-        {label:'Structure',val:scoreComponents.structure,max:20,color:'var(--blue)',tip:'Cards with typed cardType'},
-        {label:'Keywords',val:scoreComponents.keywords,max:20,color:'var(--accent)',tip:'Cards with keywords for search'},
-        {label:'Links',val:scoreComponents.links,max:20,color:'var(--purple)',tip:'Cards connected by links'},
-        {label:'Volume',val:scoreComponents.volume,max:20,color:'var(--yellow)',tip:'Using at least 30% of your card limit'}
+        {label:'Freshness',val:sc.freshness,max:25,color:'var(--green)',tip:'Cards updated in last 21 days (out of 25pts)'},
+        {label:'Structure',val:sc.structure,max:20,color:'#60a5fa',tip:'Cards with a typed cardType, not "general" (out of 20pts)'},
+        {label:'Keywords', val:sc.keywords, max:20,color:'var(--accent)',tip:'Cards with keywords array for search (out of 20pts)'},
+        {label:'Links',    val:sc.links,    max:20,color:'#c084fc',tip:'Cards connected by links to other cards (out of 20pts)'},
+        {label:'Volume',   val:sc.volume,   max:20,color:'var(--yellow)',tip:'Using at least 30% of your '+limit+'-card plan limit (out of 20pts)'}
       ].map(function(s){
         var pct=Math.round(s.val/s.max*100);
-        return'<div style="margin-bottom:10px" title="'+s.tip+'">'
+        return'<div style="margin-bottom:10px">'
           +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">'
-            +'<span style="font-family:var(--mono);font-size:.68rem;color:var(--dim)">'+s.label+'</span>'
+            +'<span style="font-family:var(--mono);font-size:.68rem;color:rgba(255,255,255,.7)" title="'+s.tip+'">'+s.label+' <span style="color:rgba(255,255,255,.25);font-size:.58rem">?</span></span>'
             +'<span style="font-family:var(--mono);font-size:.65rem;color:'+s.color+'">'+s.val+'/'+s.max+'</span>'
           +'</div>'
-          +'<div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px">'
-            +'<div style="height:100%;width:'+pct+'%;background:'+s.color+';border-radius:2px;transition:width .6s ease"></div>'
+          +'<div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px">'
+            +'<div style="height:100%;width:'+pct+'%;background:'+s.color+';border-radius:3px"></div>'
           +'</div>'
+          +'<div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.25);margin-top:2px">'+s.tip+'</div>'
         +'</div>';
       }).join('')}
     </div>
   </div>
 
-  <!-- ── Recommendations ── -->
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
-    <div style="font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:12px">💡 Recommendations</div>
+  <!-- How score is calculated -->
+  <div style="margin-bottom:16px">
+    <button onclick="var e=document.getElementById('ag-explain');e.style.display=e.style.display==='none'?'block':'none'" style="background:var(--surface);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;width:100%;cursor:pointer;display:flex;align-items:center;gap:8px;text-align:left">
+      <span style="color:var(--accent);font-size:.7rem">&#x25B6;</span>
+      <span style="font-family:var(--mono);font-size:.78rem;font-weight:700;color:#e8e8ec">&#x1F4D0; How is this score calculated?</span>
+      <span style="font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.3);margin-left:auto">click to expand</span>
+    </button>
+    <div id="ag-explain" style="display:none;background:var(--surface);border:1px solid rgba(255,255,255,.08);border-top:none;border-radius:0 0 10px 10px;padding:18px 20px">
+      <div style="font-family:var(--mono);font-size:.72rem;color:rgba(255,255,255,.7);line-height:2">
+        The health score is built from <strong style="color:#e8e8ec">5 components</strong> totalling 100 points:<br><br>
+        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:start">
+          <span style="color:var(--green);font-weight:700">Freshness</span><span style="color:rgba(255,255,255,.5)">% of cards updated in last 21 days</span><span style="color:var(--green)">25 pts</span>
+          <span style="color:#60a5fa;font-weight:700">Structure</span><span style="color:rgba(255,255,255,.5)">% of cards with a typed cardType (not "general")</span><span style="color:#60a5fa">20 pts</span>
+          <span style="color:var(--accent);font-weight:700">Keywords</span><span style="color:rgba(255,255,255,.5)">% of cards with a keywords array</span><span style="color:var(--accent)">20 pts</span>
+          <span style="color:#c084fc;font-weight:700">Links</span><span style="color:rgba(255,255,255,.5)">% of cards linked to other cards</span><span style="color:#c084fc">20 pts</span>
+          <span style="color:var(--yellow);font-weight:700">Volume</span><span style="color:rgba(255,255,255,.5)">using at least 30% of your ${limit}-card limit</span><span style="color:var(--yellow)">20 pts</span>
+        </div>
+        <br>
+        <strong style="color:#e8e8ec">Your score: ${healthScore}/100</strong> &nbsp;&middot;&nbsp;
+        <span style="color:rgba(255,255,255,.4)">${totalCards} cards · ${staleCards.length} stale · ${typedCards.length} typed · ${keywordedCards.length} with keywords · ${linkedCards.length} linked</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border:2px solid rgba(255,255,255,.08);border-radius:14px;padding:20px;margin-bottom:16px">
+    <div style="font-family:var(--mono);font-size:.72rem;font-weight:700;color:#e8e8ec;margin-bottom:12px">&#x1F4A1; Recommendations</div>
     ${recs.map(function(r){
-      return'<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:6px">'
+      return'<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;margin-bottom:6px">'
         +'<span style="font-size:.95rem;flex-shrink:0">'+r.icon+'</span>'
-        +'<span style="font-size:.8rem;color:var(--dim);line-height:1.5">'+r.text+'</span>'
-        +(r.action?'<button onclick="'+r.action+'" class="btn bp bs" style="font-size:.65rem;white-space:nowrap;flex-shrink:0;margin-left:auto">Fix →</button>':'')
+        +'<span style="font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.5">'+r.text+'</span>'
+        +(r.action?'<button onclick="'+r.action+'" class="btn bp bs" style="font-size:.65rem;white-space:nowrap;flex-shrink:0;margin-left:auto">Fix &#x2192;</button>':'')
       +'</div>';
     }).join('')}
   </div>
 
-  <!-- ── Activity Feed ── -->
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px">
+  <div style="background:var(--surface);border:2px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div style="font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--text)">📋 Recent Agent Activity</div>
-      <span style="font-family:var(--mono);font-size:.6rem;color:var(--faint)">Last ${activityCards.length} writes</span>
+      <div style="font-family:var(--mono);font-size:.72rem;font-weight:700;color:#e8e8ec">&#x1F4CB; Recent Agent Activity</div>
+      <span style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.3)">Last ${activityCards.length} writes</span>
     </div>
-    <div style="font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-bottom:10px;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:6px;border:1px solid var(--border)">
-      🔎 Showing cards sorted by last update. Add <code style="color:var(--accent)">sourceAgent</code> field when writing cards to see which agent wrote each entry.
+    <div style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.3);margin-bottom:10px;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:6px;border:1px solid rgba(255,255,255,.07)">
+      Add <code style="color:var(--accent)">sourceAgent</code> field when writing cards to tag which agent wrote each entry.
     </div>
     ${activityHtml}
-    ${totalCards===0?'':'<div style="text-align:center;margin-top:10px"><button class="btn bo bs" style="font-size:.72rem" onclick="dt(\'cards\')">View all cards →</button></div>'}
+    ${totalCards>0?'<div style="text-align:center;margin-top:10px"><button class="btn bo bs" style="font-size:.72rem" onclick="dt(\'cards\')">View all cards &#x2192;</button></div>':''}
   </div>
 
   <style>
