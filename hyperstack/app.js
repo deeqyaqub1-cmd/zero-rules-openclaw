@@ -148,6 +148,7 @@ function rStart(el){
       <div class="key-display">
         <code>${U.apiKey}</code>
         <button onclick="cpKey(this)">Copy</button>
+        <button onclick="rgKey(this)" style="margin-left:8px;background:transparent;border:1px solid var(--dim);color:var(--dim);font-size:.75rem;padding:4px 10px;border-radius:6px;cursor:pointer">Regenerate</button>
       </div>
       <p style="font-size:.72rem;color:var(--faint);margin-top:6px">Set as <code style="color:var(--accent);font-family:var(--mono);font-size:.72rem">HYPERSTACK_API_KEY</code> in your agent's environment</p>
     </div>
