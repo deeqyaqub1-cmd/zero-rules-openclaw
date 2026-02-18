@@ -103,21 +103,35 @@ function showPlatform(p,btn){['mcp','openclaw','claude','python','js','curl'].fo
 
 function renderD(){if(!U)return;
   document.getElementById("d-em").textContent=U.email;
-  var planBadges={BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',PRO:'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>',TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'};
+  var planBadges={
+    BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',
+    PRO:'<span class="badge" style="background:rgba(68,255,136,.1);color:var(--accent);border:1px solid rgba(68,255,136,.25)">PRO</span>',
+    TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'
+  };
   var upgradeLink='';
-  if(U.plan==='FREE')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono)">Upgrade</a>';
-  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:#60a5fa;font-family:var(--mono)">→ Team</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
-  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:var(--green);font-family:var(--mono)">→ Business</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
-  else if(U.plan==='BUSINESS')upgradeLink=' <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage subscription</a>';
-  document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>')+upgradeLink;
-  // Also show in the visible top plan bar
+  if(U.plan==='FREE')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono);text-decoration:underline">Upgrade →</a>';
+  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:#60a5fa;font-family:var(--mono)">→ Team</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:var(--orange);font-family:var(--mono);text-decoration:underline">Manage</a>';
+  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:var(--green);font-family:var(--mono)">→ Business</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:var(--orange);font-family:var(--mono);text-decoration:underline">Manage</a>';
+  else if(U.plan==='BUSINESS')upgradeLink=' <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:var(--orange);font-family:var(--mono);text-decoration:underline">Manage</a>';
+  document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.08);color:var(--dim);border:1px solid rgba(136,136,160,.15)">FREE</span>')+upgradeLink;
+  // Show/hide Pro badge on graph sidebar button
+  var graphBadge=document.getElementById('sb-graph-badge');
+  if(graphBadge)graphBadge.style.display=(U.plan==='FREE')?'inline-flex':'none';
+  // Plan bar for non-free plans
   var planBar=document.getElementById("d-plan-bar");
-  if(planBar&&U.plan!=='FREE'){
-    planBar.style.display='block';
-    planBar.innerHTML='Plan: '+(planBadges[U.plan]||U.plan)+upgradeLink;
-  }else if(planBar){planBar.style.display='none'}
+  if(planBar&&U.plan!=='FREE'){planBar.style.display='block';planBar.innerHTML='Plan: '+(planBadges[U.plan]||U.plan)+upgradeLink}
+  else if(planBar){planBar.style.display='none'}
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
+
+// ── Toast notification ──
+function hsToast(msg,type,dur){
+  var t=document.getElementById('hs-toast');
+  if(!t){t=document.createElement('div');t.id='hs-toast';t.className='hs-toast';document.body.appendChild(t)}
+  t.textContent=msg;t.className='hs-toast '+(type||'ok');
+  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show')})});
+  clearTimeout(t._tid);t._tid=setTimeout(function(){t.classList.remove('show')},dur||2500);
+}
 
 /* ═══════════════════════════════════════════
    🚀 GET STARTED — Premium animated onboarding
@@ -246,17 +260,39 @@ await fetch("${A}/api/cards?workspace=default", {
       <span class="ql-icon">📖</span>
       <div class="ql-label">Docs</div>
     </div>
-  </div>`;
+  </div>
+
+  <!-- Plan usage bar -->
+  <div id="start-usage-bar" style="margin-top:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px 18px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim)">Card usage</span>
+      <span id="start-usage-txt" style="font-family:var(--mono);font-size:.72rem;color:var(--text)">Loading...</span>
+    </div>
+    <div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden">
+      <div id="start-usage-fill" style="height:100%;width:0%;background:var(--accent);border-radius:3px;transition:width .6s ease"></div>
+    </div>
+    <div id="start-usage-sub" style="font-family:var(--mono);font-size:.65rem;color:var(--faint);margin-top:5px;text-align:right"></div>
+  </div>
+  `;
+  // Load real card count for usage bar
+  fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
+    var count=d.cards?d.cards.length:0;var limit=d.limit||10;var pct=Math.round(count/limit*100);
+    var txt=document.getElementById('start-usage-txt');var fill=document.getElementById('start-usage-fill');var sub=document.getElementById('start-usage-sub');
+    if(txt)txt.textContent=count+' / '+limit+' cards';
+    if(fill){fill.style.width=Math.min(pct,100)+'%';fill.style.background=pct>=90?'var(--red)':pct>=70?'var(--orange)':'var(--accent)'}
+    if(sub)sub.textContent=pct>=90?'Near limit — consider upgrading':pct>=70?'Getting full — '+Math.max(0,limit-count)+' remaining':''+Math.max(0,limit-count)+' cards remaining on '+d.plan+' plan'
+  }).catch(function(){var txt=document.getElementById('start-usage-txt');if(txt)txt.textContent='—'});
 }
 
 /* ═══════════════════════════════════════════
    🃏 CARDS — Premium card grid with glow
    ═══════════════════════════════════════════ */
 function rCards(el){
-  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🃏 Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
+  if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}.hsc{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .3s;animation:cardIn .4s ease both}.hsc:hover{transform:translateY(-4px)}.hsc-glow{position:absolute;inset:0;opacity:.18;pointer-events:none;transition:opacity .3s;border-radius:16px}.hsc:hover .hsc-glow{opacity:.35}.hsc-border{border-radius:16px;background:linear-gradient(145deg,#1a1a24 0%,#12121a 100%);position:relative;height:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}.hsc:hover .hsc-border{border-color:rgba(255,255,255,.2);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.06)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.8rem;padding:3px 7px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ff6b6b;background:rgba(239,68,68,.15)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.fb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:.75rem;padding:6px 16px;cursor:pointer;transition:all .2s;font-weight:500}.fb:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:var(--mono);font-size:.8rem;padding:8px 16px;outline:none;width:200px;transition:all .2s}.sinput:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}.sinput::placeholder{color:rgba(255,255,255,.3)}.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em}.dh p{color:rgba(255,255,255,.4);font-size:.8rem;margin:5px 0 0}.loading-dots{display:inline-flex;gap:5px;margin-bottom:10px}.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);padding:16px}.card-expand-inner{background:#16161f;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;max-width:540px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}@media(max-width:600px){.card-expand{padding:0;align-items:flex-end}.card-expand-inner{border-radius:18px 18px 0 0;max-height:92vh;width:100%;max-width:100%;padding:20px}}@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
+  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🃏 Memory Cards</h1><p id="cards-status">Loading...</p></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><input class="sinput" placeholder="🔍 Search cards..." oninput="fCards(this.value)" style="min-width:150px;flex:1"><button class="btn bp bs" onclick="showCardForm()" style="white-space:nowrap">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div><div style="font-family:var(--mono);font-size:.78rem">Loading cards...</div></div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
-    document.querySelector('.dh p').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
+    document.getElementById('cards-status').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
     const cl=document.getElementById('cl');
     if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:48px 20px">
       <div style="position:relative;display:inline-block;margin-bottom:16px">
@@ -283,24 +319,24 @@ function rCards(el){
           <div class="hsc-header" style="border-color:${bc}25">
             <div style="display:flex;align-items:center;gap:6px">
               <div style="width:7px;height:7px;border-radius:50%;background:${bc};box-shadow:0 0 6px ${bc}"></div>
-              <span style="font-family:var(--mono);font-size:.55rem;color:${bc};letter-spacing:.06em;font-weight:600">${(SE[c.stack]||'📄')} ${(c.stack||'').toUpperCase()}</span>
+              <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:700;text-shadow:0 0 8px ${bc}44">${(SE[c.stack]||'📄')} ${(c.stack||'').toUpperCase()}</span>
             </div>
-            <span style="font-family:var(--mono);font-size:.5rem;color:var(--faint)">${c.tokens||0}t</span>
+            <span style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35)">${c.tokens||0}t</span>
           </div>
           <div style="padding:8px 14px 0">
-            <div style="font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:600">${c.slug}</div>
+            <div style="font-family:var(--mono);font-size:.75rem;color:var(--accent);font-weight:700;letter-spacing:-.01em">${c.slug}</div>
           </div>
           <div style="padding:4px 14px 0">
-            <div style="font-size:.84rem;font-weight:600;color:var(--text)">${c.title||c.slug}</div>
+            <div style="font-size:.95rem;font-weight:700;color:#ffffff;line-height:1.3">${c.title||c.slug}</div>
           </div>
           <div style="padding:6px 14px 0;display:flex;gap:3px;flex-wrap:wrap">
             ${kw.map(k=>`<span style="font-family:var(--mono);font-size:.55rem;background:${bc}10;color:${bc};padding:2px 7px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}
           </div>
           <div style="padding:6px 14px 0">
-            <div style="font-size:.72rem;color:var(--dim);line-height:1.5;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-family:var(--mono);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${body}</div>
+            <div style="font-size:.78rem;color:rgba(255,255,255,.75);line-height:1.6;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 10px;font-family:var(--mono);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${body}</div>
           </div>
           <div style="padding:8px 14px 10px;display:flex;align-items:center;justify-content:space-between">
-            <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint)">v${c.ver||1}</span>
+            <span style="font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.4)">v${c.ver||1}</span>
             <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint)">${c.updated||''}</span>
           </div>
         </div>
@@ -310,7 +346,7 @@ function rCards(el){
     document.getElementById('cl').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red)">Failed to load: ${err.message}<br><button class="btn bo bs" style="margin-top:10px" onclick="rCards(document.getElementById('dm'))">Retry</button></div>`;
   })}
 
-function delCard(slug){fetch(A+"/api/cards?workspace=default&id="+slug,{method:"DELETE",headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(()=>rCards(document.getElementById('dm'))).catch(err=>alert("Delete failed: "+err.message))}
+function delCard(slug){fetch(A+"/api/cards?workspace=default&id="+slug,{method:"DELETE",headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(()=>{hsToast('🗑 Card deleted','ok');rCards(document.getElementById('dm'))}).catch(err=>{hsToast('Delete failed: '+err.message,'err')})}
 
 function fStack(s,b){document.querySelectorAll('.fb').forEach(x=>x.classList.remove('act'));b.classList.add('act');
   document.querySelectorAll('.hsc').forEach(e=>{e.style.display=(s==='all'||e.dataset.s===s)?'':'none'})}
@@ -325,46 +361,105 @@ function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
       <span style="margin-left:auto;font-family:var(--mono);font-size:.55rem;color:var(--faint)">~${c.tokens||0} tokens</span>
       <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px;margin-left:8px">✕</button>
     </div>
-    <div style="margin-bottom:6px">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">slug</div>
-      <div style="font-family:var(--mono);font-size:.88rem;color:var(--accent);font-weight:600">${c.slug}</div>
-    </div>
-    <div style="margin-bottom:6px">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">title</div>
-      <div style="font-size:1rem;font-weight:600;color:var(--text)">${c.title||c.slug}</div>
-    </div>
-    <div style="display:flex;gap:16px;margin-bottom:10px">
-      <div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">stack</div>
-        <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'📄'} ${c.stack}</span>
+    <div id="card-view-mode">
+      <div style="margin-bottom:6px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">slug</div>
+        <div style="font-family:var(--mono);font-size:.88rem;color:var(--accent);font-weight:600">${c.slug}</div>
       </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">keywords</div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">${kw.map(k=>`<span style="font-family:var(--mono);font-size:.62rem;background:${bc}10;color:${bc};padding:2px 8px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}</div>
+      <div style="margin-bottom:6px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">title</div>
+        <div style="font-size:1rem;font-weight:600;color:var(--text)">${c.title||c.slug}</div>
       </div>
-    </div>
-    <div style="margin-bottom:14px">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">body</div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap">${(c.body||'').replace(/</g,'&lt;')}</pre>
+      <div style="display:flex;gap:16px;margin-bottom:10px">
+        <div>
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">stack</div>
+          <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'📄'} ${c.stack}</span>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">keywords</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">${kw.map(k=>`<span style="font-family:var(--mono);font-size:.62rem;background:${bc}10;color:${bc};padding:2px 8px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}</div>
+        </div>
       </div>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)">
-      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} · ${c.updated||'just now'}</span>
-      <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3);font-size:.72rem" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">Delete</button>
+      <div style="margin-bottom:14px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">body</div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+          <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap">${(c.body||'').replace(/</g,'&lt;')}</pre>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)">
+        <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} · ${c.updated||'just now'}</span>
+        <div style="display:flex;gap:8px">
+          <button class="btn bo bs" style="font-size:.72rem" onclick="_editCardInline(${JSON.stringify(c).replace(/"/g,'&quot;')},this.closest('.card-expand'))">✏️ Edit</button>
+          <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3);font-size:.72rem" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">Delete</button>
+        </div>
+      </div>
     </div>
   </div>`;
   document.body.appendChild(ov)}
 
-function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='✓ Copied';btn.classList.add('copied-btn');
+function _editCardInline(c,modal){
+  var inner=modal.querySelector('#card-view-mode');
+  var bc=SC[c.stack]||'#555';
+  inner.innerHTML=`
+    <div style="margin-bottom:10px">
+      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">slug <span style="color:var(--faint);font-size:.5rem">(read-only)</span></div>
+      <div style="font-family:var(--mono);font-size:.88rem;color:var(--accent);font-weight:600">${c.slug}</div>
+    </div>
+    <div style="margin-bottom:8px">
+      <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">title</label>
+      <input id="ec-title" class="card-edit-field" value="${(c.title||'').replace(/"/g,'&quot;')}">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div>
+        <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">stack</label>
+        <select id="ec-stack" class="card-edit-field" style="cursor:pointer">
+          ${['projects','people','decisions','preferences','workflows','general'].map(s=>`<option value="${s}"${c.stack===s?' selected':''}>${SE[s]||'📄'} ${s}</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">keywords</label>
+        <input id="ec-kw" class="card-edit-field" value="${(c.keywords||[]).join(', ')}">
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">body</label>
+      <textarea id="ec-body" class="card-edit-field" rows="5" style="resize:vertical">${(c.body||'').replace(/</g,'&lt;')}</textarea>
+    </div>
+    <div id="ec-err" style="font-family:var(--mono);font-size:.72rem;color:var(--red);display:none;margin-bottom:8px"></div>
+    <div style="display:flex;gap:8px;padding-top:12px;border-top:1px solid var(--border)">
+      <button class="btn bp bs" style="font-size:.72rem" id="ec-save-btn" onclick="_saveCard('${c.slug}',this.closest('.card-expand'))">💾 Save changes</button>
+      <button class="btn bo bs" style="font-size:.72rem" onclick="this.closest('.card-expand').remove();rCards(document.getElementById('dm'))">Cancel</button>
+    </div>
+  `;}
+
+function _saveCard(slug,modal){
+  var title=document.getElementById('ec-title').value.trim();
+  var stack=document.getElementById('ec-stack').value;
+  var kw=document.getElementById('ec-kw').value.split(',').map(s=>s.trim()).filter(Boolean);
+  var body=document.getElementById('ec-body').value.trim();
+  var err=document.getElementById('ec-err');
+  var btn=document.getElementById('ec-save-btn');
+  if(!title||!body){err.textContent='Title and body are required';err.style.display='block';return}
+  btn.textContent='Saving...';btn.disabled=true;err.style.display='none';
+  fetch(A+"/api/cards?workspace=default",{method:"POST",headers:{"X-API-Key":U.apiKey,"Content-Type":"application/json"},
+    body:JSON.stringify({slug,title,stack,keywords:kw,body})})
+  .then(r=>r.json()).then(d=>{
+    if(d.error){err.textContent=d.error;err.style.display='block';btn.textContent='Save changes';btn.disabled=false;return}
+    modal.remove();rCards(document.getElementById('dm'));hsToast('✓ Card updated','ok');
+  }).catch(e=>{err.textContent='Failed: '+e.message;err.style.display='block';btn.textContent='Save changes';btn.disabled=false})}
+
+
+
+function cpKey(btn){navigator.clipboard.writeText(U.apiKey).then(function(){hsToast('✓ API key copied to clipboard','ok')}).catch(function(){});
+  btn.textContent='✓ Copied';btn.classList.add('copied-btn');
   setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied-btn')},2000);
   const s2=document.getElementById('obs-2'),s3=document.getElementById('obs-3');
   if(s2){s2.classList.add('done');s2.classList.remove('active');s2.querySelector('.num').textContent='✓'}
   if(s3)s3.classList.add('active')}
 
 function cpBlock(btn){const pre=btn.parentElement.querySelector('pre');
-  navigator.clipboard.writeText(pre.textContent);btn.textContent='✓ Copied';
-  setTimeout(()=>{btn.textContent='Copy'},2000)}
+  navigator.clipboard.writeText(pre.textContent).then(function(){hsToast('✓ Copied to clipboard','ok')}).catch(function(){});
+  btn.textContent='✓ Copied';setTimeout(()=>{btn.textContent='Copy'},2000)}
 
 function showCardForm(){const w=document.getElementById('card-form-wrap');
   if(w.innerHTML){w.innerHTML='';return}
@@ -397,11 +492,14 @@ function createCard(){const slug=document.getElementById('cf-slug').value.trim()
   body=document.getElementById('cf-body').value.trim(),err=document.getElementById('cf-err');
   err.classList.add('hidden');
   if(!slug||!title||!body){err.textContent='Fill in slug, title, and body';err.classList.remove('hidden');return}
+  var btn=document.querySelector('[onclick="createCard()"]');if(btn){btn.textContent='Creating...';btn.disabled=true}
   fetch(A+"/api/cards?workspace=default",{method:"POST",headers:{"X-API-Key":U.apiKey,"Content-Type":"application/json"},
     body:JSON.stringify({slug,title,stack,keywords:kw,body})}).then(r=>r.json()).then(d=>{
-    if(d.error){err.textContent=d.error;err.classList.remove('hidden');return}
-    document.getElementById('card-form-wrap').innerHTML='';rCards(document.getElementById('dm'));
-  }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden')})}
+    if(d.error){err.textContent=d.error;err.classList.remove('hidden');if(btn){btn.textContent='Create Card →';btn.disabled=false}return}
+    document.getElementById('card-form-wrap').innerHTML='';
+    hsToast('✓ Card "'+slug+'" created','ok');
+    rCards(document.getElementById('dm'));
+  }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden');if(btn){btn.textContent='Create Card →';btn.disabled=false}})}
 
 /* ═══════════════════════════════════════════
    🔑 API KEY — Premium display
@@ -413,13 +511,18 @@ function rKey(el){el.innerHTML=`
     <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.3),rgba(168,85,247,.2));opacity:.25;filter:blur(16px)"></div>
     <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:20px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite"></div>
         <span style="font-family:var(--mono);font-size:.65rem;color:var(--accent);letter-spacing:.06em;font-weight:600">ACTIVE KEY</span>
         <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint);margin-left:auto">workspace: default</span>
       </div>
       <div class="key-display">
         <code>${U.apiKey}</code>
-        <button onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='✓ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
+        <button onclick="navigator.clipboard.writeText('${U.apiKey}').then(function(){hsToast('✓ API key copied','ok')});this.textContent='✓ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;color:var(--faint)"><span style="color:var(--green)">●</span> Never expires</div>
+        <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;color:var(--faint)"><span style="color:var(--green)">●</span> X-API-Key header</div>
+        <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;color:var(--faint)"><span style="color:var(--orange)">●</span> Keep secret</div>
       </div>
     </div>
   </div>
@@ -436,18 +539,57 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
     </div>
   </div>
 
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">🧪</span>
-      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick test</span>
-      <span style="font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-left:auto">paste in terminal</span>
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:1rem">🧪</span>
+        <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Live connection test</span>
+      </div>
+      <button class="btn bo bs" style="font-size:.72rem" id="key-test-btn" onclick="_testApiKey()">Run test</button>
     </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative">
+    <div id="key-test-result" style="display:none;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8"></div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative;margin-top:10px">
       <button class="cpbtn" onclick="cpBlock(this)">Copy</button>
       <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> <span style="color:var(--green)">"${A}/api/cards?workspace=default"</span> \\
   -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span></pre>
     </div>
-  </div>`}
+  </div>
+
+  <div style="background:rgba(239,68,68,.03);border:1.5px solid rgba(239,68,68,.15);border-radius:14px;padding:16px 20px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span style="font-size:.9rem">⚠️</span>
+      <span style="font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--red)">Security reminders</span>
+    </div>
+    <div style="font-size:.78rem;color:var(--dim);line-height:1.7">Never commit your key to git · Store in <code style="color:var(--accent);font-family:var(--mono)">.env</code> files (add to <code style="color:var(--accent);font-family:var(--mono)">.gitignore</code>) · The key grants full access to your cards</div>
+  </div>
+  <style>@keyframes pulse{0%,100%{box-shadow:0 0 8px var(--green)}50%{box-shadow:0 0 16px var(--green),0 0 24px rgba(34,197,94,.3)}}</style>`;
+}
+
+function _testApiKey(){
+  var btn=document.getElementById('key-test-btn');
+  var result=document.getElementById('key-test-result');
+  btn.textContent='Testing...';btn.disabled=true;result.style.display='block';
+  result.style.borderColor='var(--border)';result.innerHTML='<span style="color:var(--dim)">Connecting to API...</span>';
+  var t0=Date.now();
+  fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}})
+  .then(function(r){return r.json().then(function(d){return{ok:r.ok,status:r.status,d:d}})})
+  .then(function(res){
+    var ms=Date.now()-t0;
+    if(res.ok){
+      result.style.borderColor='rgba(68,255,136,.3)';
+      result.innerHTML='<span style="color:var(--green)">✓ Connected</span> · '+ms+'ms · '+((res.d.cards||[]).length)+' cards loaded · '+res.d.plan+' plan';
+    }else{
+      result.style.borderColor='rgba(239,68,68,.3)';
+      result.innerHTML='<span style="color:var(--red)">✗ Error '+res.status+'</span> · '+(res.d.error||'Unknown error');
+    }
+    btn.textContent='Run test';btn.disabled=false;
+  })
+  .catch(function(e){
+    result.style.borderColor='rgba(239,68,68,.3)';
+    result.innerHTML='<span style="color:var(--red)">✗ Network error</span> · '+e.message;
+    btn.textContent='Run test';btn.disabled=false;
+  });
+}
 
 /* ═══════════════════════════════════════════
    UNCHANGED TABS (Phase 2)
@@ -518,25 +660,19 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
   if(!pro){el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
   <div style="position:relative;margin-bottom:16px">
-    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
-      <div style="font-size:2rem;margin-bottom:12px">👥</div>
-      <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Team Memory requires Pro</h3>
-      <p style="color:var(--dim);font-size:.85rem;margin-bottom:8px;max-width:400px;margin-left:auto;margin-right:auto">When Alice's agent learns something, Bob's agent knows it too. Shared cards sync instantly across your entire team.</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px auto;max-width:420px">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">🔄</div>
-          <div style="font-size:.7rem;color:var(--dim)">Instant sync</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">🔒</div>
-          <div style="font-size:.7rem;color:var(--dim)">Private cards stay private</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">👤</div>
-          <div style="font-size:.7rem;color:var(--dim)">Up to 20 members</div>
-        </div>
+    <div style="position:absolute;inset:-2px;border-radius:16px;background:linear-gradient(135deg,rgba(168,85,247,.3),rgba(59,130,246,.2));opacity:.2;filter:blur(20px)"></div>
+    <div style="position:relative;background:var(--surface);border:2px solid rgba(168,85,247,.2);border-radius:14px;padding:32px 24px;text-align:center">
+      <div style="display:flex;justify-content:center;gap:-8px;margin-bottom:16px">
+        ${['A','B','C'].map((l,i)=>`<div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,${['#a855f7','#3b82f6','#22c55e'][i]},${['#7c3aed','#1d4ed8','#16a34a'][i]});display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:.9rem;color:#fff;border:2px solid var(--surface);margin-left:${i>0?'-8px':'0'}">${l}</div>`).join('')}
       </div>
-      <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
+      <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Team Memory requires Pro</h3>
+      <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:380px;margin-left:auto;margin-right:auto">When Alice's agent learns something, Bob's agent knows it too. Zero sync delay. Zero duplication.</p>
+      <div style="display:flex;gap:24px;justify-content:center;margin-bottom:20px">
+        <div style="text-align:center"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--purple)">∞</div><div style="font-family:var(--mono);font-size:.62rem;color:var(--dim)">Instant sync</div></div>
+        <div style="text-align:center"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:#3b82f6">20</div><div style="font-family:var(--mono);font-size:.62rem;color:var(--dim)">Max members</div></div>
+        <div style="text-align:center"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--green)">0</div><div style="font-family:var(--mono);font-size:.62rem;color:var(--dim)">LLM calls</div></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center">
         <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade — $29/mo</a>
         <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team — $59/mo</a>
       </div>
@@ -642,6 +778,13 @@ function _renderStats(el,cards){
   el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Your agent's memory performance</p></div></div>
 
+  ${totalCards===0?`<div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:32px;text-align:center;margin-bottom:16px">
+    <div style="font-size:2rem;margin-bottom:12px">📈</div>
+    <h3 style="font-family:var(--mono);font-size:.95rem;font-weight:700;margin-bottom:8px">No cards yet — add some to see analytics</h3>
+    <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Once your agent starts creating cards, you'll see token savings, stale card alerts, and usage trends here.</p>
+    <button class="btn bp bs" onclick="dt('cards')">→ Create your first card</button>
+  </div>`:''}
+
   <!-- Stats grid with 2D glow — click any number to see how it's calculated -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-savings')">
@@ -649,7 +792,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:12px;padding:16px;text-align:center;transition:transform .2s;box-shadow:0 0 20px rgba(34,197,94,.1),inset 0 1px 0 rgba(34,197,94,.1)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--green);text-shadow:0 0 20px rgba(34,197,94,.4)">${savingsPct}%</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Token Savings</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-cards')">
@@ -657,7 +800,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(136,136,200,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(136,136,200,.05),inset 0 1px 0 rgba(136,136,200,.08)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;text-shadow:0 0 15px rgba(200,200,255,.2)">${totalCards}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Total Cards</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-saved')">
@@ -665,7 +808,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.25);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(255,107,43,.08),inset 0 1px 0 rgba(255,107,43,.1)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--accent);text-shadow:0 0 20px rgba(255,107,43,.3)">$${monthlySavings}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Saved / month</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-stale')">
@@ -673,7 +816,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(234,179,8,.06),inset 0 1px 0 rgba(234,179,8,.08)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--yellow);text-shadow:0 0 20px rgba(234,179,8,.3)">${staleCards.length}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Stale Cards</div>
-        <div style="font-family:var(--mono);font-size:.5rem;color:var(--faint);margin-top:4px">click to see how ↓</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
   </div>
@@ -1801,216 +1944,3 @@ function updatePricingButtons(){
 // CONVERSATIONAL ONBOARDING - Add to end of app.js
 // Shows on first dashboard load, uses Groq API to parse project description
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-
-class ConversationalOnboarding {
-  constructor() {
-    this.hasCompleted = localStorage.getItem('hyperstack_onboarded') === 'true';
-  }
-
-  start() {
-    // Only show if not completed
-    if (this.hasCompleted) return;
-    
-    // Wait for dashboard to load
-    setTimeout(() => {
-      this.show();
-    }, 1000);
-  }
-
-  show() {
-    const modal = document.createElement('div');
-    modal.id = 'onboard-modal';
-    modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;display:flex;align-items:center;justify-content:center;';
-    
-    modal.innerHTML = `
-      <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);"></div>
-      <div style="position:relative;background:white;border-radius:12px;padding:32px;max-width:550px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-height:90vh;overflow-y:auto;">
-        <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">ðŸ¤– Let's set up your memory</h2>
-        <p style="line-height:1.6;color:#6b7280;margin:12px 0 24px 0;">
-          Tell me about your project and I'll create memory cards for your AI agents.
-        </p>
-
-        <textarea 
-          id="project-description" 
-          placeholder="Example: Building a SaaS with Next.js and PostgreSQL. Using Clerk for auth. Currently migrating from REST to tRPC."
-          rows="4"
-          style="width:100%;padding:12px;border:1px solid #e5e7eb;border-radius:6px;font-size:14px;margin:16px 0;font-family:inherit;resize:vertical;box-sizing:border-box;"
-        ></textarea>
-
-        <div style="background:#f0f9ff;border-left:4px solid #3b82f6;padding:12px;margin:16px 0;border-radius:4px;font-size:13px;line-height:1.5;">
-          ðŸ’¡ Include: frameworks, databases, tools, decisions, or current work
-        </div>
-
-        <div style="display:flex;gap:12px;margin-top:20px;">
-          <button onclick="conversationalOnboard.skip()" 
-                  style="flex:1;padding:12px 20px;border:1px solid #e5e7eb;background:#fff;color:#374151;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-            Skip for Now
-          </button>
-          <button onclick="conversationalOnboard.create()" 
-                  style="flex:2;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-            Create Cards â†’
-          </button>
-        </div>
-      </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // Auto-focus textarea
-    setTimeout(() => {
-      const textarea = document.getElementById('project-description');
-      if (textarea) textarea.focus();
-    }, 100);
-  }
-
-  async create() {
-    const description = document.getElementById('project-description')?.value?.trim();
-    
-    if (!description) {
-      alert('Please describe your project first');
-      return;
-    }
-
-    // Show loading
-    const modal = document.getElementById('onboard-modal');
-    if (!modal) return;
-    
-    const modalContent = modal.querySelector('div[style*="position:relative"]');
-    if (!modalContent) return;
-    
-    modalContent.innerHTML = `
-      <h2 style="margin:0;font-size:24px;font-weight:600;color:#1a1a1a;">ðŸ¤– Creating your memory cards...</h2>
-      <div style="text-align:center;padding:40px 0;">
-        <div style="margin:0 auto;border:4px solid #f3f4f6;border-top:4px solid #3b82f6;border-radius:50%;width:48px;height:48px;animation:spin 1s linear infinite;"></div>
-        <p style="margin-top:20px;color:#6b7280;">Analyzing your project...</p>
-      </div>
-    `;
-
-    // Add spinner animation
-    if (!document.getElementById('onboard-spinner-style')) {
-      const style = document.createElement('style');
-      style.id = 'onboard-spinner-style';
-      style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
-      document.head.appendChild(style);
-    }
-
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://hyperstack-cloud.vercel.app/api/cards?workspace=default&onboard=true', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ description })
-      });
-
-      const result = await response.json();
-      
-      if (response.ok) {
-        this.showSuccess(result.cards, result.fallback);
-      } else {
-        this.showError(result.error || 'Something went wrong');
-      }
-    } catch (error) {
-      console.error('Onboarding error:', error);
-      this.showError('Network error. Please check your connection and try again.');
-    }
-  }
-
-  showSuccess(cards, isFallback) {
-    const modal = document.getElementById('onboard-modal');
-    if (!modal) return;
-    
-    const modalContent = modal.querySelector('div[style*="position:relative"]');
-    if (!modalContent) return;
-    
-    modalContent.innerHTML = `
-      <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">âœ… Created ${cards.length} card${cards.length > 1 ? 's' : ''}</h2>
-      
-      <div style="margin:20px 0;">
-        ${cards.map(c => `
-          <div style="background:#fafafa;border-left:3px solid #3b82f6;padding:12px;margin-bottom:10px;border-radius:4px;">
-            <div style="font-weight:500;color:#1a1a1a;">${c.title}</div>
-            <div style="font-size:12px;color:#6b7280;margin-top:4px;text-transform:capitalize;">
-              ${c.cardType}
-            </div>
-          </div>
-        `).join('')}
-      </div>
-
-      <div style="background:#f0fdf4;border-left:4px solid #10b981;padding:16px;margin:20px 0;border-radius:4px;font-size:14px;line-height:1.6;">
-        <strong>âœ¨ Your memory is ready!</strong><br>
-        Your agents (Cursor, Claude Desktop, LangGraph) can now access these cards.
-      </div>
-
-      <button onclick="conversationalOnboard.complete()" 
-              style="width:100%;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-        Go to Dashboard â†’
-      </button>
-    `;
-
-    localStorage.setItem('hyperstack_onboarded', 'true');
-    
-    // Reload cards in background
-    setTimeout(() => {
-      if (window.loadCards && typeof window.loadCards === 'function') {
-        window.loadCards();
-      }
-    }, 1500);
-  }
-
-  showError(error) {
-    const modal = document.getElementById('onboard-modal');
-    if (!modal) return;
-    
-    const modalContent = modal.querySelector('div[style*="position:relative"]');
-    if (!modalContent) return;
-    
-    modalContent.innerHTML = `
-      <h2 style="margin-top:0;font-size:24px;font-weight:600;color:#1a1a1a;">âš ï¸ Something went wrong</h2>
-      <p style="margin:20px 0;color:#ef4444;line-height:1.6;">
-        ${error}
-      </p>
-      <div style="display:flex;gap:12px;margin-top:20px;">
-        <button onclick="conversationalOnboard.show()" 
-                style="flex:1;padding:12px 20px;border:1px solid #e5e7eb;background:#fff;color:#374151;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-          Try Again
-        </button>
-        <button onclick="conversationalOnboard.skip()" 
-                style="flex:1;padding:12px 20px;border:none;background:#3b82f6;color:white;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;">
-          Continue to Dashboard
-        </button>
-      </div>
-    `;
-  }
-
-  skip() {
-    localStorage.setItem('hyperstack_onboarded', 'true');
-    this.complete();
-  }
-
-  complete() {
-    const modal = document.getElementById('onboard-modal');
-    if (modal) modal.remove();
-  }
-}
-
-// Initialize onboarding
-const conversationalOnboard = new ConversationalOnboarding();
-
-// Trigger on dashboard page load
-if (window.location.hash && window.location.hash.includes('dashboard')) {
-  conversationalOnboard.start();
-}
-
-// Also hook into page navigation if using go() function
-if (typeof go === 'function') {
-  const originalGo = go;
-  window.go = function(page) {
-    originalGo(page);
-    if (page === 'dashboard') {
-      setTimeout(() => conversationalOnboard.start(), 500);
-    }
-  };
-}
