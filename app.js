@@ -923,73 +923,94 @@ var _REL_DESC={
 function rGraph(el){
   if(_graphAnim){cancelAnimationFrame(_graphAnim);_graphAnim=null}
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">\ud83d\udd17 Context Graph</h1><p id="graph-status">Loading cards...</p></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🔗 Context Graph</h1><p id="graph-status">Loading cards...</p></div>
   <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
     <select id="gf-focus" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none;max-width:160px">
       <option value="">All cards</option>
     </select>
     <select id="gf-type" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none">
       <option value="">All types</option>
-      <option value="person">\ud83d\udc64 person</option><option value="project">\ud83d\udce6 project</option><option value="decision">\u2696\ufe0f decision</option>
-      <option value="preference">\u2764\ufe0f preference</option><option value="workflow">\u2699\ufe0f workflow</option><option value="event">\ud83d\udcc5 event</option>
-      <option value="account">\ud83c\udfe2 account</option><option value="general">\ud83d\udcc4 general</option>
+      <option value="person">👤 person</option><option value="project">📦 project</option><option value="decision">⚖️ decision</option>
+      <option value="preference">❤️ preference</option><option value="workflow">⚙️ workflow</option><option value="event">📅 event</option>
+      <option value="account">🏢 account</option><option value="general">📄 general</option>
     </select>
     <select id="gf-rel" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none">
       <option value="">All relations</option>
-      <option value="related">\ud83d\udd17 related — general connection</option>
-      <option value="owns">\ud83d\udc51 owns — ownership</option>
-      <option value="decided">\u2696\ufe0f decided — made a decision</option>
-      <option value="approved">\u2705 approved — gave approval</option>
-      <option value="uses">\ud83d\udd27 uses — depends on</option>
-      <option value="triggers">\u26a1 triggers — causes</option>
-      <option value="blocks">\ud83d\udeab blocks — prevents</option>
-      <option value="depends-on">\ud83d\udd04 depends-on — requires</option>
-      <option value="reviews">\ud83d\udd0d reviews — evaluates</option>
+      <option value="related">🔗 related — general connection</option>
+      <option value="owns">👑 owns — ownership</option>
+      <option value="decided">⚖️ decided — made a decision</option>
+      <option value="approved">✅ approved — gave approval</option>
+      <option value="uses">🔧 uses — depends on</option>
+      <option value="triggers">⚡ triggers — causes</option>
+      <option value="blocks">🚫 blocks — prevents</option>
+      <option value="depends-on">🔄 depends-on — requires</option>
+      <option value="reviews">🔍 reviews — evaluates</option>
     </select>
-    <button class="btn bo bs" onclick="rGraph(document.getElementById('dm'))" style="font-size:.75rem">\u21bb Refresh</button>
+    <button class="btn bo bs" onclick="rGraph(document.getElementById('dm'))" style="font-size:.75rem">↻ Refresh</button>
   </div></div>
+
+  <!-- ⏱ TIME-TRAVEL BAR -->
+  <div id="tt-bar" style="display:none;background:rgba(168,85,247,.06);border:1.5px solid rgba(168,85,247,.25);border-radius:12px;padding:14px 18px;margin-bottom:14px">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-family:var(--mono);font-size:.65rem;color:#a855f7;font-weight:700;letter-spacing:.06em;white-space:nowrap">⏱ TIME TRAVEL</span>
+      <div style="flex:1;min-width:200px">
+        <input type="range" id="tt-slider" min="0" max="100" value="100"
+          style="width:100%;accent-color:#a855f7;cursor:pointer">
+      </div>
+      <span id="tt-label" style="font-family:var(--mono);font-size:.72rem;color:#a855f7;white-space:nowrap;min-width:160px;text-align:right">Now</span>
+      <button onclick="_ttExit()" style="background:none;border:1px solid rgba(168,85,247,.3);border-radius:6px;color:#a855f7;font-family:var(--mono);font-size:.65rem;padding:4px 10px;cursor:pointer;white-space:nowrap">✕ Exit</button>
+    </div>
+    <div id="tt-info" style="font-family:var(--mono);font-size:.65rem;color:rgba(168,85,247,.6);margin-top:6px">
+      Drag the slider to see your graph as it existed at any point in time. Requires a focused card.
+    </div>
+  </div>
+
   <div id="graph-wrap" style="position:relative;background:#0a0a0c;border:2px solid var(--border);border-radius:14px;overflow:hidden;min-height:400px;touch-action:none">
     <div id="graph-loading" style="text-align:center;padding:60px 20px;color:var(--dim);font-family:var(--mono);font-size:.85rem">Loading graph...</div>
     <canvas id="graph-canvas" style="width:100%;display:none;cursor:grab"></canvas>
     <div id="graph-empty" style="display:none;text-align:center;padding:60px 20px">
-      <div style="font-size:2.5rem;margin-bottom:12px">\ud83d\udd17</div>
+      <div style="font-size:2.5rem;margin-bottom:12px">🔗</div>
       <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">No linked cards yet</h3>
       <p style="color:var(--dim);font-size:.85rem;max-width:380px;margin:0 auto 16px">Create cards with <code style="color:var(--accent);font-family:var(--mono)">links</code> and <code style="color:var(--accent);font-family:var(--mono)">cardType</code> to see your knowledge graph.</p>
-      <button class="btn bo bs" onclick="dt('cards')">\u2190 Go to Cards</button>
+      <button class="btn bo bs" onclick="dt('cards')">← Go to Cards</button>
     </div>
     <div id="graph-tooltip" style="display:none;position:absolute;background:rgba(15,15,18,.95);border:1px solid var(--border);border-radius:10px;padding:12px;pointer-events:none;z-index:10;max-width:260px;box-shadow:0 8px 30px rgba(0,0,0,.6);backdrop-filter:blur(12px)"></div>
     <div id="graph-detail" style="display:none;position:absolute;top:12px;right:12px;width:260px;background:rgba(12,12,15,.95);border:2px solid var(--border);border-radius:12px;padding:16px;z-index:10;backdrop-filter:blur(12px);max-height:calc(100% - 24px);overflow-y:auto"></div>
     <div id="graph-legend" style="position:absolute;bottom:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap;z-index:5"></div>
     <div id="graph-stats" style="position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:.6rem;color:var(--faint);z-index:5"></div>
+
+    <!-- Time-travel badge shown on canvas when active -->
+    <div id="tt-badge" style="display:none;position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.4);border-radius:8px;padding:4px 14px;font-family:var(--mono);font-size:.65rem;color:#a855f7;z-index:10;pointer-events:none;white-space:nowrap"></div>
+
     <div id="graph-guide" style="position:absolute;top:12px;right:12px;z-index:6">
       <button onclick="var g=document.getElementById('gg-body');g.style.display=g.style.display==='none'?'block':'none'" style="background:rgba(17,17,20,.9);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:.65rem;backdrop-filter:blur(8px)">? Guide</button>
       <div id="gg-body" style="display:none;background:rgba(10,10,13,.95);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:4px;width:200px;backdrop-filter:blur(12px)">
         <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin-bottom:6px;font-weight:700">CONTROLS</div>
         <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
-          \ud83d\udd18 Drag node \u2192 move &amp; pin<br>
-          \ud83d\udd18 Double-click \u2192 details<br>
-          \ud83d\udd18 Click node \u2192 highlight<br>
-          \ud83d\udd18 Scroll \u2192 zoom<br>
-          \ud83d\udd18 Drag empty \u2192 pan<br>
+          🖱 Drag node → move & pin<br>
+          🖱 Double-click → details<br>
+          🖱 Click node → highlight<br>
+          🖱 Scroll → zoom<br>
+          🖱 Drag empty → pan<br>
         </div>
         <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">MOBILE</div>
         <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
-          \u261d\ufe0f Drag \u2192 move or pan<br>
-          \ud83e\udd0f Pinch \u2192 zoom<br>
-          \ud83d\udc46 Double-tap \u2192 details
+          ☝️ Drag → move or pan<br>
+          🤏 Pinch → zoom<br>
+          👆 Double-tap → details
         </div>
-        <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">FILTERS</div>
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">TIME TRAVEL</div>
         <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
-          \ud83c\udfaf Focus \u2192 one card + neighbors<br>
-          \ud83c\udfa8 Type \u2192 persons, projects...<br>
-          \ud83d\udd17 Relation \u2192 owns, triggers...
+          Focus a card, then click<br>
+          ⏱ Time Travel to scrub<br>
+          back through graph history
         </div>
       </div>
     </div>
     <div id="graph-zoom" style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:5">
       <button id="gz-in" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">+</button>
-      <button id="gz-out" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">\u2212</button>
-      <button id="gz-fit" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center">\u25a3</button>
+      <button id="gz-out" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">−</button>
+      <button id="gz-fit" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center">⊟</button>
     </div>
   </div>
 
@@ -1057,22 +1078,23 @@ POST /api/cards
 
     // FREE users see upgrade gate over the graph
     if(plan==='FREE'){
-      statusEl.innerHTML=cards.length+'/'+limit+' cards \u00b7 FREE';
+      statusEl.innerHTML=cards.length+'/'+limit+' cards · FREE';
       var overlay=document.createElement('div');
       overlay.style.cssText='position:absolute;inset:0;background:rgba(10,10,12,.88);z-index:20;display:flex;align-items:center;justify-content:center;border-radius:12px;backdrop-filter:blur(4px)';
-      overlay.innerHTML='<div style="text-align:center;max-width:320px"><div style="font-size:2rem;margin-bottom:12px">\ud83d\udd12</div><h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--text)">Graph Explorer is a paid feature</h3><p style="font-size:.82rem;color:var(--dim);margin-bottom:16px;line-height:1.5">Upgrade to Pro to unlock graph traversal, visual explorer, and 100 cards.</p><a href="javascript:void(0)" onclick="go(\'pricing\')" class="btn bp" style="font-size:.82rem">Unlock Graph \u2014 $29/mo</a><p style="font-size:.68rem;color:var(--faint);margin-top:10px">Your '+cards.length+' cards are safe. Upgrade adds the graph on top.</p></div>';
+      overlay.innerHTML='<div style="text-align:center;max-width:320px"><div style="font-size:2rem;margin-bottom:12px">🔒</div><h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--text)">Graph Explorer is a paid feature</h3><p style="font-size:.82rem;color:var(--dim);margin-bottom:16px;line-height:1.5">Upgrade to Pro to unlock graph traversal, visual explorer, and 100 cards.</p><a href="javascript:void(0)" onclick="go(\'pricing\')" class="btn bp" style="font-size:.82rem">Unlock Graph — $29/mo</a><p style="font-size:.68rem;color:var(--faint);margin-top:10px">Your '+cards.length+' cards are safe. Upgrade adds the graph on top.</p></div>';
       document.getElementById('graph-wrap').appendChild(overlay);
       return;
     }
 
     if(pct>=70){
-      statusEl.innerHTML=cards.length+'/'+limit+' cards <span style="color:var(--red)">'+pct+'% used</span> \u00b7 '+plan+' \u00b7 <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade</a>';
+      statusEl.innerHTML=cards.length+'/'+limit+' cards <span style="color:var(--red)">'+pct+'% used</span> · '+plan+' · <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade</a>';
     }else{
-      statusEl.textContent=cards.length+'/'+limit+' cards \u00b7 '+plan;
+      statusEl.textContent=cards.length+'/'+limit+' cards · '+plan;
     }
+
     var nodeMap={},edges=[],linkedSlugs=new Set();
     cards.forEach(function(c){
-      nodeMap[c.slug]={slug:c.slug,title:c.title,stack:c.stack,cardType:c.cardType||'general',keywords:c.keywords||[],links:c.links||[],tokens:c.tokens||0,triggeredBy:c.triggeredBy,approvedBy:c.approvedBy,reason:c.reason};
+      nodeMap[c.slug]={slug:c.slug,title:c.title,stack:c.stack,cardType:c.cardType||'general',keywords:c.keywords||[],links:c.links||[],tokens:c.tokens||0,triggeredBy:c.triggeredBy,approvedBy:c.approvedBy,reason:c.reason,updatedAt:c.updatedAt};
       (c.links||[]).forEach(function(l){
         var target=typeof l==='string'?l:l.slug;
         var relation=typeof l==='object'?(l.relation||'related'):'related';
@@ -1087,12 +1109,108 @@ POST /api/cards
       document.getElementById('graph-canvas').style.display='none';
       document.getElementById('graph-empty').style.display='block';return;
     }
+
     // Populate focus dropdown
     var focusSel=document.getElementById('gf-focus');
     cards.forEach(function(c){
       var o=document.createElement('option');o.value=c.slug;o.textContent=(c.cardType?c.cardType[0].toUpperCase()+': ':'')+c.title;focusSel.appendChild(o);
     });
-    var redraw=function(){_gDraw(nodes,edges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value)};
+
+    // ── Build timeline snapshots from updatedAt timestamps ──
+    // Collect all unique timestamps across all cards, sort oldest→newest
+    var _allCards=cards; // keep reference for time-travel
+    var _allNodes=nodes;
+    var _allEdges=edges;
+    var timestamps=[];
+    cards.forEach(function(c){if(c.updatedAt)timestamps.push(new Date(c.updatedAt).getTime());});
+    timestamps=Array.from(new Set(timestamps)).sort(function(a,b){return a-b});
+    // Add "now" as final snapshot
+    timestamps.push(Date.now());
+
+    // ── Wire up slider ──
+    var slider=document.getElementById('tt-slider');
+    var ttLabel=document.getElementById('tt-label');
+    var ttBadge=document.getElementById('tt-badge');
+    var ttInfo=document.getElementById('tt-info');
+    var _ttDebounce=null;
+    var _ttActive=false;
+
+    // Show time-travel bar for Pro+ plans
+    if(plan!=='FREE'){
+      document.getElementById('tt-bar').style.display='block';
+      slider.min=0;
+      slider.max=timestamps.length-1;
+      slider.value=timestamps.length-1;
+    }
+
+    slider.oninput=function(){
+      var idx=parseInt(this.value);
+      var ts=timestamps[idx];
+      var isNow=(idx===timestamps.length-1);
+      _ttActive=!isNow;
+
+      if(isNow){
+        ttLabel.textContent='Now';
+        ttBadge.style.display='none';
+        ttInfo.textContent='Drag the slider to see your graph as it existed at any point in time. Requires a focused card.';
+        // Restore live graph
+        _gDraw(_allNodes,_allEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value);
+        return;
+      }
+
+      var d=new Date(ts);
+      var label=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      ttLabel.textContent=label;
+      ttBadge.textContent='⏱ Viewing: '+label;
+      ttBadge.style.display='block';
+      ttInfo.textContent='Showing graph state at '+label+'. Cards created after this point are hidden.';
+
+      // Debounce API calls while scrubbing
+      clearTimeout(_ttDebounce);
+      _ttDebounce=setTimeout(function(){_ttFetch(ts,d.toISOString())},400);
+    };
+
+    // ── Time-travel fetch using /api/graph?at= ──
+    function _ttFetch(ts,isoStr){
+      var focusSlug=document.getElementById('gf-focus').value;
+      if(!focusSlug){
+        // No focus card — reconstruct client-side by filtering cards by timestamp
+        var pastNodes=_allNodes.filter(function(n){
+          return n.updatedAt&&new Date(n.updatedAt).getTime()<=ts;
+        });
+        var pastSlugs=new Set(pastNodes.map(function(n){return n.slug}));
+        var pastEdges=_allEdges.filter(function(e){return pastSlugs.has(e.from)&&pastSlugs.has(e.to)});
+        if(pastNodes.length===0){
+          document.getElementById('graph-canvas').style.display='none';
+          document.getElementById('graph-empty').style.display='block';
+          return;
+        }
+        document.getElementById('graph-empty').style.display='none';
+        _gDraw(pastNodes,pastEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,'');
+        return;
+      }
+      // Focus card set — use /api/graph?at= for accurate version reconstruction
+      var url=A+'/api/graph?workspace=default&from='+encodeURIComponent(focusSlug)+'&depth=3&at='+encodeURIComponent(isoStr);
+      fetch(url,{headers:{'X-API-Key':U.apiKey}}).then(function(r){return r.json()}).then(function(data){
+        if(data.error){hsToast(data.error,'err');return}
+        var ttNodes=data.nodes||[];
+        var ttEdges=data.edges||[];
+        // Convert API graph response format to visual graph format
+        var visNodes=ttNodes.map(function(n){return{slug:n.slug,title:n.title,stack:n.stack,cardType:n.cardType||'general',keywords:n.keywords||[],links:n.links||[],tokens:n.tokens||0,triggeredBy:n.triggeredBy,approvedBy:n.approvedBy,reason:n.reason}});
+        _gDraw(visNodes,ttEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,focusSlug);
+      }).catch(function(e){hsToast('Time-travel fetch failed: '+e.message,'err')});
+    }
+
+    // Exit time-travel
+    window._ttExit=function(){
+      slider.value=timestamps.length-1;
+      slider.oninput();
+    };
+
+    var redraw=function(){
+      if(_ttActive){slider.oninput()}
+      else{_gDraw(_allNodes,_allEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value)}
+    };
     document.getElementById('gf-type').onchange=redraw;
     document.getElementById('gf-rel').onchange=redraw;
     document.getElementById('gf-focus').onchange=redraw;
