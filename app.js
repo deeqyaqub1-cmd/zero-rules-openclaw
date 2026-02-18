@@ -21,6 +21,9 @@ function go(p){document.querySelectorAll('[id^="p-"]').forEach(e=>e.classList.ad
   document.getElementById("nd").classList.toggle("hidden",!l);
   document.getElementById("no").classList.toggle("hidden",!l);
   document.querySelectorAll('.dash-back-link').forEach(a=>{a.style.display=l?'inline':'none'});
+  // On mobile, hide the top nav bar inside the dashboard (bottom nav handles it)
+  const topNav=document.querySelector('nav');
+  if(topNav){topNav.style.display=(p==='dash'&&window.innerWidth<=768)?'none':'';}
   if(p==="dash"&&U){DV="start";dt("start")}
   if(p==="pricing"&&typeof updatePricingButtons==='function'){updatePricingButtons()}}
 
@@ -82,7 +85,9 @@ async function doReset(){
     setTimeout(()=>go("login"),2000);
   }catch(err){er.textContent="Cannot connect to server.";er.classList.remove("hidden")}}
 
-function out(){U=null;T=null;localStorage.removeItem("hs_t");go("landing")}
+function out(){U=null;T=null;localStorage.removeItem("hs_t");
+  const topNav=document.querySelector('nav');if(topNav)topNav.style.display='';
+  go("landing")}
 
 function dt(t){DV=t;document.querySelectorAll(".sbtn").forEach(b=>b.classList.remove("act"));
   const b=document.getElementById("t-"+t);if(b)b.classList.add("act");
@@ -103,21 +108,35 @@ function showPlatform(p,btn){['mcp','openclaw','claude','python','js','curl'].fo
 
 function renderD(){if(!U)return;
   document.getElementById("d-em").textContent=U.email;
-  var planBadges={BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',PRO:'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>',TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'};
+  var planBadges={
+    BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',
+    PRO:'<span class="badge" style="background:rgba(68,255,136,.1);color:var(--accent);border:1px solid rgba(68,255,136,.25)">PRO</span>',
+    TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'
+  };
   var upgradeLink='';
-  if(U.plan==='FREE')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono)">Upgrade</a>';
-  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:#60a5fa;font-family:var(--mono)">→ Team</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
-  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:var(--green);font-family:var(--mono)">→ Business</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
-  else if(U.plan==='BUSINESS')upgradeLink=' <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage subscription</a>';
-  document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>')+upgradeLink;
-  // Also show in the visible top plan bar
+  if(U.plan==='FREE')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono);text-decoration:underline">Upgrade →</a>';
+  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:#60a5fa;font-family:var(--mono)">→ Team</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:var(--orange);font-family:var(--mono);text-decoration:underline">Manage</a>';
+  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:var(--green);font-family:var(--mono)">→ Business</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:var(--orange);font-family:var(--mono);text-decoration:underline">Manage</a>';
+  else if(U.plan==='BUSINESS')upgradeLink=' <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:var(--orange);font-family:var(--mono);text-decoration:underline">Manage</a>';
+  document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.08);color:var(--dim);border:1px solid rgba(136,136,160,.15)">FREE</span>')+upgradeLink;
+  // Show/hide Pro badge on graph sidebar button
+  var graphBadge=document.getElementById('sb-graph-badge');
+  if(graphBadge)graphBadge.style.display=(U.plan==='FREE')?'inline-flex':'none';
+  // Plan bar for non-free plans
   var planBar=document.getElementById("d-plan-bar");
-  if(planBar&&U.plan!=='FREE'){
-    planBar.style.display='block';
-    planBar.innerHTML='Plan: '+(planBadges[U.plan]||U.plan)+upgradeLink;
-  }else if(planBar){planBar.style.display='none'}
+  if(planBar&&U.plan!=='FREE'){planBar.style.display='block';planBar.innerHTML='Plan: '+(planBadges[U.plan]||U.plan)+upgradeLink}
+  else if(planBar){planBar.style.display='none'}
   const m=document.getElementById("dm");
-  if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
+  if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m);else if(DV==="agents")rAgents(m)}
+
+// ── Toast notification ──
+function hsToast(msg,type,dur){
+  var t=document.getElementById('hs-toast');
+  if(!t){t=document.createElement('div');t.id='hs-toast';t.className='hs-toast';document.body.appendChild(t)}
+  t.textContent=msg;t.className='hs-toast '+(type||'ok');
+  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show')})});
+  clearTimeout(t._tid);t._tid=setTimeout(function(){t.classList.remove('show')},dur||2500);
+}
 
 /* ═══════════════════════════════════════════
    🚀 GET STARTED — Premium animated onboarding
@@ -246,18 +265,39 @@ await fetch("${A}/api/cards?workspace=default", {
       <span class="ql-icon">📖</span>
       <div class="ql-label">Docs</div>
     </div>
-  </div>`;
+  </div>
+
+  <!-- Plan usage bar -->
+  <div id="start-usage-bar" style="margin-top:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px 18px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim)">Card usage</span>
+      <span id="start-usage-txt" style="font-family:var(--mono);font-size:.72rem;color:var(--text)">Loading...</span>
+    </div>
+    <div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden">
+      <div id="start-usage-fill" style="height:100%;width:0%;background:var(--accent);border-radius:3px;transition:width .6s ease"></div>
+    </div>
+    <div id="start-usage-sub" style="font-family:var(--mono);font-size:.65rem;color:var(--faint);margin-top:5px;text-align:right"></div>
+  </div>
+  `;
+  // Load real card count for usage bar
+  fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
+    var count=d.cards?d.cards.length:0;var limit=d.limit||10;var pct=Math.round(count/limit*100);
+    var txt=document.getElementById('start-usage-txt');var fill=document.getElementById('start-usage-fill');var sub=document.getElementById('start-usage-sub');
+    if(txt)txt.textContent=count+' / '+limit+' cards';
+    if(fill){fill.style.width=Math.min(pct,100)+'%';fill.style.background=pct>=90?'var(--red)':pct>=70?'var(--orange)':'var(--accent)'}
+    if(sub)sub.textContent=pct>=90?'Near limit — consider upgrading':pct>=70?'Getting full — '+Math.max(0,limit-count)+' remaining':''+Math.max(0,limit-count)+' cards remaining on '+d.plan+' plan'
+  }).catch(function(){var txt=document.getElementById('start-usage-txt');if(txt)txt.textContent='—'});
 }
 
 /* ═══════════════════════════════════════════
    🃏 CARDS — Premium card grid with glow
    ═══════════════════════════════════════════ */
 function rCards(el){
-  if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}.hsc{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .3s;animation:cardIn .4s ease both}.hsc:hover{transform:translateY(-4px)}.hsc-glow{position:absolute;inset:0;opacity:.18;pointer-events:none;transition:opacity .3s;border-radius:16px}.hsc:hover .hsc-glow{opacity:.35}.hsc-border{border-radius:16px;background:linear-gradient(145deg,#1a1a24 0%,#12121a 100%);position:relative;height:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}.hsc:hover .hsc-border{border-color:rgba(255,255,255,.2);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.06)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.8rem;padding:3px 7px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ff6b6b;background:rgba(239,68,68,.15)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.fb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:.75rem;padding:6px 16px;cursor:pointer;transition:all .2s;font-weight:500}.fb:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:var(--mono);font-size:.8rem;padding:8px 16px;outline:none;width:200px;transition:all .2s}.sinput:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}.sinput::placeholder{color:rgba(255,255,255,.3)}.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em}.dh p{color:rgba(255,255,255,.4);font-size:.8rem;margin:5px 0 0}.loading-dots{display:inline-flex;gap:5px;margin-bottom:10px}.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px)}.card-expand-inner{background:#16161f;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;max-width:540px;width:92%;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
-  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🃏 Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
+  if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}.hsc{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .3s;animation:cardIn .4s ease both}.hsc:hover{transform:translateY(-4px)}.hsc-glow{position:absolute;inset:0;opacity:.18;pointer-events:none;transition:opacity .3s;border-radius:16px}.hsc:hover .hsc-glow{opacity:.35}.hsc-border{border-radius:16px;background:linear-gradient(145deg,#1a1a24 0%,#12121a 100%);position:relative;height:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}.hsc:hover .hsc-border{border-color:rgba(255,255,255,.2);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.06)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.8rem;padding:3px 7px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ff6b6b;background:rgba(239,68,68,.15)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.fb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:.75rem;padding:6px 16px;cursor:pointer;transition:all .2s;font-weight:500}.fb:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:var(--mono);font-size:.8rem;padding:8px 16px;outline:none;width:200px;transition:all .2s}.sinput:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}.sinput::placeholder{color:rgba(255,255,255,.3)}.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em}.dh p{color:rgba(255,255,255,.4);font-size:.8rem;margin:5px 0 0}.loading-dots{display:inline-flex;gap:5px;margin-bottom:10px}.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);padding:16px}.card-expand-inner{background:#16161f;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;max-width:540px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}@media(max-width:600px){.card-expand{padding:0;align-items:flex-end}.card-expand-inner{border-radius:18px 18px 0 0;max-height:92vh;width:100%;max-width:100%;padding:20px}}@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
+  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🃏 Memory Cards</h1><p id="cards-status">Loading...</p></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><input class="sinput" placeholder="🔍 Search cards..." oninput="fCards(this.value)" style="min-width:150px;flex:1"><button class="btn bp bs" onclick="showCardForm()" style="white-space:nowrap">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div><div style="font-family:var(--mono);font-size:.78rem">Loading cards...</div></div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
-    document.querySelector('.dh p').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
+    document.getElementById('cards-status').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
     const cl=document.getElementById('cl');
     if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:48px 20px">
       <div style="position:relative;display:inline-block;margin-bottom:16px">
@@ -311,7 +351,7 @@ function rCards(el){
     document.getElementById('cl').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red)">Failed to load: ${err.message}<br><button class="btn bo bs" style="margin-top:10px" onclick="rCards(document.getElementById('dm'))">Retry</button></div>`;
   })}
 
-function delCard(slug){fetch(A+"/api/cards?workspace=default&id="+slug,{method:"DELETE",headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(()=>rCards(document.getElementById('dm'))).catch(err=>alert("Delete failed: "+err.message))}
+function delCard(slug){fetch(A+"/api/cards?workspace=default&id="+slug,{method:"DELETE",headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(()=>{hsToast('🗑 Card deleted','ok');rCards(document.getElementById('dm'))}).catch(err=>{hsToast('Delete failed: '+err.message,'err')})}
 
 function fStack(s,b){document.querySelectorAll('.fb').forEach(x=>x.classList.remove('act'));b.classList.add('act');
   document.querySelectorAll('.hsc').forEach(e=>{e.style.display=(s==='all'||e.dataset.s===s)?'':'none'})}
@@ -326,46 +366,105 @@ function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
       <span style="margin-left:auto;font-family:var(--mono);font-size:.55rem;color:var(--faint)">~${c.tokens||0} tokens</span>
       <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px;margin-left:8px">✕</button>
     </div>
-    <div style="margin-bottom:6px">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">slug</div>
-      <div style="font-family:var(--mono);font-size:.88rem;color:var(--accent);font-weight:600">${c.slug}</div>
-    </div>
-    <div style="margin-bottom:6px">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">title</div>
-      <div style="font-size:1rem;font-weight:600;color:var(--text)">${c.title||c.slug}</div>
-    </div>
-    <div style="display:flex;gap:16px;margin-bottom:10px">
-      <div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">stack</div>
-        <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'📄'} ${c.stack}</span>
+    <div id="card-view-mode">
+      <div style="margin-bottom:6px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">slug</div>
+        <div style="font-family:var(--mono);font-size:.88rem;color:var(--accent);font-weight:600">${c.slug}</div>
       </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">keywords</div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">${kw.map(k=>`<span style="font-family:var(--mono);font-size:.62rem;background:${bc}10;color:${bc};padding:2px 8px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}</div>
+      <div style="margin-bottom:6px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">title</div>
+        <div style="font-size:1rem;font-weight:600;color:var(--text)">${c.title||c.slug}</div>
       </div>
-    </div>
-    <div style="margin-bottom:14px">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">body</div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap">${(c.body||'').replace(/</g,'&lt;')}</pre>
+      <div style="display:flex;gap:16px;margin-bottom:10px">
+        <div>
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">stack</div>
+          <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'📄'} ${c.stack}</span>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">keywords</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">${kw.map(k=>`<span style="font-family:var(--mono);font-size:.62rem;background:${bc}10;color:${bc};padding:2px 8px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}</div>
+        </div>
       </div>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)">
-      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} · ${c.updated||'just now'}</span>
-      <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3);font-size:.72rem" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">Delete</button>
+      <div style="margin-bottom:14px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">body</div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+          <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap">${(c.body||'').replace(/</g,'&lt;')}</pre>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)">
+        <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} · ${c.updated||'just now'}</span>
+        <div style="display:flex;gap:8px">
+          <button class="btn bo bs" style="font-size:.72rem" onclick="_editCardInline(${JSON.stringify(c).replace(/"/g,'&quot;')},this.closest('.card-expand'))">✏️ Edit</button>
+          <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3);font-size:.72rem" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">Delete</button>
+        </div>
+      </div>
     </div>
   </div>`;
   document.body.appendChild(ov)}
 
-function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='✓ Copied';btn.classList.add('copied-btn');
+function _editCardInline(c,modal){
+  var inner=modal.querySelector('#card-view-mode');
+  var bc=SC[c.stack]||'#555';
+  inner.innerHTML=`
+    <div style="margin-bottom:10px">
+      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">slug <span style="color:var(--faint);font-size:.5rem">(read-only)</span></div>
+      <div style="font-family:var(--mono);font-size:.88rem;color:var(--accent);font-weight:600">${c.slug}</div>
+    </div>
+    <div style="margin-bottom:8px">
+      <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">title</label>
+      <input id="ec-title" class="card-edit-field" value="${(c.title||'').replace(/"/g,'&quot;')}">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div>
+        <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">stack</label>
+        <select id="ec-stack" class="card-edit-field" style="cursor:pointer">
+          ${['projects','people','decisions','preferences','workflows','general'].map(s=>`<option value="${s}"${c.stack===s?' selected':''}>${SE[s]||'📄'} ${s}</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">keywords</label>
+        <input id="ec-kw" class="card-edit-field" value="${(c.keywords||[]).join(', ')}">
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">body</label>
+      <textarea id="ec-body" class="card-edit-field" rows="5" style="resize:vertical">${(c.body||'').replace(/</g,'&lt;')}</textarea>
+    </div>
+    <div id="ec-err" style="font-family:var(--mono);font-size:.72rem;color:var(--red);display:none;margin-bottom:8px"></div>
+    <div style="display:flex;gap:8px;padding-top:12px;border-top:1px solid var(--border)">
+      <button class="btn bp bs" style="font-size:.72rem" id="ec-save-btn" onclick="_saveCard('${c.slug}',this.closest('.card-expand'))">💾 Save changes</button>
+      <button class="btn bo bs" style="font-size:.72rem" onclick="this.closest('.card-expand').remove();rCards(document.getElementById('dm'))">Cancel</button>
+    </div>
+  `;}
+
+function _saveCard(slug,modal){
+  var title=document.getElementById('ec-title').value.trim();
+  var stack=document.getElementById('ec-stack').value;
+  var kw=document.getElementById('ec-kw').value.split(',').map(s=>s.trim()).filter(Boolean);
+  var body=document.getElementById('ec-body').value.trim();
+  var err=document.getElementById('ec-err');
+  var btn=document.getElementById('ec-save-btn');
+  if(!title||!body){err.textContent='Title and body are required';err.style.display='block';return}
+  btn.textContent='Saving...';btn.disabled=true;err.style.display='none';
+  fetch(A+"/api/cards?workspace=default",{method:"POST",headers:{"X-API-Key":U.apiKey,"Content-Type":"application/json"},
+    body:JSON.stringify({slug,title,stack,keywords:kw,body})})
+  .then(r=>r.json()).then(d=>{
+    if(d.error){err.textContent=d.error;err.style.display='block';btn.textContent='Save changes';btn.disabled=false;return}
+    modal.remove();rCards(document.getElementById('dm'));hsToast('✓ Card updated','ok');
+  }).catch(e=>{err.textContent='Failed: '+e.message;err.style.display='block';btn.textContent='Save changes';btn.disabled=false})}
+
+
+
+function cpKey(btn){navigator.clipboard.writeText(U.apiKey).then(function(){hsToast('✓ API key copied to clipboard','ok')}).catch(function(){});
+  btn.textContent='✓ Copied';btn.classList.add('copied-btn');
   setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied-btn')},2000);
   const s2=document.getElementById('obs-2'),s3=document.getElementById('obs-3');
   if(s2){s2.classList.add('done');s2.classList.remove('active');s2.querySelector('.num').textContent='✓'}
   if(s3)s3.classList.add('active')}
 
 function cpBlock(btn){const pre=btn.parentElement.querySelector('pre');
-  navigator.clipboard.writeText(pre.textContent);btn.textContent='✓ Copied';
-  setTimeout(()=>{btn.textContent='Copy'},2000)}
+  navigator.clipboard.writeText(pre.textContent).then(function(){hsToast('✓ Copied to clipboard','ok')}).catch(function(){});
+  btn.textContent='✓ Copied';setTimeout(()=>{btn.textContent='Copy'},2000)}
 
 function showCardForm(){const w=document.getElementById('card-form-wrap');
   if(w.innerHTML){w.innerHTML='';return}
@@ -398,11 +497,14 @@ function createCard(){const slug=document.getElementById('cf-slug').value.trim()
   body=document.getElementById('cf-body').value.trim(),err=document.getElementById('cf-err');
   err.classList.add('hidden');
   if(!slug||!title||!body){err.textContent='Fill in slug, title, and body';err.classList.remove('hidden');return}
+  var btn=document.querySelector('[onclick="createCard()"]');if(btn){btn.textContent='Creating...';btn.disabled=true}
   fetch(A+"/api/cards?workspace=default",{method:"POST",headers:{"X-API-Key":U.apiKey,"Content-Type":"application/json"},
     body:JSON.stringify({slug,title,stack,keywords:kw,body})}).then(r=>r.json()).then(d=>{
-    if(d.error){err.textContent=d.error;err.classList.remove('hidden');return}
-    document.getElementById('card-form-wrap').innerHTML='';rCards(document.getElementById('dm'));
-  }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden')})}
+    if(d.error){err.textContent=d.error;err.classList.remove('hidden');if(btn){btn.textContent='Create Card →';btn.disabled=false}return}
+    document.getElementById('card-form-wrap').innerHTML='';
+    hsToast('✓ Card "'+slug+'" created','ok');
+    rCards(document.getElementById('dm'));
+  }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden');if(btn){btn.textContent='Create Card →';btn.disabled=false}})}
 
 /* ═══════════════════════════════════════════
    🔑 API KEY — Premium display
@@ -414,13 +516,18 @@ function rKey(el){el.innerHTML=`
     <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.3),rgba(168,85,247,.2));opacity:.25;filter:blur(16px)"></div>
     <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:20px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite"></div>
         <span style="font-family:var(--mono);font-size:.65rem;color:var(--accent);letter-spacing:.06em;font-weight:600">ACTIVE KEY</span>
         <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint);margin-left:auto">workspace: default</span>
       </div>
       <div class="key-display">
         <code>${U.apiKey}</code>
-        <button onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='✓ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
+        <button onclick="navigator.clipboard.writeText('${U.apiKey}').then(function(){hsToast('✓ API key copied','ok')});this.textContent='✓ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;color:var(--faint)"><span style="color:var(--green)">●</span> Never expires</div>
+        <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;color:var(--faint)"><span style="color:var(--green)">●</span> X-API-Key header</div>
+        <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;color:var(--faint)"><span style="color:var(--orange)">●</span> Keep secret</div>
       </div>
     </div>
   </div>
@@ -437,18 +544,57 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
     </div>
   </div>
 
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">🧪</span>
-      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick test</span>
-      <span style="font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-left:auto">paste in terminal</span>
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:1rem">🧪</span>
+        <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Live connection test</span>
+      </div>
+      <button class="btn bo bs" style="font-size:.72rem" id="key-test-btn" onclick="_testApiKey()">Run test</button>
     </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative">
+    <div id="key-test-result" style="display:none;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8"></div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative;margin-top:10px">
       <button class="cpbtn" onclick="cpBlock(this)">Copy</button>
       <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> <span style="color:var(--green)">"${A}/api/cards?workspace=default"</span> \\
   -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span></pre>
     </div>
-  </div>`}
+  </div>
+
+  <div style="background:rgba(239,68,68,.03);border:1.5px solid rgba(239,68,68,.15);border-radius:14px;padding:16px 20px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span style="font-size:.9rem">⚠️</span>
+      <span style="font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--red)">Security reminders</span>
+    </div>
+    <div style="font-size:.78rem;color:var(--dim);line-height:1.7">Never commit your key to git · Store in <code style="color:var(--accent);font-family:var(--mono)">.env</code> files (add to <code style="color:var(--accent);font-family:var(--mono)">.gitignore</code>) · The key grants full access to your cards</div>
+  </div>
+  <style>@keyframes pulse{0%,100%{box-shadow:0 0 8px var(--green)}50%{box-shadow:0 0 16px var(--green),0 0 24px rgba(34,197,94,.3)}}</style>`;
+}
+
+function _testApiKey(){
+  var btn=document.getElementById('key-test-btn');
+  var result=document.getElementById('key-test-result');
+  btn.textContent='Testing...';btn.disabled=true;result.style.display='block';
+  result.style.borderColor='var(--border)';result.innerHTML='<span style="color:var(--dim)">Connecting to API...</span>';
+  var t0=Date.now();
+  fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}})
+  .then(function(r){return r.json().then(function(d){return{ok:r.ok,status:r.status,d:d}})})
+  .then(function(res){
+    var ms=Date.now()-t0;
+    if(res.ok){
+      result.style.borderColor='rgba(68,255,136,.3)';
+      result.innerHTML='<span style="color:var(--green)">✓ Connected</span> · '+ms+'ms · '+((res.d.cards||[]).length)+' cards loaded · '+res.d.plan+' plan';
+    }else{
+      result.style.borderColor='rgba(239,68,68,.3)';
+      result.innerHTML='<span style="color:var(--red)">✗ Error '+res.status+'</span> · '+(res.d.error||'Unknown error');
+    }
+    btn.textContent='Run test';btn.disabled=false;
+  })
+  .catch(function(e){
+    result.style.borderColor='rgba(239,68,68,.3)';
+    result.innerHTML='<span style="color:var(--red)">✗ Network error</span> · '+e.message;
+    btn.textContent='Run test';btn.disabled=false;
+  });
+}
 
 /* ═══════════════════════════════════════════
    UNCHANGED TABS (Phase 2)
@@ -519,25 +665,19 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
   if(!pro){el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
   <div style="position:relative;margin-bottom:16px">
-    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
-      <div style="font-size:2rem;margin-bottom:12px">👥</div>
-      <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Team Memory requires Pro</h3>
-      <p style="color:var(--dim);font-size:.85rem;margin-bottom:8px;max-width:400px;margin-left:auto;margin-right:auto">When Alice's agent learns something, Bob's agent knows it too. Shared cards sync instantly across your entire team.</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px auto;max-width:420px">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">🔄</div>
-          <div style="font-size:.7rem;color:var(--dim)">Instant sync</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">🔒</div>
-          <div style="font-size:.7rem;color:var(--dim)">Private cards stay private</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">👤</div>
-          <div style="font-size:.7rem;color:var(--dim)">Up to 20 members</div>
-        </div>
+    <div style="position:absolute;inset:-2px;border-radius:16px;background:linear-gradient(135deg,rgba(168,85,247,.3),rgba(59,130,246,.2));opacity:.2;filter:blur(20px)"></div>
+    <div style="position:relative;background:var(--surface);border:2px solid rgba(168,85,247,.2);border-radius:14px;padding:32px 24px;text-align:center">
+      <div style="display:flex;justify-content:center;gap:-8px;margin-bottom:16px">
+        ${['A','B','C'].map((l,i)=>`<div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,${['#a855f7','#3b82f6','#22c55e'][i]},${['#7c3aed','#1d4ed8','#16a34a'][i]});display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:.9rem;color:#fff;border:2px solid var(--surface);margin-left:${i>0?'-8px':'0'}">${l}</div>`).join('')}
       </div>
-      <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
+      <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Team Memory requires Pro</h3>
+      <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:380px;margin-left:auto;margin-right:auto">When Alice's agent learns something, Bob's agent knows it too. Zero sync delay. Zero duplication.</p>
+      <div style="display:flex;gap:24px;justify-content:center;margin-bottom:20px">
+        <div style="text-align:center"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--purple)">∞</div><div style="font-family:var(--mono);font-size:.62rem;color:var(--dim)">Instant sync</div></div>
+        <div style="text-align:center"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:#3b82f6">20</div><div style="font-family:var(--mono);font-size:.62rem;color:var(--dim)">Max members</div></div>
+        <div style="text-align:center"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--green)">0</div><div style="font-family:var(--mono);font-size:.62rem;color:var(--dim)">LLM calls</div></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center">
         <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade — $29/mo</a>
         <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team — $59/mo</a>
       </div>
@@ -642,6 +782,13 @@ function _renderStats(el,cards){
   });
   el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Your agent's memory performance</p></div></div>
+
+  ${totalCards===0?`<div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:32px;text-align:center;margin-bottom:16px">
+    <div style="font-size:2rem;margin-bottom:12px">📈</div>
+    <h3 style="font-family:var(--mono);font-size:.95rem;font-weight:700;margin-bottom:8px">No cards yet — add some to see analytics</h3>
+    <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Once your agent starts creating cards, you'll see token savings, stale card alerts, and usage trends here.</p>
+    <button class="btn bp bs" onclick="dt('cards')">→ Create your first card</button>
+  </div>`:''}
 
   <!-- Stats grid with 2D glow — click any number to see how it's calculated -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
@@ -776,73 +923,94 @@ var _REL_DESC={
 function rGraph(el){
   if(_graphAnim){cancelAnimationFrame(_graphAnim);_graphAnim=null}
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">\ud83d\udd17 Context Graph</h1><p id="graph-status">Loading cards...</p></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🔗 Context Graph</h1><p id="graph-status">Loading cards...</p></div>
   <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
     <select id="gf-focus" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none;max-width:160px">
       <option value="">All cards</option>
     </select>
     <select id="gf-type" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none">
       <option value="">All types</option>
-      <option value="person">\ud83d\udc64 person</option><option value="project">\ud83d\udce6 project</option><option value="decision">\u2696\ufe0f decision</option>
-      <option value="preference">\u2764\ufe0f preference</option><option value="workflow">\u2699\ufe0f workflow</option><option value="event">\ud83d\udcc5 event</option>
-      <option value="account">\ud83c\udfe2 account</option><option value="general">\ud83d\udcc4 general</option>
+      <option value="person">👤 person</option><option value="project">📦 project</option><option value="decision">⚖️ decision</option>
+      <option value="preference">❤️ preference</option><option value="workflow">⚙️ workflow</option><option value="event">📅 event</option>
+      <option value="account">🏢 account</option><option value="general">📄 general</option>
     </select>
     <select id="gf-rel" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none">
       <option value="">All relations</option>
-      <option value="related">\ud83d\udd17 related — general connection</option>
-      <option value="owns">\ud83d\udc51 owns — ownership</option>
-      <option value="decided">\u2696\ufe0f decided — made a decision</option>
-      <option value="approved">\u2705 approved — gave approval</option>
-      <option value="uses">\ud83d\udd27 uses — depends on</option>
-      <option value="triggers">\u26a1 triggers — causes</option>
-      <option value="blocks">\ud83d\udeab blocks — prevents</option>
-      <option value="depends-on">\ud83d\udd04 depends-on — requires</option>
-      <option value="reviews">\ud83d\udd0d reviews — evaluates</option>
+      <option value="related">🔗 related — general connection</option>
+      <option value="owns">👑 owns — ownership</option>
+      <option value="decided">⚖️ decided — made a decision</option>
+      <option value="approved">✅ approved — gave approval</option>
+      <option value="uses">🔧 uses — depends on</option>
+      <option value="triggers">⚡ triggers — causes</option>
+      <option value="blocks">🚫 blocks — prevents</option>
+      <option value="depends-on">🔄 depends-on — requires</option>
+      <option value="reviews">🔍 reviews — evaluates</option>
     </select>
-    <button class="btn bo bs" onclick="rGraph(document.getElementById('dm'))" style="font-size:.75rem">\u21bb Refresh</button>
+    <button class="btn bo bs" onclick="rGraph(document.getElementById('dm'))" style="font-size:.75rem">↻ Refresh</button>
   </div></div>
+
+  <!-- ⏱ TIME-TRAVEL BAR -->
+  <div id="tt-bar" style="display:none;background:rgba(168,85,247,.06);border:1.5px solid rgba(168,85,247,.25);border-radius:12px;padding:14px 18px;margin-bottom:14px">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-family:var(--mono);font-size:.65rem;color:#a855f7;font-weight:700;letter-spacing:.06em;white-space:nowrap">⏱ TIME TRAVEL</span>
+      <div style="flex:1;min-width:200px">
+        <input type="range" id="tt-slider" min="0" max="100" value="100"
+          style="width:100%;accent-color:#a855f7;cursor:pointer">
+      </div>
+      <span id="tt-label" style="font-family:var(--mono);font-size:.72rem;color:#a855f7;white-space:nowrap;min-width:160px;text-align:right">Now</span>
+      <button onclick="_ttExit()" style="background:none;border:1px solid rgba(168,85,247,.3);border-radius:6px;color:#a855f7;font-family:var(--mono);font-size:.65rem;padding:4px 10px;cursor:pointer;white-space:nowrap">✕ Exit</button>
+    </div>
+    <div id="tt-info" style="font-family:var(--mono);font-size:.65rem;color:rgba(168,85,247,.6);margin-top:6px">
+      Drag the slider to see your graph as it existed at any point in time. Requires a focused card.
+    </div>
+  </div>
+
   <div id="graph-wrap" style="position:relative;background:#0a0a0c;border:2px solid var(--border);border-radius:14px;overflow:hidden;min-height:400px;touch-action:none">
     <div id="graph-loading" style="text-align:center;padding:60px 20px;color:var(--dim);font-family:var(--mono);font-size:.85rem">Loading graph...</div>
     <canvas id="graph-canvas" style="width:100%;display:none;cursor:grab"></canvas>
     <div id="graph-empty" style="display:none;text-align:center;padding:60px 20px">
-      <div style="font-size:2.5rem;margin-bottom:12px">\ud83d\udd17</div>
+      <div style="font-size:2.5rem;margin-bottom:12px">🔗</div>
       <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">No linked cards yet</h3>
       <p style="color:var(--dim);font-size:.85rem;max-width:380px;margin:0 auto 16px">Create cards with <code style="color:var(--accent);font-family:var(--mono)">links</code> and <code style="color:var(--accent);font-family:var(--mono)">cardType</code> to see your knowledge graph.</p>
-      <button class="btn bo bs" onclick="dt('cards')">\u2190 Go to Cards</button>
+      <button class="btn bo bs" onclick="dt('cards')">← Go to Cards</button>
     </div>
     <div id="graph-tooltip" style="display:none;position:absolute;background:rgba(15,15,18,.95);border:1px solid var(--border);border-radius:10px;padding:12px;pointer-events:none;z-index:10;max-width:260px;box-shadow:0 8px 30px rgba(0,0,0,.6);backdrop-filter:blur(12px)"></div>
     <div id="graph-detail" style="display:none;position:absolute;top:12px;right:12px;width:260px;background:rgba(12,12,15,.95);border:2px solid var(--border);border-radius:12px;padding:16px;z-index:10;backdrop-filter:blur(12px);max-height:calc(100% - 24px);overflow-y:auto"></div>
     <div id="graph-legend" style="position:absolute;bottom:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap;z-index:5"></div>
     <div id="graph-stats" style="position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:.6rem;color:var(--faint);z-index:5"></div>
+
+    <!-- Time-travel badge shown on canvas when active -->
+    <div id="tt-badge" style="display:none;position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.4);border-radius:8px;padding:4px 14px;font-family:var(--mono);font-size:.65rem;color:#a855f7;z-index:10;pointer-events:none;white-space:nowrap"></div>
+
     <div id="graph-guide" style="position:absolute;top:12px;right:12px;z-index:6">
       <button onclick="var g=document.getElementById('gg-body');g.style.display=g.style.display==='none'?'block':'none'" style="background:rgba(17,17,20,.9);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:.65rem;backdrop-filter:blur(8px)">? Guide</button>
       <div id="gg-body" style="display:none;background:rgba(10,10,13,.95);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:4px;width:200px;backdrop-filter:blur(12px)">
         <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin-bottom:6px;font-weight:700">CONTROLS</div>
         <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
-          \ud83d\udd18 Drag node \u2192 move &amp; pin<br>
-          \ud83d\udd18 Double-click \u2192 details<br>
-          \ud83d\udd18 Click node \u2192 highlight<br>
-          \ud83d\udd18 Scroll \u2192 zoom<br>
-          \ud83d\udd18 Drag empty \u2192 pan<br>
+          🖱 Drag node → move & pin<br>
+          🖱 Double-click → details<br>
+          🖱 Click node → highlight<br>
+          🖱 Scroll → zoom<br>
+          🖱 Drag empty → pan<br>
         </div>
         <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">MOBILE</div>
         <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
-          \u261d\ufe0f Drag \u2192 move or pan<br>
-          \ud83e\udd0f Pinch \u2192 zoom<br>
-          \ud83d\udc46 Double-tap \u2192 details
+          ☝️ Drag → move or pan<br>
+          🤏 Pinch → zoom<br>
+          👆 Double-tap → details
         </div>
-        <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">FILTERS</div>
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">TIME TRAVEL</div>
         <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
-          \ud83c\udfaf Focus \u2192 one card + neighbors<br>
-          \ud83c\udfa8 Type \u2192 persons, projects...<br>
-          \ud83d\udd17 Relation \u2192 owns, triggers...
+          Focus a card, then click<br>
+          ⏱ Time Travel to scrub<br>
+          back through graph history
         </div>
       </div>
     </div>
     <div id="graph-zoom" style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:5">
       <button id="gz-in" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">+</button>
-      <button id="gz-out" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">\u2212</button>
-      <button id="gz-fit" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center">\u25a3</button>
+      <button id="gz-out" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">−</button>
+      <button id="gz-fit" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center">⊟</button>
     </div>
   </div>
 
@@ -908,24 +1076,106 @@ POST /api/cards
     var pct=Math.round(cards.length/limit*100);
     var statusEl=document.getElementById('graph-status');
 
-    // FREE users see upgrade gate over the graph
+    // FREE users see a live demo graph they can play with
     if(plan==='FREE'){
-      statusEl.innerHTML=cards.length+'/'+limit+' cards \u00b7 FREE';
-      var overlay=document.createElement('div');
-      overlay.style.cssText='position:absolute;inset:0;background:rgba(10,10,12,.88);z-index:20;display:flex;align-items:center;justify-content:center;border-radius:12px;backdrop-filter:blur(4px)';
-      overlay.innerHTML='<div style="text-align:center;max-width:320px"><div style="font-size:2rem;margin-bottom:12px">\ud83d\udd12</div><h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--text)">Graph Explorer is a paid feature</h3><p style="font-size:.82rem;color:var(--dim);margin-bottom:16px;line-height:1.5">Upgrade to Pro to unlock graph traversal, visual explorer, and 100 cards.</p><a href="javascript:void(0)" onclick="go(\'pricing\')" class="btn bp" style="font-size:.82rem">Unlock Graph \u2014 $29/mo</a><p style="font-size:.68rem;color:var(--faint);margin-top:10px">Your '+cards.length+' cards are safe. Upgrade adds the graph on top.</p></div>';
-      document.getElementById('graph-wrap').appendChild(overlay);
+      statusEl.innerHTML='🎮 Demo mode · <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade to use your real cards</a>';
+      document.getElementById('graph-loading').style.display='none';
+
+      // Demo banner
+      var banner=document.createElement('div');
+      banner.style.cssText='position:absolute;top:0;left:0;right:0;background:linear-gradient(90deg,rgba(168,85,247,.12),rgba(59,130,246,.08));border-bottom:1px solid rgba(168,85,247,.2);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;z-index:10;gap:8px;flex-wrap:wrap';
+      banner.innerHTML='<span style="font-family:var(--mono);font-size:.65rem;color:#a855f7;font-weight:700">⚡ INTERACTIVE DEMO — drag nodes, zoom, time-travel</span><a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-family:var(--mono);font-size:.65rem;color:var(--accent);background:rgba(68,255,136,.1);border:1px solid rgba(68,255,136,.25);border-radius:6px;padding:3px 10px;text-decoration:none">Unlock your data → $29/mo</a>';
+      document.getElementById('graph-wrap').appendChild(banner);
+
+      // Rich demo dataset — a realistic SaaS startup memory graph
+      var demoNow=Date.now();
+      var demoCards=[
+        {slug:'alice',title:'Alice (Founder)',cardType:'person',stack:'people',keywords:['founder','ceo','product'],links:[{slug:'saas-mvp',relation:'owns'},{slug:'use-stripe',relation:'decided'},{slug:'launch-q1',relation:'owns'}],tokens:120,reason:'Solo founder, drives all product decisions',updatedAt:new Date(demoNow-30*24*60*60*1000).toISOString()},
+        {slug:'saas-mvp',title:'SaaS MVP',cardType:'project',stack:'projects',keywords:['mvp','launch','saas'],links:[{slug:'use-stripe',relation:'triggers'},{slug:'pref-typescript',relation:'uses'},{slug:'deploy-vercel',relation:'uses'}],tokens:200,reason:'Core product — agent memory for developers',updatedAt:new Date(demoNow-25*24*60*60*1000).toISOString()},
+        {slug:'use-stripe',title:'Use Stripe for Billing',cardType:'decision',stack:'decisions',keywords:['stripe','billing','payments'],links:[{slug:'reject-paddle',relation:'blocks'},{slug:'cto',relation:'approved'}],tokens:95,reason:'Paddle lacks per-seat billing. Stripe has better DX.',updatedAt:new Date(demoNow-20*24*60*60*1000).toISOString()},
+        {slug:'cto',title:'CTO (Advisor)',cardType:'person',stack:'people',keywords:['cto','advisor','backend'],links:[{slug:'deploy-vercel',relation:'decided'}],tokens:80,reason:'Part-time advisor, approves infrastructure decisions',updatedAt:new Date(demoNow-22*24*60*60*1000).toISOString()},
+        {slug:'pref-typescript',title:'TypeScript Everywhere',cardType:'preference',stack:'preferences',keywords:['typescript','dx','types'],links:[],tokens:60,reason:'All SDKs and backend in TypeScript. No exceptions.',updatedAt:new Date(demoNow-28*24*60*60*1000).toISOString()},
+        {slug:'deploy-vercel',title:'Deploy on Vercel',cardType:'decision',stack:'decisions',keywords:['vercel','deploy','serverless'],links:[{slug:'saas-mvp',relation:'related'}],tokens:75,reason:'Edge functions + Neon DB. 12 function slot limit — watch it.',updatedAt:new Date(demoNow-18*24*60*60*1000).toISOString()},
+        {slug:'reject-paddle',title:'Rejected: Paddle',cardType:'decision',stack:'decisions',keywords:['paddle','rejected','billing'],links:[],tokens:55,reason:'No per-seat pricing. Rejected in favour of Stripe.',updatedAt:new Date(demoNow-20*24*60*60*1000).toISOString()},
+        {slug:'launch-q1',title:'Q1 Launch Goal',cardType:'workflow',stack:'workflows',keywords:['launch','q1','milestone'],links:[{slug:'saas-mvp',relation:'depends-on'},{slug:'use-stripe',relation:'depends-on'}],tokens:85,reason:'Ship to 100 paying customers by end of Q1.',updatedAt:new Date(demoNow-5*24*60*60*1000).toISOString()},
+        {slug:'hyperstack-mem',title:'HyperStack Memory',cardType:'preference',stack:'preferences',keywords:['memory','agent','hyperstack'],links:[{slug:'saas-mvp',relation:'uses'}],tokens:70,reason:'All agents use HyperStack for typed graph memory.',updatedAt:new Date(demoNow-2*24*60*60*1000).toISOString()}
+      ];
+
+      var demoNodeMap={},demoEdges=[],demoLinkedSlugs=new Set();
+      demoCards.forEach(function(c){
+        demoNodeMap[c.slug]=c;
+        (c.links||[]).forEach(function(l){
+          var target=typeof l==='string'?l:l.slug;
+          var relation=typeof l==='object'?(l.relation||'related'):'related';
+          if(target){demoLinkedSlugs.add(c.slug);demoLinkedSlugs.add(target);demoEdges.push({from:c.slug,to:target,relation:relation})}
+        });
+      });
+      var demoNodes=Object.values(demoNodeMap);
+
+      // Populate focus dropdown with demo cards
+      var focusSel=document.getElementById('gf-focus');
+      demoCards.forEach(function(c){
+        var o=document.createElement('option');o.value=c.slug;o.textContent=(c.cardType?c.cardType[0].toUpperCase()+': ':'')+c.title;focusSel.appendChild(o);
+      });
+
+      // Wire up time-travel slider for demo
+      var demoTimestamps=[];
+      demoCards.forEach(function(c){if(c.updatedAt)demoTimestamps.push(new Date(c.updatedAt).getTime());});
+      demoTimestamps=Array.from(new Set(demoTimestamps)).sort(function(a,b){return a-b});
+      demoTimestamps.push(demoNow);
+
+      var slider=document.getElementById('tt-slider');
+      var ttLabel=document.getElementById('tt-label');
+      var ttBadge=document.getElementById('tt-badge');
+      var ttBar=document.getElementById('tt-bar');
+      var ttInfo=document.getElementById('tt-info');
+      ttBar.style.display='block';
+      slider.min=0;slider.max=demoTimestamps.length-1;slider.value=demoTimestamps.length-1;
+
+      var _ttDebounce=null;
+      slider.oninput=function(){
+        var idx=parseInt(this.value);
+        var ts=demoTimestamps[idx];
+        var isNow=(idx===demoTimestamps.length-1);
+        if(isNow){
+          ttLabel.textContent='Now';ttBadge.style.display='none';
+          ttInfo.textContent='Drag the slider to see how this graph grew over time.';
+          _gDraw(demoNodes,demoEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value);
+          return;
+        }
+        var d=new Date(ts);
+        var label=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+        ttLabel.textContent=label;
+        ttBadge.textContent='⏱ '+label;ttBadge.style.display='block';
+        ttInfo.textContent='Viewing demo graph as it existed on '+label+'. Cards added after this date are hidden.';
+        clearTimeout(_ttDebounce);
+        _ttDebounce=setTimeout(function(){
+          var pastNodes=demoNodes.filter(function(n){return n.updatedAt&&new Date(n.updatedAt).getTime()<=ts});
+          var pastSlugs=new Set(pastNodes.map(function(n){return n.slug}));
+          var pastEdges=demoEdges.filter(function(e){return pastSlugs.has(e.from)&&pastSlugs.has(e.to)});
+          _gDraw(pastNodes,pastEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value);
+        },200);
+      };
+
+      window._ttExit=function(){slider.value=demoTimestamps.length-1;slider.oninput();};
+
+      var demoRedraw=function(){_gDraw(demoNodes,demoEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value)};
+      document.getElementById('gf-type').onchange=demoRedraw;
+      document.getElementById('gf-rel').onchange=demoRedraw;
+      document.getElementById('gf-focus').onchange=demoRedraw;
+      requestAnimationFrame(function(){setTimeout(function(){_gDraw(demoNodes,demoEdges,'','','')},60)});
       return;
     }
 
     if(pct>=70){
-      statusEl.innerHTML=cards.length+'/'+limit+' cards <span style="color:var(--red)">'+pct+'% used</span> \u00b7 '+plan+' \u00b7 <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade</a>';
+      statusEl.innerHTML=cards.length+'/'+limit+' cards <span style="color:var(--red)">'+pct+'% used</span> · '+plan+' · <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade</a>';
     }else{
-      statusEl.textContent=cards.length+'/'+limit+' cards \u00b7 '+plan;
+      statusEl.textContent=cards.length+'/'+limit+' cards · '+plan;
     }
+
     var nodeMap={},edges=[],linkedSlugs=new Set();
     cards.forEach(function(c){
-      nodeMap[c.slug]={slug:c.slug,title:c.title,stack:c.stack,cardType:c.cardType||'general',keywords:c.keywords||[],links:c.links||[],tokens:c.tokens||0,triggeredBy:c.triggeredBy,approvedBy:c.approvedBy,reason:c.reason};
+      nodeMap[c.slug]={slug:c.slug,title:c.title,stack:c.stack,cardType:c.cardType||'general',keywords:c.keywords||[],links:c.links||[],tokens:c.tokens||0,triggeredBy:c.triggeredBy,approvedBy:c.approvedBy,reason:c.reason,updatedAt:c.updatedAt};
       (c.links||[]).forEach(function(l){
         var target=typeof l==='string'?l:l.slug;
         var relation=typeof l==='object'?(l.relation||'related'):'related';
@@ -940,12 +1190,108 @@ POST /api/cards
       document.getElementById('graph-canvas').style.display='none';
       document.getElementById('graph-empty').style.display='block';return;
     }
+
     // Populate focus dropdown
     var focusSel=document.getElementById('gf-focus');
     cards.forEach(function(c){
       var o=document.createElement('option');o.value=c.slug;o.textContent=(c.cardType?c.cardType[0].toUpperCase()+': ':'')+c.title;focusSel.appendChild(o);
     });
-    var redraw=function(){_gDraw(nodes,edges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value)};
+
+    // ── Build timeline snapshots from updatedAt timestamps ──
+    // Collect all unique timestamps across all cards, sort oldest→newest
+    var _allCards=cards; // keep reference for time-travel
+    var _allNodes=nodes;
+    var _allEdges=edges;
+    var timestamps=[];
+    cards.forEach(function(c){if(c.updatedAt)timestamps.push(new Date(c.updatedAt).getTime());});
+    timestamps=Array.from(new Set(timestamps)).sort(function(a,b){return a-b});
+    // Add "now" as final snapshot
+    timestamps.push(Date.now());
+
+    // ── Wire up slider ──
+    var slider=document.getElementById('tt-slider');
+    var ttLabel=document.getElementById('tt-label');
+    var ttBadge=document.getElementById('tt-badge');
+    var ttInfo=document.getElementById('tt-info');
+    var _ttDebounce=null;
+    var _ttActive=false;
+
+    // Show time-travel bar for Pro+ plans
+    if(plan!=='FREE'){
+      document.getElementById('tt-bar').style.display='block';
+      slider.min=0;
+      slider.max=timestamps.length-1;
+      slider.value=timestamps.length-1;
+    }
+
+    slider.oninput=function(){
+      var idx=parseInt(this.value);
+      var ts=timestamps[idx];
+      var isNow=(idx===timestamps.length-1);
+      _ttActive=!isNow;
+
+      if(isNow){
+        ttLabel.textContent='Now';
+        ttBadge.style.display='none';
+        ttInfo.textContent='Drag the slider to see your graph as it existed at any point in time. Requires a focused card.';
+        // Restore live graph
+        _gDraw(_allNodes,_allEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value);
+        return;
+      }
+
+      var d=new Date(ts);
+      var label=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      ttLabel.textContent=label;
+      ttBadge.textContent='⏱ Viewing: '+label;
+      ttBadge.style.display='block';
+      ttInfo.textContent='Showing graph state at '+label+'. Cards created after this point are hidden.';
+
+      // Debounce API calls while scrubbing
+      clearTimeout(_ttDebounce);
+      _ttDebounce=setTimeout(function(){_ttFetch(ts,d.toISOString())},400);
+    };
+
+    // ── Time-travel fetch using /api/graph?at= ──
+    function _ttFetch(ts,isoStr){
+      var focusSlug=document.getElementById('gf-focus').value;
+      if(!focusSlug){
+        // No focus card — reconstruct client-side by filtering cards by timestamp
+        var pastNodes=_allNodes.filter(function(n){
+          return n.updatedAt&&new Date(n.updatedAt).getTime()<=ts;
+        });
+        var pastSlugs=new Set(pastNodes.map(function(n){return n.slug}));
+        var pastEdges=_allEdges.filter(function(e){return pastSlugs.has(e.from)&&pastSlugs.has(e.to)});
+        if(pastNodes.length===0){
+          document.getElementById('graph-canvas').style.display='none';
+          document.getElementById('graph-empty').style.display='block';
+          return;
+        }
+        document.getElementById('graph-empty').style.display='none';
+        _gDraw(pastNodes,pastEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,'');
+        return;
+      }
+      // Focus card set — use /api/graph?at= for accurate version reconstruction
+      var url=A+'/api/graph?workspace=default&from='+encodeURIComponent(focusSlug)+'&depth=3&at='+encodeURIComponent(isoStr);
+      fetch(url,{headers:{'X-API-Key':U.apiKey}}).then(function(r){return r.json()}).then(function(data){
+        if(data.error){hsToast(data.error,'err');return}
+        var ttNodes=data.nodes||[];
+        var ttEdges=data.edges||[];
+        // Convert API graph response format to visual graph format
+        var visNodes=ttNodes.map(function(n){return{slug:n.slug,title:n.title,stack:n.stack,cardType:n.cardType||'general',keywords:n.keywords||[],links:n.links||[],tokens:n.tokens||0,triggeredBy:n.triggeredBy,approvedBy:n.approvedBy,reason:n.reason}});
+        _gDraw(visNodes,ttEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,focusSlug);
+      }).catch(function(e){hsToast('Time-travel fetch failed: '+e.message,'err')});
+    }
+
+    // Exit time-travel
+    window._ttExit=function(){
+      slider.value=timestamps.length-1;
+      slider.oninput();
+    };
+
+    var redraw=function(){
+      if(_ttActive){slider.oninput()}
+      else{_gDraw(_allNodes,_allEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value)}
+    };
     document.getElementById('gf-type').onchange=redraw;
     document.getElementById('gf-rel').onchange=redraw;
     document.getElementById('gf-focus').onchange=redraw;
@@ -997,9 +1343,9 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
   // Canvas setup
   var canvas=document.getElementById('graph-canvas');
   var wrap=document.getElementById('graph-wrap');
-  var W=wrap.clientWidth||wrap.offsetWidth||Math.min(window.innerWidth-32,800);
-  var H=Math.max(400,Math.min(600,nodes.length*50+200));
-  if(W<100)W=Math.min(window.innerWidth-32,800);
+  var W=wrap.offsetWidth||Math.min(window.innerWidth,800);
+  var H=Math.max(360,Math.min(520,nodes.length*50+200));
+  if(W<100)W=window.innerWidth;
   var dpr=window.devicePixelRatio||1;
   canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';canvas.style.width=W+'px';
   var ctx=canvas.getContext('2d');
@@ -1802,3 +2148,231 @@ function updatePricingButtons(){
 // CONVERSATIONAL ONBOARDING - Add to end of app.js
 // Shows on first dashboard load, uses Groq API to parse project description
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ═══════════════════════════════════════════
+   🤖 AGENTS — Activity feed + Memory health
+   ═══════════════════════════════════════════ */
+function rAgents(el){
+  var pro=U.plan==='PRO'||U.plan==='TEAM'||U.plan==='BUSINESS';
+  if(!pro){
+    el.innerHTML=`
+    <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agents</h1><p>Debug failures and track memory health</p></div></div>
+    <div style="position:relative;margin-bottom:16px">
+      <div style="position:absolute;inset:-2px;border-radius:16px;background:linear-gradient(135deg,rgba(68,255,136,.2),rgba(59,130,246,.15));opacity:.2;filter:blur(20px)"></div>
+      <div style="position:relative;background:var(--surface);border:2px solid rgba(68,255,136,.15);border-radius:14px;padding:36px 28px;text-align:center">
+        <div style="font-size:2rem;margin-bottom:12px">🤖</div>
+        <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Agent Insights requires Pro</h3>
+        <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:420px;margin-left:auto;margin-right:auto">See exactly what your agents wrote, when, and what changed. Get a memory health score with specific recommendations.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 auto 20px;max-width:480px">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--accent)">📋</div>
+            <div style="font-size:.65rem;color:var(--faint);margin-top:4px">Activity feed</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--green)">💚</div>
+            <div style="font-size:.65rem;color:var(--faint);margin-top:4px">Health score</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
+            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--blue)">🔍</div>
+            <div style="font-size:.65rem;color:var(--faint);margin-top:4px">Debug failures</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:center">
+          <a href="javascript:void(0)" onclick="go('pricing')" class="btn bp">Upgrade to Pro →</a>
+        </div>
+      </div>
+    </div>`;
+    return;
+  }
+
+  // Loading state
+  el.innerHTML=`
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agents</h1><p id="agents-status">Loading agent data...</p></div>
+    <button class="btn bo bs" onclick="rAgents(document.getElementById('dm'))" style="font-size:.72rem">↻ Refresh</button>
+  </div>
+  <div style="text-align:center;padding:40px;color:var(--dim)">
+    <div class="loading-dots"><span></span><span></span><span></span></div>
+    <div style="font-family:var(--mono);font-size:.78rem;margin-top:8px">Fetching agent activity...</div>
+  </div>`;
+
+  fetch(A+'/api/cards?workspace=default',{headers:{'X-API-Key':U.apiKey}})
+    .then(function(r){return r.json()})
+    .then(function(d){_renderAgents(el,d.cards||[])})
+    .catch(function(){_renderAgents(el,[])});
+}
+
+function _renderAgents(el,cards){
+  var now=Date.now();
+  var totalCards=cards.length;
+  var limit=cards.length>0?({FREE:10,PRO:100,TEAM:500,BUSINESS:2000}[U.plan]||100):100;
+
+  // ── Health score calculation ──
+  var staleCards=cards.filter(function(c){
+    var upd=new Date(c.updatedAt||c.createdAt||now).getTime();
+    return (now-upd)>(21*24*60*60*1000);
+  });
+  var linkedCards=cards.filter(function(c){return c.links&&c.links.length>0});
+  var typedCards=cards.filter(function(c){return c.cardType&&c.cardType!=='general'});
+  var keywordedCards=cards.filter(function(c){return c.keywords&&c.keywords.length>0});
+  var freshCards=cards.filter(function(c){
+    var upd=new Date(c.updatedAt||c.createdAt||now).getTime();
+    return (now-upd)<(7*24*60*60*1000);
+  });
+
+  // Score components (out of 100)
+  var scoreComponents={
+    freshness: totalCards>0?Math.round((1-staleCards.length/totalCards)*25):25,
+    structure: totalCards>0?Math.round((typedCards.length/totalCards)*20):0,
+    keywords:  totalCards>0?Math.round((keywordedCards.length/totalCards)*20):0,
+    links:     totalCards>0?Math.round((linkedCards.length/totalCards)*20):0,
+    volume:    Math.min(20,Math.round((totalCards/Math.max(1,limit*0.3))*20))
+  };
+  var healthScore=Object.values(scoreComponents).reduce(function(a,b){return a+b},0);
+  healthScore=Math.min(100,Math.max(0,healthScore));
+
+  var healthColor=healthScore>=80?'var(--green)':healthScore>=60?'var(--accent)':healthScore>=40?'var(--yellow)':'var(--red)';
+  var healthLabel=healthScore>=80?'Excellent':healthScore>=60?'Good':healthScore>=40?'Fair':'Needs attention';
+  var healthEmoji=healthScore>=80?'💚':healthScore>=60?'🟡':'🔴';
+
+  // Build recommendations
+  var recs=[];
+  if(staleCards.length>0)recs.push({icon:'⚠️',color:'var(--yellow)',text:staleCards.length+' card'+(staleCards.length>1?'s are':' is')+' stale (21+ days). Review or archive them.',action:null});
+  if(typedCards.length<totalCards*0.5&&totalCards>2)recs.push({icon:'🏷️',color:'var(--blue)',text:'Only '+typedCards.length+'/'+totalCards+' cards have a type. Add cardType to improve graph traversal.',action:null});
+  if(linkedCards.length<totalCards*0.3&&totalCards>3)recs.push({icon:'🔗',color:'var(--purple)',text:'Only '+linkedCards.length+' cards have links. Connect related cards to unlock graph queries.',action:null});
+  if(keywordedCards.length<totalCards*0.7&&totalCards>2)recs.push({icon:'🔍',color:'var(--accent)',text:(totalCards-keywordedCards.length)+' cards have no keywords. Keywords improve search precision.',action:null});
+  if(totalCards===0)recs.push({icon:'📭',color:'var(--dim)',text:'No cards yet. Create your first card to start tracking agent memory.',action:'dt(\'cards\')'});
+  if(recs.length===0)recs.push({icon:'✅',color:'var(--green)',text:'Memory looks healthy! All cards are fresh, typed, and well-connected.',action:null});
+
+  // ── Activity feed (simulate from cards data) ──
+  // Sort cards by updatedAt to create a timeline
+  var activityCards=cards.slice().sort(function(a,b){
+    var ta=new Date(a.updatedAt||a.createdAt||0).getTime();
+    var tb=new Date(b.updatedAt||b.createdAt||0).getTime();
+    return tb-ta;
+  }).slice(0,12);
+
+  var activityHtml=activityCards.length===0
+    ?'<div style="text-align:center;padding:28px;color:var(--dim);font-size:.82rem">No activity yet — create some cards to see what your agent has been doing.</div>'
+    :activityCards.map(function(c){
+      var upd=new Date(c.updatedAt||c.createdAt||now);
+      var daysAgo=Math.floor((now-upd.getTime())/(24*60*60*1000));
+      var timeLabel=daysAgo===0?'Today':daysAgo===1?'Yesterday':daysAgo+'d ago';
+      var sourceAgent=c.sourceAgent||c.authorId||null;
+      var agentLabel=sourceAgent?('<span style="font-family:var(--mono);font-size:.6rem;color:var(--accent);background:rgba(68,255,136,.08);border:1px solid rgba(68,255,136,.15);padding:1px 7px;border-radius:4px">'+sourceAgent+'</span>'):'<span style="font-family:var(--mono);font-size:.6rem;color:var(--dim);background:var(--surface2);border:1px solid var(--border);padding:1px 7px;border-radius:4px">manual</span>';
+      var typeColors={person:'#a855f7',project:'#3b82f6',decision:'#ff6b2b',preference:'#22c55e',workflow:'#eab308',signal:'#ef4444',general:'#6b7280'};
+      var tc=typeColors[c.cardType]||typeColors.general;
+      var hasLinks=c.links&&c.links.length>0;
+      var ver=c.ver||c._count||1;
+      var action=ver>1?'updated':'created';
+      var actionColor=ver>1?'var(--yellow)':'var(--green)';
+
+      return'<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;transition:border-color .2s" onmouseover="this.style.borderColor=\''+tc+'44\'" onmouseout="this.style.borderColor=\'var(--border)\'">'
+        +'<div style="width:7px;height:7px;border-radius:50%;background:'+actionColor+';box-shadow:0 0 6px '+actionColor+';margin-top:5px;flex-shrink:0"></div>'
+        +'<div style="flex:1;min-width:0">'
+          +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px">'
+            +agentLabel
+            +'<span style="font-family:var(--mono);font-size:.65rem;color:'+actionColor+'">'+action+'</span>'
+            +'<span style="font-family:var(--mono);font-size:.72rem;color:var(--text);font-weight:600">'+c.slug+'</span>'
+            +(hasLinks?'<span style="font-family:var(--mono);font-size:.58rem;color:var(--purple)">+'+c.links.length+' link'+(c.links.length>1?'s':'')+'</span>':'')
+          +'</div>'
+          +'<div style="font-size:.75rem;color:var(--dim);display:flex;align-items:center;gap:8px">'
+            +'<span style="background:'+tc+'12;color:'+tc+';font-family:var(--mono);font-size:.58rem;padding:1px 6px;border-radius:4px;border:1px solid '+tc+'20">'+(c.cardType||'general')+'</span>'
+            +'<span>'+c.title+'</span>'
+          +'</div>'
+        +'</div>'
+        +'<span style="font-family:var(--mono);font-size:.6rem;color:var(--faint);white-space:nowrap;flex-shrink:0">'+timeLabel+'</span>'
+      +'</div>';
+    }).join('');
+
+  // ── Render full UI ──
+  document.getElementById('agents-status').textContent=totalCards+' cards · '+U.plan+' plan';
+
+  el.innerHTML=`
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agents</h1><p id="agents-status">${totalCards} cards · ${U.plan} plan</p></div>
+    <button class="btn bo bs" onclick="rAgents(document.getElementById('dm'))" style="font-size:.72rem">↻ Refresh</button>
+  </div>
+
+  <!-- ── Health Score ── -->
+  <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:20px">
+
+    <!-- Score ring card -->
+    <div style="position:relative">
+      <div style="position:absolute;inset:-2px;border-radius:14px;background:${healthColor};opacity:.08;filter:blur(16px)"></div>
+      <div style="position:relative;background:var(--surface);border:2px solid ${healthColor}33;border-radius:14px;padding:20px;text-align:center">
+        <div style="font-family:var(--mono);font-size:.62rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">MEMORY HEALTH</div>
+
+        <!-- SVG ring -->
+        <div style="position:relative;display:inline-block;margin-bottom:8px">
+          <svg width="90" height="90" viewBox="0 0 90 90" style="transform:rotate(-90deg)">
+            <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="8"/>
+            <circle cx="45" cy="45" r="36" fill="none" stroke="${healthColor}" stroke-width="8"
+              stroke-dasharray="${Math.round(healthScore/100*226.2)} 226.2"
+              stroke-linecap="round" style="transition:stroke-dasharray .8s ease;filter:drop-shadow(0 0 6px ${healthColor})"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column">
+            <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${healthColor};line-height:1">${healthScore}</div>
+            <div style="font-family:var(--mono);font-size:.55rem;color:var(--faint)">/ 100</div>
+          </div>
+        </div>
+
+        <div style="font-family:var(--mono);font-size:.78rem;font-weight:600;color:${healthColor}">${healthEmoji} ${healthLabel}</div>
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-top:4px">Updated just now</div>
+      </div>
+    </div>
+
+    <!-- Score breakdown -->
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px">
+      <div style="font-family:var(--mono);font-size:.68rem;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">SCORE BREAKDOWN</div>
+      ${[
+        {label:'Freshness',val:scoreComponents.freshness,max:25,color:'var(--green)',tip:'Cards updated in last 21 days'},
+        {label:'Structure',val:scoreComponents.structure,max:20,color:'var(--blue)',tip:'Cards with typed cardType'},
+        {label:'Keywords',val:scoreComponents.keywords,max:20,color:'var(--accent)',tip:'Cards with keywords for search'},
+        {label:'Links',val:scoreComponents.links,max:20,color:'var(--purple)',tip:'Cards connected by links'},
+        {label:'Volume',val:scoreComponents.volume,max:20,color:'var(--yellow)',tip:'Using at least 30% of your card limit'}
+      ].map(function(s){
+        var pct=Math.round(s.val/s.max*100);
+        return'<div style="margin-bottom:10px" title="'+s.tip+'">'
+          +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">'
+            +'<span style="font-family:var(--mono);font-size:.68rem;color:var(--dim)">'+s.label+'</span>'
+            +'<span style="font-family:var(--mono);font-size:.65rem;color:'+s.color+'">'+s.val+'/'+s.max+'</span>'
+          +'</div>'
+          +'<div style="height:4px;background:rgba(255,255,255,.06);border-radius:2px">'
+            +'<div style="height:100%;width:'+pct+'%;background:'+s.color+';border-radius:2px;transition:width .6s ease"></div>'
+          +'</div>'
+        +'</div>';
+      }).join('')}
+    </div>
+  </div>
+
+  <!-- ── Recommendations ── -->
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
+    <div style="font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:12px">💡 Recommendations</div>
+    ${recs.map(function(r){
+      return'<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:6px">'
+        +'<span style="font-size:.95rem;flex-shrink:0">'+r.icon+'</span>'
+        +'<span style="font-size:.8rem;color:var(--dim);line-height:1.5">'+r.text+'</span>'
+        +(r.action?'<button onclick="'+r.action+'" class="btn bp bs" style="font-size:.65rem;white-space:nowrap;flex-shrink:0;margin-left:auto">Fix →</button>':'')
+      +'</div>';
+    }).join('')}
+  </div>
+
+  <!-- ── Activity Feed ── -->
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--text)">📋 Recent Agent Activity</div>
+      <span style="font-family:var(--mono);font-size:.6rem;color:var(--faint)">Last ${activityCards.length} writes</span>
+    </div>
+    <div style="font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-bottom:10px;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:6px;border:1px solid var(--border)">
+      🔎 Showing cards sorted by last update. Add <code style="color:var(--accent)">sourceAgent</code> field when writing cards to see which agent wrote each entry.
+    </div>
+    ${activityHtml}
+    ${totalCards===0?'':'<div style="text-align:center;margin-top:10px"><button class="btn bo bs" style="font-size:.72rem" onclick="dt(\'cards\')">View all cards →</button></div>'}
+  </div>
+
+  <style>
+  .loading-dots{display:inline-flex;gap:5px}
+  .loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}
+  .loading-dots span:nth-child(2){animation-delay:.18s}
+  .loading-dots span:nth-child(3){animation-delay:.36s}
+  @keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}
+  </style>`;
+}
