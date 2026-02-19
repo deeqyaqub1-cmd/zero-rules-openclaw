@@ -95,13 +95,6 @@ function dt(t){DV=t;document.querySelectorAll(".sbtn").forEach(b=>b.classList.re
   const mb=document.getElementById("mt-"+t);if(mb)mb.classList.add("act");
   var dc=document.getElementById("dm");if(dc)dc.scrollTop=0;
   window.scrollTo(0,0);
-  var mobBar=document.getElementById('mob-dash-bar');
-  var mobTitle=document.getElementById('mob-dash-title');
-  if(mobBar){
-    var titles={start:'Dashboard',cards:'Cards',graph:'Graph',key:'API Key',ws:'Workspaces',team:'Team',stats:'Analytics',agents:'Agents',docs:'Docs'};
-    if(mobTitle)mobTitle.textContent=titles[t]||'Dashboard';
-    mobBar.style.display=window.innerWidth<=768?(t==='start'?'none':'flex'):'none';
-  }
   renderD()}
 
 function showCode(lang,btn){document.querySelectorAll('[id^="code-"]').forEach(e=>e.classList.add("hidden"));
@@ -134,16 +127,7 @@ function renderD(){if(!U)return;
   if(planBar&&U.plan!=='FREE'){planBar.style.display='block';planBar.innerHTML='Plan: '+(planBadges[U.plan]||U.plan)+upgradeLink}
   else if(planBar){planBar.style.display='none'}
   const m=document.getElementById("dm");
-  if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m);else if(DV==="agents")rAgents(m)}
-
-// ── Toast notification ──
-function hsToast(msg,type,dur){
-  var t=document.getElementById('hs-toast');
-  if(!t){t=document.createElement('div');t.id='hs-toast';t.className='hs-toast';document.body.appendChild(t)}
-  t.textContent=msg;t.className='hs-toast '+(type||'ok');
-  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show')})});
-  clearTimeout(t._tid);t._tid=setTimeout(function(){t.classList.remove('show')},dur||2500);
-}
+  if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
 
 // ── Toast notification ──
 function hsToast(msg,type,dur){
@@ -159,10 +143,10 @@ function hsToast(msg,type,dur){
    ═══════════════════════════════════════════ */
 function rStart(el){
   el.innerHTML=`
-  <div style="text-align:center;padding:20px 0 24px">
+  <div style="text-align:center;padding:16px 0 20px">
     <div style="font-family:var(--mono);font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Welcome to HyperStack</div>
-    <h1 style="font-family:var(--mono);font-size:1.4rem;font-weight:800;margin-bottom:6px">Your agent is about to get a lot smarter</h1>
-    <p style="color:var(--dim);font-size:.88rem">Three steps. Under 30 seconds. Let's go.</p>
+    <h1 style="font-family:var(--mono);font-size:clamp(1.05rem,4vw,1.4rem);font-weight:800;margin-bottom:6px;line-height:1.3">Your agent is about to get a lot smarter</h1>
+    <p style="color:var(--dim);font-size:.85rem">Three steps. Under 30 seconds. Let's go.</p>
   </div>
 
   <!-- Animated step indicators -->
@@ -172,44 +156,47 @@ function rStart(el){
     <div class="ob-step" id="obs-3"><div class="num">3</div><div class="stxt">Paste & go</div></div>
   </div>
 
-  <!-- Step 2: API Key card with glow -->
+  <!-- Step 2: API Key card -->
   <div style="position:relative;margin:8px 0 16px">
     <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.3),rgba(168,85,247,.2),rgba(59,130,246,.2));opacity:.3;filter:blur(16px);z-index:0"></div>
-    <div style="position:relative;z-index:1;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:20px;overflow:hidden">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+    <div style="position:relative;z-index:1;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:16px;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0"></div>
         <span style="font-family:var(--mono);font-size:.68rem;color:var(--accent);letter-spacing:.06em;font-weight:600">YOUR API KEY</span>
       </div>
-      <div class="key-display">
-        <code>${U.apiKey}</code>
-        <button onclick="cpKey(this)">Copy</button>
+      <!-- Key display: fixed layout, key truncates on mobile -->
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:8px;padding:10px 12px;min-width:0">
+        <code style="flex:1;font-family:var(--mono);font-size:.75rem;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">${U.apiKey}</code>
+        <button onclick="cpKey(this)" style="background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;flex-shrink:0;white-space:nowrap">Copy</button>
       </div>
-      <p style="font-size:.72rem;color:var(--faint);margin-top:6px">Set as <code style="color:var(--accent);font-family:var(--mono);font-size:.72rem">HYPERSTACK_API_KEY</code> in your agent's environment</p>
+      <p style="font-size:.7rem;color:var(--faint);margin-top:8px;word-break:break-all">Set as <code style="color:var(--accent);font-family:var(--mono);font-size:.68rem">HYPERSTACK_API_KEY</code> in your agent's environment</p>
     </div>
   </div>
 
-  <!-- Step 3: Setup — animated code paste -->
+  <!-- Step 3: Setup -->
   <div style="position:relative;margin-bottom:16px">
-    <div style="position:relative;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;overflow:hidden;transition:border-color .3s" id="setup-wrap">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div style="position:relative;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:16px;overflow:hidden;transition:border-color .3s" id="setup-wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:1rem">⚡</span>
-          <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick setup</span>
+          <span style="font-family:var(--mono);font-size:.85rem;font-weight:700">Quick setup</span>
         </div>
         <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">Pick your tool ↓</span>
       </div>
 
-      <div class="plat-tabs">
-        <button class="plat-tab act" onclick="showPlatform('mcp',this)">🔌 MCP Server</button>
-        <button class="plat-tab" onclick="showPlatform('openclaw',this)">🐾 OpenClaw</button>
-        <button class="plat-tab" onclick="showPlatform('claude',this)">🤖 Claude Code</button>
-        <button class="plat-tab" onclick="showPlatform('python',this)">🐍 Python</button>
-        <button class="plat-tab" onclick="showPlatform('js',this)">⚡ JS</button>
-        <button class="plat-tab" onclick="showPlatform('curl',this)">💻 cURL</button>
+      <!-- Platform tabs: scroll horizontally on mobile -->
+      <div class="plat-tabs" style="overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:4px;margin-bottom:12px">
+        <button class="plat-tab act" onclick="showPlatform('mcp',this)" style="flex-shrink:0">🔌 MCP</button>
+        <button class="plat-tab" onclick="showPlatform('openclaw',this)" style="flex-shrink:0">🐾 OpenClaw</button>
+        <button class="plat-tab" onclick="showPlatform('claude',this)" style="flex-shrink:0">🤖 Claude</button>
+        <button class="plat-tab" onclick="showPlatform('python',this)" style="flex-shrink:0">🐍 Python</button>
+        <button class="plat-tab" onclick="showPlatform('js',this)" style="flex-shrink:0">⚡ JS</button>
+        <button class="plat-tab" onclick="showPlatform('curl',this)" style="flex-shrink:0">💻 cURL</button>
       </div>
 
-      <div id="ob-plat-mcp" class="code-block"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre><span style="color:var(--faint)">// claude_desktop_config.json or .cursor/mcp.json</span>
+      <!-- All code blocks: overflow-x:auto so long lines scroll instead of breaking layout -->
+      <div id="ob-plat-mcp" class="code-block" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0"><span style="color:var(--faint)">// claude_desktop_config.json or .cursor/mcp.json</span>
 {
   "mcpServers": {
     "hyperstack": {
@@ -223,69 +210,65 @@ function rStart(el){
 }
 <span style="color:var(--faint)">// Claude Desktop · Cursor · VS Code · Windsurf</span></pre></div>
 
-      <div id="ob-plat-openclaw" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre><span style="color:var(--faint)"># Add skill + set env</span>
+      <div id="ob-plat-openclaw" class="code-block hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0"><span style="color:var(--faint)"># Add skill + set env</span>
 mkdir -p skills/hyperstack
 export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
 export HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span>
 <span style="color:var(--faint)"># Agent reads SKILL.md and handles the rest</span></pre></div>
 
-      <div id="ob-plat-claude" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre><span style="color:var(--faint)"># Add to .env or shell profile</span>
+      <div id="ob-plat-claude" class="code-block hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0"><span style="color:var(--faint)"># Add to .env or shell profile</span>
 export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
 export HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span>
 <span style="color:var(--faint)"># Tell Claude: "Use HyperStack for memory"</span></pre></div>
 
-      <div id="ob-plat-python" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre>import requests
+      <div id="ob-plat-python" class="code-block hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0">import requests
 h = {"X-API-Key": "<span style="color:var(--green)">${U.apiKey}</span>"}
 <span style="color:var(--faint)"># Store a card</span>
-requests.post("${A}/api/cards?workspace=default",
-  headers=h, json={"slug":"test","title":"Test",
-  "stack":"general","body":"It works!"})
-<span style="color:var(--faint)"># Search cards</span>
-r = requests.get("${A}/api/search?workspace=default&q=test", headers=h)</pre></div>
+requests.post(
+  "${A}/api/cards?workspace=default",
+  headers=h,
+  json={"slug":"test","title":"Test",
+        "stack":"general","body":"It works!"})
+<span style="color:var(--faint)"># Search</span>
+r = requests.get(
+  "${A}/api/search?workspace=default&q=test",
+  headers=h)</pre></div>
 
-      <div id="ob-plat-js" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre>const KEY = "<span style="color:var(--green)">${U.apiKey}</span>"
-await fetch("${A}/api/cards?workspace=default", {
-  method: "POST",
-  headers: {"X-API-Key": KEY, "Content-Type": "application/json"},
-  body: JSON.stringify({slug:"test",title:"Test",
-    stack:"general",body:"It works!"})
-})</pre></div>
+      <div id="ob-plat-js" class="code-block hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0">const KEY = "<span style="color:var(--green)">${U.apiKey}</span>"
+await fetch(
+  "${A}/api/cards?workspace=default",
+  { method: "POST",
+    headers: {"X-API-Key": KEY,
+              "Content-Type": "application/json"},
+    body: JSON.stringify({slug:"test",
+      title:"Test",stack:"general",
+      body:"It works!"}) })</pre></div>
 
-      <div id="ob-plat-curl" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre>curl -X POST "${A}/api/cards?workspace=default" \\
+      <div id="ob-plat-curl" class="code-block hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0">curl -X POST \\
+  "${A}/api/cards?workspace=default" \\
   -H "X-API-Key: ${U.apiKey}" \\
   -H "Content-Type: application/json" \\
-  -d '{"slug":"test","title":"Test","stack":"general","body":"It works!"}'</pre></div>
+  -d '{"slug":"test","title":"Test",
+       "stack":"general","body":"It works!"}'</pre></div>
     </div>
   </div>
 
-  <!-- Quick links with card aesthetic -->
+  <!-- Quick links grid — 2 cols on mobile -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px" class="ql-grid">
-    <div class="ql-card" onclick="dt('cards')">
-      <span class="ql-icon">🃏</span>
-      <div class="ql-label">Cards</div>
-    </div>
-    <div class="ql-card" onclick="dt('key')">
-      <span class="ql-icon">🔑</span>
-      <div class="ql-label">API Key</div>
-    </div>
-    <div class="ql-card" onclick="dt('ws')">
-      <span class="ql-icon">📁</span>
-      <div class="ql-label">Workspaces</div>
-    </div>
-    <div class="ql-card" onclick="go('docs')">
-      <span class="ql-icon">📖</span>
-      <div class="ql-label">Docs</div>
-    </div>
+    <div class="ql-card" onclick="dt('cards')"><span class="ql-icon">🃏</span><div class="ql-label">Cards</div></div>
+    <div class="ql-card" onclick="dt('key')"><span class="ql-icon">🔑</span><div class="ql-label">API Key</div></div>
+    <div class="ql-card" onclick="dt('ws')"><span class="ql-icon">📁</span><div class="ql-label">Workspaces</div></div>
+    <div class="ql-card" onclick="go('docs')"><span class="ql-icon">📖</span><div class="ql-label">Docs</div></div>
   </div>
 
   <!-- Plan usage bar -->
   <div id="start-usage-bar" style="margin-top:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px 18px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap">
       <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim)">Card usage</span>
       <span id="start-usage-txt" style="font-family:var(--mono);font-size:.72rem;color:var(--text)">Loading...</span>
     </div>
@@ -548,30 +531,31 @@ function rKey(el){el.innerHTML=`
     </div>
   </div>
 
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
       <span style="font-size:1rem">📋</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Environment variables</span>
     </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative">
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch">
       <button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-      <pre style="font-family:var(--mono);font-size:.8rem;color:var(--dim);margin:0;line-height:1.8">HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
+      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);margin:0;line-height:1.8;white-space:pre;min-width:0">HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
 HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
     </div>
   </div>
 
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap">
       <div style="display:flex;align-items:center;gap:8px">
         <span style="font-size:1rem">🧪</span>
         <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Live connection test</span>
       </div>
       <button class="btn bo bs" style="font-size:.72rem" id="key-test-btn" onclick="_testApiKey()">Run test</button>
     </div>
-    <div id="key-test-result" style="display:none;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8"></div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative;margin-top:10px">
+    <div id="key-test-result" style="display:none;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:var(--mono);font-size:.75rem;color:var(--dim);line-height:1.8;word-break:break-all"></div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative;margin-top:10px;overflow-x:auto;-webkit-overflow-scrolling:touch">
       <button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> <span style="color:var(--green)">"${A}/api/cards?workspace=default"</span> \\
+      <pre style="font-family:var(--mono);font-size:.75rem;color:var(--dim);line-height:1.8;margin:0;white-space:pre;min-width:0"><span style="color:var(--accent)">curl</span> \\
+  <span style="color:var(--green)">"${A}/api/cards?workspace=default"</span> \\
   -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span></pre>
     </div>
   </div>
@@ -2164,233 +2148,3 @@ function updatePricingButtons(){
 // CONVERSATIONAL ONBOARDING - Add to end of app.js
 // Shows on first dashboard load, uses Groq API to parse project description
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-/* ═══════════════════════════════════════════
-   🤖 AGENTS — Activity feed + Memory health
-   ═══════════════════════════════════════════ */
-/* ═══════════════════════════════════════════
-   AGENTS v2 — fixes: icon, contrast, explanation
-   ═══════════════════════════════════════════ */
-function rAgents(el){
-  var pro=U.plan==='PRO'||U.plan==='TEAM'||U.plan==='BUSINESS';
-  if(!pro){
-    el.innerHTML=`
-    <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px"><span style="font-size:1.3rem">&#x1F916;</span> Agents</h1><p>Debug failures and track memory health</p></div></div>
-    <div style="position:relative;margin-bottom:16px">
-      <div style="position:absolute;inset:-2px;border-radius:16px;background:linear-gradient(135deg,rgba(68,255,136,.2),rgba(59,130,246,.15));opacity:.2;filter:blur(20px)"></div>
-      <div style="position:relative;background:var(--surface);border:2px solid rgba(68,255,136,.15);border-radius:14px;padding:36px 28px;text-align:center">
-        <div style="font-size:2rem;margin-bottom:12px">&#x1F916;</div>
-        <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px;color:#fff">Agent Insights requires Pro</h3>
-        <p style="color:rgba(255,255,255,.55);font-size:.85rem;margin-bottom:20px;max-width:420px;margin-left:auto;margin-right:auto">See exactly what your agents wrote, when, and what changed. Get a memory health score with specific recommendations.</p>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 auto 20px;max-width:480px">
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--accent)">&#x1F4CB;</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.4);margin-top:4px">Activity feed</div>
-          </div>
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:var(--green)">&#x1F49A;</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.4);margin-top:4px">Health score</div>
-          </div>
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-            <div style="font-family:var(--mono);font-weight:800;font-size:1.1rem;color:#60a5fa">&#x1F50D;</div>
-            <div style="font-size:.65rem;color:rgba(255,255,255,.4);margin-top:4px">Debug failures</div>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;justify-content:center">
-          <a href="javascript:void(0)" onclick="go('pricing')" class="btn bp">Upgrade to Pro &#x2192;</a>
-        </div>
-      </div>
-    </div>`;
-    return;
-  }
-
-  el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px"><span style="font-size:1.3rem">&#x1F916;</span> Agents</h1><p id="agents-status">Loading agent data...</p></div>
-    <button class="btn bo bs" onclick="rAgents(document.getElementById('dm'))" style="font-size:.72rem">&#x21BB; Refresh</button>
-  </div>
-  <div style="text-align:center;padding:40px;color:rgba(255,255,255,.4)">
-    <div class="loading-dots"><span></span><span></span><span></span></div>
-    <div style="font-family:var(--mono);font-size:.78rem;margin-top:8px">Fetching agent activity...</div>
-  </div>`;
-
-  fetch(A+'/api/cards?workspace=default',{headers:{'X-API-Key':U.apiKey}})
-    .then(function(r){return r.json()})
-    .then(function(d){_renderAgents(el,d.cards||[])})
-    .catch(function(){_renderAgents(el,[])});
-}
-
-function _renderAgents(el,cards){
-  var now=Date.now();
-  var totalCards=cards.length;
-  var limit={FREE:10,PRO:100,TEAM:500,BUSINESS:2000}[U.plan]||100;
-
-  var staleCards=cards.filter(function(c){return(now-new Date(c.updatedAt||c.createdAt||now).getTime())>(21*864e5)});
-  var linkedCards=cards.filter(function(c){return c.links&&c.links.length>0});
-  var typedCards=cards.filter(function(c){return c.cardType&&c.cardType!=='general'});
-  var keywordedCards=cards.filter(function(c){return c.keywords&&c.keywords.length>0});
-
-  var sc={
-    freshness:totalCards>0?Math.round((1-staleCards.length/totalCards)*25):25,
-    structure:totalCards>0?Math.round((typedCards.length/totalCards)*20):0,
-    keywords: totalCards>0?Math.round((keywordedCards.length/totalCards)*20):0,
-    links:    totalCards>0?Math.round((linkedCards.length/totalCards)*20):0,
-    volume:   Math.min(20,Math.round((totalCards/Math.max(1,limit*0.3))*20))
-  };
-  var healthScore=Math.min(100,Math.max(0,Object.values(sc).reduce(function(a,b){return a+b},0)));
-  var hc=healthScore>=80?'var(--green)':healthScore>=60?'var(--accent)':healthScore>=40?'var(--yellow)':'var(--red)';
-  var hl=healthScore>=80?'Excellent':healthScore>=60?'Good':healthScore>=40?'Fair':'Needs attention';
-  var he=healthScore>=80?'&#x1F49A;':healthScore>=60?'&#x1F7E1;':'&#x1F534;';
-
-  var recs=[];
-  if(staleCards.length>0)recs.push({icon:'&#x26A0;&#xFE0F;',text:staleCards.length+' card'+(staleCards.length>1?'s are':' is')+' stale (21+ days old). Review or archive them.'});
-  if(typedCards.length<totalCards*0.5&&totalCards>2)recs.push({icon:'&#x1F3F7;&#xFE0F;',text:'Only '+typedCards.length+'/'+totalCards+' cards have a cardType. Add types to improve graph traversal.'});
-  if(linkedCards.length<totalCards*0.3&&totalCards>3)recs.push({icon:'&#x1F517;',text:'Only '+linkedCards.length+' cards have links. Connect related cards to unlock graph queries.'});
-  if(keywordedCards.length<totalCards*0.7&&totalCards>2)recs.push({icon:'&#x1F50D;',text:(totalCards-keywordedCards.length)+' cards have no keywords. Keywords improve search precision.'});
-  if(totalCards===0)recs.push({icon:'&#x1F4ED;',text:'No cards yet. Create your first card to start tracking agent memory.',action:"dt('cards')"});
-  if(recs.length===0)recs.push({icon:'&#x2705;',text:'Memory looks healthy! All cards are fresh, typed, and well-connected.'});
-
-  var activityCards=cards.slice().sort(function(a,b){
-    return new Date(b.updatedAt||b.createdAt||0).getTime()-new Date(a.updatedAt||a.createdAt||0).getTime();
-  }).slice(0,12);
-
-  var typeColors={person:'#a855f7',project:'#3b82f6',decision:'#ff6b2b',preference:'#22c55e',workflow:'#eab308',signal:'#ef4444',general:'#6b7280'};
-
-  var activityHtml=activityCards.length===0
-    ?'<div style="text-align:center;padding:28px;color:rgba(255,255,255,.4);font-size:.82rem">No activity yet.</div>'
-    :activityCards.map(function(c){
-      var daysAgo=Math.floor((now-new Date(c.updatedAt||c.createdAt||now).getTime())/864e5);
-      var timeLabel=daysAgo===0?'Today':daysAgo===1?'Yesterday':daysAgo+'d ago';
-      var sourceAgent=c.sourceAgent||null;
-      var agentLabel=sourceAgent
-        ?'<span style="font-family:var(--mono);font-size:.6rem;color:var(--accent);background:rgba(68,255,136,.1);border:1px solid rgba(68,255,136,.2);padding:1px 7px;border-radius:4px">'+sourceAgent+'</span>'
-        :'<span style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.5);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:1px 7px;border-radius:4px">manual</span>';
-      var tc=typeColors[c.cardType]||typeColors.general;
-      var ver=c.ver||1;
-      var action=ver>1?'updated':'created';
-      var actionColor=ver>1?'var(--yellow)':'var(--green)';
-      var hasLinks=c.links&&c.links.length>0;
-      return'<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;margin-bottom:6px;transition:border-color .2s" onmouseover="this.style.borderColor=\''+tc+'66\'" onmouseout="this.style.borderColor=\'rgba(255,255,255,.08)\'">'
-        +'<div style="width:7px;height:7px;border-radius:50%;background:'+actionColor+';box-shadow:0 0 6px '+actionColor+';margin-top:5px;flex-shrink:0"></div>'
-        +'<div style="flex:1;min-width:0">'
-          +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px">'
-            +agentLabel
-            +'<span style="font-family:var(--mono);font-size:.65rem;color:'+actionColor+'">'+action+'</span>'
-            +'<span style="font-family:var(--mono);font-size:.72rem;color:#e8e8ec;font-weight:600">'+c.slug+'</span>'
-            +(hasLinks?'<span style="font-family:var(--mono);font-size:.58rem;color:#c084fc">+'+c.links.length+' link'+(c.links.length>1?'s':'')+'</span>':'')
-          +'</div>'
-          +'<div style="font-size:.75rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:8px">'
-            +'<span style="background:'+tc+'20;color:'+tc+';font-family:var(--mono);font-size:.58rem;padding:1px 6px;border-radius:4px;border:1px solid '+tc+'30">'+(c.cardType||'general')+'</span>'
-            +'<span>'+c.title+'</span>'
-          +'</div>'
-        +'</div>'
-        +'<span style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.3);white-space:nowrap;flex-shrink:0">'+timeLabel+'</span>'
-      +'</div>';
-    }).join('');
-
-  el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px"><span style="font-size:1.3rem">&#x1F916;</span> Agents</h1><p style="color:rgba(255,255,255,.5)">${totalCards} cards &middot; ${U.plan} plan</p></div>
-    <button class="btn bo bs" onclick="rAgents(document.getElementById('dm'))" style="font-size:.72rem">&#x21BB; Refresh</button>
-  </div>
-
-  <div class="ag-health-grid">
-    <div style="position:relative">
-      <div style="position:absolute;inset:-2px;border-radius:14px;background:${hc};opacity:.1;filter:blur(16px)"></div>
-      <div style="position:relative;background:var(--surface);border:2px solid ${hc}44;border-radius:14px;padding:20px;text-align:center">
-        <div style="font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">MEMORY HEALTH</div>
-        <div style="position:relative;display:inline-block;margin-bottom:8px">
-          <svg width="90" height="90" viewBox="0 0 90 90" style="transform:rotate(-90deg)">
-            <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="8"/>
-            <circle cx="45" cy="45" r="36" fill="none" stroke="${hc}" stroke-width="8"
-              stroke-dasharray="${Math.round(healthScore/100*226.2)} 226.2"
-              stroke-linecap="round" style="filter:drop-shadow(0 0 6px ${hc})"/>
-          </svg>
-          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column">
-            <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${hc};line-height:1">${healthScore}</div>
-            <div style="font-family:var(--mono);font-size:.55rem;color:rgba(255,255,255,.35)">/ 100</div>
-          </div>
-        </div>
-        <div style="font-family:var(--mono);font-size:.78rem;font-weight:600;color:${hc}">${he} ${hl}</div>
-        <div style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.3);margin-top:4px">Updated just now</div>
-      </div>
-    </div>
-
-    <div style="background:var(--surface);border:2px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
-      <div style="font-family:var(--mono);font-size:.68rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">SCORE BREAKDOWN</div>
-      ${[
-        {label:'Freshness',val:sc.freshness,max:25,color:'var(--green)',tip:'Cards updated in last 21 days (out of 25pts)'},
-        {label:'Structure',val:sc.structure,max:20,color:'#60a5fa',tip:'Cards with a typed cardType, not "general" (out of 20pts)'},
-        {label:'Keywords', val:sc.keywords, max:20,color:'var(--accent)',tip:'Cards with keywords array for search (out of 20pts)'},
-        {label:'Links',    val:sc.links,    max:20,color:'#c084fc',tip:'Cards connected by links to other cards (out of 20pts)'},
-        {label:'Volume',   val:sc.volume,   max:20,color:'var(--yellow)',tip:'Using at least 30% of your '+limit+'-card plan limit (out of 20pts)'}
-      ].map(function(s){
-        var pct=Math.round(s.val/s.max*100);
-        return'<div style="margin-bottom:10px">'
-          +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">'
-            +'<span style="font-family:var(--mono);font-size:.68rem;color:rgba(255,255,255,.7)" title="'+s.tip+'">'+s.label+' <span style="color:rgba(255,255,255,.25);font-size:.58rem">?</span></span>'
-            +'<span style="font-family:var(--mono);font-size:.65rem;color:'+s.color+'">'+s.val+'/'+s.max+'</span>'
-          +'</div>'
-          +'<div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px">'
-            +'<div style="height:100%;width:'+pct+'%;background:'+s.color+';border-radius:3px"></div>'
-          +'</div>'
-          +'<div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.25);margin-top:2px">'+s.tip+'</div>'
-        +'</div>';
-      }).join('')}
-    </div>
-  </div>
-
-  <!-- How score is calculated -->
-  <div style="margin-bottom:16px">
-    <button onclick="var e=document.getElementById('ag-explain');e.style.display=e.style.display==='none'?'block':'none'" style="background:var(--surface);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;width:100%;cursor:pointer;display:flex;align-items:center;gap:8px;text-align:left">
-      <span style="color:var(--accent);font-size:.7rem">&#x25B6;</span>
-      <span style="font-family:var(--mono);font-size:.78rem;font-weight:700;color:#e8e8ec">&#x1F4D0; How is this score calculated?</span>
-      <span style="font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.3);margin-left:auto">click to expand</span>
-    </button>
-    <div id="ag-explain" style="display:none;background:var(--surface);border:1px solid rgba(255,255,255,.08);border-top:none;border-radius:0 0 10px 10px;padding:18px 20px">
-      <div style="font-family:var(--mono);font-size:.72rem;color:rgba(255,255,255,.7);line-height:2">
-        The health score is built from <strong style="color:#e8e8ec">5 components</strong> totalling 100 points:<br><br>
-        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:start">
-          <span style="color:var(--green);font-weight:700">Freshness</span><span style="color:rgba(255,255,255,.5)">% of cards updated in last 21 days</span><span style="color:var(--green)">25 pts</span>
-          <span style="color:#60a5fa;font-weight:700">Structure</span><span style="color:rgba(255,255,255,.5)">% of cards with a typed cardType (not "general")</span><span style="color:#60a5fa">20 pts</span>
-          <span style="color:var(--accent);font-weight:700">Keywords</span><span style="color:rgba(255,255,255,.5)">% of cards with a keywords array</span><span style="color:var(--accent)">20 pts</span>
-          <span style="color:#c084fc;font-weight:700">Links</span><span style="color:rgba(255,255,255,.5)">% of cards linked to other cards</span><span style="color:#c084fc">20 pts</span>
-          <span style="color:var(--yellow);font-weight:700">Volume</span><span style="color:rgba(255,255,255,.5)">using at least 30% of your ${limit}-card limit</span><span style="color:var(--yellow)">20 pts</span>
-        </div>
-        <br>
-        <strong style="color:#e8e8ec">Your score: ${healthScore}/100</strong> &nbsp;&middot;&nbsp;
-        <span style="color:rgba(255,255,255,.4)">${totalCards} cards · ${staleCards.length} stale · ${typedCards.length} typed · ${keywordedCards.length} with keywords · ${linkedCards.length} linked</span>
-      </div>
-    </div>
-  </div>
-
-  <div style="background:var(--surface);border:2px solid rgba(255,255,255,.08);border-radius:14px;padding:20px;margin-bottom:16px">
-    <div style="font-family:var(--mono);font-size:.72rem;font-weight:700;color:#e8e8ec;margin-bottom:12px">&#x1F4A1; Recommendations</div>
-    ${recs.map(function(r){
-      return'<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;margin-bottom:6px">'
-        +'<span style="font-size:.95rem;flex-shrink:0">'+r.icon+'</span>'
-        +'<span style="font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.5">'+r.text+'</span>'
-        +(r.action?'<button onclick="'+r.action+'" class="btn bp bs" style="font-size:.65rem;white-space:nowrap;flex-shrink:0;margin-left:auto">Fix &#x2192;</button>':'')
-      +'</div>';
-    }).join('')}
-  </div>
-
-  <div style="background:var(--surface);border:2px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div style="font-family:var(--mono);font-size:.72rem;font-weight:700;color:#e8e8ec">&#x1F4CB; Recent Agent Activity</div>
-      <span style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.3)">Last ${activityCards.length} writes</span>
-    </div>
-    <div style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.3);margin-bottom:10px;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:6px;border:1px solid rgba(255,255,255,.07)">
-      Add <code style="color:var(--accent)">sourceAgent</code> field when writing cards to tag which agent wrote each entry.
-    </div>
-    ${activityHtml}
-    ${totalCards>0?'<div style="text-align:center;margin-top:10px"><button class="btn bo bs" style="font-size:.72rem" onclick="dt(\'cards\')">View all cards &#x2192;</button></div>':''}
-  </div>
-
-  <style>
-  .loading-dots{display:inline-flex;gap:5px}
-  .loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}
-  .loading-dots span:nth-child(2){animation-delay:.18s}
-  .loading-dots span:nth-child(3){animation-delay:.36s}
-  @keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}
-  .ag-health-grid{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:16px}
-  @media(max-width:600px){.ag-health-grid{grid-template-columns:1fr!important}}
-  </style>`;
-}
