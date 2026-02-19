@@ -536,10 +536,14 @@ function rKey(el){el.innerHTML=`
       <span style="font-size:1rem">📋</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Environment variables</span>
     </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch">
-      <button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);margin:0;line-height:1.8;white-space:pre;min-width:0">HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+      <div style="display:flex;justify-content:flex-end;padding:6px 8px;border-bottom:1px solid var(--border)">
+        <button class="cpbtn" style="position:static" onclick="cpBlock(this)">Copy</button>
+      </div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;padding:12px 14px">
+        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);margin:0;line-height:1.8;white-space:pre">HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
 HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
+      </div>
     </div>
   </div>
 
@@ -552,11 +556,15 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
       <button class="btn bo bs" style="font-size:.72rem" id="key-test-btn" onclick="_testApiKey()">Run test</button>
     </div>
     <div id="key-test-result" style="display:none;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:var(--mono);font-size:.75rem;color:var(--dim);line-height:1.8;word-break:break-all"></div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative;margin-top:10px;overflow-x:auto;-webkit-overflow-scrolling:touch">
-      <button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-      <pre style="font-family:var(--mono);font-size:.75rem;color:var(--dim);line-height:1.8;margin:0;white-space:pre;min-width:0"><span style="color:var(--accent)">curl</span> \\
-  <span style="color:var(--green)">"${A}/api/cards?workspace=default"</span> \\
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-top:10px">
+      <div style="display:flex;justify-content:flex-end;padding:6px 8px;border-bottom:1px solid var(--border)">
+        <button class="cpbtn" style="position:static" onclick="cpBlock(this)">Copy</button>
+      </div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;padding:12px 14px">
+        <pre style="font-family:var(--mono);font-size:.75rem;color:var(--dim);line-height:1.8;margin:0;white-space:pre"><span style="color:var(--accent)">curl</span> \
+  <span style="color:var(--green)">"${A}/api/cards?workspace=default"</span> \
   -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span></pre>
+      </div>
     </div>
   </div>
 

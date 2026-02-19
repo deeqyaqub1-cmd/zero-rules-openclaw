@@ -123,55 +123,103 @@ function renderD(){if(!U)return;
    ðŸš€ GET STARTED â€” Premium animated onboarding
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rStart(el){
+  // Inject mobile styles once
+  if(!document.getElementById('rstart-mobile-styles')){
+    var s=document.createElement('style');
+    s.id='rstart-mobile-styles';
+    s.textContent=`
+      /* Platform tabs — wrap on mobile */
+      .plat-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px}
+      .plat-tab{background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--dim);font-family:var(--mono);font-size:.72rem;padding:6px 10px;cursor:pointer;transition:all .2s;white-space:nowrap}
+      .plat-tab.act{background:rgba(68,255,136,.1);color:var(--accent);border-color:rgba(68,255,136,.3)}
+      .plat-tab:hover{color:var(--text)}
+
+      /* Code blocks — scroll on mobile, never overflow */
+      .code-block{position:relative;background:#08080c;border:1px solid var(--border);border-radius:10px;padding:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+      .code-block pre{font-family:var(--mono);font-size:.74rem;line-height:1.7;color:#a0a0c0;margin:0;white-space:pre;min-width:0}
+      .cpbtn{position:absolute;top:10px;right:10px;background:rgba(68,255,136,.1);border:1px solid rgba(68,255,136,.2);border-radius:5px;color:var(--accent);font-family:var(--mono);font-size:.65rem;padding:3px 10px;cursor:pointer;transition:all .2s}
+      .cpbtn:hover{background:rgba(68,255,136,.2)}
+
+      /* API key display */
+      .key-display{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:8px;padding:10px 14px}
+      .key-display code{font-family:var(--mono);font-size:.72rem;color:var(--accent);word-break:break-all;flex:1;min-width:0}
+      .key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+      /* Onboarding steps */
+      .ob-steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:20px;overflow-x:auto;padding:4px 0}
+      .ob-step{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:70px}
+      .ob-step .stxt{font-family:var(--mono);font-size:.65rem;color:var(--dim)}
+      .ob-step.done .stxt,.ob-step.active .stxt{color:var(--accent)}
+      .ob-step::after{content:'';display:block;position:absolute}
+
+      /* Quick links grid */
+      .ql-grid{display:grid;gap:10px}
+      .ql-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s}
+      .ql-card:hover{border-color:var(--accent);background:rgba(68,255,136,.04)}
+      .ql-icon{font-size:1.3rem;display:block;margin-bottom:4px}
+      .ql-label{font-family:var(--mono);font-size:.7rem;color:var(--dim)}
+      .ql-card:hover .ql-label{color:var(--accent)}
+
+      /* Responsive grid columns */
+      @media(min-width:480px){.ql-grid{grid-template-columns:repeat(4,1fr)}}
+      @media(max-width:479px){.ql-grid{grid-template-columns:repeat(2,1fr)}}
+      @media(max-width:479px){.plat-tab{font-size:.68rem;padding:5px 8px}}
+      @media(max-width:479px){.code-block pre{font-size:.66rem}}
+    `;
+    document.head.appendChild(s);
+  }
+
   el.innerHTML=`
-  <div style="text-align:center;padding:20px 0 24px">
+  <div style="text-align:center;padding:20px 0 20px">
     <div style="font-family:var(--mono);font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Welcome to HyperStack</div>
-    <h1 style="font-family:var(--mono);font-size:1.4rem;font-weight:800;margin-bottom:6px">Your agent is about to get a lot smarter</h1>
+    <h1 style="font-family:var(--mono);font-size:clamp(1rem,4vw,1.4rem);font-weight:800;margin-bottom:6px">Your agent is about to get a lot smarter</h1>
     <p style="color:var(--dim);font-size:.88rem">Three steps. Under 30 seconds. Let's go.</p>
   </div>
 
-  <!-- Animated step indicators -->
+  <!-- Step indicators -->
   <div class="ob-steps" id="ob-steps-wrap">
-    <div class="ob-step done" id="obs-1"><div class="num">âœ“</div><div class="stxt">Sign up</div></div>
+    <div class="ob-step done" id="obs-1"><div class="num">✓</div><div class="stxt">Sign up</div></div>
+    <div style="width:32px;height:1px;background:var(--border);margin-bottom:16px;flex-shrink:0"></div>
     <div class="ob-step active" id="obs-2"><div class="num">2</div><div class="stxt">Copy key</div></div>
+    <div style="width:32px;height:1px;background:var(--border);margin-bottom:16px;flex-shrink:0"></div>
     <div class="ob-step" id="obs-3"><div class="num">3</div><div class="stxt">Paste & go</div></div>
   </div>
 
-  <!-- Step 2: API Key card with glow -->
-  <div style="position:relative;margin:8px 0 16px">
+  <!-- Step 2: API Key -->
+  <div style="position:relative;margin:8px 0 14px">
     <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.3),rgba(168,85,247,.2),rgba(59,130,246,.2));opacity:.3;filter:blur(16px);z-index:0"></div>
-    <div style="position:relative;z-index:1;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:20px;overflow:hidden">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+    <div style="position:relative;z-index:1;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:18px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0"></div>
         <span style="font-family:var(--mono);font-size:.68rem;color:var(--accent);letter-spacing:.06em;font-weight:600">YOUR API KEY</span>
       </div>
       <div class="key-display">
         <code>${U.apiKey}</code>
         <button onclick="cpKey(this)">Copy</button>
-        <button onclick="rgKey(this)" style="margin-left:8px;background:transparent;border:1px solid var(--dim);color:var(--dim);font-size:.75rem;padding:4px 10px;border-radius:6px;cursor:pointer">Regenerate</button>
+        <button onclick="rgKey(this)" style="background:transparent;border:1px solid var(--dim);color:var(--dim);font-size:.72rem;padding:5px 10px;border-radius:5px;cursor:pointer;font-family:var(--mono);white-space:nowrap;flex-shrink:0">Regenerate</button>
       </div>
-      <p style="font-size:.72rem;color:var(--faint);margin-top:6px">Set as <code style="color:var(--accent);font-family:var(--mono);font-size:.72rem">HYPERSTACK_API_KEY</code> in your agent's environment</p>
+      <p style="font-size:.7rem;color:var(--faint);margin-top:8px;line-height:1.5">Set as <code style="color:var(--accent);font-family:var(--mono);font-size:.7rem">HYPERSTACK_API_KEY</code> in your agent's environment</p>
     </div>
   </div>
 
-  <!-- Step 3: Setup â€” animated code paste -->
-  <div style="position:relative;margin-bottom:16px">
-    <div style="position:relative;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;overflow:hidden;transition:border-color .3s" id="setup-wrap">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+  <!-- Step 3: Setup -->
+  <div style="position:relative;margin-bottom:14px">
+    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:18px;overflow:hidden" id="setup-wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:6px">
         <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:1rem">âš¡</span>
+          <span style="font-size:1rem">⚡</span>
           <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick setup</span>
         </div>
-        <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">Pick your tool â†“</span>
+        <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">Pick your tool ↓</span>
       </div>
 
       <div class="plat-tabs">
-        <button class="plat-tab act" onclick="showPlatform('mcp',this)">ðŸ”Œ MCP Server</button>
-        <button class="plat-tab" onclick="showPlatform('openclaw',this)">ðŸ¾ OpenClaw</button>
-        <button class="plat-tab" onclick="showPlatform('claude',this)">ðŸ¤– Claude Code</button>
-        <button class="plat-tab" onclick="showPlatform('python',this)">ðŸ Python</button>
-        <button class="plat-tab" onclick="showPlatform('js',this)">âš¡ JS</button>
-        <button class="plat-tab" onclick="showPlatform('curl',this)">ðŸ’» cURL</button>
+        <button class="plat-tab act" onclick="showPlatform('mcp',this)">📌 MCP</button>
+        <button class="plat-tab" onclick="showPlatform('openclaw',this)">🐾 OpenClaw</button>
+        <button class="plat-tab" onclick="showPlatform('claude',this)">🤖 Claude</button>
+        <button class="plat-tab" onclick="showPlatform('python',this)">🐍 Python</button>
+        <button class="plat-tab" onclick="showPlatform('js',this)">⚡ JS</button>
+        <button class="plat-tab" onclick="showPlatform('curl',this)">💻 cURL</button>
       </div>
 
       <div id="ob-plat-mcp" class="code-block"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
@@ -187,7 +235,7 @@ function rStart(el){
     }
   }
 }
-<span style="color:var(--faint)">// Claude Desktop Â· Cursor Â· VS Code Â· Windsurf</span></pre></div>
+<span style="color:var(--faint)">// Claude Desktop · Cursor · VS Code · Windsurf</span></pre></div>
 
       <div id="ob-plat-openclaw" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
 <pre><span style="color:var(--faint)"># Add skill + set env</span>
@@ -210,41 +258,50 @@ requests.post("${A}/api/cards?workspace=default",
   headers=h, json={"slug":"test","title":"Test",
   "stack":"general","body":"It works!"})
 <span style="color:var(--faint)"># Search cards</span>
-r = requests.get("${A}/api/search?workspace=default&q=test", headers=h)</pre></div>
+r = requests.get(
+  "${A}/api/search?workspace=default&q=test",
+  headers=h)</pre></div>
 
       <div id="ob-plat-js" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
 <pre>const KEY = "<span style="color:var(--green)">${U.apiKey}</span>"
 await fetch("${A}/api/cards?workspace=default", {
   method: "POST",
-  headers: {"X-API-Key": KEY, "Content-Type": "application/json"},
-  body: JSON.stringify({slug:"test",title:"Test",
-    stack:"general",body:"It works!"})
+  headers: {
+    "X-API-Key": KEY,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    slug:"test", title:"Test",
+    stack:"general", body:"It works!"
+  })
 })</pre></div>
 
       <div id="ob-plat-curl" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre>curl -X POST "${A}/api/cards?workspace=default" \\
+<pre>curl -X POST \\
+  "${A}/api/cards?workspace=default" \\
   -H "X-API-Key: ${U.apiKey}" \\
   -H "Content-Type: application/json" \\
-  -d '{"slug":"test","title":"Test","stack":"general","body":"It works!"}'</pre></div>
+  -d '{"slug":"test","title":"Test",
+       "stack":"general","body":"It works!"}'</pre></div>
     </div>
   </div>
 
-  <!-- Quick links with card aesthetic -->
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px" class="ql-grid">
+  <!-- Quick links -->
+  <div class="ql-grid">
     <div class="ql-card" onclick="dt('cards')">
-      <span class="ql-icon">ðŸƒ</span>
+      <span class="ql-icon">🃏</span>
       <div class="ql-label">Cards</div>
     </div>
     <div class="ql-card" onclick="dt('key')">
-      <span class="ql-icon">ðŸ”‘</span>
+      <span class="ql-icon">🔑</span>
       <div class="ql-label">API Key</div>
     </div>
     <div class="ql-card" onclick="dt('ws')">
-      <span class="ql-icon">ðŸ“</span>
+      <span class="ql-icon">📁</span>
       <div class="ql-label">Workspaces</div>
     </div>
     <div class="ql-card" onclick="go('docs')">
-      <span class="ql-icon">ðŸ“–</span>
+      <span class="ql-icon">📖</span>
       <div class="ql-label">Docs</div>
     </div>
   </div>`;
