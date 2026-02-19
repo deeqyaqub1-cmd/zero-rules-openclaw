@@ -27,13 +27,7 @@ nav{padding:16px 0;display:flex;justify-content:space-between;align-items:center
 .navr a,.navr button{color:var(--dim);font-size:.82rem;font-family:var(--mono);background:none;border:none;cursor:pointer;transition:color .2s;text-decoration:none}
 .navr a:hover,.navr button:hover{color:var(--text);text-decoration:none}
 .nav-links{display:contents}
-@media(max-width:768px){.logo{font-size:1.05rem}.logo small{display:none}.navr{gap:6px}.navr a,.navr button{font-size:.72rem}.nav-links{display:none}
-  /* When logged in on mobile: hide 'Log Out' text, show icon only */
-  #no{font-size:0!important;padding:6px 10px!important}
-  #no::after{content:'→ Out';font-size:.72rem;color:var(--red)}
-  /* Dashboard button stays readable but compact */
-  #nd{padding:6px 12px!important;font-size:.72rem!important}
-}
+@media(max-width:768px){.logo{font-size:1.05rem}.logo small{display:none}.navr{gap:8px}.navr a,.navr button{font-size:.72rem}.nav-links a:not(:first-child){display:none}}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;font-family:var(--mono);font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--border);transition:all .25s;line-height:1.4;text-decoration:none}
@@ -116,129 +110,34 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 .err{color:var(--red);font-family:var(--mono);font-size:.75rem;margin-top:8px}
 .ok{color:var(--accent);font-family:var(--mono);font-size:.75rem;margin-top:8px}
 .dash-back-link{display:none;font-family:var(--mono);font-size:.75rem}
-
-/* ── Dashboard layout ── */
-.dash{display:flex;min-height:100vh}
-.sb{width:200px;flex-shrink:0;background:linear-gradient(180deg,var(--surface) 0%,#0d0d12 100%);border-right:1px solid var(--border);padding:14px 0;position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:50;overflow-y:auto}
-.dc{margin-left:200px;padding:24px 28px;min-height:100vh;width:calc(100% - 200px);box-sizing:border-box}
+.sb{width:200px;background:linear-gradient(180deg,var(--surface) 0%,#0d0d12 100%);border-right:1px solid var(--border);padding:14px 0;position:fixed;height:100vh;display:flex;flex-direction:column;z-index:50}
+.sb .si{padding:6px 16px;font-family:var(--mono);font-size:.72rem;color:var(--dim);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .15s;border-left:2px solid transparent}
+.sb .si:hover{color:var(--text);background:var(--surface2)}
+.sb .si.act{color:var(--accent);border-left-color:var(--accent);background:rgba(68,255,136,.04)}
+.dc{margin-left:200px;padding:20px 24px;min-height:100vh}
 .mob-nav{display:none}
-
-/* ── Dashboard section header ── */
-.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px}
-.dh h1{font-family:var(--mono);font-size:1.25rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
-.dh p{color:rgba(255,255,255,.4);font-size:.78rem;margin:5px 0 0}
-
-/* ── Dash card wrappers ── */
-.dash-card{position:relative;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;overflow:hidden}
-.dash-card-glow{position:absolute;inset:-2px;border-radius:16px;filter:blur(16px);opacity:.25;pointer-events:none;z-index:0}
-.dash-card-inner{position:relative;z-index:1}
-
-/* ── Sidebar brand + nav buttons ── */
-.brand{padding:16px 16px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
-.brand .logo{font-size:1rem!important;margin-bottom:2px}
-.brand p{font-family:var(--mono);font-size:.65rem;color:var(--faint);margin:0;padding-left:2px}
-.sbtn{width:100%;background:none;border:none;border-left:2px solid transparent;color:var(--dim);font-family:var(--mono);font-size:.75rem;padding:9px 16px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:9px;transition:all .2s;line-height:1;position:relative}
-.sbtn:hover{color:var(--text);background:linear-gradient(90deg,rgba(68,255,136,.04),transparent)}
-.sbtn.act{color:var(--accent);border-left-color:var(--accent);background:linear-gradient(90deg,rgba(68,255,136,.08),transparent)}
-.sbtn .sbtn-label{flex:1}
-.sbtn-badge{font-family:var(--mono);font-size:.55rem;background:rgba(255,107,43,.15);color:var(--orange);padding:1px 6px;border-radius:10px;border:1px solid rgba(255,107,43,.2);font-weight:700}
-.bot{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border)}
-.em{font-family:var(--mono);font-size:.72rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-/* ── Plan badges ── */
-.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:6px;font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.04em}
-
-/* ── Card edit modal ── */
-.card-edit-field{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-family:var(--mono);font-size:.82rem;padding:9px 13px;outline:none;transition:border-color .2s;box-sizing:border-box}
-.card-edit-field:focus{border-color:var(--accent)}
-.card-edit-field::placeholder{color:rgba(255,255,255,.3)}
-
-/* ── Notification toast ── */
-.hs-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:#1a1a24;border:1px solid var(--border);border-radius:10px;padding:10px 20px;font-family:var(--mono);font-size:.78rem;color:var(--text);z-index:9999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
-.hs-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.hs-toast.ok{border-color:rgba(68,255,136,.3);color:var(--accent)}
-.hs-toast.err{border-color:rgba(239,68,68,.3);color:var(--red)}
-
-/* ── Key display ── */
-.key-display{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:6px;overflow:hidden}
-.key-display code{flex:1;font-family:var(--mono);font-size:.8rem;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.02em}
-.key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
-
-/* ── Onboarding steps ── */
-.ob-steps{display:flex;align-items:center;margin-bottom:20px}
-.ob-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative}
-.ob-step+.ob-step::before{content:'';position:absolute;left:-50%;top:14px;width:100%;height:1px;background:var(--border);z-index:0}
-.ob-step.done+.ob-step::before{background:var(--accent)}
-.ob-step .num{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.75rem;font-weight:700;color:var(--dim);background:var(--bg);position:relative;z-index:1}
+.onboard .step .num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-family:var(--mono);font-size:.7rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px}
+.ob-step .num{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.75rem;font-weight:700;color:var(--dim)}
 .ob-step.done .num{background:var(--accent);border-color:var(--accent);color:#000}
 .ob-step.active .num{background:var(--accent);border-color:var(--accent);color:#000}
-.ob-step .stxt{font-family:var(--mono);font-size:.6rem;color:var(--dim);text-align:center}
-.ob-step.done .stxt,.ob-step.active .stxt{color:var(--accent)}
-
-/* ── Platform tabs ── */
-.plat-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px}
-.plat-tab{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:6px;color:var(--dim);font-family:var(--mono);font-size:.7rem;padding:5px 11px;cursor:pointer;transition:all .2s}
-.plat-tab:hover{color:var(--text);border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.07)}
-.plat-tab.act{background:rgba(68,255,136,.08);color:var(--accent);border-color:rgba(68,255,136,.25)}
-
-/* ── Quick-link cards ── */
-.ql-grid{display:grid;gap:10px}
-.ql-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s}
-.ql-card:hover{border-color:rgba(68,255,136,.25);background:rgba(68,255,136,.04);transform:translateY(-2px)}
-.ql-icon{font-size:1.4rem;display:block;margin-bottom:6px}
-.ql-label{font-family:var(--mono);font-size:.7rem;color:var(--dim)}
-
-/* ── Misc ── */
-.copied-btn{background:var(--green)!important;color:#000!important}
-.cpbtn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:5px;color:var(--dim);font-family:var(--mono);font-size:.65rem;padding:3px 9px;cursor:pointer;transition:all .2s;z-index:2}
-.cpbtn:hover{background:rgba(255,255,255,.12);color:var(--text)}
+.key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer}
 .pc-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.63rem;font-weight:600;color:#000;background:var(--accent);padding:2px 12px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
 .faq-item{border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
 .faq-q{padding:14px 18px;font-family:var(--mono);font-size:.82rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s;padding:0 18px}
 .faq-item.open .faq-a{max-height:500px;padding:0 18px 14px}
-.onboard .step .num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-family:var(--mono);font-size:.7rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px}
+@media(max-width:768px){.sb{display:none}.dc{margin-left:0}.mob-nav{display:block;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:100;padding:6px 0}.mob-nav-inner{display:flex;justify-content:space-around}.mob-nav button{background:none;border:none;color:var(--dim);font-size:.6rem;font-family:var(--mono);padding:4px 8px;cursor:pointer}.mob-nav button.act{color:var(--accent)}}
 
-/* ══ MOBILE — single clean block, no conflicts ══ */
-@media(max-width:768px){
-  /* Hide desktop sidebar, show full-width content */
-  .sb{display:none!important}
-  .dc{margin-left:0!important;width:100%!important;padding:16px 14px 96px!important;box-sizing:border-box}
+/* ── Sidebar brand + nav buttons ── */
+.brand{padding:16px 16px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
+.brand .logo{font-size:1rem!important;margin-bottom:2px}
+.brand p{font-family:var(--mono);font-size:.65rem;color:var(--faint);margin:0;padding-left:2px}
+.sbtn{width:100%;background:none;border:none;border-left:2px solid transparent;color:var(--dim);font-family:var(--mono);font-size:.75rem;padding:9px 16px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:9px;transition:all .15s;line-height:1}
+.sbtn:hover{color:var(--text);background:var(--surface2)}
+.sbtn.act{color:var(--accent);border-left-color:var(--accent);background:rgba(68,255,136,.05)}
+.bot{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border)}
+.em{font-family:var(--mono);font-size:.72rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-  /* Bottom nav bar */
-  .mob-nav{display:block;position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(10,10,14,.97);border-top:1px solid var(--border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding-bottom:env(safe-area-inset-bottom)}
-  .mob-nav-inner{display:flex;align-items:stretch}
-  .mob-nav button{background:none;border:none;color:var(--dim);font-family:var(--mono);font-size:.52rem;padding:8px 2px 6px;cursor:pointer;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:color .2s;min-width:0;line-height:1;letter-spacing:.01em;-webkit-tap-highlight-color:transparent}
-  .mob-nav button .mob-icon{font-size:18px;line-height:1;display:block}
-  .mob-nav button.act{color:var(--accent)}
-
-  /* Stack dh header vertically */
-  .dh{flex-direction:column;gap:8px}
-  .dh>div:last-child{display:flex;gap:6px;width:100%}
-  .dh>div:last-child .sinput{flex:1;min-width:0}
-
-  /* Card modal — bottom sheet */
-  .card-expand{padding:0!important;align-items:flex-end!important}
-  .card-expand-inner{border-radius:18px 18px 0 0!important;max-height:92vh;width:100%!important;max-width:100%!important;padding:20px!important}
-
-  /* Grids collapse to 2 cols on mobile */
-  .ql-grid{grid-template-columns:repeat(2,1fr)!important}
-
-  /* Platform tabs scroll horizontally */
-  .plat-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
-  .plat-tab{flex-shrink:0}
-
-  /* Hide plan bar on mobile - sidebar is hidden anyway */
-  #d-plan-bar{display:none!important}
-
-  /* Graph canvas fills full width */
-  #graph-wrap{min-height:320px!important;border-radius:10px!important}
-  #graph-canvas{max-width:100%}
-
-  /* Stat grids collapse to 2 cols */
-  [style*="repeat(4,1fr)"]{grid-template-columns:repeat(2,1fr)!important}
-  [style*="repeat(3,1fr)"]{grid-template-columns:repeat(2,1fr)!important}
-}
 /* ── Auth pages ── */
 .auth{max-width:400px;margin:80px auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px}
 .auth h2{font-family:var(--mono);font-weight:800;font-size:1.2rem;margin-bottom:20px}
@@ -862,36 +761,33 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
 <div id="p-dash" class="hidden">
 <div class="dash">
   <div class="sb">
-    <div class="brand"><div class="logo" onclick="go('landing')" style="cursor:pointer">HyperStack</div><p>Dashboard</p></div>
-    <button class="sbtn act" onclick="dt('start')" id="t-start"><span>🚀</span><span class="sbtn-label">Get Started</span></button>
-    <button class="sbtn" onclick="dt('cards')" id="t-cards"><span>🃏</span><span class="sbtn-label">Cards</span></button>
-    <button class="sbtn" onclick="dt('graph')" id="t-graph"><span>🔗</span><span class="sbtn-label">Graph</span><span class="sbtn-badge" id="sb-graph-badge" style="display:none">Pro</span></button>
-    <button class="sbtn" onclick="dt('key')" id="t-key"><span>🔑</span><span class="sbtn-label">API Key</span></button>
-    <button class="sbtn" onclick="dt('ws')" id="t-ws"><span>📁</span><span class="sbtn-label">Workspaces</span></button>
-    <button class="sbtn" onclick="dt('team')" id="t-team"><span>👥</span><span class="sbtn-label">Team</span></button>
-    <button class="sbtn" onclick="dt('stats')" id="t-stats"><span>📊</span><span class="sbtn-label">Analytics</span></button>
-    <button class="sbtn" onclick="go('docs')" id="t-docs"><span>📖</span><span class="sbtn-label">Docs</span></button>
-    <!-- Plan bar inside sidebar, above bottom section -->
-    <div id="d-plan-bar" style="display:none;margin:4px 10px 0;padding:8px 12px;background:rgba(255,107,43,.05);border:1px solid rgba(255,107,43,.15);border-radius:8px;font-family:var(--mono);font-size:.7rem;color:var(--dim)"></div>
-    <div class="bot">
-      <div class="em" id="d-em">—</div>
-      <div id="d-pt" style="margin-top:4px"></div>
-      <button onclick="out()" style="margin-top:10px;width:100%;background:none;border:none;color:var(--faint);font-family:var(--mono);font-size:.68rem;cursor:pointer;text-align:left;padding:0;transition:color .2s" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--faint)'">← Sign out</button>
-    </div>
+    <div class="brand"><div class="logo" onclick="go('landing')">HyperStack</div><p>Dashboard</p></div>
+    <button class="sbtn act" onclick="dt('start')" id="t-start">🚀 Get Started</button>
+    <button class="sbtn" onclick="dt('cards')" id="t-cards">🃏 Cards</button>
+    <button class="sbtn" onclick="dt('graph')" id="t-graph">🔗 Graph</button>
+    <button class="sbtn" onclick="dt('key')" id="t-key">🔑 API Key</button>
+    <button class="sbtn" onclick="dt('ws')" id="t-ws">📁 Workspaces</button>
+    <button class="sbtn" onclick="dt('team')" id="t-team">👥 Team</button>
+    <button class="sbtn" onclick="dt('stats')" id="t-stats">📊 Analytics</button>
+    <button class="sbtn" onclick="go('docs')" id="t-docs">📖 Docs</button>
+    <button class="sbtn" onclick="go('landing')" style="margin-top:4px;border-top:1px solid var(--border)">🏠 Home</button>
+    <div class="bot"><div class="em" id="d-em">—</div><div id="d-pt" style="margin-top:4px"></div></div>
   </div>
   <div class="dc" id="dm"></div>
+  <div id="d-plan-bar" style="display:none;padding:8px 16px;background:rgba(255,107,43,0.05);border:1px solid rgba(255,107,43,0.15);border-radius:8px;margin:8px 16px;font-family:var(--mono);font-size:.75rem;color:var(--dim);text-align:right"></div>
 </div>
 <!-- Mobile bottom nav -->
 <div class="mob-nav">
-  <div class="mob-nav-inner">
-    <button class="act" onclick="dt('start')" id="mt-start"><span class="mob-icon">🚀</span>Start</button>
-    <button onclick="dt('cards')" id="mt-cards"><span class="mob-icon">🃏</span>Cards</button>
-    <button onclick="dt('graph')" id="mt-graph"><span class="mob-icon">🔗</span>Graph</button>
-    <button onclick="dt('key')" id="mt-key"><span class="mob-icon">🔑</span>Key</button>
-    <button onclick="dt('ws')" id="mt-ws"><span class="mob-icon">📁</span>Spaces</button>
-    <button onclick="dt('team')" id="mt-team"><span class="mob-icon">👥</span>Team</button>
-    <button onclick="dt('stats')" id="mt-stats"><span class="mob-icon">📊</span>Stats</button>
-    <button onclick="go('docs')" id="mt-docs"><span class="mob-icon">📖</span>Docs</button>
+  <div class="mob-nav-inner" style="overflow-x:auto;justify-content:flex-start;gap:0;padding:0 8px;-webkit-overflow-scrolling:touch">
+    <button class="act" onclick="dt('start')" id="mt-start"><span style="font-size:16px">🚀</span><br>Start</button>
+    <button onclick="dt('cards')" id="mt-cards"><span style="font-size:16px">🃏</span><br>Cards</button>
+    <button onclick="dt('graph')" id="mt-graph"><span style="font-size:16px">🔗</span><br>Graph</button>
+    <button onclick="dt('key')" id="mt-key"><span style="font-size:16px">🔑</span><br>Key</button>
+    <button onclick="dt('ws')" id="mt-ws"><span style="font-size:16px">📁</span><br>Spaces</button>
+    <button onclick="dt('team')" id="mt-team"><span style="font-size:16px">👥</span><br>Team</button>
+    <button onclick="dt('stats')" id="mt-stats"><span style="font-size:16px">📊</span><br>Stats</button>
+    <button onclick="go('docs')" id="mt-docs"><span style="font-size:16px">📖</span><br>Docs</button>
+    <button onclick="go('landing')"><span style="font-size:16px">🏠</span><br>Home</button>
   </div>
 </div>
 </div>
