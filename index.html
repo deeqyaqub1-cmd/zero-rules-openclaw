@@ -27,7 +27,13 @@ nav{padding:16px 0;display:flex;justify-content:space-between;align-items:center
 .navr a,.navr button{color:var(--dim);font-size:.82rem;font-family:var(--mono);background:none;border:none;cursor:pointer;transition:color .2s;text-decoration:none}
 .navr a:hover,.navr button:hover{color:var(--text);text-decoration:none}
 .nav-links{display:contents}
-@media(max-width:768px){.logo{font-size:1.05rem}.logo small{display:none}.navr{gap:8px}.navr a,.navr button{font-size:.72rem}.nav-links a:not(:first-child){display:none}#nd,#no{display:none!important}}
+@media(max-width:768px){.logo{font-size:1.05rem}.logo small{display:none}.navr{gap:6px}.navr a,.navr button{font-size:.72rem}.nav-links{display:none}
+  /* When logged in on mobile: hide 'Log Out' text, show icon only */
+  #no{font-size:0!important;padding:6px 10px!important}
+  #no::after{content:'→ Out';font-size:.72rem;color:var(--red)}
+  /* Dashboard button stays readable but compact */
+  #nd{padding:6px 12px!important;font-size:.72rem!important}
+}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;font-family:var(--mono);font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--border);transition:all .25s;line-height:1.4;text-decoration:none}
@@ -63,10 +69,10 @@ nav{padding:16px 0;display:flex;justify-content:space-between;align-items:center
 .feat-card h3{font-family:var(--mono);font-size:.95rem;font-weight:700;margin-bottom:8px}
 .feat-card p{color:var(--dim);font-size:.86rem;line-height:1.6}
 .feat-card.wide{grid-column:1/-1}
-@media(max-width:700px){.feat-grid{grid-template-columns:1fr}.feat-card{padding:28px 22px}.feat-card.wide>div{grid-template-columns:1fr!important;gap:20px!important}}
+@media(max-width:700px){.feat-grid{grid-template-columns:1fr}.feat-card{padding:28px 22px}}
 
 /* Code blocks */
-.code-block{background:#08080c;border:1px solid var(--border);border-radius:12px;padding:24px;font-family:var(--mono);font-size:.78rem;line-height:1.7;color:#a0a0c0;overflow-x:auto;position:relative}.code-block pre{color:#a0a0c0;margin:0;white-space:pre-wrap;background:none}
+.code-block{background:#08080c;border:1px solid var(--border);border-radius:12px;padding:24px;font-family:var(--mono);font-size:.78rem;line-height:1.7;color:#a0a0c0;overflow-x:auto;position:relative}
 .code-block::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(68,255,136,.12),transparent)}
 .code-block .kw{color:var(--accent)}.code-block .str{color:#fcd34d}.code-block .cm{color:#6b7280}.code-block .fn{color:#60a5fa}
 
@@ -103,49 +109,144 @@ footer{border-top:1px solid var(--border);padding:24px 0;display:flex;justify-co
 footer .c{font-family:var(--mono);font-size:.7rem;color:var(--faint)}
 footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7rem;color:var(--dim)}
 
-/* PRESERVED STYLES for signup/login/dash/pricing/docs pages */
+/* ═══ PRESERVED STYLES for signup/login/dash/pricing/docs pages ═══ */
 .fg{margin-bottom:16px}.fg label{display:block;font-family:var(--mono);font-size:.75rem;color:var(--dim);margin-bottom:6px}
 .fg input{width:100%;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:var(--sans);font-size:.88rem}
 .fg input:focus{outline:none;border-color:var(--accent)}
 .err{color:var(--red);font-family:var(--mono);font-size:.75rem;margin-top:8px}
 .ok{color:var(--accent);font-family:var(--mono);font-size:.75rem;margin-top:8px}
 .dash-back-link{display:none;font-family:var(--mono);font-size:.75rem}
-.sb{width:200px;background:linear-gradient(180deg,var(--surface) 0%,#0d0d12 100%);border-right:1px solid var(--border);padding:14px 0;position:fixed;height:100vh;display:flex;flex-direction:column;z-index:50}
-.sb .si{padding:6px 16px;font-family:var(--mono);font-size:.72rem;color:var(--dim);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .15s;border-left:2px solid transparent}
-.sb .si:hover{color:var(--text);background:var(--surface2)}
-.sb .si.act{color:var(--accent);border-left-color:var(--accent);background:rgba(68,255,136,.04)}
-.dc{margin-left:200px;padding:20px 24px;min-height:100vh}
+
+/* ── Dashboard layout ── */
+.dash{display:flex;min-height:100vh}
+.sb{width:200px;flex-shrink:0;background:linear-gradient(180deg,var(--surface) 0%,#0d0d12 100%);border-right:1px solid var(--border);padding:14px 0;position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:50;overflow-y:auto}
+.dc{margin-left:200px;padding:24px 28px;min-height:100vh;width:calc(100% - 200px);box-sizing:border-box}
 .mob-nav{display:none}
-.onboard .step .num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-family:var(--mono);font-size:.7rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px}
-.ob-step .num{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.75rem;font-weight:700;color:var(--dim)}
+
+/* ── Dashboard section header ── */
+.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+.dh h1{font-family:var(--mono);font-size:1.25rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.dh p{color:rgba(255,255,255,.4);font-size:.78rem;margin:5px 0 0}
+
+/* ── Dash card wrappers ── */
+.dash-card{position:relative;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;overflow:hidden}
+.dash-card-glow{position:absolute;inset:-2px;border-radius:16px;filter:blur(16px);opacity:.25;pointer-events:none;z-index:0}
+.dash-card-inner{position:relative;z-index:1}
+
+/* ── Sidebar brand + nav buttons ── */
+.brand{padding:16px 16px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
+.brand .logo{font-size:1rem!important;margin-bottom:2px}
+.brand p{font-family:var(--mono);font-size:.65rem;color:var(--faint);margin:0;padding-left:2px}
+.sbtn{width:100%;background:none;border:none;border-left:2px solid transparent;color:var(--dim);font-family:var(--mono);font-size:.75rem;padding:9px 16px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:9px;transition:all .2s;line-height:1;position:relative}
+.sbtn:hover{color:var(--text);background:linear-gradient(90deg,rgba(68,255,136,.04),transparent)}
+.sbtn.act{color:var(--accent);border-left-color:var(--accent);background:linear-gradient(90deg,rgba(68,255,136,.08),transparent)}
+.sbtn .sbtn-label{flex:1}
+.sbtn-badge{font-family:var(--mono);font-size:.55rem;background:rgba(255,107,43,.15);color:var(--orange);padding:1px 6px;border-radius:10px;border:1px solid rgba(255,107,43,.2);font-weight:700}
+.bot{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border)}
+.em{font-family:var(--mono);font-size:.72rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ── Plan badges ── */
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:6px;font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.04em}
+
+/* ── Card edit modal ── */
+.card-edit-field{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff;font-family:var(--mono);font-size:.82rem;padding:9px 13px;outline:none;transition:border-color .2s;box-sizing:border-box}
+.card-edit-field:focus{border-color:var(--accent)}
+.card-edit-field::placeholder{color:rgba(255,255,255,.3)}
+
+/* ── Notification toast ── */
+.hs-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:#1a1a24;border:1px solid var(--border);border-radius:10px;padding:10px 20px;font-family:var(--mono);font-size:.78rem;color:var(--text);z-index:9999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+.hs-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.hs-toast.ok{border-color:rgba(68,255,136,.3);color:var(--accent)}
+.hs-toast.err{border-color:rgba(239,68,68,.3);color:var(--red)}
+
+/* ── Key display ── */
+.key-display{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:6px;overflow:hidden}
+.key-display code{flex:1;font-family:var(--mono);font-size:.8rem;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.02em}
+.key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+/* ── Onboarding steps ── */
+.ob-steps{display:flex;align-items:center;margin-bottom:20px}
+.ob-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative}
+.ob-step+.ob-step::before{content:'';position:absolute;left:-50%;top:14px;width:100%;height:1px;background:var(--border);z-index:0}
+.ob-step.done+.ob-step::before{background:var(--accent)}
+.ob-step .num{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.75rem;font-weight:700;color:var(--dim);background:var(--bg);position:relative;z-index:1}
 .ob-step.done .num{background:var(--accent);border-color:var(--accent);color:#000}
 .ob-step.active .num{background:var(--accent);border-color:var(--accent);color:#000}
-.key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer}
+.ob-step .stxt{font-family:var(--mono);font-size:.6rem;color:var(--dim);text-align:center}
+.ob-step.done .stxt,.ob-step.active .stxt{color:var(--accent)}
+
+/* ── Platform tabs ── */
+.plat-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px}
+.plat-tab{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:6px;color:var(--dim);font-family:var(--mono);font-size:.7rem;padding:5px 11px;cursor:pointer;transition:all .2s}
+.plat-tab:hover{color:var(--text);border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.07)}
+.plat-tab.act{background:rgba(68,255,136,.08);color:var(--accent);border-color:rgba(68,255,136,.25)}
+
+/* ── Quick-link cards ── */
+.ql-grid{display:grid;gap:10px}
+.ql-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s}
+.ql-card:hover{border-color:rgba(68,255,136,.25);background:rgba(68,255,136,.04);transform:translateY(-2px)}
+.ql-icon{font-size:1.4rem;display:block;margin-bottom:6px}
+.ql-label{font-family:var(--mono);font-size:.7rem;color:var(--dim)}
+
+/* ── Misc ── */
+.copied-btn{background:var(--green)!important;color:#000!important}
+.cpbtn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:5px;color:var(--dim);font-family:var(--mono);font-size:.65rem;padding:3px 9px;cursor:pointer;transition:all .2s;z-index:2}
+.cpbtn:hover{background:rgba(255,255,255,.12);color:var(--text)}
 .pc-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.63rem;font-weight:600;color:#000;background:var(--accent);padding:2px 12px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
 .faq-item{border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
 .faq-q{padding:14px 18px;font-family:var(--mono);font-size:.82rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s;padding:0 18px}
 .faq-item.open .faq-a{max-height:500px;padding:0 18px 14px}
-@media(max-width:768px){.sb{display:none}.dc{margin-left:0}.mob-nav{display:block;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);z-index:100;padding:6px 0}.mob-nav-inner{display:flex;justify-content:space-around}.mob-nav button{background:none;border:none;color:var(--dim);font-size:.6rem;font-family:var(--mono);padding:4px 8px;cursor:pointer}.mob-nav button.act{color:var(--accent)}}
+.onboard .step .num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;font-family:var(--mono);font-size:.7rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px}
 
-/* Sidebar brand + nav buttons */
-.brand{padding:16px 16px 12px;border-bottom:1px solid var(--border);margin-bottom:8px}
-.brand .logo{font-size:1rem!important;margin-bottom:2px}
-.brand p{font-family:var(--mono);font-size:.65rem;color:var(--faint);margin:0;padding-left:2px}
-.sbtn{width:100%;background:none;border:none;border-left:2px solid transparent;color:var(--dim);font-family:var(--mono);font-size:.75rem;padding:9px 16px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:9px;transition:all .15s;line-height:1}
-.sbtn:hover{color:var(--text);background:var(--surface2)}
-.sbtn.act{color:var(--accent);border-left-color:var(--accent);background:rgba(68,255,136,.05)}
-.bot{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border)}
-.em{font-family:var(--mono);font-size:.72rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* ══ MOBILE — single clean block, no conflicts ══ */
+@media(max-width:768px){
+  /* Hide desktop sidebar, show full-width content */
+  .sb{display:none!important}
+  .dc{margin-left:0!important;width:100%!important;padding:16px 14px 96px!important;box-sizing:border-box}
 
-/* Auth pages */
+  /* Bottom nav bar */
+  .mob-nav{display:block;position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(10,10,14,.97);border-top:1px solid var(--border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding-bottom:env(safe-area-inset-bottom)}
+  .mob-nav-inner{display:flex;align-items:stretch}
+  .mob-nav button{background:none;border:none;color:var(--dim);font-family:var(--mono);font-size:.52rem;padding:8px 2px 6px;cursor:pointer;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:color .2s;min-width:0;line-height:1;letter-spacing:.01em;-webkit-tap-highlight-color:transparent}
+  .mob-nav button .mob-icon{font-size:18px;line-height:1;display:block}
+  .mob-nav button.act{color:var(--accent)}
+
+  /* Stack dh header vertically */
+  .dh{flex-direction:column;gap:8px}
+  .dh>div:last-child{display:flex;gap:6px;width:100%}
+  .dh>div:last-child .sinput{flex:1;min-width:0}
+
+  /* Card modal — bottom sheet */
+  .card-expand{padding:0!important;align-items:flex-end!important}
+  .card-expand-inner{border-radius:18px 18px 0 0!important;max-height:92vh;width:100%!important;max-width:100%!important;padding:20px!important}
+
+  /* Grids collapse to 2 cols on mobile */
+  .ql-grid{grid-template-columns:repeat(2,1fr)!important}
+
+  /* Platform tabs scroll horizontally */
+  .plat-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+  .plat-tab{flex-shrink:0}
+
+  /* Hide plan bar on mobile - sidebar is hidden anyway */
+  #d-plan-bar{display:none!important}
+
+  /* Graph canvas fills full width */
+  #graph-wrap{min-height:320px!important;border-radius:10px!important}
+  #graph-canvas{max-width:100%}
+
+  /* Stat grids collapse to 2 cols */
+  [style*="repeat(4,1fr)"]{grid-template-columns:repeat(2,1fr)!important}
+  [style*="repeat(3,1fr)"]{grid-template-columns:repeat(2,1fr)!important}
+}
+/* ── Auth pages ── */
 .auth{max-width:400px;margin:80px auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px}
 .auth h2{font-family:var(--mono);font-weight:800;font-size:1.2rem;margin-bottom:20px}
 .aswitch{font-size:.82rem;color:var(--dim);margin-top:14px;text-align:center}
 .aswitch a{color:var(--accent);cursor:pointer}
 .ferr{color:var(--red);font-family:var(--mono);font-size:.75rem;margin-top:8px}
 
-/* Premium card list styles (injected by app.js, mirrored here) */
+/* ── Premium card list styles (injected by app.js, mirrored here) ── */
 .card-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;position:relative;transition:border-color .2s,box-shadow .2s;cursor:default}
 .card-item:hover{border-color:var(--border2);box-shadow:0 0 20px rgba(68,255,136,.04)}
 .card-item .card-slug{font-family:var(--mono);font-size:.72rem;color:var(--accent);margin-bottom:4px;font-weight:600}
@@ -184,7 +285,7 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 </nav>
 </div>
 
-<!-- LANDING -->
+<!-- ═══ LANDING ═══ -->
 <div id="p-landing" style="position:relative;overflow:hidden">
 <div class="glow-orb" style="width:500px;height:500px;background:rgba(68,255,136,.04);top:-100px;right:-150px"></div>
 <div class="glow-orb" style="width:350px;height:350px;background:rgba(68,255,136,.025);bottom:400px;left:-100px"></div>
@@ -208,12 +309,12 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 </div>
 </section>
 
-<!-- CHANGE 1: Stats bar — "9 typed relations" → "4 graph modes" -->
+<!-- Stats bar -->
 <div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 0">
 <div class="w">
 <div style="display:flex;justify-content:center;gap:48px;flex-wrap:wrap;align-items:center">
 <div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">$0</strong> per operation</div>
-<div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">4</strong> graph modes</div>
+<div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">9</strong> typed relations</div>
 <div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">30s</strong> setup</div>
 <div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">94%</strong> token savings</div>
 <div style="font-family:var(--mono);font-size:.78rem;color:var(--dim)"><strong style="color:var(--text);font-size:1.1rem">4</strong> SDKs live</div>
@@ -242,7 +343,7 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 <span style="color:#e2e8f0"># "What blocks deploy?"</span>
 <span style="color:#9ca3af"># → grep returns text blobs</span></div></div>
 <div style="background:var(--surface);border:1px solid rgba(68,255,136,.12);border-radius:12px;padding:24px;box-shadow:0 0 40px rgba(68,255,136,.02)">
-<div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">✔ After (HyperStack)</div>
+<div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">✓ After (HyperStack)</div>
 <div class="code-block" style="border:none;padding:14px;font-size:.72rem;background:rgba(0,0,0,.3)"><span class="kw">const</span> result = <span class="kw">await</span> hs.<span class="fn">blockers</span>(<span class="str">"deploy-prod"</span>);
 <span style="color:#e2e8f0">// → [migration-23] Auth migration</span>
 <span style="color:#e2e8f0">//   blocks → deploy-prod</span>
@@ -252,34 +353,26 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 <p style="text-align:center;font-family:var(--mono);font-size:.8rem;color:var(--dim)">Typed relations. <span style="color:var(--accent)">task→blocks→deploy</span> is queryable. Markdown is not.</p>
 </div></section>
 
-<!-- CHANGE 2: Features headline updated + CHANGE 3: Two new feature cards added -->
+<!-- Features -->
 <section><div class="w">
 <div style="text-align:center;margin-bottom:48px">
 <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">FEATURES</div>
-<h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,3.5vw,1.7rem)">Everything your agents need. Nothing they don't.</h2>
+<h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.2rem,3.5vw,1.7rem)">Three things no other memory tool does together.</h2>
 </div>
 <div class="feat-grid">
 <div class="feat-card"><div class="feat-icon">⚙️</div><h3>Deterministic</h3><p>Developer-defined schema. You control card types, relation types, and graph structure. No LLM hallucinating phantom relationships. $0 extraction cost.</p></div>
 <div class="feat-card"><div class="feat-icon">🔗</div><h3>Cross-Tool</h3><p>Cursor, Claude Desktop, OpenClaw, and LangGraph agents share one graph. Store from any tool. Query from any tool. One source of truth.</p></div>
 <div class="feat-card"><div class="feat-icon">📡</div><h3>Directed Signals</h3><p>9 typed relations: owns, blocks, triggers, depends-on. Query "what blocks X?" and get exactly the cards with that relation — not fuzzy similarity.</p></div>
 <div class="feat-card"><div class="feat-icon">⏳</div><h3>Time-Travel</h3><p>Every change versioned. Reconstruct the graph at any timestamp. See what your agent knew when it made a decision. Git blame for memory.</p></div>
-<!-- NEW: GraphRAG -->
-<div class="feat-card"><div class="feat-icon">🧲</div><h3>GraphRAG</h3><p>Hybrid vector + graph search in one query. Semantic similarity finds the seed cards. Graph traversal surfaces everything connected to them. No other memory tool combines both.</p></div>
-<!-- NEW: Agentic Routing -->
-<div class="feat-card"><div class="feat-icon">🧭</div><h3>Agentic Routing</h3><p>Ask in plain English. "What breaks if proj-auth changes?" — HyperStack detects the intent, picks impact mode automatically. No tool selection required.</p></div>
-<div class="feat-card wide"><div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center"><div><div class="feat-icon">🔍</div><h3>4 Graph Modes. One Parameter.</h3><p>Forward traversal, impact analysis, co-citation recommendations, and time-travel. Neo4j needs Cypher queries for each. HyperStack: one parameter change.</p></div>
-<div class="code-block" style="font-size:.72rem"><span class="cm">// Forward — what does this connect to?</span>
-<span class="kw">await</span> hs.<span class="fn">graph</span>(<span class="str">"auth-api"</span>, { depth: 2 });
-<span class="cm">// Impact — what breaks if this changes?</span>
-<span class="kw">await</span> hs.<span class="fn">impact</span>(<span class="str">"use-clerk"</span>);
-<span class="cm">// Recommend — what's related?</span>
-<span class="kw">await</span> hs.<span class="fn">recommend</span>(<span class="str">"deploy-prod"</span>);
-<span class="cm">// Time-travel — what did we know then?</span>
-<span class="kw">await</span> hs.<span class="fn">graph</span>(<span class="str">"auth-api"</span>, { at: <span class="str">"2026-02-01"</span> });</div></div></div>
+<div class="feat-card wide"><div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center"><div><div class="feat-icon">🔍</div><h3>Hybrid Search + Graph Traversal</h3><p>Semantic + keyword for discovery. Graph traversal for relational queries no vector store can answer. Combined in one API.</p></div>
+<div class="code-block" style="font-size:.72rem"><span class="kw">await</span> hs.<span class="fn">search</span>(<span class="str">"auth setup"</span>);
+<span class="kw">await</span> hs.<span class="fn">graph</span>(<span class="str">"auth-api"</span>, { <span class="str">depth</span>: 2 });
+<span class="kw">await</span> hs.<span class="fn">blockers</span>(<span class="str">"deploy-prod"</span>);
+<span class="kw">await</span> hs.<span class="fn">decide</span>({ <span class="str">slug</span>: <span class="str">"use-clerk"</span>, ... });</div></div></div>
 </div>
 </div></section>
 
-<!-- CHANGE 4: Comparison table — two new rows added -->
+<!-- Comparison -->
 <section style="padding:60px 0"><div class="w">
 <div style="text-align:center;margin-bottom:32px">
 <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">COMPARISON</div>
@@ -291,8 +384,6 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 <tr><td style="color:var(--dim)">Relations</td><td class="win">9 typed (blocks, owns…)</td><td>Auto-extracted</td><td>Threads only</td><td>Generic graph</td></tr>
 <tr><td style="color:var(--dim)">Cost per op</td><td class="win">$0 deterministic</td><td>~$0.002 LLM</td><td>Usage-based</td><td>~$0.002 LLM</td></tr>
 <tr><td style="color:var(--dim)">Time-travel</td><td class="win">Full graph at any timestamp</td><td>—</td><td>—</td><td>—</td></tr>
-<tr><td style="color:var(--dim)">GraphRAG</td><td class="win">Vector + graph in one query</td><td>Vector only</td><td>—</td><td>Partial</td></tr>
-<tr><td style="color:var(--dim)">Impact analysis</td><td class="win">Reverse traversal built-in</td><td>—</td><td>—</td><td>Cypher required</td></tr>
 <tr><td style="color:var(--dim)">Setup</td><td class="win">30 seconds</td><td>5-10min + Docker</td><td>5 min</td><td>5+ min + Neo4j</td></tr>
 <tr><td style="color:var(--dim)">Multi-agent</td><td class="win">Agent-tagged cards</td><td>Shared userId issues</td><td>Thread-based</td><td>No agent awareness</td></tr></table>
 </div></div></section>
@@ -335,7 +426,7 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 <ul><li>10 cards</li><li>Keyword search</li><li>1 workspace</li><li>REST API + MCP</li></ul>
 <button onclick="go('signup')" class="btn bp" style="width:100%">Get Started</button></div>
 <div class="price-card pop"><div class="pop-badge">Popular</div><div class="tier">Pro</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>29<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
-<ul><li>100 cards</li><li>Semantic search</li><li>All 4 graph modes</li><li>GraphRAG search</li><li>Time-travel</li><li>3 workspaces</li></ul>
+<ul><li>100 cards</li><li>Semantic search</li><li>Graph traversal</li><li>Time-travel</li><li>3 workspaces</li></ul>
 <button onclick="go('signup')" class="btn bp" style="width:100%">Start Pro →</button></div>
 <div class="price-card"><div class="tier">Team</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>59<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
 <ul><li>500 cards</li><li>Everything in Pro</li><li>5 team API keys</li><li>Unlimited workspaces</li></ul>
@@ -362,7 +453,7 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=document.getElementById('inst-'+t);if(p)p.classList.toggle('act',t===id)});document.querySelectorAll('.install-tab').forEach(function(b){b.classList.remove('act')});if(btn)btn.classList.add('act')}
 </script>
 
-<!-- === PRESERVED SPA PAGES (signup/login/forgot/reset/pricing/success/docs/dash) === -->
+<!-- ═══ PRESERVED SPA PAGES (signup/login/forgot/reset/pricing/success/docs/dash) ═══ -->
 <div id="p-signup" class="hidden">
 <div class="w">
   <div class="auth">
@@ -376,7 +467,7 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
 </div>
 </div>
 
-<!-- LOGIN -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â• LOGIN â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="p-login" class="hidden">
 <div class="w">
   <div class="auth">
@@ -426,9 +517,9 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
 </div>
 </div>
 
-<!-- DOCS -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â• DOCS â•â•â•â•â•â•â•â•â•â•â•â• -->
 
-<!-- PRICING PAGE -->
+<!-- ═══ PRICING PAGE ═══ -->
 <div id="p-pricing" class="hidden">
 <div class="w" style="max-width:780px;padding:40px 24px 80px">
   <div style="margin-bottom:8px;display:flex;gap:16px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Home</a><a onclick="go('dash')" class="dash-back-link" style="cursor:pointer;font-family:var(--mono);font-size:.78rem;color:var(--accent);display:none">&larr; Dashboard</a></div>
@@ -520,7 +611,7 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
 </div>
 </div>
 
-<!-- SUCCESS PAGE -->
+<!-- ═══════════════ SUCCESS PAGE ═══════════════ -->
 <div id="p-success" class="hidden">
 <div class="w" style="max-width:520px;padding:80px 24px;text-align:center">
   <div id="success-loading">
@@ -767,37 +858,40 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
 </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â• DASHBOARD â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="p-dash" class="hidden">
 <div class="dash">
   <div class="sb">
-    <div class="brand"><p>Dashboard</p></div>
-    <button class="sbtn act" onclick="dt('start')" id="t-start">🚀 Get Started</button>
-    <button class="sbtn" onclick="dt('cards')" id="t-cards">🃏 Cards</button>
-    <button class="sbtn" onclick="dt('graph')" id="t-graph">🔗 Graph</button>
-    <button class="sbtn" onclick="dt('key')" id="t-key">🔑 API Key</button>
-    <button class="sbtn" onclick="dt('ws')" id="t-ws">📂 Workspaces</button>
-    <button class="sbtn" onclick="dt('team')" id="t-team">👥 Team</button>
-    <button class="sbtn" onclick="dt('stats')" id="t-stats">📊 Analytics</button>
-    <button class="sbtn" onclick="dt('agent')" id="t-agent">🤖 Agent Tokens</button>
-    <button class="sbtn" onclick="go('docs')" id="t-docs">📖 Docs</button>
-    <div class="bot"><div class="em" id="d-em">—</div><div id="d-pt" style="margin-top:4px"></div></div>
+    <div class="brand"><div class="logo" onclick="go('landing')" style="cursor:pointer">HyperStack</div><p>Dashboard</p></div>
+    <button class="sbtn act" onclick="dt('start')" id="t-start"><span>🚀</span><span class="sbtn-label">Get Started</span></button>
+    <button class="sbtn" onclick="dt('cards')" id="t-cards"><span>🃏</span><span class="sbtn-label">Cards</span></button>
+    <button class="sbtn" onclick="dt('graph')" id="t-graph"><span>🔗</span><span class="sbtn-label">Graph</span><span class="sbtn-badge" id="sb-graph-badge" style="display:none">Pro</span></button>
+    <button class="sbtn" onclick="dt('key')" id="t-key"><span>🔑</span><span class="sbtn-label">API Key</span></button>
+    <button class="sbtn" onclick="dt('ws')" id="t-ws"><span>📁</span><span class="sbtn-label">Workspaces</span></button>
+    <button class="sbtn" onclick="dt('team')" id="t-team"><span>👥</span><span class="sbtn-label">Team</span></button>
+    <button class="sbtn" onclick="dt('stats')" id="t-stats"><span>📊</span><span class="sbtn-label">Analytics</span></button>
+    <button class="sbtn" onclick="go('docs')" id="t-docs"><span>📖</span><span class="sbtn-label">Docs</span></button>
+    <!-- Plan bar inside sidebar, above bottom section -->
+    <div id="d-plan-bar" style="display:none;margin:4px 10px 0;padding:8px 12px;background:rgba(255,107,43,.05);border:1px solid rgba(255,107,43,.15);border-radius:8px;font-family:var(--mono);font-size:.7rem;color:var(--dim)"></div>
+    <div class="bot">
+      <div class="em" id="d-em">—</div>
+      <div id="d-pt" style="margin-top:4px"></div>
+      <button onclick="out()" style="margin-top:10px;width:100%;background:none;border:none;color:var(--faint);font-family:var(--mono);font-size:.68rem;cursor:pointer;text-align:left;padding:0;transition:color .2s" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--faint)'">← Sign out</button>
+    </div>
   </div>
   <div class="dc" id="dm"></div>
-  <div id="d-plan-bar" style="display:none;padding:8px 16px;background:rgba(255,107,43,0.05);border:1px solid rgba(255,107,43,0.15);border-radius:8px;margin:8px 16px;font-family:var(--mono);font-size:.75rem;color:var(--dim);text-align:right"></div>
 </div>
 <!-- Mobile bottom nav -->
 <div class="mob-nav">
-  <div class="mob-nav-inner" style="overflow-x:auto;justify-content:flex-start;gap:0;padding:0 8px;-webkit-overflow-scrolling:touch">
-    <button class="act" onclick="dt('start')" id="mt-start"><span style="font-size:16px">🚀</span><br>Start</button>
-    <button onclick="dt('cards')" id="mt-cards"><span style="font-size:16px">🃏</span><br>Cards</button>
-    <button onclick="dt('graph')" id="mt-graph"><span style="font-size:16px">🔗</span><br>Graph</button>
-    <button onclick="dt('key')" id="mt-key"><span style="font-size:16px">🔑</span><br>Key</button>
-    <button onclick="dt('ws')" id="mt-ws"><span style="font-size:16px">📂</span><br>Spaces</button>
-    <button onclick="dt('team')" id="mt-team"><span style="font-size:16px">👥</span><br>Team</button>
-    <button onclick="dt('stats')" id="mt-stats"><span style="font-size:16px">📊</span><br>Stats</button>
-    <button onclick="dt('agent')" id="mt-agent"><span style="font-size:16px">🤖</span><br>Agent</button>
-    <button onclick="go('docs')" id="mt-docs"><span style="font-size:16px">📖</span><br>Docs</button>
+  <div class="mob-nav-inner">
+    <button class="act" onclick="dt('start')" id="mt-start"><span class="mob-icon">🚀</span>Start</button>
+    <button onclick="dt('cards')" id="mt-cards"><span class="mob-icon">🃏</span>Cards</button>
+    <button onclick="dt('graph')" id="mt-graph"><span class="mob-icon">🔗</span>Graph</button>
+    <button onclick="dt('key')" id="mt-key"><span class="mob-icon">🔑</span>Key</button>
+    <button onclick="dt('ws')" id="mt-ws"><span class="mob-icon">📁</span>Spaces</button>
+    <button onclick="dt('team')" id="mt-team"><span class="mob-icon">👥</span>Team</button>
+    <button onclick="dt('stats')" id="mt-stats"><span class="mob-icon">📊</span>Stats</button>
+    <button onclick="go('docs')" id="mt-docs"><span class="mob-icon">📖</span>Docs</button>
   </div>
 </div>
 </div>
@@ -824,6 +918,6 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 });
 </script>
-<script src="app.js?v=35"></script>
+<script src="app.js?v=34"></script>
 </body>
 </html>
