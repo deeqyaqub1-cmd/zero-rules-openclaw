@@ -27,7 +27,7 @@ nav{padding:16px 0;display:flex;justify-content:space-between;align-items:center
 .navr a,.navr button{color:var(--dim);font-size:.82rem;font-family:var(--mono);background:none;border:none;cursor:pointer;transition:color .2s;text-decoration:none}
 .navr a:hover,.navr button:hover{color:var(--text);text-decoration:none}
 .nav-links{display:contents}
-@media(max-width:768px){.logo{font-size:1.05rem}.logo small{display:none}.navr{gap:8px}.navr a,.navr button{font-size:.72rem}.nav-links a:not(:first-child){display:none}#nd,#no{display:none!important}}
+@media(max-width:768px){.logo{font-size:1.05rem}.logo small{display:none}.navr{gap:8px}.navr a,.navr button{font-size:.72rem}.nav-links a:not(:first-child){display:none}#nd,#no{display:none!important}#nl{display:inline-flex!important}.nav-links a:first-child{display:none}}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;font-family:var(--mono);font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--border);transition:all .25s;line-height:1.4;text-decoration:none}
@@ -165,6 +165,23 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 .dash-section-title{font-family:var(--mono);font-weight:700;font-size:.85rem;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .dash-section-title span{color:var(--faint);font-weight:400;font-size:.72rem}
 @media(max-width:600px){#p-docs [style*="repeat(3"]{grid-template-columns:1fr 1fr!important}#p-pricing .pgrid{grid-template-columns:1fr!important}}
+
+/* FIX: Platform tabs dark theme */
+.plat-tabs{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap}
+.plat-tab{background:rgba(255,255,255,.06)!important;color:rgba(255,255,255,.6)!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:20px!important;font-family:var(--mono)!important;font-size:.72rem!important;padding:6px 14px!important;cursor:pointer!important;transition:all .2s!important;white-space:nowrap!important}
+.plat-tab:hover{background:rgba(255,255,255,.1)!important;color:#fff!important}
+.plat-tab.act{background:rgba(68,255,136,.12)!important;color:var(--accent)!important;border-color:rgba(68,255,136,.3)!important}
+/* FIX: hide ql-grid on mobile - bottom nav handles navigation */
+@media(max-width:768px){.ql-grid{display:none!important}}
+/* FIX: graph howto section needs bottom padding so mob-nav doesn't cover it */
+@media(max-width:768px){#graph-howto,#p-dash .dm-inner{padding-bottom:80px!important}#dm{padding-bottom:80px!important}}
+/* FIX: rStart onboarding - hide verbose desc paragraph on mobile */
+@media(max-width:768px){.ob-hero-sub{display:none!important}}
+/* FIX: card-edit-field mobile */
+.card-edit-field{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none}
+/* FIX 3: Trim onboarding on mobile */
+@media(max-width:768px){.ob-step .stxt{font-size:.55rem}#dm>div:first-child>p{font-size:.75rem!important}}
+
 </style>
 </head>
 <body>
@@ -783,7 +800,7 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
     <button class="sbtn" onclick="go('docs')" id="t-docs">📖 Docs</button>
     <div class="bot"><div class="em" id="d-em">—</div><div id="d-pt" style="margin-top:4px"></div></div>
   </div>
-  <div class="dc" id="dm"></div>
+  <div class="dc" id="dm" style="padding-bottom:80px"></div>
   <div id="d-plan-bar" style="display:none;padding:8px 16px;background:rgba(255,107,43,0.05);border:1px solid rgba(255,107,43,0.15);border-radius:8px;margin:8px 16px;font-family:var(--mono);font-size:.75rem;color:var(--dim);text-align:right"></div>
 </div>
 <!-- Mobile bottom nav -->
