@@ -225,7 +225,7 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 </div>
 </section>
 
-<!-- CHANGE 1: Stats bar — "9 typed relations" → "4 graph modes" -->
+<!-- Stats bar -->
 <div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 0">
 <div class="w">
 <div style="display:flex;justify-content:center;gap:48px;flex-wrap:wrap;align-items:center">
@@ -269,7 +269,7 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 <p style="text-align:center;font-family:var(--mono);font-size:.8rem;color:var(--dim)">Typed relations. <span style="color:var(--accent)">task→blocks→deploy</span> is queryable. Markdown is not.</p>
 </div></section>
 
-<!-- CHANGE 2: Features headline updated + CHANGE 3: Two new feature cards added -->
+<!-- Features -->
 <section><div class="w">
 <div style="text-align:center;margin-bottom:48px">
 <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">FEATURES</div>
@@ -280,10 +280,10 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 <div class="feat-card"><div class="feat-icon">🔗</div><h3>Cross-Tool</h3><p>Cursor, Claude Desktop, OpenClaw, and LangGraph agents share one graph. Store from any tool. Query from any tool. One source of truth.</p></div>
 <div class="feat-card"><div class="feat-icon">📡</div><h3>Directed Signals</h3><p>9 typed relations: owns, blocks, triggers, depends-on. Query "what blocks X?" and get exactly the cards with that relation — not fuzzy similarity.</p></div>
 <div class="feat-card"><div class="feat-icon">⏳</div><h3>Time-Travel</h3><p>Every change versioned. Reconstruct the graph at any timestamp. See what your agent knew when it made a decision. Git blame for memory.</p></div>
-<!-- NEW: GraphRAG -->
 <div class="feat-card"><div class="feat-icon">🧲</div><h3>GraphRAG</h3><p>Hybrid vector + graph search in one query. Semantic similarity finds the seed cards. Graph traversal surfaces everything connected to them. No other memory tool combines both.</p></div>
-<!-- NEW: Agentic Routing -->
 <div class="feat-card"><div class="feat-icon">🧭</div><h3>Agentic Routing</h3><p>Ask in plain English. "What breaks if proj-auth changes?" — HyperStack detects the intent, picks impact mode automatically. No tool selection required.</p></div>
+<!-- NEW: Git-Style Branching -->
+<div class="feat-card"><div class="feat-icon">🌿</div><h3>Git-Style Branching</h3><p>Fork your memory workspace, experiment freely, then merge or discard. Branch before risky agent actions. Diff shows exactly what changed. Parent graph always untouched. Requires Pro+.</p></div>
 <div class="feat-card wide"><div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center"><div><div class="feat-icon">🔍</div><h3>4 Graph Modes. One Parameter.</h3><p>Forward traversal, impact analysis, co-citation recommendations, and time-travel. Neo4j needs Cypher queries for each. HyperStack: one parameter change.</p></div>
 <div class="code-block" style="font-size:.72rem"><span class="cm">// Forward — what does this connect to?</span>
 <span class="kw">await</span> hs.<span class="fn">graph</span>(<span class="str">"auth-api"</span>, { depth: 2 });
@@ -296,7 +296,7 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 </div>
 </div></section>
 
-<!-- CHANGE 4: Comparison table — two new rows added -->
+<!-- Comparison table -->
 <section style="padding:60px 0"><div class="w">
 <div style="text-align:center;margin-bottom:32px">
 <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">COMPARISON</div>
@@ -326,6 +326,7 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 <button class="install-tab" onclick="showInstall('oc',this)">OpenClaw</button>
 <button class="install-tab" onclick="showInstall('py',this)">Python</button>
 <button class="install-tab" onclick="showInstall('rest',this)">REST</button>
+<button class="install-tab" onclick="showInstall('docker',this)">Docker</button>
 </div>
 <div id="inst-mcp" class="install-panel act"><div class="code-block" style="border:none;padding:0;background:transparent;font-size:.76rem"><span class="cm">// Claude Desktop / Cursor / VS Code</span>
 <span class="kw">npx</span> hyperstack-mcp
@@ -339,15 +340,29 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 <div id="inst-rest" class="install-panel"><div class="code-block" style="border:none;padding:0;background:transparent;font-size:.76rem"><span class="kw">curl</span> -X POST <span class="str">"https://hyperstack-cloud.vercel.app/api/cards"</span> \
   -H <span class="str">"X-API-Key: hs_your_key"</span> \
   -d <span class="str">'{"slug":"use-clerk","title":"Use Clerk"}'</span></div></div>
+<div id="inst-docker" class="install-panel"><div class="code-block" style="border:none;padding:0;background:transparent;font-size:.76rem"><span class="cm"># OpenAI embeddings</span>
+<span class="kw">docker</span> run -d -p 3000:3000 \
+  -e DATABASE_URL=postgresql://... \
+  -e JWT_SECRET=your-secret \
+  -e OPENAI_API_KEY=sk-... \
+  ghcr.io/deeqyaqub1-cmd/hyperstack:latest
+
+<span class="cm"># Fully local — Ollama (no OpenAI key needed)</span>
+<span class="kw">docker</span> run -d -p 3000:3000 \
+  -e DATABASE_URL=postgresql://... \
+  -e JWT_SECRET=your-secret \
+  -e EMBEDDING_BASE_URL=http://host.docker.internal:11434 \
+  -e EMBEDDING_MODEL=nomic-embed-text \
+  ghcr.io/deeqyaqub1-cmd/hyperstack:latest</div></div>
 </div></div></section>
 
-<!-- Pricing -->
+<!-- Pricing — 4 cols now -->
 <section style="padding:60px 0"><div class="w">
 <div style="text-align:center;margin-bottom:32px">
 <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">PRICING</div>
 <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.1rem,3vw,1.5rem)">Start free. Scale when ready.</h2>
 </div>
-<div class="price-row" style="max-width:800px;margin:0 auto">
+<div class="price-row" style="max-width:1060px;margin:0 auto;grid-template-columns:repeat(4,1fr)">
 <div class="price-card"><div class="tier">Free</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>0</div><div class="per">forever</div>
 <ul><li>10 cards</li><li>Keyword search</li><li>1 workspace</li><li>REST API + MCP</li></ul>
 <button onclick="go('signup')" class="btn bp" style="width:100%">Get Started</button></div>
@@ -357,6 +372,9 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 <div class="price-card"><div class="tier">Team</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>59<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
 <ul><li>500 cards</li><li>Everything in Pro</li><li>5 team API keys</li><li>Unlimited workspaces</li></ul>
 <button onclick="go('signup')" class="btn bo" style="width:100%">Start Team</button></div>
+<div class="price-card"><div class="tier">Business</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>149<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
+<ul><li>2,000 cards</li><li>Everything in Team</li><li>20 team members</li><li>Agent-to-agent webhooks</li><li>SSO &amp; audit log <em style="font-size:.65rem;color:var(--faint)">(soon)</em></li></ul>
+<button onclick="go('pricing')" class="btn bo" style="width:100%">Get Business</button></div>
 </div></div></section>
 
 <!-- Final CTA -->
@@ -376,7 +394,7 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 </div><!-- end p-landing -->
 
 <script>
-function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=document.getElementById('inst-'+t);if(p)p.classList.toggle('act',t===id)});document.querySelectorAll('.install-tab').forEach(function(b){b.classList.remove('act')});if(btn)btn.classList.add('act')}
+function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(t){var p=document.getElementById('inst-'+t);if(p)p.classList.toggle('act',t===id)});document.querySelectorAll('.install-tab').forEach(function(b){b.classList.remove('act')});if(btn)btn.classList.add('act')}
 </script>
 
 <!-- === PRESERVED SPA PAGES (signup/login/forgot/reset/pricing/success/docs/dash) === -->
@@ -443,9 +461,7 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
 </div>
 </div>
 
-<!-- DOCS -->
-
-<!-- PRICING PAGE -->
+<!-- PRICING PAGE (unchanged from original) -->
 <div id="p-pricing" class="hidden">
 <div class="w" style="max-width:780px;padding:40px 24px 80px">
   <div style="margin-bottom:8px;display:flex;gap:16px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Home</a><a onclick="go('dash')" class="dash-back-link" style="cursor:pointer;font-family:var(--mono);font-size:.78rem;color:var(--accent);display:none">&larr; Dashboard</a></div>
@@ -456,8 +472,6 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
     <p style="color:var(--dim);font-size:.85rem;margin-top:6px">Graph traversal &amp; visual explorer are paid features &mdash; that&rsquo;s our moat and yours.</p>
   </div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:900px;margin:0 auto">
-
-    <!-- FREE -->
     <div class="pc">
       <h3>Free</h3>
       <div class="amt">$0</div>
@@ -472,8 +486,6 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
       </ul>
       <button onclick="go('signup')" class="btn bo" style="width:100%">Get Free Key &rarr;</button>
     </div>
-
-    <!-- PRO — the anchor tier -->
     <div class="pc feat">
       <div class="pc-badge">Most Popular</div>
       <h3 style="color:var(--accent)">Pro</h3>
@@ -489,8 +501,6 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
       </ul>
       <a href="javascript:void(0)" onclick="stripeGo('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07','PRO')" class="btn bp" style="width:100%" data-plan-btn="PRO">Get Pro &rarr;</a>
     </div>
-
-    <!-- TEAM -->
     <div class="pc" style="border-color:#3b82f6">
       <div class="pc-badge" style="background:rgba(59,130,246,.12);color:#60a5fa;border-color:rgba(59,130,246,.35)">Collaborate</div>
       <h3 style="color:#60a5fa">Team</h3>
@@ -506,8 +516,6 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
       </ul>
       <a href="javascript:void(0)" onclick="stripeGo('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06','TEAM')" class="btn bo" style="width:100%;border-color:#60a5fa;color:#60a5fa" data-plan-btn="TEAM">Get Team &rarr;</a>
     </div>
-
-    <!-- BUSINESS -->
     <div class="pc" style="border-color:var(--green)">
       <div class="pc-badge green">Scale</div>
       <h3 style="color:var(--green)">Business</h3>
@@ -523,10 +531,7 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
       </ul>
       <a href="javascript:void(0)" onclick="stripeGo('https://buy.stripe.com/bJe7sLaPr0mUeJP8yfeUU05','BUSINESS')" class="btn bg" style="width:100%" data-plan-btn="BUSINESS">Get Business &rarr;</a>
     </div>
-
   </div>
-
-  <!-- Feature comparison mini-table -->
   <div style="max-width:700px;margin:28px auto 0;text-align:center">
     <div style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-bottom:12px">ALL PLANS INCLUDE: REST API &middot; Any agent &middot; Any language &middot; No SDK required</div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:var(--mono);font-size:.72rem;color:var(--dim);display:inline-block">
@@ -585,14 +590,11 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
 <div id="p-docs" class="hidden">
 <div class="w" style="max-width:780px;padding:40px 24px 80px">
   <div style="margin-bottom:8px;display:flex;gap:16px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Home</a><a onclick="go('dash')" class="dash-back-link" style="cursor:pointer;font-family:var(--mono);font-size:.78rem;color:var(--accent);display:none">&larr; Dashboard</a></div>
-  
   <div style="text-align:center;margin-bottom:36px">
     <div style="font-family:var(--mono);font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Documentation</div>
-    <h1 style="font-family:var(--mono);font-weight:800;font-size:1.6rem;margin-bottom:8px">&#128214; HyperStack Docs</h1>
+    <h1 style="font-family:var(--mono);font-weight:800;font-size:1.6rem;margin-bottom:8px">📖 HyperStack Docs</h1>
     <p style="color:var(--dim);font-size:.9rem">Everything you need to give your AI agent persistent memory.</p>
   </div>
-
-  <!-- What are Cards -->
   <div style="position:relative;margin-bottom:16px">
     <div style="position:absolute;inset:-1px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.15),rgba(168,85,247,.1));opacity:.2;filter:blur(12px)"></div>
     <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.2);border-radius:14px;padding:22px">
@@ -600,186 +602,18 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
         <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)"></div>
         <span style="font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:.06em;font-weight:600">CORE CONCEPT</span>
       </div>
-      <h2 style="font-family:var(--mono);font-size:1.05rem;font-weight:700;margin-bottom:10px">&#127183; What are Cards?</h2>
+      <h2 style="font-family:var(--mono);font-size:1.05rem;font-weight:700;margin-bottom:10px">🃏 What are Cards?</h2>
       <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:14px">Cards are small, structured chunks of knowledge your agent stores and retrieves. Think of them as index cards for an AI brain. Each card has:</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--accent)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--accent)">slug</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Unique ID &mdash; same slug = update, not duplicate</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--accent)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--accent)">slug</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Unique ID — same slug = update, not duplicate</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--text)"><strong style="font-family:var(--mono);font-size:.78rem">title</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Human-readable name for the card</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--blue)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--blue)">keywords</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Tags for exact-match search</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--purple)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--purple)">stack</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Category folder (projects, people, etc)</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #fbbf24"><strong style="font-family:var(--mono);font-size:.78rem;color:#fbbf24">cardType</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">person, project, decision, preference, workflow, event, account</p></div>
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #f87171"><strong style="font-family:var(--mono);font-size:.78rem;color:#f87171">links</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Connect cards by slug &mdash; build a knowledge graph</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #f87171"><strong style="font-family:var(--mono);font-size:.78rem;color:#f87171">links</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Connect cards by slug — build a knowledge graph</p></div>
       </div>
     </div>
   </div>
-
-  <!-- Stacks -->
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-      <span style="font-size:1rem">&#128193;</span>
-      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Stacks</span>
-      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">Categories for your cards</span>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #3b82f6"><strong style="font-family:var(--mono);font-size:.78rem">&#128230; projects</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Tech stacks, repos, architecture</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #a855f7"><strong style="font-family:var(--mono);font-size:.78rem">&#128100; people</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Teammates, contacts, roles</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #ff6b2b"><strong style="font-family:var(--mono);font-size:.78rem">&#9878;&#65039; decisions</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Why you chose X over Y</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #22c55e"><strong style="font-family:var(--mono);font-size:.78rem">&#9881;&#65039; preferences</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Editor, tools, coding style</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #eab308"><strong style="font-family:var(--mono);font-size:.78rem">&#128260; workflows</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Deploy steps, review processes</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px;border-left:3px solid #8585a0"><strong style="font-family:var(--mono);font-size:.78rem">&#128196; general</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Everything else</p></div>
-    </div>
-  </div>
-
-  <!-- Context Graph -->
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-      <span style="font-size:1rem">&#128279;</span>
-      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Context Graph</span>
-      <span style="font-family:var(--mono);font-size:.62rem;color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);padding:1px 8px;border-radius:8px;margin-left:auto">NEW</span>
-    </div>
-    <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin-bottom:12px">Cards aren&rsquo;t flat. They connect. Type your cards, link them together, and traverse the graph.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #fbbf24"><strong style="font-family:var(--mono);font-size:.78rem;color:#fbbf24">Card Types</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">person, project, decision, preference, workflow, event, account. Filter cards by type.</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #f87171"><strong style="font-family:var(--mono);font-size:.78rem;color:#f87171">Card Links</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">Connect cards by slug. &ldquo;decision-auth&rdquo; links to &ldquo;team-alice&rdquo; and &ldquo;project-webapp&rdquo;.</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--accent)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--accent)">Link Resolution</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px">GET a card &rarr; linked cards resolved automatically with metadata.</p></div>
-      <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--green)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--green)">Graph Traversal</strong><p style="font-size:.7rem;color:var(--dim);margin-top:2px"><code style="font-size:.65rem">GET /api/graph?from=slug&amp;depth=2</code> &mdash; follow connections up to 3 hops.</p></div>
-    </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.68rem;color:var(--dim);line-height:1.8"><span style="color:var(--faint)">// Create a typed card with links</span><br>POST /api/cards?workspace=default<br>{<br>&nbsp;&nbsp;<span style="color:#fbbf24">"cardType"</span>: <span style="color:var(--green)">"decision"</span>,<br>&nbsp;&nbsp;<span style="color:#f87171">"links"</span>: [<span style="color:var(--green)">"team-alice"</span>, <span style="color:var(--green)">"project-webapp"</span>],<br>&nbsp;&nbsp;<span style="color:var(--accent)">"slug"</span>: <span style="color:var(--green)">"decision-auth-clerk"</span>,<br>&nbsp;&nbsp;...<br>}</div>
-  </div>
-
-  <!-- API Reference -->
-  <div style="position:relative;margin-bottom:16px">
-    <div style="position:absolute;inset:-1px;border-radius:14px;background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(59,130,246,.1));opacity:.2;filter:blur(12px)"></div>
-    <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.2);border-radius:14px;padding:22px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
-        <span style="font-family:var(--mono);font-size:.72rem;color:var(--green);letter-spacing:.06em;font-weight:600">API REFERENCE</span>
-      </div>
-      <div style="display:grid;gap:10px">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-          <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:rgba(34,197,94,.12);color:var(--green);padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700">POST</span> <span style="color:var(--text)">/api/cards?workspace=default</span></div>
-          <p style="font-size:.78rem;color:var(--dim)">Create or update a card. Body: <code style="color:var(--accent);font-size:.75rem">{slug, title, body, stack, keywords[]}</code></p>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-          <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:rgba(59,130,246,.12);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700">GET</span> <span style="color:var(--text)">/api/cards?workspace=default</span></div>
-          <p style="font-size:.78rem;color:var(--dim)">List all cards in a workspace</p>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-          <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:rgba(59,130,246,.12);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700">GET</span> <span style="color:var(--text)">/api/search?workspace=default&amp;q=term</span></div>
-          <p style="font-size:.78rem;color:var(--dim)">Hybrid search: keywords + semantic matching (pgvector)</p>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-          <div style="font-family:var(--mono);font-size:.8rem;margin-bottom:6px"><span style="background:rgba(239,68,68,.12);color:var(--red);padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700">DEL</span> <span style="color:var(--text)">/api/cards?workspace=default&amp;id=slug</span></div>
-          <p style="font-size:.78rem;color:var(--dim)">Delete a card by slug</p>
-        </div>
-      </div>
-      <p style="font-size:.75rem;color:var(--faint);margin-top:12px;text-align:center">All endpoints require header: <code style="font-family:var(--mono);color:var(--accent)">X-API-Key: your_key</code></p>
-    </div>
-  </div>
-
-  <!-- Using with MCP / LangGraph / OpenClaw -->
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">&#128268;</span>
-      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Using with MCP (Cursor / Claude Desktop / VS Code)</span>
-    </div>
-    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:12px">Install globally and add config. Your coding agent gets persistent knowledge graph memory.</p>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:16px">
-      <div style="display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
-        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">1.</div>
-        <div style="font-size:.82rem;color:var(--dim)"><code style="color:var(--accent);font-size:.78rem">npm install -g hyperstack-mcp</code></div>
-        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">2.</div>
-        <div style="font-size:.82rem;color:var(--dim)">Add to <code style="color:var(--accent);font-size:.78rem">.cursor/mcp.json</code> or <code style="color:var(--accent);font-size:.78rem">claude_desktop_config.json</code></div>
-        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">3.</div>
-        <div style="font-size:.82rem;color:var(--dim)">Set <code style="color:var(--green);font-size:.78rem">HYPERSTACK_API_KEY</code> in the config env</div>
-      </div>
-    </div>
-    
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">&#129302;</span>
-      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Using with LangGraph</span>
-    </div>
-    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:12px">3 lines to add knowledge graph memory to any LangGraph agent.</p>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:16px">
-      <div style="display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
-        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">1.</div>
-        <div style="font-size:.82rem;color:var(--dim)"><code style="color:var(--accent);font-size:.78rem">pip install hyperstack-langgraph</code></div>
-        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">2.</div>
-        <div style="font-size:.82rem;color:var(--dim)"><code style="color:var(--accent);font-size:.78rem">from hyperstack_langgraph import create_memory_agent</code></div>
-        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">3.</div>
-        <div style="font-size:.82rem;color:var(--dim)"><code style="color:var(--accent);font-size:.78rem">agent = create_memory_agent(your_llm)</code></div>
-      </div>
-    </div>
-    
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">&#128062;</span>
-      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Using with OpenClaw</span>
-    </div>
-    <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:12px">HyperStack works as an OpenClaw skill. Your agent reads the SKILL.md file and automatically knows how to create, search, and update cards.</p>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-      <div style="display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
-        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">1.</div>
-        <div style="font-size:.82rem;color:var(--dim)">Place SKILL.md in <code style="color:var(--accent);font-size:.78rem">skills/hyperstack/SKILL.md</code></div>
-        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">2.</div>
-        <div style="font-size:.82rem;color:var(--dim)">Set env: <code style="color:var(--green);font-size:.78rem">HYPERSTACK_API_KEY=your_key</code></div>
-        <div style="text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:800;padding-top:2px">3.</div>
-        <div style="font-size:.82rem;color:var(--dim)">Done &mdash; your agent reads the skill and handles everything</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FAQ -->
-  <div style="position:relative;margin-bottom:16px">
-    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:22px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
-        <span style="font-size:1rem">&#10067;</span>
-        <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">FAQ</span>
-      </div>
-      <div id="faq-list" style="display:grid;gap:0">
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>How does my agent use HyperStack?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Your agent calls the REST API to store and search memories. Cards can be typed (person, decision, project) and linked to other cards by slug. Before responding, the agent searches for relevant cards. When it learns something new, it creates or updates a card. It can also traverse linked cards via the graph API to follow connections between knowledge.</div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>What counts as a &ldquo;card&rdquo;?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Any piece of knowledge &mdash; a person&rsquo;s role, a project&rsquo;s tech stack, a decision rationale, your coding preferences. Cards are small (a few lines) and focused on one topic. Each card can have a type (person, decision, project, etc) and link to other cards, so your agent builds a connected knowledge graph over time.</div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>How is this different from other memory tools?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Mem0 and Zep now have knowledge graphs, but they auto-extract entities using LLM calls (~$0.002/op, risk of hallucinated relationships). HyperStack lets you explicitly define cards and links &mdash; precise, zero LLM cost, instant. Plus time-travel debugging: reconstruct the entire graph at any timestamp to see what your agent knew when it made a bad decision.</div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>I get &ldquo;Unauthorized&rdquo; when calling the API</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Make sure you&rsquo;re sending the header <code style="font-family:var(--mono);color:var(--accent)">X-API-Key: your_key</code> (not <code>Authorization</code>). Your key starts with <code style="color:var(--accent)">hs_</code> and is in the API Key tab of your dashboard.</div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>What fields does a card need?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a"><strong>Required:</strong> slug, title, body. <strong>Optional:</strong> stack (category), keywords (tags), cardType (person, project, decision, etc), links (array of card slugs to connect). If you POST the same slug again, it upserts. Use the graph API to traverse linked cards.</div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>How does search work?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Hybrid search: keyword matching (instant, $0) + semantic search via pgvector (understands meaning). Ask &ldquo;what auth do we use?&rdquo; and it finds a card about Clerk even if &ldquo;auth&rdquo; isn&rsquo;t a keyword &mdash; because it understands the meaning.</div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>Can I use any AI agent?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Yes. Use the MCP server for Cursor/Claude Desktop/VS Code (npm install -g hyperstack-mcp), the LangGraph integration (pip install hyperstack-langgraph) for Python agents, or the raw REST API from any language. Works with Claude Code, LangChain, CrewAI, custom agents, or a simple script.</div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>Is my data safe?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">Your cards are stored in a secure PostgreSQL database with pgvector. Only your API key can access your data. We don&rsquo;t read, sell, or train on your cards. HyperStack is self-funded &mdash; no VC pressure to monetize your data.</div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>What happens at 10 cards on Free?</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">You can still read and search all your cards, but you can&rsquo;t create new ones until you delete some or upgrade to Pro ($29/mo for 100 cards + graph traversal + visual explorer). The graph API and visual explorer are only available on paid plans.</div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-q"><span>PowerShell: curl doesn&rsquo;t work!</span><span class="faq-arrow">&#9662;</span></div>
-          <div class="faq-a">PowerShell aliases <code>curl</code> to <code>Invoke-WebRequest</code>. Use <code style="color:var(--accent)">Invoke-RestMethod</code> instead, or run curl commands in Git Bash, WSL, or CMD.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div style="text-align:center;padding:20px 0"><p style="color:var(--faint);font-size:.82rem">Need help? <a href="https://discord.gg/tdnXaV6e" style="color:var(--accent)">Join our Discord</a></p></div>
 </div>
 </div>
@@ -820,17 +654,6 @@ function showInstall(id,btn){['mcp','oc','py','rest'].forEach(function(t){var p=
 </div>
 <script>
 function toggleFaq(el){el.classList.toggle('open')}
-</script>
-<script>
-function showLTab(id,btn){
-  ['problem','howit','compare'].forEach(function(t){
-    var el=document.getElementById('ltab-'+t);
-    if(el)el.classList.toggle('hidden',t!==id);
-  });
-  document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('act')});
-  if(btn)btn.classList.add('act');
-  if(id==='problem'&&typeof demoGraphPlay==='function'){setTimeout(demoGraphPlay,100)}
-}
 </script>
 <script>
 document.addEventListener('DOMContentLoaded',function(){
