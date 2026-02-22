@@ -21,7 +21,7 @@ function go(p){document.querySelectorAll('[id^="p-"]').forEach(e=>e.classList.ad
   document.getElementById("nd").classList.toggle("hidden",!l);
   document.getElementById("no").classList.toggle("hidden",!l);
   document.querySelectorAll('.dash-back-link').forEach(a=>{a.style.display=l?'inline':'none'});
-  if(p==="dash"){if(!U){go("login");return;}DV="start";dt("start")}
+  if(p==="dash"&&U){DV="start";dt("start")}
   if(p==="pricing"&&typeof updatePricingButtons==='function'){updatePricingButtons()}}
 
 function heroSignup(){const e=document.getElementById("hero-email").value;
@@ -417,7 +417,7 @@ function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
 
 function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='âœ“ Copied';btn.classList.add('copied-btn');
   setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied-btn')},2000);
-function rgKey(btn){if(!confirm("Regenerate your API key? Your old key will stop working immediately."))return;btn.textContent="...";btn.disabled=true;fetch(A+"/api/auth?action=regenerate-key",{method:"POST",headers:{"X-API-Key":T}}).then(r=>r.json()).then(d=>{if(d.apiKey){U.apiKey=d.apiKey;document.querySelectorAll("code").forEach(el=>{if(el.textContent.startsWith("hs_"))el.textContent=d.apiKey});btn.textContent="Regenerate";btn.disabled=false;alert("New key: "+d.apiKey)}else{btn.textContent="Regenerate";btn.disabled=false;alert(d.error||"Failed")}}).catch(()=>{btn.textContent="Regenerate";btn.disabled=false;alert("Request failed")})}
+function rgKey(btn){if(!confirm("Regenerate your API key? Your old key will stop working immediately."))return;btn.textContent="...";btn.disabled=true;fetch(A+"/api/auth?action=regenerate-key",{method:"POST",headers:{"Authorization":"Bearer "+T}}).then(r=>r.json()).then(d=>{if(d.apiKey){U.apiKey=d.apiKey;document.querySelectorAll("code").forEach(el=>{if(el.textContent.startsWith("hs_"))el.textContent=d.apiKey});btn.textContent="Regenerate";btn.disabled=false;alert("New key: "+d.apiKey)}else{btn.textContent="Regenerate";btn.disabled=false;alert(d.error||"Failed")}}).catch(()=>{btn.textContent="Regenerate";btn.disabled=false;alert("Request failed")})}
   const s2=document.getElementById('obs-2'),s3=document.getElementById('obs-3');
   if(s2){s2.classList.add('done');s2.classList.remove('active');s2.querySelector('.num').textContent='âœ“'}
   if(s3)s3.classList.add('active')}
@@ -1592,7 +1592,7 @@ function _gDetail(node,nodes,edges,TC,RC){
 }
 
 // Auto-login
-(async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{"X-API-Key": t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
+(async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
   const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);document.getElementById("nd").classList.toggle("hidden",!l);document.getElementById("no").classList.toggle("hidden",!l)})();
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -1847,7 +1847,7 @@ function checkSuccess(){
 
   function poll(){
     attempts++;
-    fetch(A+"/api/auth",{headers:{"X-API-Key":T}})
+    fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+T}})
       .then(function(r){return r.json()})
       .then(function(d){
         if(d.user&&d.user.plan&&d.user.plan!=="FREE"){
@@ -1921,7 +1921,7 @@ var _pendingSuccess=false;
 async function manageSub(){
   if(!U||!T){alert('Please log in first');return}
   try{
-    var r=await fetch(A+'/api/stripe-portal',{method:'POST',headers:{'X-API-Key':T,'Content-Type':'application/json'}});
+    var r=await fetch(A+'/api/stripe-portal',{method:'POST',headers:{'Authorization':'Bearer '+T,'Content-Type':'application/json'}});
     var d=await r.json();
     if(d.url){window.open(d.url,'_blank')}
     else{alert(d.error||'Could not open billing portal. Contact support.')}
