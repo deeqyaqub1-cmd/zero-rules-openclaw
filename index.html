@@ -602,28 +602,160 @@ function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(
   <div style="text-align:center;margin-bottom:36px">
     <div style="font-family:var(--mono);font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Documentation</div>
     <h1 style="font-family:var(--mono);font-weight:800;font-size:1.6rem;margin-bottom:8px">📖 HyperStack Docs</h1>
-    <p style="color:var(--dim);font-size:.9rem">Everything you need to give your AI agent persistent memory.</p>
+    <p style="color:var(--dim);font-size:.9rem">Everything you need to give your AI agent persistent, queryable memory.</p>
   </div>
-  <div style="position:relative;margin-bottom:16px">
-    <div style="position:absolute;inset:-1px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.15),rgba(168,85,247,.1));opacity:.2;filter:blur(12px)"></div>
-    <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.2);border-radius:14px;padding:22px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)"></div>
-        <span style="font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:.06em;font-weight:600">CORE CONCEPT</span>
-      </div>
-      <h2 style="font-family:var(--mono);font-size:1.05rem;font-weight:700;margin-bottom:10px">🃏 What are Cards?</h2>
-      <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:14px">Cards are small, structured chunks of knowledge your agent stores and retrieves. Think of them as index cards for an AI brain. Each card has:</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--accent)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--accent)">slug</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Unique ID — same slug = update, not duplicate</p></div>
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--text)"><strong style="font-family:var(--mono);font-size:.78rem">title</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Human-readable name for the card</p></div>
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--blue)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--blue)">keywords</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Tags for exact-match search</p></div>
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--purple)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--purple)">stack</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Category folder (projects, people, etc)</p></div>
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #fbbf24"><strong style="font-family:var(--mono);font-size:.78rem;color:#fbbf24">cardType</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">person, project, decision, preference, workflow, event, account</p></div>
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #f87171"><strong style="font-family:var(--mono);font-size:.78rem;color:#f87171">links</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Connect cards by slug — build a knowledge graph</p></div>
-      </div>
-    </div>
+
+  <div style="border-top:1px solid var(--border);margin:0 0 24px;opacity:.6"></div>
+
+  <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)">WHAT IS HYPERSTACK?</h2>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px">HyperStack gives your AI agent a memory it can actually use.</p>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px">Instead of stuffing context into every prompt, your agent stores what it learns as structured cards, connects them into a graph, and retrieves exactly what it needs — by keyword, by type, by relationship, or by time.</p>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px">Think of it as a second brain for your agent. One that remembers decisions, tracks blockers, maps relationships, and can tell you exactly what it knew when it made a choice.</p>
+
+  <div style="border-top:1px solid var(--border);margin:32px 0 24px;opacity:.6"></div>
+
+  <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)">🃏 CARDS — The Basic Unit of Memory</h2>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:16px">A card is one chunk of knowledge. It could be a decision your agent made, a person on your team, a project it's tracking, or a preference it should always respect.</p>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px">Every card has:</p>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;font-family:var(--mono);font-size:.8rem;line-height:1.9;color:var(--dim);margin-bottom:16px">
+    <strong style="color:var(--accent)">slug</strong> &nbsp; Unique ID. Store to the same slug = update, not duplicate.<br>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Example: "decision-use-clerk"<br><br>
+    <strong style="color:var(--text)">title</strong> &nbsp; Human-readable name.<br>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Example: "Use Clerk for Auth"<br><br>
+    <strong style="color:var(--text)">body</strong> &nbsp; The actual content — what the agent needs to know.<br>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Example: "Chosen over Auth0 for better Next.js DX and lower cost."<br><br>
+    <strong style="color:#fbbf24">cardType</strong> &nbsp; person | project | decision | preference | workflow | event | general<br><br>
+    <strong style="color:var(--purple)">stack</strong> &nbsp; people | projects | decisions | preferences | workflows | general<br><br>
+    <strong style="color:var(--blue)">keywords</strong> &nbsp; Tags for fast exact-match search. Example: ["clerk", "auth", "login"]<br><br>
+    <strong style="color:#f87171">links</strong> &nbsp; Connections to other cards — builds the graph.<br>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Example: [{ slug: "deploy-prod", relation: "blocks" }]
   </div>
-  <div style="text-align:center;padding:20px 0"><p style="color:var(--faint);font-size:.82rem">Need help? <a href="https://discord.gg/tdnXaV6e" style="color:var(--accent)">Join our Discord</a></p></div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px"><strong style="color:var(--text)">Quick rule:</strong> one card = one idea. Keep them small and focused.</p>
+
+  <div style="border-top:1px solid var(--border);margin:32px 0 24px;opacity:.6"></div>
+
+  <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)">🔗 THE GRAPH — Connect Everything</h2>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:16px">Cards become powerful when you link them. Links have a relation type that tells the agent how two things are connected.</p>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:8px"><strong style="color:var(--text)">Built-in relation types:</strong></p>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;font-family:var(--mono);font-size:.8rem;line-height:1.9;color:var(--dim);margin-bottom:16px">
+    <strong style="color:#f87171">blocks</strong> &nbsp; This card is stopping another from moving forward<br>
+    <strong style="color:var(--accent)">depends-on</strong> &nbsp; This card needs another to be complete first<br>
+    <strong style="color:#facc15">triggers</strong> &nbsp; This card causes another to activate<br>
+    <strong style="color:var(--purple)">owns</strong> &nbsp; A person or agent owns this card<br>
+    <strong style="color:#ff6b2b">decided</strong> &nbsp; A person or agent made this decision<br>
+    <strong style="color:var(--dim)">related</strong> &nbsp; General connection — catch-all
+  </div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:8px"><strong style="color:var(--text)">Example:</strong></p>
+  <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:var(--mono);font-size:.78rem;color:#a0a0c0;margin-bottom:16px">
+    "auth-migration" blocks "deploy-prod"<br>
+    "deploy-prod" depends-on "auth-migration"<br>
+    "alice" decided "use-clerk"
+  </div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px">Once linked, you can ask: "What blocks deploy?" or "What breaks if auth changes?" — and get instant answers from the graph.</p>
+
+  <div style="border-top:1px solid var(--border);margin:32px 0 24px;opacity:.6"></div>
+
+  <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)">🔍 SEARCH — Find What You Need</h2>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px">HyperStack has two ways to find cards:</p>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;font-family:var(--mono);font-size:.8rem;line-height:1.9;color:var(--dim);margin-bottom:24px">
+    <strong style="color:var(--accent)">Keyword search</strong> &nbsp; Exact match on keywords, slug, or title. Fast. No embeddings needed. Works offline.<br><br>
+    <strong style="color:var(--accent)">Semantic search</strong> &nbsp; Meaning-based search using embeddings. Finds cards even when wording doesn't match exactly. Requires OpenAI API key or local Ollama model.
+  </div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px">Start with keyword search — it covers most use cases.</p>
+
+  <div style="border-top:1px solid var(--border);margin:32px 0 24px;opacity:.6"></div>
+
+  <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)">⏱ DECISION REPLAY — Understand Why</h2>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:16px">Every card is timestamped. HyperStack remembers not just what your agent knows, but when it learned it.</p>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px">Decision Replay lets you ask: "What did the agent know when it made this decision?"</p>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px">It shows you:</p>
+  <ul style="color:var(--dim);font-size:.88rem;line-height:1.9;margin-bottom:24px;padding-left:20px">
+    <li>Which connected cards existed at decision time</li>
+    <li>Which cards were added or changed afterwards</li>
+    <li>Whether any post-decision changes could have affected the outcome</li>
+  </ul>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px">This is how you audit an agent's reasoning — not by reading logs, but by replaying its memory state.</p>
+
+  <div style="border-top:1px solid var(--border);margin:32px 0 24px;opacity:.6"></div>
+
+  <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)">🧱 BLOCKERS &amp; IMPACT — Know What's Stuck</h2>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px">Two of the most useful queries in HyperStack:</p>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;font-family:var(--mono);font-size:.8rem;line-height:1.9;color:var(--dim);margin-bottom:16px">
+    <strong style="color:var(--text)">Blockers</strong> &nbsp; "What is preventing this card from completing?"<br>
+    &nbsp; &nbsp; &nbsp; Traverses the graph and surfaces everything blocking a target.<br><br>
+    <strong style="color:var(--text)">Impact</strong> &nbsp; "What breaks if I change this card?"<br>
+    &nbsp; &nbsp; &nbsp; Traverses downstream links to show the blast radius of a change.
+  </div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:8px"><strong style="color:var(--text)">Example:</strong></p>
+  <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:var(--mono);font-size:.78rem;color:#a0a0c0;margin-bottom:24px">
+    blockers("deploy-prod") → ["auth-migration", "stripe-integration"]<br>
+    impact("use-clerk") → ["auth-api", "deploy-prod", "billing-v2"]
+  </div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px">Use these before making changes. Know the consequences first.</p>
+
+  <div style="border-top:1px solid var(--border);margin:32px 0 24px;opacity:.6"></div>
+
+  <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)">🧠 MEMORY TYPES — Not All Memory Is Equal</h2>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px">HyperStack supports three memory surfaces:</p>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;font-family:var(--mono);font-size:.8rem;line-height:1.9;color:var(--dim);margin-bottom:24px">
+    <strong style="color:var(--accent)">Semantic</strong> &nbsp; Facts that never age. Decisions, people, preferences. Permanent — no decay, no expiry.<br><br>
+    <strong style="color:var(--accent)">Episodic</strong> &nbsp; What happened and when. Event traces, session history. Soft 30-day decay curve. Agent-used cards decay slower.<br><br>
+    <strong style="color:var(--accent)">Working</strong> &nbsp; Short-term scratchpad. Active task context. TTL-based — expires after a set time. Agent use extends TTL.
+  </div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px">Tag a card with memoryType when storing it. Query by type to get only what's relevant right now.</p>
+
+  <div style="border-top:1px solid var(--border);margin:32px 0 24px;opacity:.6"></div>
+
+  <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)">🤝 AGENT IDENTITY — Know Who Did What</h2>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:16px">Each agent registers with a slug at session start. Every card it stores is automatically stamped with its identity.</p>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px">This means you always know:</p>
+  <ul style="color:var(--dim);font-size:.88rem;line-height:1.9;margin-bottom:12px;padding-left:20px">
+    <li>Which agent stored a card</li>
+    <li>Which agent last updated it</li>
+    <li>Whether the information came from a trusted source</li>
+  </ul>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px">Agents build a trust score over time: (verified cards / total) × 0.7 + (activity) × 0.3. High trust = more weight in conflict resolution.</p>
+
+  <div style="border-top:1px solid var(--border);margin:32px 0 24px;opacity:.6"></div>
+
+  <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)">🌿 BRANCHING — Safe Experimentation</h2>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:16px">Before trying something risky, fork your workspace. Make changes in the branch. If it works, merge. If not, discard — your main memory is untouched.</p>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;font-family:var(--mono);font-size:.8rem;line-height:1.9;color:var(--dim);margin-bottom:24px">
+    <strong style="color:var(--accent)">fork()</strong> &nbsp; Creates a copy of your workspace to experiment in<br>
+    <strong style="color:var(--accent)">diff()</strong> &nbsp; Shows what changed between branch and main<br>
+    <strong style="color:var(--accent)">merge()</strong> &nbsp; Applies branch changes back to main<br>
+    <strong style="color:var(--accent)">discard()</strong> &nbsp; Deletes the branch, main is unaffected
+  </div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:24px">Think of it as git for agent memory.</p>
+
+  <div style="border-top:1px solid var(--border);margin:32px 0 24px;opacity:.6"></div>
+
+  <h2 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text)">⚡ QUICK START</h2>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px"><strong style="color:var(--text)">1. Install</strong></p>
+  <div class="code-block" style="margin-bottom:16px"><pre>npm i hyperstack-core
+<span style="color:var(--faint)">or: pip install hyperstack-py</span></pre></div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px"><strong style="color:var(--text)">2. Store your first card</strong></p>
+  <div class="code-block" style="margin-bottom:16px"><pre>await hs.store({
+  slug: "my-first-decision",
+  title: "Use PostgreSQL for storage",
+  body: "Chosen for reliability and Neon's serverless pricing.",
+  cardType: "decision",
+  stack: "decisions",
+  keywords: ["postgres", "database", "storage"]
+});</pre></div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px"><strong style="color:var(--text)">3. Search</strong></p>
+  <div class="code-block" style="margin-bottom:16px"><pre>await hs.search({ query: "database" });</pre></div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:12px"><strong style="color:var(--text)">4. Check blockers</strong></p>
+  <div class="code-block" style="margin-bottom:16px"><pre>await hs.blockers("deploy-prod");</pre></div>
+  <p style="color:var(--dim);font-size:.88rem;line-height:1.75;margin-bottom:16px"><strong style="color:var(--text)">5. Traverse the graph</strong></p>
+  <div class="code-block" style="margin-bottom:24px"><pre>await hs.graph({ from: "my-first-decision", depth: 2 });</pre></div>
+
+  <div style="border-top:1px solid var(--border);margin:32px 0 24px;opacity:.6"></div>
+
+  <div style="text-align:center;padding:24px 0">
+    <p style="color:var(--faint);font-size:.82rem;margin-bottom:8px">Need help? <a href="https://discord.gg/tdnXaV6e" style="color:var(--accent)">Join our Discord</a></p>
+    <p style="color:var(--faint);font-size:.82rem">Full API reference → <a href="/api-docs" style="color:var(--accent)">/api-docs</a></p>
+  </div>
 </div>
 </div>
 
