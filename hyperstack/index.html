@@ -444,6 +444,23 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 </div><!-- end p-landing -->
 
 <script>
+/* Navigation — inline so nav works even if app.js fails to load (e.g. /hyperstack/app.js 404) */
+var U=null,T=null;
+function go(p){
+  document.querySelectorAll('[id^="p-"]').forEach(function(e){e.classList.add("hidden")});
+  var el=document.getElementById("p-"+p);if(el)el.classList.remove("hidden");
+  window.scrollTo(0,0);
+  var l=!!U;
+  var nl=document.getElementById("nl"),nd=document.getElementById("nd"),no=document.getElementById("no");
+  if(nl)nl.classList.toggle("hidden",l);
+  if(nd)nd.classList.toggle("hidden",!l);
+  if(no)no.classList.toggle("hidden",!l);
+  document.querySelectorAll('.dash-back-link').forEach(function(a){a.style.display=l?'inline':'none'});
+  var topNav=document.querySelector('nav');
+  if(topNav){topNav.style.display=(p==='dash'&&window.innerWidth<=768)?'none':'';}
+  if(p==="dash"&&U&&typeof dt==='function'){if(typeof DV!=='undefined')DV="start";dt("start")}
+  if(p==="pricing"&&typeof updatePricingButtons==='function'){updatePricingButtons()}
+}
 function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(t){var p=document.getElementById('inst-'+t);if(p)p.classList.toggle('act',t===id)});document.querySelectorAll('.install-tab').forEach(function(b){b.classList.remove('act')});if(btn)btn.classList.add('act')}
 </script>
 
