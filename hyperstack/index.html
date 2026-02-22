@@ -216,7 +216,7 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 <button onclick="go('signup')" class="btn bp" style="padding:12px 28px;font-size:.88rem">Get Free API Key →</button>
 <button onclick="go('docs')" class="btn bo" style="padding:12px 28px;font-size:.88rem">Read Docs</button>
 </div>
-<div id="hero-note" style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">Free forever · 10 cards · No credit card</div>
+<div id="hero-note" style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">Free forever · 50 cards · No credit card</div>
 <div style="display:flex;gap:12px;justify-content:center;margin-top:14px;flex-wrap:wrap">
 <a href="https://www.npmjs.com/package/hyperstack-core" target="_blank" style="font-family:var(--mono);font-size:.68rem;color:var(--dim);text-decoration:none;display:flex;align-items:center;gap:5px;border:1px solid var(--border);padding:5px 12px;border-radius:6px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">📦 npm · hyperstack-core</a>
 <a href="https://github.com/deeqyaqub1-cmd/hyperstack-core" target="_blank" style="font-family:var(--mono);font-size:.68rem;color:var(--dim);text-decoration:none;display:flex;align-items:center;gap:5px;border:1px solid var(--border);padding:5px 12px;border-radius:6px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">⭐ GitHub · hyperstack-core</a>
@@ -364,10 +364,10 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 </div>
 <div class="price-row" style="max-width:1060px;margin:0 auto;grid-template-columns:repeat(4,1fr)">
 <div class="price-card"><div class="tier">Free</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>0</div><div class="per">forever</div>
-<ul><li>10 cards</li><li>Keyword search</li><li>1 workspace</li><li>REST API + MCP</li></ul>
+<ul><li>50 cards</li><li>All features — graph, impact, replay</li><li>REST API + MCP, 1 workspace</li></ul>
 <button onclick="go('signup')" class="btn bp" style="width:100%">Get Started</button></div>
 <div class="price-card pop"><div class="pop-badge">Popular</div><div class="tier">Pro</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>29<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
-<ul><li>100 cards</li><li>Semantic search</li><li>All 4 graph modes</li><li>GraphRAG search</li><li>Time-travel</li><li>3 workspaces</li></ul>
+<ul><li>500+ cards</li><li>Semantic search</li><li>All 4 graph modes</li><li>GraphRAG search</li><li>Time-travel</li><li>3 workspaces</li></ul>
 <button onclick="go('signup')" class="btn bp" style="width:100%">Start Pro →</button></div>
 <div class="price-card"><div class="tier">Team</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>59<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
 <ul><li>500 cards</li><li>Everything in Pro</li><li>5 team API keys</li><li>Unlimited workspaces</li></ul>
@@ -387,7 +387,7 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 <button onclick="go('signup')" class="btn bp" style="padding:14px 32px;font-size:.9rem">Get Free API Key →</button>
 <a href="https://discord.gg/tdnXaV6e" class="btn bo" style="padding:14px 32px;font-size:.9rem" target="_blank">Join Discord</a>
 </div>
-<div style="font-family:var(--mono);font-size:.7rem;color:var(--faint);margin-top:16px">Free: 10 cards. <a href="javascript:void(0)" onclick="go('pricing')" style="color:var(--accent)">$29/mo unlocks graph + 100 cards →</a></div>
+<div style="font-family:var(--mono);font-size:.7rem;color:var(--faint);margin-top:16px">Free: 50 cards. <a href="javascript:void(0)" onclick="go('pricing')" style="color:var(--accent)">$29/mo unlocks 500+ cards + branching →</a></div>
 </div></section>
 
 <div class="w"><footer><div class="c">© 2026 CascadeAI · <span style="color:var(--accent)">DETERMINISTIC BY DESIGN</span></div><div class="l"><a href="/">Home</a><a href="javascript:void(0)" onclick="go('docs')">Docs</a><a href="https://discord.gg/tdnXaV6e">Discord</a><a href="https://clawhub.ai/deeqyaqub1-cmd/zero-rules" style="color:var(--accent)" target="_blank">ZeroRules</a><a href="https://clawhub.ai/deeqyaqub1-cmd/skillfence" style="color:var(--accent)" target="_blank">SkillFence</a></div></footer></div>
@@ -477,12 +477,9 @@ function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(
       <div class="amt">$0</div>
       <div class="per">forever</div>
       <ul>
-        <li><strong>10 cards</strong></li>
-        <li>1 workspace</li>
-        <li>Keyword search</li>
-        <li>Card types &amp; links</li>
-        <li style="color:var(--faint);text-decoration:line-through">Graph traversal API</li>
-        <li style="color:var(--faint);text-decoration:line-through">Visual graph explorer</li>
+        <li><strong>50 cards</strong></li>
+        <li>All features — graph, impact, replay</li>
+        <li>REST API + MCP, 1 workspace</li>
       </ul>
       <button onclick="go('signup')" class="btn bo" style="width:100%">Get Free Key &rarr;</button>
     </div>
@@ -492,7 +489,7 @@ function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(
       <div class="amt">$29 <span>/mo</span></div>
       <div class="per">billed monthly &middot; cancel anytime</div>
       <ul>
-        <li><strong>100 cards</strong></li>
+        <li><strong>500+ cards</strong></li>
         <li>3 workspaces</li>
         <li>Semantic search</li>
         <li class="pro">Graph traversal API &check;</li>
@@ -535,7 +532,7 @@ function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(
   <div style="max-width:700px;margin:28px auto 0;text-align:center">
     <div style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-bottom:12px">ALL PLANS INCLUDE: REST API &middot; Any agent &middot; Any language &middot; No SDK required</div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:var(--mono);font-size:.72rem;color:var(--dim);display:inline-block">
-      <span style="color:var(--accent)">Graph API</span> is the difference. Free stores cards. <strong style="color:var(--text)">Paid plans traverse them.</strong>
+      Free: 50 cards, all features. <strong style="color:var(--text)">Pro unlocks 500+ cards, branching, webhooks.</strong>
     </div>
   </div>
 </section>
