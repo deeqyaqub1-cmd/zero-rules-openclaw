@@ -1069,7 +1069,7 @@ POST /api/cards
     var cards=d.cards||[];
     var plan=d.plan||'FREE';
     var planLimits={FREE:50,PRO:500,TEAM:500,BUSINESS:2000};
-    var limit=planLimits[plan]||10;
+    var limit=planLimits[plan]||50;
     var pct=Math.round(cards.length/limit*100);
     var statusEl=document.getElementById('graph-status');
 
@@ -1854,7 +1854,7 @@ function checkSuccess(){
           // Plan upgraded!
           U=d.user;adminCheck();
           var plan=U.plan;
-          var cardLimits={PRO:100,TEAM:500,BUSINESS:2000};
+          var cardLimits={FREE:50,PRO:500,TEAM:500,BUSINESS:2000};
           planEl.textContent=plan.charAt(0)+plan.slice(1).toLowerCase();
           planEl.style.color=plan==='BUSINESS'?'var(--green)':plan==='TEAM'?'#60a5fa':'var(--accent)';
           cardsEl.textContent=cardLimits[plan]||100;
