@@ -1699,7 +1699,7 @@ function _gDetail(node,nodes,edges,TC,RC){
 }
 
 // Auto-login
-(async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
+(async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{"X-API-Key":t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
   const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);document.getElementById("nd").classList.toggle("hidden",!l);document.getElementById("no").classList.toggle("hidden",!l)})();
 
 // ═══════════════════════════════════════════════════════
@@ -1954,7 +1954,7 @@ function checkSuccess(){
 
   function poll(){
     attempts++;
-    fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+T}})
+    fetch(A+"/api/auth",{headers:{"X-API-Key":T}})
       .then(function(r){return r.json()})
       .then(function(d){
         if(d.user&&d.user.plan&&d.user.plan!=="FREE"){
