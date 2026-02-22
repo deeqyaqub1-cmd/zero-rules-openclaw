@@ -209,6 +209,13 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 </head>
 <body>
 
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('[id^="p-"]').forEach(function(el){el.classList.add('hidden')});
+  var pl=document.getElementById('p-landing');if(pl)pl.classList.remove('hidden');
+});
+</script>
+
 <!-- NAV -->
 <div class="w">
 <nav>
