@@ -122,6 +122,17 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 .ob-step.active .num{background:var(--accent);border-color:var(--accent);color:#000}
 .key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer}
 .pc-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.63rem;font-weight:600;color:#000;background:var(--accent);padding:2px 12px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
+.pc-badge.green{background:var(--green)}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:900px;margin:0 auto}
+.pc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;position:relative}
+.pc.feat{border-color:rgba(255,107,43,.3);box-shadow:0 0 40px var(--glow)}
+.pc h3{font-family:var(--mono);font-weight:600;font-size:.95rem;margin-bottom:4px}
+.pc .amt{font-family:var(--mono);font-weight:800;font-size:2.4rem;letter-spacing:-.04em}.pc .amt span{font-size:.85rem;font-weight:400;color:var(--dim)}
+.pc .per{font-size:.78rem;color:var(--dim);margin-bottom:14px}
+.pc ul{list-style:none;margin:0 0 18px;padding:0}
+.pc ul li{font-size:.8rem;padding:3px 0;color:var(--dim)}
+.pc ul li::before{content:'✓ ';color:var(--green);font-weight:700}
+.pc ul li.pro{color:var(--text)}.pc ul li.pro::before{color:var(--accent)}
 .faq-item{border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
 .faq-q{padding:14px 18px;font-family:var(--mono);font-size:.82rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s;padding:0 18px}
@@ -164,6 +175,7 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 .card-del:hover{color:var(--red);background:rgba(239,68,68,.08)}
 .dash-section-title{font-family:var(--mono);font-weight:700;font-size:.85rem;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .dash-section-title span{color:var(--faint);font-weight:400;font-size:.72rem}
+@media(max-width:900px){#p-pricing .pgrid{grid-template-columns:repeat(2,1fr)!important}}
 @media(max-width:600px){#p-docs [style*="repeat(3"]{grid-template-columns:1fr 1fr!important}#p-pricing .pgrid{grid-template-columns:1fr!important}}
 
 /* FIX: Platform tabs dark theme */
@@ -463,7 +475,7 @@ function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(
 
 <!-- PRICING PAGE (unchanged from original) -->
 <div id="p-pricing" class="hidden">
-<div class="w" style="max-width:780px;padding:40px 24px 80px">
+<div class="w" style="max-width:960px;padding:40px 24px 80px">
   <div style="margin-bottom:8px;display:flex;gap:16px"><a onclick="go('landing')" style="cursor:pointer;font-family:var(--mono);font-size:.78rem">&larr; Home</a><a onclick="go('dash')" class="dash-back-link" style="cursor:pointer;font-family:var(--mono);font-size:.78rem;color:var(--accent);display:none">&larr; Dashboard</a></div>
 <section id="pricing">
   <div style="text-align:center;margin-bottom:24px">
@@ -471,7 +483,7 @@ function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(
     <h2 style="font-family:var(--mono);font-weight:800;font-size:1.5rem">Start free. Unlock the graph.</h2>
     <p style="color:var(--dim);font-size:.85rem;margin-top:6px">Graph traversal &amp; visual explorer are paid features &mdash; that&rsquo;s our moat and yours.</p>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:900px;margin:0 auto">
+  <div class="pgrid">
     <div class="pc">
       <h3>Free</h3>
       <div class="amt">$0</div>
