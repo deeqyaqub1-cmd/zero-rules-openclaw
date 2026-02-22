@@ -1,4 +1,4 @@
-
+﻿
 // HyperStack Dashboard v6 — with Graph Explorer
 // Rate limiting
 var _rl={};function rlCheck(key,ms){var now=Date.now();if(_rl[key]&&now-_rl[key]<ms)return false;_rl[key]=now;return true}
@@ -1079,7 +1079,7 @@ POST /api/cards
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
     var cards=d.cards||[];
     var plan=d.plan||'FREE';
-    var planLimits={FREE:10,PRO:100,TEAM:500,BUSINESS:2000};
+    var planLimits={FREE:50,PRO:500,TEAM:500,BUSINESS:2000};
     var limit=planLimits[plan]||10;
     var pct=Math.round(cards.length/limit*100);
     var statusEl=document.getElementById('graph-status');

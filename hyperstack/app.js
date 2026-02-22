@@ -1068,20 +1068,11 @@ POST /api/cards
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
     var cards=d.cards||[];
     var plan=d.plan||'FREE';
-    var planLimits={FREE:10,PRO:100,TEAM:500,BUSINESS:2000};
+    var planLimits={FREE:50,PRO:500,TEAM:500,BUSINESS:2000};
     var limit=planLimits[plan]||10;
     var pct=Math.round(cards.length/limit*100);
     var statusEl=document.getElementById('graph-status');
 
-    // FREE users see upgrade gate over the graph
-    if(plan==='FREE'){
-      statusEl.innerHTML=cards.length+'/'+limit+' cards \u00b7 FREE';
-      var overlay=document.createElement('div');
-      overlay.style.cssText='position:absolute;inset:0;background:rgba(10,10,12,.88);z-index:20;display:flex;align-items:center;justify-content:center;border-radius:12px;backdrop-filter:blur(4px)';
-      overlay.innerHTML='<div style="text-align:center;max-width:320px"><div style="font-size:2rem;margin-bottom:12px">\ud83d\udd12</div><h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--text)">Graph Explorer is a paid feature</h3><p style="font-size:.82rem;color:var(--dim);margin-bottom:16px;line-height:1.5">Upgrade to Pro to unlock graph traversal, visual explorer, and 100 cards.</p><a href="javascript:void(0)" onclick="go(\'pricing\')" class="btn bp" style="font-size:.82rem">Unlock Graph \u2014 $29/mo</a><p style="font-size:.68rem;color:var(--faint);margin-top:10px">Your '+cards.length+' cards are safe. Upgrade adds the graph on top.</p></div>';
-      document.getElementById('graph-wrap').appendChild(overlay);
-      return;
-    }
 
     if(pct>=70){
       statusEl.innerHTML=cards.length+'/'+limit+' cards <span style="color:var(--red)">'+pct+'% used</span> \u00b7 '+plan+' \u00b7 <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade</a>';
