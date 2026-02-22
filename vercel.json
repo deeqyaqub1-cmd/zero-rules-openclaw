@@ -1,4 +1,7 @@
 {
+  "redirects": [
+    { "source": "/", "destination": "/hyperstack", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/hyperstack/device", "destination": "/hyperstack/device.html" }
   ]
