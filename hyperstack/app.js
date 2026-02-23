@@ -7,7 +7,7 @@ const ADMINS=["deeq.yaqub1@gmail.com"];
 function adminCheck(){if(U&&ADMINS.includes(U.email))U.plan="PRO";}
 
 const SC={projects:"#3b82f6",people:"#a855f7",decisions:"#ff6b2b",preferences:"#22c55e",workflows:"#eab308"};
-const SE={projects:"ðŸ“¦",people:"ðŸ‘¤",decisions:"âš–ï¸",preferences:"âš™ï¸",workflows:"ðŸ”„",general:"ðŸ“„"};
+const SE={projects:"ðŸ“¦",people:"ðŸ‘¤",decisions:"âš–ï¸",preferences:"âš™ï¸",workflows:"ðŸ”„",general:"ðŸ“„"};
 const DEMO=[
   {slug:"project-webapp",title:"WebApp",stack:"projects",keywords:["nextjs","prisma","vercel","clerk"],body:"- Next.js 15 + Prisma + PostgreSQL\n- Auth: Clerk\n- CI: GitHub Actions â†’ Vercel",updated:"2026-02-09",ver:3},
   {slug:"person-alice",title:"Alice Chen",stack:"people",keywords:["backend","postgresql","fastapi"],body:"- Senior Engineer, backend\n- Owns API service\n- EST timezone, morning standups",updated:"2026-02-10",ver:2},
@@ -119,9 +119,9 @@ function renderD(){if(!U)return;
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m);else if(DV==="agent")rAgent(m)}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ðŸš€ GET STARTED €” Premium animated onboarding
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rStart(el){
   // Inject mobile styles once
   if(!document.getElementById('rstart-mobile-styles')){
@@ -307,12 +307,12 @@ await fetch("${A}/api/cards?workspace=default", {
   </div>`;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸƒ CARDS €” Premium card grid with glow
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ðŸƒ CARDS €” Premium card grid with glow
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rCards(el){
   if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}.hsc{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .3s;animation:cardIn .4s ease both}.hsc:hover{transform:translateY(-4px)}.hsc-glow{position:absolute;inset:0;opacity:.18;pointer-events:none;transition:opacity .3s;border-radius:16px}.hsc:hover .hsc-glow{opacity:.35}.hsc-border{border-radius:16px;background:linear-gradient(145deg,#1a1a24 0%,#12121a 100%);position:relative;height:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}.hsc:hover .hsc-border{border-color:rgba(255,255,255,.2);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.06)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.8rem;padding:3px 7px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ff6b6b;background:rgba(239,68,68,.15)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.fb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:.75rem;padding:6px 16px;cursor:pointer;transition:all .2s;font-weight:500}.fb:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:var(--mono);font-size:.8rem;padding:8px 16px;outline:none;width:200px;transition:all .2s}.sinput:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}.sinput::placeholder{color:rgba(255,255,255,.3)}.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em}.dh p{color:rgba(255,255,255,.4);font-size:.8rem;margin:5px 0 0}.loading-dots{display:inline-flex;gap:5px;margin-bottom:10px}.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px)}.card-expand-inner{background:#16161f;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;max-width:540px;width:92%;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
-  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸƒ Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
+  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸƒ Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
     document.querySelector('.dh p').textContent=cards.length+' cards Â· '+d.plan+' ('+cards.length+'/'+d.limit+')';
@@ -320,13 +320,13 @@ function rCards(el){
     if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:48px 20px">
       <div style="position:relative;display:inline-block;margin-bottom:16px">
         <div style="position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,43,.15),transparent);filter:blur(8px)"></div>
-        <span style="font-size:3rem;position:relative">ðŸƒ</span>
+        <span style="font-size:3rem;position:relative">ðŸƒ</span>
       </div>
       <h3 style="font-family:var(--mono);margin:0 0 8px;font-size:1rem">No cards yet</h3>
       <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:360px;margin-left:auto;margin-right:auto">Cards are how your agent remembers. Create one manually or let your agent create them via the API.</p>
       <div style="display:flex;gap:8px;justify-content:center">
         <button class="btn bp bs" onclick="showCardForm()">+ Create First Card</button>
-        <button class="btn bo bs" onclick="dt('start')">â† Setup Guide</button>
+        <button class="btn bo bs" onclick="dt('start')">â† Setup Guide</button>
       </div>
     </div>`;return}
     const stacks=[...new Set(cards.map(c=>c.stack))];
@@ -441,8 +441,8 @@ function showCardForm(){const w=document.getElementById('card-form-wrap');
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div class="fg"><label>Stack</label><select id="cf-stack" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none">
-          <option value="projects">ðŸ“¦ projects</option><option value="people">ðŸ‘¤ people</option><option value="decisions">âš–ï¸ decisions</option>
-          <option value="preferences">âš™ï¸ preferences</option><option value="workflows">ðŸ”„ workflows</option><option value="general" selected>ðŸ“„ general</option>
+          <option value="projects">ðŸ“¦ projects</option><option value="people">ðŸ‘¤ people</option><option value="decisions">âš–ï¸ decisions</option>
+          <option value="preferences">âš™ï¸ preferences</option><option value="workflows">ðŸ”„ workflows</option><option value="general" selected>ðŸ“„ general</option>
         </select></div>
         <div class="fg"><label>Keywords (comma-separated)</label><input id="cf-kw" placeholder="react, vercel, auth"></div>
       </div>
@@ -463,9 +463,9 @@ function createCard(){const slug=document.getElementById('cf-slug').value.trim()
     document.getElementById('card-form-wrap').innerHTML='';rCards(document.getElementById('dm'));
   }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden')})}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ðŸ”‘ API KEY €” Premium display
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rKey(el){el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ”‘ API Key</h1><p>Use this key in any agent or integration</p></div></div>
 
@@ -510,15 +510,15 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
     </div>
   </div>`}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    UNCHANGED TABS (Phase 2)
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸ“ WORKSPACES €” Premium display
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ðŸ“ WORKSPACES €” Premium display
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“ Workspaces</h1><p>${pro?'Unlimited workspaces':'1 workspace'} on ${U.plan} plan</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“ Workspaces</h1><p>${pro?'Unlimited workspaces':'1 workspace'} on ${U.plan} plan</p></div></div>
 
   <!-- Active workspace card with glow -->
   <div style="position:relative;margin-bottom:16px">
@@ -526,7 +526,7 @@ function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
     <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:14px;padding:20px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
         <div style="display:flex;align-items:center;gap:10px">
-          <div style="width:36px;height:36px;border-radius:10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;font-size:18px">ðŸ“</div>
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;font-size:18px">ðŸ“</div>
           <div>
             <div style="font-family:var(--mono);font-weight:700;font-size:.95rem">default</div>
             <div style="font-family:var(--mono);font-size:.7rem;color:var(--dim)">Primary workspace</div>
@@ -572,9 +572,9 @@ function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
     </div>
   </div>`}`}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ðŸ‘¥ TEAM €” Premium display
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ‘¥ Team</h1><p>Shared memory across your team</p></div></div>
@@ -636,9 +636,9 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
     </div>
   </div>`}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ðŸ“Š ANALYTICS €” Premium display
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Track your agent's memory usage</p></div></div>
@@ -661,7 +661,7 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
           <div style="font-size:.6rem;color:var(--faint)">Usage trends</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
-          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">âš ï¸</div>
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">âš ï¸</div>
           <div style="font-size:.6rem;color:var(--faint)">Stale alerts</div>
         </div>
       </div>
@@ -741,7 +741,7 @@ function _renderStats(el,cards){
 
   <!-- Expandable explanation panels -->
   <div id="exp-savings" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--green);margin-bottom:8px">ðŸ“ How Token Savings is calculated</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--green);margin-bottom:8px">ðŸ“ How Token Savings is calculated</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Without HyperStack: <strong style="color:var(--red)">~6,000 tokens/msg</strong> (full chat history in context)<br>
       With HyperStack: <strong style="color:var(--green)">~${tokensWith} tokens/msg</strong> (avg ${avgTokensPerCard} tokens/card Ã— 2 cards retrieved)<br>
@@ -749,7 +749,7 @@ function _renderStats(el,cards){
     </div>
   </div>
   <div id="exp-cards" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(136,136,200,.15);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:8px">ðŸƒ Total Cards</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:8px">ðŸƒ Total Cards</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Cards in your default workspace: <strong>${totalCards}</strong><br>
       Total tokens stored: <strong>${totalTokens.toLocaleString()}</strong><br>
@@ -767,7 +767,7 @@ function _renderStats(el,cards){
     </div>
   </div>
   <div id="exp-stale" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(234,179,8,.15);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--yellow);margin-bottom:8px">âš ï¸ Stale Cards</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--yellow);margin-bottom:8px">âš ï¸ Stale Cards</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Cards not updated in <strong>21+ days</strong> may have outdated info.<br>
       Found: <strong>${staleCards.length}</strong> stale card${staleCards.length===1?'':'s'} out of ${totalCards} total.<br>
@@ -805,7 +805,7 @@ function _renderStats(el,cards){
   <!-- Stale cards alert -->
   <div style="background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:14px;padding:20px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">âš ï¸</span>
+      <span style="font-size:1rem">âš ï¸</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Stale Cards</span>
       <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">Cards not updated in 21+ days</span>
     </div>
@@ -921,9 +921,9 @@ function deleteAgentToken(id){
 
 
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    CONTEXT GRAPH €” Bubblemaps-style interactive
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 var _graphAnim=null; // animation frame id
 
 var _REL_DESC={
@@ -1595,9 +1595,9 @@ function _gDetail(node,nodes,edges,TC,RC){
 (async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{"X-API-Key": t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
   const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);document.getElementById("nd").classList.toggle("hidden",!l);document.getElementById("no").classList.toggle("hidden",!l)})();
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ANIMATED GRAPH TRAVERSAL DEMO €” landing page
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 var _demoTimer=null;
 function demoGraphPlay(){
@@ -1831,9 +1831,9 @@ var _demoObserver=null;
   }
 })();
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // STRIPE SUCCESS €” poll for plan upgrade
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function checkSuccess(){
   if(!U||!T)return;
@@ -1954,8 +1954,8 @@ function updatePricingButtons(){
     }
   });
 }
-// Ã¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢Â
+// Ã¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢Â
 // CONVERSATIONAL ONBOARDING - Add to end of app.js
 // Shows on first dashboard load, uses Groq API to parse project description
-// Ã¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢Â
+// Ã¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢Â
 
