@@ -1,5 +1,5 @@
 
-// HyperStack Dashboard v6.1 â€” with Graph Explorer
+// HyperStack Dashboard v6.1 €” with Graph Explorer
 // Rate limiting
 var _rl={};function rlCheck(key,ms){var now=Date.now();if(_rl[key]&&now-_rl[key]<ms)return false;_rl[key]=now;return true}
 const A="https://hyperstack-cloud.vercel.app";let U=null,T=null,DV="start";
@@ -120,7 +120,7 @@ function renderD(){if(!U)return;
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m);else if(DV==="agent")rAgent(m)}
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸš€ GET STARTED â€” Premium animated onboarding
+   ðŸš€ GET STARTED €” Premium animated onboarding
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rStart(el){
   // Inject mobile styles once
@@ -308,7 +308,7 @@ await fetch("${A}/api/cards?workspace=default", {
 }
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸƒ CARDS â€” Premium card grid with glow
+   ðŸƒ CARDS €” Premium card grid with glow
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rCards(el){
   if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}.hsc{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .3s;animation:cardIn .4s ease both}.hsc:hover{transform:translateY(-4px)}.hsc-glow{position:absolute;inset:0;opacity:.18;pointer-events:none;transition:opacity .3s;border-radius:16px}.hsc:hover .hsc-glow{opacity:.35}.hsc-border{border-radius:16px;background:linear-gradient(145deg,#1a1a24 0%,#12121a 100%);position:relative;height:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}.hsc:hover .hsc-border{border-color:rgba(255,255,255,.2);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.06)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.8rem;padding:3px 7px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ff6b6b;background:rgba(239,68,68,.15)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.fb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:.75rem;padding:6px 16px;cursor:pointer;transition:all .2s;font-weight:500}.fb:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:var(--mono);font-size:.8rem;padding:8px 16px;outline:none;width:200px;transition:all .2s}.sinput:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}.sinput::placeholder{color:rgba(255,255,255,.3)}.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em}.dh p{color:rgba(255,255,255,.4);font-size:.8rem;margin:5px 0 0}.loading-dots{display:inline-flex;gap:5px;margin-bottom:10px}.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px)}.card-expand-inner{background:#16161f;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;max-width:540px;width:92%;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
@@ -464,7 +464,7 @@ function createCard(){const slug=document.getElementById('cf-slug').value.trim()
   }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden')})}
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸ”‘ API KEY â€” Premium display
+   ðŸ”‘ API KEY €” Premium display
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rKey(el){el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ”‘ API Key</h1><p>Use this key in any agent or integration</p></div></div>
@@ -514,7 +514,7 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
    UNCHANGED TABS (Phase 2)
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸ“ WORKSPACES â€” Premium display
+   ðŸ“ WORKSPACES €” Premium display
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   el.innerHTML=`
@@ -566,14 +566,14 @@ function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
       <h3 style="font-family:var(--mono);font-size:.92rem;font-weight:700;margin-bottom:6px">Multiple workspaces require Pro</h3>
       <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Separate workspaces per project so your agent only sees what's relevant. Zero cross-contamination.</p>
       <div style="display:flex;gap:8px;justify-content:center">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp bs">Upgrade â€” $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg bs">Team â€” $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp bs">Upgrade €” $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg bs">Team €” $59/mo</a>
       </div>
     </div>
   </div>`}`}
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸ‘¥ TEAM â€” Premium display
+   ðŸ‘¥ TEAM €” Premium display
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
@@ -598,8 +598,8 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade â€” $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team â€” $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade €” $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team €” $59/mo</a>
       </div>
     </div>
   </div>`;return}
@@ -631,13 +631,13 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
       <span style="font-size:1rem;flex-shrink:0">ðŸ’¡</span>
       <div>
         <div style="font-family:var(--mono);font-size:.82rem;font-weight:600;margin-bottom:4px">How team sharing works</div>
-        <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin:0">Set any card to <strong style="color:var(--text)">shared</strong> and it syncs to every team member's workspace. Private cards stay private â€” only you can see them.</p>
+        <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin:0">Set any card to <strong style="color:var(--text)">shared</strong> and it syncs to every team member's workspace. Private cards stay private €” only you can see them.</p>
       </div>
     </div>
   </div>`}
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸ“Š ANALYTICS â€” Premium display
+   ðŸ“Š ANALYTICS €” Premium display
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
@@ -666,8 +666,8 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade â€” $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team â€” $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade €” $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team €” $59/mo</a>
       </div>
     </div>
   </div>`;return}
@@ -703,7 +703,7 @@ function _renderStats(el,cards){
   el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Your agent's memory performance</p></div></div>
 
-  <!-- Stats grid with 2D glow â€” click any number to see how it's calculated -->
+  <!-- Stats grid with 2D glow €” click any number to see how it's calculated -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-savings')">
       <div style="position:absolute;inset:-2px;border-radius:14px;background:rgba(34,197,94,.2);filter:blur(12px);animation:glowPulse 3s ease-in-out infinite"></div>
@@ -771,7 +771,7 @@ function _renderStats(el,cards){
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Cards not updated in <strong>21+ days</strong> may have outdated info.<br>
       Found: <strong>${staleCards.length}</strong> stale card${staleCards.length===1?'':'s'} out of ${totalCards} total.<br>
-      ${staleCards.length>0?'Review them below to keep your agent\'s memory accurate.':'Your memory is fresh â€” all cards updated recently.'}
+      ${staleCards.length>0?'Review them below to keep your agent\'s memory accurate.':'Your memory is fresh €” all cards updated recently.'}
     </div>
   </div>
 
@@ -922,7 +922,7 @@ function deleteAgentToken(id){
 
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   CONTEXT GRAPH â€” Bubblemaps-style interactive
+   CONTEXT GRAPH €” Bubblemaps-style interactive
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 var _graphAnim=null; // animation frame id
 
@@ -954,15 +954,15 @@ function rGraph(el){
     </select>
     <select id="gf-rel" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none">
       <option value="">All relations</option>
-      <option value="related">\ud83d\udd17 related â€” general connection</option>
-      <option value="owns">\ud83d\udc51 owns â€” ownership</option>
-      <option value="decided">\u2696\ufe0f decided â€” made a decision</option>
-      <option value="approved">\u2705 approved â€” gave approval</option>
-      <option value="uses">\ud83d\udd27 uses â€” depends on</option>
-      <option value="triggers">\u26a1 triggers â€” causes</option>
-      <option value="blocks">\ud83d\udeab blocks â€” prevents</option>
-      <option value="depends-on">\ud83d\udd04 depends-on â€” requires</option>
-      <option value="reviews">\ud83d\udd0d reviews â€” evaluates</option>
+      <option value="related">\ud83d\udd17 related €” general connection</option>
+      <option value="owns">\ud83d\udc51 owns €” ownership</option>
+      <option value="decided">\u2696\ufe0f decided €” made a decision</option>
+      <option value="approved">\u2705 approved €” gave approval</option>
+      <option value="uses">\ud83d\udd27 uses €” depends on</option>
+      <option value="triggers">\u26a1 triggers €” causes</option>
+      <option value="blocks">\ud83d\udeab blocks €” prevents</option>
+      <option value="depends-on">\ud83d\udd04 depends-on €” requires</option>
+      <option value="reviews">\ud83d\udd0d reviews €” evaluates</option>
     </select>
     <button class="btn bo bs" onclick="rGraph(document.getElementById('dm'))" style="font-size:.75rem">\u21bb Refresh</button>
   </div></div>
@@ -1011,7 +1011,7 @@ function rGraph(el){
     </div>
   </div>
 
-  <!-- How to use the Graph â€” collapsible guide -->
+  <!-- How to use the Graph €” collapsible guide -->
   <div style="margin-top:16px">
     <button onclick="var g=document.getElementById('graph-howto');g.style.display=g.style.display==='none'?'block':'none';this.querySelector('span').textContent=g.style.display==='none'?'\u25b6':'\u25bc'" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;width:100%;cursor:pointer;display:flex;align-items:center;gap:10px;text-align:left">
       <span style="color:var(--accent);font-size:.7rem">\u25b6</span>
@@ -1025,7 +1025,7 @@ function rGraph(el){
           <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">ðŸš€ GETTING STARTED</div>
           <div style="font-size:.78rem;color:var(--dim);line-height:1.7">
             <strong style="color:var(--text)">1. Create cards with types</strong><br>
-            When your agent creates a card, add a <code style="color:var(--accent);font-size:.72rem">cardType</code> â€” like "person", "project", or "decision". This tells the graph what shape each node is.<br><br>
+            When your agent creates a card, add a <code style="color:var(--accent);font-size:.72rem">cardType</code> €” like "person", "project", or "decision". This tells the graph what shape each node is.<br><br>
             <strong style="color:var(--text)">2. Link cards together</strong><br>
             Add a <code style="color:var(--accent);font-size:.72rem">links</code> array to connect cards. Each link has a target slug and a relation like "owns", "decided", or "triggers".<br><br>
             <strong style="color:var(--text)">3. Explore visually</strong><br>
@@ -1037,11 +1037,11 @@ function rGraph(el){
           <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">ðŸ’¡ REAL-WORLD EXAMPLES</div>
           <div style="font-size:.78rem;color:var(--dim);line-height:1.7">
             <strong style="color:var(--green)">"Why did we choose Stripe?"</strong><br>
-            Focus on the <em>use-stripe</em> decision card â€” see who decided, who approved, and why. Full audit trail, one click.<br><br>
+            Focus on the <em>use-stripe</em> decision card €” see who decided, who approved, and why. Full audit trail, one click.<br><br>
             <strong style="color:var(--green)">"What breaks if we change auth?"</strong><br>
-            Focus on <em>use-clerk</em> â€” the graph shows every project that depends on it. Instant impact analysis.<br><br>
+            Focus on <em>use-clerk</em> €” the graph shows every project that depends on it. Instant impact analysis.<br><br>
             <strong style="color:var(--green)">"Who owns the database?"</strong><br>
-            Filter by "owns" relation â€” see every ownership connection at a glance. No digging through chat history.
+            Filter by "owns" relation €” see every ownership connection at a glance. No digging through chat history.
           </div>
         </div>
 
@@ -1118,7 +1118,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
   var edges=allEdges.slice();
   if(filterRel)edges=edges.filter(function(e){return e.relation===filterRel});
 
-  // Focus mode â€” only show cards connected to the focus card (depth 2)
+  // Focus mode €” only show cards connected to the focus card (depth 2)
   if(focusSlug){
     var focusSet=new Set([focusSlug]);
     // Depth 1
@@ -1172,7 +1172,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
     return Math.max(20,Math.min(45,16+(linkCount+inLinks)*3));
   }
 
-  // Initialize positions â€” circular with jitter
+  // Initialize positions €” circular with jitter
   var pos={};
   nodes.forEach(function(n,i){
     var angle=(i/nodes.length)*Math.PI*2;
@@ -1186,7 +1186,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
 
   // Physics state
   var physics={cooling:1,running:true,tick:0};
-  var pinned={};  // slugs that user dragged â€” they stay put
+  var pinned={};  // slugs that user dragged €” they stay put
   var hovNode=null,selNode=null,dragNode=null,dragStart=null,isPanning=false,panStart=null,camStart=null;
 
   // Live force simulation
@@ -1217,7 +1217,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
       if(!pinned[e.from]){a.vx+=fx;a.vy+=fy}
       if(!pinned[e.to]){b.vx-=fx;b.vy-=fy}
     });
-    // Very light centering â€” only during first 80 ticks, then none
+    // Very light centering €” only during first 80 ticks, then none
     var centerForce=physics.tick<80?0.001:0;
     nodes.forEach(function(n){
       var p=pos[n.slug];
@@ -1286,7 +1286,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
       ctx.globalAlpha=active?0.9:(dimmed?0.08:0.4);
       ctx.fill();
 
-      // Relation label â€” always show, brighter when active
+      // Relation label €” always show, brighter when active
       var fs=Math.max(7,(active?11:9)*cam.z);
       ctx.font='600 '+fs+'px "JetBrains Mono"';ctx.textAlign='center';
       ctx.globalAlpha=active?1:(dimmed?0.08:0.4);
@@ -1446,10 +1446,10 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
       var w=evtToWorld(e);
       var moved=dragStart?Math.hypot(w.x-dragStart.x,w.y-dragStart.y):0;
       if(moved>8){
-        // Real drag â€” pin the node where it was dropped
+        // Real drag €” pin the node where it was dropped
         pinned[dragNode.slug]=true;
       }else{
-        // Tiny move = click â€” toggle selection highlight
+        // Tiny move = click €” toggle selection highlight
         selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode;
       }
     }
@@ -1596,7 +1596,7 @@ function _gDetail(node,nodes,edges,TC,RC){
   const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);document.getElementById("nd").classList.toggle("hidden",!l);document.getElementById("no").classList.toggle("hidden",!l)})();
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// ANIMATED GRAPH TRAVERSAL DEMO â€” landing page
+// ANIMATED GRAPH TRAVERSAL DEMO €” landing page
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 var _demoTimer=null;
@@ -1762,7 +1762,7 @@ function demoGraphPlay(){
     pEl.style.opacity='1';
   });
 
-  // Step 3: Traverse â€” who decided?
+  // Step 3: Traverse €” who decided?
   step(3000,function(){
     activeNodes.add('alice');
     activeEdges.add(0); // alice->use-stripe decided
@@ -1832,7 +1832,7 @@ var _demoObserver=null;
 })();
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// STRIPE SUCCESS â€” poll for plan upgrade
+// STRIPE SUCCESS €” poll for plan upgrade
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function checkSuccess(){
@@ -1861,7 +1861,7 @@ function checkSuccess(){
           loading.style.display='none';
           done.style.display='block';
         }else if(attempts>=maxAttempts){
-          // Timeout â€” show fallback
+          // Timeout €” show fallback
           loading.style.display='none';
           err.style.display='block';
         }else{
@@ -1889,10 +1889,10 @@ var _pendingSuccess=false;
     _pendingSuccess=true;
     // Clean the URL so refreshes don't re-trigger
     window.history.replaceState({},document.title,window.location.pathname);
-    // Check if we have a token â€” if so, auto-login should work
+    // Check if we have a token €” if so, auto-login should work
     var hasToken=!!localStorage.getItem("hs_t");
     if(!hasToken){
-      // No token â€” user needs to log in, _pendingSuccess will redirect after
+      // No token €” user needs to log in, _pendingSuccess will redirect after
       return;
     }
     // Wait for auto-login to complete (it runs on DOMContentLoaded)
@@ -1904,7 +1904,7 @@ var _pendingSuccess=false;
         checkSuccess();
       }
     },300);
-    // Safety timeout â€” 10s should be plenty for auto-login
+    // Safety timeout €” 10s should be plenty for auto-login
     setTimeout(function(){
       clearInterval(waitForLogin);
       if(U&&T){
@@ -1954,8 +1954,8 @@ function updatePricingButtons(){
     }
   });
 }
-// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// Ã¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢Â
 // CONVERSATIONAL ONBOARDING - Add to end of app.js
 // Shows on first dashboard load, uses Groq API to parse project description
-// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// Ã¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢Â
 
