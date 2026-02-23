@@ -7,11 +7,11 @@ const ADMINS=["deeq.yaqub1@gmail.com"];
 function adminCheck(){if(U&&ADMINS.includes(U.email))U.plan="PRO";}
 
 const SC={projects:"#3b82f6",people:"#a855f7",decisions:"#ff6b2b",preferences:"#22c55e",workflows:"#eab308"};
-const SE={projects:"ðŸ“¦",people:"ðŸ‘¤",decisions:"âš–ï¸",preferences:"âš™ï¸",workflows:"ðŸ”„",general:"ðŸ“„"};
+const SE={projects:"📦",people:"👤",decisions:"⚖️",preferences:"⚙️",workflows:"🔄",general:"📄"};
 const DEMO=[
-  {slug:"project-webapp",title:"WebApp",stack:"projects",keywords:["nextjs","prisma","vercel","clerk"],body:"- Next.js 15 + Prisma + PostgreSQL\n- Auth: Clerk\n- CI: GitHub Actions â†’ Vercel",updated:"2026-02-09",ver:3},
+  {slug:"project-webapp",title:"WebApp",stack:"projects",keywords:["nextjs","prisma","vercel","clerk"],body:"- Next.js 15 + Prisma + PostgreSQL\n- Auth: Clerk\n- CI: GitHub Actions → Vercel",updated:"2026-02-09",ver:3},
   {slug:"person-alice",title:"Alice Chen",stack:"people",keywords:["backend","postgresql","fastapi"],body:"- Senior Engineer, backend\n- Owns API service\n- EST timezone, morning standups",updated:"2026-02-10",ver:2},
-  {slug:"decision-auth",title:"Auth: Auth0 â†’ Clerk",stack:"decisions",keywords:["clerk","auth0","migration"],body:"- Chose Clerk (DX + pricing)\n- 3 day migration, zero downtime\n- Saves $400/month",updated:"2026-01-15",ver:1},
+  {slug:"decision-auth",title:"Auth: Auth0 → Clerk",stack:"decisions",keywords:["clerk","auth0","migration"],body:"- Chose Clerk (DX + pricing)\n- 3 day migration, zero downtime\n- Saves $400/month",updated:"2026-01-15",ver:1},
   {slug:"prefs-editor",title:"Editor Prefs",stack:"preferences",keywords:["neovim","typescript","fish"],body:"- TypeScript strict, 2-space indent\n- Neovim + LazyVim\n- Fish shell + starship",updated:"2026-02-10",ver:1},
 ];
 
@@ -106,8 +106,8 @@ function renderD(){if(!U)return;
   var planBadges={BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',PRO:'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>',TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'};
   var upgradeLink='';
   if(U.plan==='FREE')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono)">Upgrade</a>';
-  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:#60a5fa;font-family:var(--mono)">â†’ Team</a> Â· <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
-  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:var(--green);font-family:var(--mono)">â†’ Business</a> Â· <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
+  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:#60a5fa;font-family:var(--mono)">→ Team</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
+  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:var(--green);font-family:var(--mono)">→ Business</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
   else if(U.plan==='BUSINESS')upgradeLink=' <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage subscription</a>';
   document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>')+upgradeLink;
   // Also show in the visible top plan bar
@@ -119,9 +119,9 @@ function renderD(){if(!U)return;
   const m=document.getElementById("dm");
   if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m);else if(DV==="agent")rAgent(m)}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸš€ GET STARTED €” Premium animated onboarding
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ===========================================
+   🚀 GET STARTED €” Premium animated onboarding
+   =========================================== */
 function rStart(el){
   // Inject mobile styles once
   if(!document.getElementById('rstart-mobile-styles')){
@@ -307,15 +307,15 @@ await fetch("${A}/api/cards?workspace=default", {
   </div>`;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ===========================================
    ðŸƒ CARDS €” Premium card grid with glow
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   =========================================== */
 function rCards(el){
   if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}.hsc{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .3s;animation:cardIn .4s ease both}.hsc:hover{transform:translateY(-4px)}.hsc-glow{position:absolute;inset:0;opacity:.18;pointer-events:none;transition:opacity .3s;border-radius:16px}.hsc:hover .hsc-glow{opacity:.35}.hsc-border{border-radius:16px;background:linear-gradient(145deg,#1a1a24 0%,#12121a 100%);position:relative;height:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}.hsc:hover .hsc-border{border-color:rgba(255,255,255,.2);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.06)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.8rem;padding:3px 7px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ff6b6b;background:rgba(239,68,68,.15)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.fb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:.75rem;padding:6px 16px;cursor:pointer;transition:all .2s;font-weight:500}.fb:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:var(--mono);font-size:.8rem;padding:8px 16px;outline:none;width:200px;transition:all .2s}.sinput:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}.sinput::placeholder{color:rgba(255,255,255,.3)}.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em}.dh p{color:rgba(255,255,255,.4);font-size:.8rem;margin:5px 0 0}.loading-dots{display:inline-flex;gap:5px;margin-bottom:10px}.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px)}.card-expand-inner{background:#16161f;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;max-width:540px;width:92%;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
   el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸƒ Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
-    document.querySelector('.dh p').textContent=cards.length+' cards Â· '+d.plan+' ('+cards.length+'/'+d.limit+')';
+    document.querySelector('.dh p').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
     const cl=document.getElementById('cl');
     if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:48px 20px">
       <div style="position:relative;display:inline-block;margin-bottom:16px">
@@ -326,11 +326,11 @@ function rCards(el){
       <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:360px;margin-left:auto;margin-right:auto">Cards are how your agent remembers. Create one manually or let your agent create them via the API.</p>
       <div style="display:flex;gap:8px;justify-content:center">
         <button class="btn bp bs" onclick="showCardForm()">+ Create First Card</button>
-        <button class="btn bo bs" onclick="dt('start')">â† Setup Guide</button>
+        <button class="btn bo bs" onclick="dt('start')">← Setup Guide</button>
       </div>
     </div>`;return}
     const stacks=[...new Set(cards.map(c=>c.stack))];
-    const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)" style="border-color:${SC[s]||'#555'}30">${SE[s]||'ðŸ“„'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
+    const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)" style="border-color:${SC[s]||'#555'}30">${SE[s]||'📄'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
     const cardsHtml=`<div class="card-grid">${cards.map((c,i)=>{
       const bc=SC[c.stack]||'#555';
       const kw=(c.keywords||[]).slice(0,3);
@@ -338,11 +338,11 @@ function rCards(el){
       return`<div class="hsc" data-s="${c.stack}" data-q="${(c.title+' '+(c.keywords||[]).join(' ')+' '+(c.body||'')).toLowerCase()}" onclick="expandCard(${JSON.stringify(c).replace(/"/g,'&quot;')})" style="animation-delay:${i*60}ms">
         <div class="hsc-glow" style="background:linear-gradient(135deg,${bc},${bc}88,transparent)"></div>
         <div class="hsc-border" style="border-color:${bc}44">
-          <button class="hsc-del" onclick="event.stopPropagation();if(confirm('Delete ${c.slug}?'))delCard('${c.slug}')" title="Delete">âœ•</button>
+          <button class="hsc-del" onclick="event.stopPropagation();if(confirm('Delete ${c.slug}?'))delCard('${c.slug}')" title="Delete">✕</button>
           <div class="hsc-header" style="border-color:${bc}25">
             <div style="display:flex;align-items:center;gap:6px">
               <div style="width:7px;height:7px;border-radius:50%;background:${bc};box-shadow:0 0 6px ${bc}"></div>
-              <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:700;text-shadow:0 0 8px ${bc}44">${(SE[c.stack]||'ðŸ“„')} ${(c.stack||'').toUpperCase()}</span>
+              <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:700;text-shadow:0 0 8px ${bc}44">${(SE[c.stack]||'📄')} ${(c.stack||'').toUpperCase()}</span>
             </div>
             <span style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35)">${c.tokens||0}t</span>
           </div>
@@ -364,7 +364,7 @@ function rCards(el){
           </div>
         </div>
       </div>`}).join('')}</div>`;
-    cl.innerHTML=filtersHtml+cardsHtml+`<div style="text-align:center;margin-top:16px"><button class="btn bo bs" onclick="rCards(document.getElementById('dm'))">â†» Refresh</button></div>`;
+    cl.innerHTML=filtersHtml+cardsHtml+`<div style="text-align:center;margin-top:16px"><button class="btn bo bs" onclick="rCards(document.getElementById('dm'))">↻ Refresh</button></div>`;
   }).catch(err=>{
     document.getElementById('cl').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red)">Failed to load: ${err.message}<br><button class="btn bo bs" style="margin-top:10px" onclick="rCards(document.getElementById('dm'))">Retry</button></div>`;
   })}
@@ -380,9 +380,9 @@ function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
   ov.innerHTML=`<div class="card-expand-inner" style="border:2px solid ${bc}44;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px ${bc}15">
     <div style="display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid ${bc}25;margin-bottom:14px">
       <div style="width:8px;height:8px;border-radius:50%;background:${bc};box-shadow:0 0 8px ${bc}"></div>
-      <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:600">${SE[c.stack]||'ðŸ“„'} ${(c.stack||'').toUpperCase()}</span>
+      <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:600">${SE[c.stack]||'📄'} ${(c.stack||'').toUpperCase()}</span>
       <span style="margin-left:auto;font-family:var(--mono);font-size:.55rem;color:var(--faint)">~${c.tokens||0} tokens</span>
-      <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px;margin-left:8px">âœ•</button>
+      <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px;margin-left:8px">✕</button>
     </div>
     <div style="margin-bottom:6px">
       <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">slug</div>
@@ -395,7 +395,7 @@ function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
     <div style="display:flex;gap:16px;margin-bottom:10px">
       <div>
         <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">stack</div>
-        <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'ðŸ“„'} ${c.stack}</span>
+        <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'📄'} ${c.stack}</span>
       </div>
       <div>
         <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">keywords</div>
@@ -409,21 +409,21 @@ function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
       </div>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)">
-      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} Â· ${c.updated||'just now'}</span>
+      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} · ${c.updated||'just now'}</span>
       <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3);font-size:.72rem" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">Delete</button>
     </div>
   </div>`;
   document.body.appendChild(ov)}
 
-function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='âœ“ Copied';btn.classList.add('copied-btn');
+function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='✓ Copied';btn.classList.add('copied-btn');
   setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied-btn')},2000);
 function rgKey(btn){if(!confirm("Regenerate your API key? Your old key will stop working immediately."))return;btn.textContent="...";btn.disabled=true;fetch(A+"/api/auth?action=regenerate-key",{method:"POST",headers:{"Authorization":"Bearer "+T}}).then(r=>r.json()).then(d=>{if(d.apiKey){U.apiKey=d.apiKey;document.querySelectorAll("code").forEach(el=>{if(el.textContent.startsWith("hs_"))el.textContent=d.apiKey});btn.textContent="Regenerate";btn.disabled=false;alert("New key: "+d.apiKey)}else{btn.textContent="Regenerate";btn.disabled=false;alert(d.error||"Failed")}}).catch(()=>{btn.textContent="Regenerate";btn.disabled=false;alert("Request failed")})}
   const s2=document.getElementById('obs-2'),s3=document.getElementById('obs-3');
-  if(s2){s2.classList.add('done');s2.classList.remove('active');s2.querySelector('.num').textContent='âœ“'}
+  if(s2){s2.classList.add('done');s2.classList.remove('active');s2.querySelector('.num').textContent='✓'}
   if(s3)s3.classList.add('active')}
 
 function cpBlock(btn){const pre=btn.parentElement.querySelector('pre');
-  navigator.clipboard.writeText(pre.textContent);btn.textContent='âœ“ Copied';
+  navigator.clipboard.writeText(pre.textContent);btn.textContent='✓ Copied';
   setTimeout(()=>{btn.textContent='Copy'},2000)}
 
 function showCardForm(){const w=document.getElementById('card-form-wrap');
@@ -441,13 +441,13 @@ function showCardForm(){const w=document.getElementById('card-form-wrap');
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div class="fg"><label>Stack</label><select id="cf-stack" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none">
-          <option value="projects">ðŸ“¦ projects</option><option value="people">ðŸ‘¤ people</option><option value="decisions">âš–ï¸ decisions</option>
-          <option value="preferences">âš™ï¸ preferences</option><option value="workflows">ðŸ”„ workflows</option><option value="general" selected>ðŸ“„ general</option>
+          <option value="projects">📦 projects</option><option value="people">👤 people</option><option value="decisions">⚖️ decisions</option>
+          <option value="preferences">⚙️ preferences</option><option value="workflows">🔄 workflows</option><option value="general" selected>📄 general</option>
         </select></div>
         <div class="fg"><label>Keywords (comma-separated)</label><input id="cf-kw" placeholder="react, vercel, auth"></div>
       </div>
       <div class="fg" style="margin-bottom:12px"><label>Body</label><textarea id="cf-body" rows="3" placeholder="What should your agent remember?" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.85rem;outline:none;resize:vertical"></textarea></div>
-      <div style="display:flex;gap:8px"><button class="btn bp bs" onclick="createCard()">Create Card â†’</button><button class="btn bo bs" onclick="document.getElementById('card-form-wrap').innerHTML=''">Cancel</button></div>
+      <div style="display:flex;gap:8px"><button class="btn bp bs" onclick="createCard()">Create Card →</button><button class="btn bo bs" onclick="document.getElementById('card-form-wrap').innerHTML=''">Cancel</button></div>
       <div id="cf-err" class="ferr hidden" style="margin-top:6px"></div>
     </div>
   </div>`}
@@ -463,11 +463,11 @@ function createCard(){const slug=document.getElementById('cf-slug').value.trim()
     document.getElementById('card-form-wrap').innerHTML='';rCards(document.getElementById('dm'));
   }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden')})}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸ”‘ API KEY €” Premium display
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ===========================================
+   🔑 API KEY €” Premium display
+   =========================================== */
 function rKey(el){el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ”‘ API Key</h1><p>Use this key in any agent or integration</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🔑 API Key</h1><p>Use this key in any agent or integration</p></div></div>
 
   <div style="position:relative;margin-bottom:16px">
     <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.3),rgba(168,85,247,.2));opacity:.25;filter:blur(16px)"></div>
@@ -479,7 +479,7 @@ function rKey(el){el.innerHTML=`
       </div>
       <div class="key-display">
         <code>${U.apiKey}</code>
-        <button onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='âœ“ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
+        <button onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='✓ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
         <button onclick="rgKey(this)" style="margin-left:8px;background:transparent;border:1px solid var(--dim);color:var(--dim);font-size:.75rem;padding:4px 10px;border-radius:6px;cursor:pointer">Regenerate</button>
       </div>
     </div>
@@ -487,7 +487,7 @@ function rKey(el){el.innerHTML=`
 
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">ðŸ“‹</span>
+      <span style="font-size:1rem">📋</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Environment variables</span>
     </div>
     <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative">
@@ -499,7 +499,7 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
 
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">ðŸ§ª</span>
+      <span style="font-size:1rem">🧪</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick test</span>
       <span style="font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-left:auto">paste in terminal</span>
     </div>
@@ -510,12 +510,12 @@ HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
     </div>
   </div>`}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ===========================================
    UNCHANGED TABS (Phase 2)
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   =========================================== */
+/* ===========================================
    ðŸ“ WORKSPACES €” Premium display
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   =========================================== */
 function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   el.innerHTML=`
   <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“ Workspaces</h1><p>${pro?'Unlimited workspaces':'1 workspace'} on ${U.plan} plan</p></div></div>
@@ -562,7 +562,7 @@ function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   </div>`:`
   <div style="position:relative;margin-bottom:16px">
     <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:28px;text-align:center">
-      <div style="font-size:1.8rem;margin-bottom:10px">ðŸ”’</div>
+      <div style="font-size:1.8rem;margin-bottom:10px">🔒</div>
       <h3 style="font-family:var(--mono);font-size:.92rem;font-weight:700;margin-bottom:6px">Multiple workspaces require Pro</h3>
       <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Separate workspaces per project so your agent only sees what's relevant. Zero cross-contamination.</p>
       <div style="display:flex;gap:8px;justify-content:center">
@@ -572,28 +572,28 @@ function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
     </div>
   </div>`}`}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸ‘¥ TEAM €” Premium display
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ===========================================
+   👥 TEAM €” Premium display
+   =========================================== */
 function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ‘¥ Team</h1><p>Shared memory across your team</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
   <div style="position:relative;margin-bottom:16px">
     <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
-      <div style="font-size:2rem;margin-bottom:12px">ðŸ‘¥</div>
+      <div style="font-size:2rem;margin-bottom:12px">👥</div>
       <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Team Memory requires Pro</h3>
       <p style="color:var(--dim);font-size:.85rem;margin-bottom:8px;max-width:400px;margin-left:auto;margin-right:auto">When Alice's agent learns something, Bob's agent knows it too. Shared cards sync instantly across your entire team.</p>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px auto;max-width:420px">
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">ðŸ”„</div>
+          <div style="font-size:1.2rem;margin-bottom:4px">🔄</div>
           <div style="font-size:.7rem;color:var(--dim)">Instant sync</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">ðŸ”’</div>
+          <div style="font-size:1.2rem;margin-bottom:4px">🔒</div>
           <div style="font-size:.7rem;color:var(--dim)">Private cards stay private</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">ðŸ‘¤</div>
+          <div style="font-size:1.2rem;margin-bottom:4px">👤</div>
           <div style="font-size:.7rem;color:var(--dim)">Up to 20 members</div>
         </div>
       </div>
@@ -604,7 +604,7 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
     </div>
   </div>`;return}
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ‘¥ Team</h1><p>Shared memory across your team</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
 
   <!-- Team members -->
   <div style="position:relative;margin-bottom:16px">
@@ -628,7 +628,7 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
 
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:18px;border-left:3px solid var(--accent)">
     <div style="display:flex;align-items:start;gap:10px">
-      <span style="font-size:1rem;flex-shrink:0">ðŸ’¡</span>
+      <span style="font-size:1rem;flex-shrink:0">💡</span>
       <div>
         <div style="font-family:var(--mono);font-size:.82rem;font-weight:600;margin-bottom:4px">How team sharing works</div>
         <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin:0">Set any card to <strong style="color:var(--text)">shared</strong> and it syncs to every team member's workspace. Private cards stay private €” only you can see them.</p>
@@ -636,15 +636,15 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
     </div>
   </div>`}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   ðŸ“Š ANALYTICS €” Premium display
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ===========================================
+   📊 ANALYTICS €” Premium display
+   =========================================== */
 function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Track your agent's memory usage</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Track your agent's memory usage</p></div></div>
   <div style="position:relative;margin-bottom:16px">
     <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
-      <div style="font-size:2rem;margin-bottom:12px">ðŸ“Š</div>
+      <div style="font-size:2rem;margin-bottom:12px">📊</div>
       <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Analytics requires Pro</h3>
       <p style="color:var(--dim);font-size:.85rem;margin-bottom:8px;max-width:400px;margin-left:auto;margin-right:auto">Track token savings, find stale cards, see usage patterns, and measure how much money your agent is saving you.</p>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px auto;max-width:480px">
@@ -657,11 +657,11 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
           <div style="font-size:.6rem;color:var(--faint)">Saved/mo</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
-          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">ðŸ“ˆ</div>
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">📈</div>
           <div style="font-size:.6rem;color:var(--faint)">Usage trends</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
-          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">âš ï¸</div>
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">⚠️</div>
           <div style="font-size:.6rem;color:var(--faint)">Stale alerts</div>
         </div>
       </div>
@@ -673,7 +673,7 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
   </div>`;return}
 
   // Fetch real cards from API for analytics
-  el.innerHTML='<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Loading analytics...</p></div></div><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
+  el.innerHTML='<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Loading analytics...</p></div></div><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
     _renderStats(el,d.cards||[]);
   }).catch(function(){_renderStats(el,[])})}
@@ -701,7 +701,7 @@ function _renderStats(el,cards){
     return (now-updated)>(21*24*60*60*1000);
   });
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Your agent's memory performance</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Your agent's memory performance</p></div></div>
 
   <!-- Stats grid with 2D glow €” click any number to see how it's calculated -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
@@ -710,7 +710,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:12px;padding:16px;text-align:center;transition:transform .2s;box-shadow:0 0 20px rgba(34,197,94,.1),inset 0 1px 0 rgba(34,197,94,.1)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--green);text-shadow:0 0 20px rgba(34,197,94,.4)">${savingsPct}%</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Token Savings</div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how â†“</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-cards')">
@@ -718,7 +718,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(136,136,200,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(136,136,200,.05),inset 0 1px 0 rgba(136,136,200,.08)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;text-shadow:0 0 15px rgba(200,200,255,.2)">${totalCards}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Total Cards</div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how â†“</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-saved')">
@@ -726,7 +726,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.25);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(255,107,43,.08),inset 0 1px 0 rgba(255,107,43,.1)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--accent);text-shadow:0 0 20px rgba(255,107,43,.3)">$${monthlySavings}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Saved / month</div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how â†“</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-stale')">
@@ -734,7 +734,7 @@ function _renderStats(el,cards){
       <div style="position:relative;background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:12px;padding:16px;text-align:center;box-shadow:0 0 20px rgba(234,179,8,.06),inset 0 1px 0 rgba(234,179,8,.08)">
         <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:var(--yellow);text-shadow:0 0 20px rgba(234,179,8,.3)">${staleCards.length}</div>
         <div style="font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-top:4px">Stale Cards</div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how â†“</div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35);margin-top:4px">click to see how ↓</div>
       </div>
     </div>
   </div>
@@ -744,8 +744,8 @@ function _renderStats(el,cards){
     <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--green);margin-bottom:8px">ðŸ“ How Token Savings is calculated</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Without HyperStack: <strong style="color:var(--red)">~6,000 tokens/msg</strong> (full chat history in context)<br>
-      With HyperStack: <strong style="color:var(--green)">~${tokensWith} tokens/msg</strong> (avg ${avgTokensPerCard} tokens/card Ã— 2 cards retrieved)<br>
-      Savings: <strong style="color:var(--green)">(6,000 - ${tokensWith}) Ã· 6,000 = ${savingsPct}%</strong>
+      With HyperStack: <strong style="color:var(--green)">~${tokensWith} tokens/msg</strong> (avg ${avgTokensPerCard} tokens/card × 2 cards retrieved)<br>
+      Savings: <strong style="color:var(--green)">(6,000 - ${tokensWith}) ÷ 6,000 = ${savingsPct}%</strong>
     </div>
   </div>
   <div id="exp-cards" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(136,136,200,.15);border-radius:10px;padding:16px;margin-bottom:12px">
@@ -757,17 +757,17 @@ function _renderStats(el,cards){
     </div>
   </div>
   <div id="exp-saved" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(255,107,43,.15);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--accent);margin-bottom:8px">ðŸ’° How Monthly Savings is calculated</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--accent);margin-bottom:8px">💰 How Monthly Savings is calculated</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Tokens saved per message: <strong style="color:var(--green)">${savedPerMsg.toLocaleString()}</strong><br>
       Estimated messages/day: <strong>30</strong> (typical agent workload)<br>
-      Monthly messages: <strong>30 Ã— 30 = 900</strong><br>
+      Monthly messages: <strong>30 × 30 = 900</strong><br>
       Cost per 1K tokens: <strong>$0.003</strong> (Claude avg input price)<br>
-      Formula: <strong>${savedPerMsg.toLocaleString()} Ã— 900 Ã— $0.003 / 1000 = $${monthlySavings}</strong>
+      Formula: <strong>${savedPerMsg.toLocaleString()} × 900 × $0.003 / 1000 = $${monthlySavings}</strong>
     </div>
   </div>
   <div id="exp-stale" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(234,179,8,.15);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--yellow);margin-bottom:8px">âš ï¸ Stale Cards</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--yellow);margin-bottom:8px">⚠️ Stale Cards</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Cards not updated in <strong>21+ days</strong> may have outdated info.<br>
       Found: <strong>${staleCards.length}</strong> stale card${staleCards.length===1?'':'s'} out of ${totalCards} total.<br>
@@ -784,7 +784,7 @@ function _renderStats(el,cards){
   <!-- Token comparison -->
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
-      <span style="font-size:1rem">âš¡</span>
+      <span style="font-size:1rem">⚡</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Token Usage Per Message</span>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
@@ -805,11 +805,11 @@ function _renderStats(el,cards){
   <!-- Stale cards alert -->
   <div style="background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:14px;padding:20px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">âš ï¸</span>
+      <span style="font-size:1rem">⚠️</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Stale Cards</span>
       <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">Cards not updated in 21+ days</span>
     </div>
-    ${staleCards.length===0?'<div style="text-align:center;padding:16px;color:var(--dim);font-size:.82rem">âœ… No stale cards. Your memory is fresh!</div>':staleCards.map(function(c){
+    ${staleCards.length===0?'<div style="text-align:center;padding:16px;color:var(--dim);font-size:.82rem">✅ No stale cards. Your memory is fresh!</div>':staleCards.map(function(c){
       var days=Math.floor((now-new Date(c.updatedAt||c.createdAt||now).getTime())/(24*60*60*1000));
       return '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:6px"><div style="width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 6px var(--yellow)"></div><div style="flex:1"><span style="font-family:var(--mono);font-size:.82rem;font-weight:600">'+c.slug+'</span><span style="font-size:.78rem;color:var(--dim);margin-left:8px">'+c.title+'</span></div><span style="font-family:var(--mono);font-size:.65rem;background:rgba(234,179,8,.1);color:var(--yellow);padding:3px 10px;border-radius:6px;border:1px solid rgba(234,179,8,.2);font-weight:600">'+days+' days</span></div>'}).join('')}
     <p style="font-size:.72rem;color:var(--faint);margin-top:8px;text-align:center">${staleCards.length>0?'Stale cards may contain outdated info. Consider reviewing or archiving them.':'All cards updated within the last 21 days.'}</p>
@@ -921,9 +921,9 @@ function deleteAgentToken(id){
 
 
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ===========================================
    CONTEXT GRAPH €” Bubblemaps-style interactive
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   =========================================== */
 var _graphAnim=null; // animation frame id
 
 var _REL_DESC={
@@ -1015,14 +1015,14 @@ function rGraph(el){
   <div style="margin-top:16px">
     <button onclick="var g=document.getElementById('graph-howto');g.style.display=g.style.display==='none'?'block':'none';this.querySelector('span').textContent=g.style.display==='none'?'\u25b6':'\u25bc'" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;width:100%;cursor:pointer;display:flex;align-items:center;gap:10px;text-align:left">
       <span style="color:var(--accent);font-size:.7rem">\u25b6</span>
-      <span style="font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text)">ðŸ’¡ How to use the Context Graph</span>
+      <span style="font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text)">💡 How to use the Context Graph</span>
       <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">click to expand</span>
     </button>
     <div id="graph-howto" style="display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:20px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
 
         <div>
-          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">ðŸš€ GETTING STARTED</div>
+          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">🚀 GETTING STARTED</div>
           <div style="font-size:.78rem;color:var(--dim);line-height:1.7">
             <strong style="color:var(--text)">1. Create cards with types</strong><br>
             When your agent creates a card, add a <code style="color:var(--accent);font-size:.72rem">cardType</code> €” like "person", "project", or "decision". This tells the graph what shape each node is.<br><br>
@@ -1034,7 +1034,7 @@ function rGraph(el){
         </div>
 
         <div>
-          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">ðŸ’¡ REAL-WORLD EXAMPLES</div>
+          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">💡 REAL-WORLD EXAMPLES</div>
           <div style="font-size:.78rem;color:var(--dim);line-height:1.7">
             <strong style="color:var(--green)">"Why did we choose Stripe?"</strong><br>
             Focus on the <em>use-stripe</em> decision card €” see who decided, who approved, and why. Full audit trail, one click.<br><br>
@@ -1048,7 +1048,7 @@ function rGraph(el){
       </div>
 
       <div style="margin-top:16px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
-        <div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);font-weight:700;margin-bottom:6px">âš¡ QUICK API EXAMPLE</div>
+        <div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);font-weight:700;margin-bottom:6px">⚡ QUICK API EXAMPLE</div>
         <pre style="font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.6;margin:0;overflow-x:auto"><span style="color:var(--green)">// Create a decision card with links</span>
 POST /api/cards
 {
@@ -1595,9 +1595,9 @@ function _gDetail(node,nodes,edges,TC,RC){
 (async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{"X-API-Key": t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
   const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);document.getElementById("nd").classList.toggle("hidden",!l);document.getElementById("no").classList.toggle("hidden",!l)})();
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// =======================================================
 // ANIMATED GRAPH TRAVERSAL DEMO €” landing page
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// =======================================================
 
 var _demoTimer=null;
 function demoGraphPlay(){
@@ -1831,9 +1831,9 @@ var _demoObserver=null;
   }
 })();
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// =======================================================
 // STRIPE SUCCESS €” poll for plan upgrade
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// =======================================================
 
 function checkSuccess(){
   if(!U||!T)return;
@@ -1945,7 +1945,7 @@ function updatePricingButtons(){
   btns.forEach(function(btn){
     var plan=btn.getAttribute('data-plan-btn');
     if(U.plan===plan){
-      btn.textContent='Current Plan âœ“';
+      btn.textContent='Current Plan ✓';
       btn.style.opacity='0.5';
       btn.style.pointerEvents='none';
       btn.style.background='var(--surface)';
@@ -1954,8 +1954,8 @@ function updatePricingButtons(){
     }
   });
 }
-// Ã¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢Â
+// •Â
 // CONVERSATIONAL ONBOARDING - Add to end of app.js
 // Shows on first dashboard load, uses Groq API to parse project description
-// Ã¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢Â
+// •Â
 
