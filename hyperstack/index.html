@@ -91,7 +91,7 @@ nav{padding:16px 0;display:flex;justify-content:space-between;align-items:center
 .install-panel.act{display:block}
 
 /* Pricing */
-.price-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+.price-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;border-radius:16px;overflow:hidden;border:1px solid var(--border)}
 .price-card{background:var(--surface);padding:32px 24px;text-align:center;position:relative}
 .price-card.pop{background:var(--surface2);box-shadow:inset 0 2px 0 var(--accent),0 0 40px rgba(37,99,235,.06)}
 .price-card .tier{font-family:var(--mono);font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
@@ -186,6 +186,10 @@ footer .l{display:flex;gap:16px}footer .l a{font-family:var(--mono);font-size:.7
 .card-edit-field{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none}
 /* FIX 3: Trim onboarding on mobile */
 @media(max-width:768px){.ob-step .stxt{font-size:.55rem}#dm>div:first-child>p{font-size:.75rem!important}}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px}
+.compare-grid>div{min-width:0;overflow:hidden}
+@media(max-width:768px){.compare-grid{grid-template-columns:1fr!important;gap:16px}
+.compare-grid .code-block{font-size:.65rem!important;padding:10px!important;overflow-x:auto}}
 
 /* Premium: Badges */
 .prov-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:4px 12px;border-radius:9999px;background:rgba(37,99,235,.15);color:var(--accent);border:1px solid rgba(37,99,235,.3)}
@@ -288,8 +292,8 @@ document.addEventListener('DOMContentLoaded',function(){
 <h2 style="font-family:var(--sans);font-weight:800;font-size:clamp(1.25rem,3.5vw,1.8rem);line-height:1.35">Prove chain-of-custody for agent knowledge.<br>Reconstruct exactly what an agent knew at <span style="color:var(--accent)">decision time</span>.</h2>
 <p style="color:var(--dim);font-size:.95rem;margin-top:16px;max-width:560px;margin-left:auto;margin-right:auto">Can't trust agent decisions? HyperStack stamps provenance for deterministic resolution. Detect hindsight changes. No black-box guessing.</p>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px">
-<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.15)">
+<div class="compare-grid">
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.15);min-width:0;overflow:hidden">
 <div style="font-family:var(--mono);font-size:.68rem;color:var(--red);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em">❌ Black-box agents</div>
 <div class="code-block" style="border:none;padding:16px;font-size:.73rem;background:rgba(0,0,0,.35)"><span style="color:#6b7280"># "Why did the agent decide X?"</span>
 <span class="str"># → No audit trail</span>
@@ -297,7 +301,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <span style="color:#e2e8f0"># "What blocks deploy?"</span>
 <span style="color:#9ca3af"># → Fuzzy RAG, no typed relations</span></div></div>
-<div style="background:var(--surface);border:1px solid rgba(37,99,235,.25);border-radius:var(--r);padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.15),0 0 60px rgba(37,99,235,.04)">
+<div style="background:var(--surface);border:1px solid rgba(37,99,235,.25);border-radius:var(--r);padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.15),0 0 60px rgba(37,99,235,.04);min-width:0;overflow:hidden">
 <div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em">✔ Agent Provenance Graph</div>
 <div class="code-block" style="border:none;padding:16px;font-size:.73rem;background:rgba(0,0,0,.35)"><span class="kw">await</span> hs.<span class="fn">replay</span>(<span class="str">"decision-use-clerk"</span>);
 <span style="color:#e2e8f0">// → Exact state at decision time</span>
