@@ -91,7 +91,7 @@ nav{padding:16px 0;display:flex;justify-content:space-between;align-items:center
 .install-panel.act{display:block}
 
 /* Pricing */
-.price-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+.price-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;border-radius:16px;overflow:hidden;border:1px solid var(--border)}
 .price-card{background:var(--surface);padding:32px 24px;text-align:center;position:relative}
 .price-card.pop{background:var(--surface2);box-shadow:inset 0 2px 0 var(--accent),0 0 40px rgba(37,99,235,.06)}
 .price-card .tier{font-family:var(--mono);font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
@@ -101,7 +101,7 @@ nav{padding:16px 0;display:flex;justify-content:space-between;align-items:center
 .price-card li{font-size:.8rem;color:var(--dim);padding:4px 0;display:flex;gap:8px}
 .price-card li::before{content:'✓';color:var(--accent);font-weight:700;font-size:.7rem;margin-top:2px}
 .pop-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-family:var(--mono);font-size:.58rem;font-weight:800;padding:2px 14px;border-radius:0 0 8px 8px;text-transform:uppercase;letter-spacing:.06em}
-@media(max-width:700px){.price-row{grid-template-columns:1fr}}
+@media(max-width:900px){.price-row{grid-template-columns:1fr 1fr!important}}@media(max-width:500px){.price-row{grid-template-columns:1fr!important}}
 
 /* Footer */
 footer{border-top:1px solid var(--border);padding:24px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
@@ -405,7 +405,7 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">PRICING</div>
 <h2 style="font-family:var(--mono);font-weight:800;font-size:clamp(1.1rem,3vw,1.5rem)">Start free. Scale when ready.</h2>
 </div>
-<div class="price-row" style="max-width:1060px;margin:0 auto;grid-template-columns:repeat(4,1fr)">
+<div class="price-row" style="max-width:1060px;margin:0 auto">
 <div class="price-card"><div class="tier">Free</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>0</div><div class="per">forever</div>
 <ul><li>50 cards</li><li>All features — graph, impact, replay</li><li>REST API + MCP, 1 workspace</li></ul>
 <button onclick="go('signup')" class="btn bp" style="width:100%">Get Started</button></div>
