@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HyperStack — The Agent Provenance Graph for Verifiable AI</title>
-<meta name="description" content="Agent provenance graph for verifiable AI. Timestamped facts, auditable decisions, deterministic trust—eliminate black-box chaos. Works with OpenClaw, Cursor, Claude, LangGraph.">
+<title>HyperStack – The Agent Provenance Graph for Verifiable AI</title>
+<meta name="description" content="Agent provenance graph for verifiable AI. Timestamped facts, auditable decisions, deterministic trust eliminate black-box chaos. Works with OpenClaw, Cursor, Claude, LangGraph.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </nav>
 </div>
 
-<!-- LANDING (visible by default — home page) -->
+<!-- LANDING (visible by default – home page) -->
 <div id="p-landing" style="position:relative;overflow:hidden">
 <div class="glow-orb" style="width:500px;height:500px;background:rgba(37,99,235,.05);top:-100px;right:-150px"></div>
 <div class="glow-orb" style="width:350px;height:350px;background:rgba(37,99,235,.04);bottom:400px;left:-100px"></div>
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <span class="prov-badge">Agent Provenance Graph</span><span class="prov-badge green">Free Forever</span><span class="prov-badge">Deterministic</span>
 </div>
 <h1>HyperStack: The Agent Provenance Graph<br>for <span class="hl">Verifiable AI</span></h1>
-<p class="sub">Build agents you can audit and trust at $0/operation. Timestamped facts, auditable decisions, deterministic trust propagation, and ledger-like accountability—eliminating black-box chaos in multi-agent systems.</p>
+<p class="sub">Build agents you can audit and trust at $0/operation. Timestamped facts, auditable decisions, deterministic trust propagation, and ledger-like accountability eliminating black-box chaos in multi-agent systems.</p>
 <svg class="prov-diagram" viewBox="0 0 280 140" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="70" r="18" fill="#1a1a1a" stroke="#2563eb" stroke-width="2"/><circle cx="140" cy="40" r="18" fill="#1a1a1a" stroke="#2563eb" stroke-width="2"/><circle cx="140" cy="100" r="18" fill="#1a1a1a" stroke="#2563eb" stroke-width="2"/><circle cx="240" cy="70" r="18" fill="#1a1a1a" stroke="#2563eb" stroke-width="2"/><path d="M58 70 L122 52 M58 70 L122 88 M158 52 L222 70 M158 88 L222 70" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4 4" opacity=".6"/><text x="40" y="75" fill="#a3a3a3" font-size="8" font-family="monospace" text-anchor="middle">t₁</text><text x="140" y="45" fill="#a3a3a3" font-size="8" font-family="monospace" text-anchor="middle">t₂</text><text x="140" y="105" fill="#a3a3a3" font-size="8" font-family="monospace" text-anchor="middle">t₂</text><text x="240" y="75" fill="#a3a3a3" font-size="8" font-family="monospace" text-anchor="middle">t₃</text></svg>
 <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:14px">
 <button onclick="go('signup')" class="btn bp" style="padding:14px 32px;font-size:.9rem">Get Free API Key →</button>
@@ -320,19 +320,19 @@ document.addEventListener('DOMContentLoaded',function(){
 <p style="color:var(--dim);font-size:.95rem;margin-top:12px">Build agents you can audit and trust at $0/operation.</p>
 </div>
 <div class="feat-grid">
-<div class="feat-card"><div class="feat-icon">⚙️</div><h3>Provable Schemas</h3><p>Developer-defined types ensure no hallucinations, with zero-cost exact queries. Your schema is your contract—no LLM guessing.</p></div>
+<div class="feat-card"><div class="feat-icon">⚙️</div><h3>Provable Schemas</h3><p>Developer-defined types ensure no hallucinations, with zero-cost exact queries. Your schema is your contract no LLM guessing.</p></div>
 <div class="feat-card"><div class="feat-icon">⏳</div><h3>Decision Replay</h3><p>Full graph versioning for auditing what agents knew and why decisions were made. Reconstruct exact state at any point in time.</p></div>
-<div class="feat-card"><div class="feat-icon">🔗</div><h3>Semantic Graph</h3><p>Typed edges (blocks, depends-on, owns, decided) for real-time traversal of blockers and impacts. Ask "what blocks deploy?"—get exact answers.</p></div>
+<div class="feat-card"><div class="feat-icon">🔗</div><h3>Semantic Graph</h3><p>Typed edges (blocks, depends-on, owns, decided) for real-time traversal of blockers and impacts. Ask "what blocks deploy?" get exact answers.</p></div>
 <div class="feat-card"><div class="feat-icon">🛡️</div><h3>Trust Layer</h3><p>Agent provenance stamps and scores for deterministic conflict resolution without LLMs. Know who stored what, when.</p><div class="feat-code"><span class="cm">// Resolve conflicts deterministically</span><br>hs.<span class="fn">resolveConflict</span>(slug, { trustThreshold: 0.8 })</div></div>
-<div class="feat-card"><div class="feat-icon">🧲</div><h3>GraphRAG</h3><p>Hybrid vector + graph search, provenance-aware. Semantic similarity finds seed cards. Graph traversal surfaces everything connected—with full audit trail.</p></div>
-<div class="feat-card"><div class="feat-icon">🧭</div><h3>Agentic Routing</h3><p>Ask in plain English. "What breaks if proj-auth changes?" — HyperStack detects intent, picks impact mode. Provenance-enhanced provability.</p></div>
-<div class="feat-card"><div class="feat-icon">🌿</div><h3>Audit Branches</h3><p>Fork for experiments, diff/merge with full accountability. Git for agent provenance—parent graph always untouched.</p></div>
-<div class="feat-card wide"><div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center"><div><div class="feat-icon">🔍</div><h3>Provenance Queries. One API.</h3><p>Blockers, impact, replay, and graph traversal—all provenance-aware. Reconstruct what agents knew. Detect hindsight changes. Full audit trail.</p></div>
-<div class="code-block" style="font-size:.72rem"><span class="cm">// Blockers — what prevents this?</span>
+<div class="feat-card"><div class="feat-icon">🧲</div><h3>GraphRAG</h3><p>Hybrid vector + graph search, provenance-aware. Semantic similarity finds seed cards. Graph traversal surfaces everything connected with full audit trail.</p></div>
+<div class="feat-card"><div class="feat-icon">🧭</div><h3>Agentic Routing</h3><p>Ask in plain English. "What breaks if proj-auth changes?" – HyperStack detects intent, picks impact mode. Provenance-enhanced provability.</p></div>
+<div class="feat-card"><div class="feat-icon">🌿</div><h3>Audit Branches</h3><p>Fork for experiments, diff/merge with full accountability. Git for agent provenance parent graph always untouched.</p></div>
+<div class="feat-card wide"><div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center"><div><div class="feat-icon">🔍</div><h3>Provenance Queries. One API.</h3><p>Blockers, impact, replay, and graph traversal all provenance-aware. Reconstruct what agents knew. Detect hindsight changes. Full audit trail.</p></div>
+<div class="code-block" style="font-size:.72rem"><span class="cm">// Blockers – what prevents this?</span>
 <span class="kw">await</span> hs.<span class="fn">blockers</span>(<span class="str">"deploy-prod"</span>);
-<span class="cm">// Impact — blast radius of a change</span>
+<span class="cm">// Impact – blast radius of a change</span>
 <span class="kw">await</span> hs.<span class="fn">impact</span>(<span class="str">"use-clerk"</span>);
-<span class="cm">// Decision Replay — what did we know then?</span>
+<span class="cm">// Decision Replay – what did we know then?</span>
 <span class="kw">await</span> hs.<span class="fn">graph</span>(<span class="str">"auth-api"</span>, { at: <span class="str">"2026-02-01"</span> });</div></div></div>
 </div>
 </div></section>
@@ -347,11 +347,11 @@ document.addEventListener('DOMContentLoaded',function(){
 <table class="cmp-table"><tr><th></th><th class="hs-col">HyperStack</th><th>Mem0</th><th>Backboard</th><th>Cognee</th></tr>
 <tr><td style="color:var(--dim)">Provenance Tracking</td><td class="win">Timestamped, replayable facts</td><td>No timestamped replay</td><td>Thread-only</td><td>No decision replay</td></tr>
 <tr><td style="color:var(--dim)">Trust Resolution</td><td class="win">Deterministic, no LLM</td><td>LLM-dependent</td><td>LLM for resolution</td><td>LLM-dependent</td></tr>
-<tr><td style="color:var(--dim)">Audit Replay</td><td class="win">Full graph at any timestamp</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td style="color:var(--dim)">Audit Replay</td><td class="win">Full graph at any timestamp</td><td> </td><td> </td><td> </td></tr>
 <tr><td style="color:var(--dim)">Typed relations</td><td class="win">blocks, depends-on, owns, decided</td><td>Auto-extracted</td><td>Threads only</td><td>Generic graph</td></tr>
 <tr><td style="color:var(--dim)">Cost per op</td><td class="win">$0 deterministic</td><td>~$0.002 LLM</td><td>Usage-based</td><td>~$0.002 LLM</td></tr>
-<tr><td style="color:var(--dim)">GraphRAG</td><td class="win">Vector + graph, provenance-aware</td><td>Vector only</td><td>—</td><td>Partial</td></tr>
-<tr><td style="color:var(--dim)">Branching / Diff</td><td class="win">Fork, merge, full accountability</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td style="color:var(--dim)">GraphRAG</td><td class="win">Vector + graph, provenance-aware</td><td>Vector only</td><td> </td><td>Partial</td></tr>
+<tr><td style="color:var(--dim)">Branching / Diff</td><td class="win">Fork, merge, full accountability</td><td> </td><td> </td><td> </td></tr>
 <tr><td style="color:var(--dim)">Multi-Agent Coordination</td><td class="win">Deterministic trust propagation</td><td>Shared userId issues</td><td>Thread-based</td><td>LLM-dependent / None</td></tr>
 <tr><td style="color:var(--dim)">Setup</td><td class="win">30 seconds</td><td>5-10min + Docker</td><td>5 min</td><td>5+ min + Neo4j</td></tr></table>
 </div></div></section>
@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <div style="text-align:center;margin-bottom:36px">
 <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">PROVENANCE-READY INTEGRATIONS</div>
 <h2 style="font-family:var(--sans);font-weight:800;font-size:clamp(1.15rem,3vw,1.55rem)">Drop into your stack in 30 seconds.</h2>
-<p style="color:var(--dim);font-size:.9rem;margin-top:8px">LangGraph, Cursor, OpenClaw—with audit trails.</p>
+<p style="color:var(--dim);font-size:.9rem;margin-top:8px">LangGraph, Cursor, OpenClaw with audit trails.</p>
 </div>
 <div style="max-width:640px;margin:0 auto">
 <div class="install-tabs">
@@ -390,7 +390,7 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
   -e OPENAI_API_KEY=sk-... \
   ghcr.io/deeqyaqub1-cmd/hyperstack:latest
 
-<span class="cm"># Fully local — Ollama (no OpenAI key needed)</span>
+<span class="cm"># Fully local – Ollama (no OpenAI key needed)</span>
 <span class="kw">docker</span> run -d -p 3000:3000 \
   -e DATABASE_URL=postgresql://... \
   -e JWT_SECRET=your-secret \
@@ -399,7 +399,7 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
   ghcr.io/deeqyaqub1-cmd/hyperstack:latest</div></div>
 </div></div></section>
 
-<!-- Pricing — 4 cols now -->
+<!-- Pricing – 4 cols now -->
 <section style="padding:60px 0"><div class="w">
 <div style="text-align:center;margin-bottom:32px">
 <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">PRICING</div>
@@ -407,14 +407,14 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 </div>
 <div class="price-row" style="max-width:1060px;margin:0 auto">
 <div class="price-card"><div class="tier">Free</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>0</div><div class="per">forever</div>
-<ul><li>50 cards</li><li>All features — graph, impact, replay</li><li>REST API + MCP, 1 workspace</li></ul>
+<ul><li>50 cards</li><li>All features – graph, impact, replay</li><li>REST API + MCP, 1 workspace</li></ul>
 <button onclick="go('signup')" class="btn bp" style="width:100%">Get Started</button></div>
 <div class="price-card pop"><div class="pop-badge">Popular</div><div class="tier">Pro</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>29<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
 <ul><li>500+ cards</li><li>Semantic search</li><li>All 4 graph modes</li><li>GraphRAG search</li><li>Time-travel</li><li>3 workspaces</li></ul>
 <button onclick="go('signup')" class="btn bp" style="width:100%">Start Pro →</button></div>
 <div class="price-card"><div class="tier">Team</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>59<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
 <ul><li>500 cards</li><li>Everything in Pro</li><li>5 team API keys</li><li>Unlimited workspaces</li></ul>
-<button onclick="go('signup')" class="btn bo" style="width:100%">Start Team</button></div>
+<button onclick="go('signup')" class="btn bp" style="width:100%">Start Team</button></div>
 <div class="price-card"><div class="tier">Business</div><div class="amt"><span style="font-size:.9rem;color:var(--dim)">$</span>149<span style="font-size:.8rem;color:var(--dim)">/mo</span></div><div class="per">billed monthly</div>
 <ul><li>2,000 cards</li><li>Everything in Team</li><li>20 team members</li><li>Agent-to-agent webhooks</li><li>SSO &amp; audit log <em style="font-size:.65rem;color:var(--faint)">(soon)</em></li></ul>
 <button onclick="go('pricing')" class="btn bo" style="width:100%">Get Business</button></div>
@@ -432,8 +432,8 @@ hs = HyperStack(api_key=<span class="str">"hs_your_key"</span>)</div></div>
 <div class="stat"><div class="stat-n">$0</div><div class="stat-l">Per operation</div></div>
 </div>
 <div class="social-proof">
-<div class="social-card"><q>Finally, auditable agents! No more black-box guesswork.</q><span class="by">— Indie dev</span></div>
-<div class="social-card"><q>Decision replay saved us hours debugging. Exactly what the agent knew, when.</q><span class="by">— Engineer</span></div>
+<div class="social-card"><q>Finally, auditable agents! No more black-box guesswork.</q><span class="by"> Indie dev</span></div>
+<div class="social-card"><q>Decision replay saved us hours debugging. Exactly what the agent knew, when.</q><span class="by"> Engineer</span></div>
 <div class="social-card"><a href="https://discord.gg/EaKGXhrd" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit"><q>Join the community on Discord for provenance workflows, tips, and early access.</q><span class="by" style="color:var(--accent)">→ Discord</span></a></div>
 </div>
 </div></section>
@@ -539,7 +539,7 @@ function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(
       <div class="per">forever</div>
       <ul>
         <li><strong>50 cards</strong></li>
-        <li>All features — graph, impact, replay</li>
+        <li>All features – graph, impact, replay</li>
         <li>REST API + MCP, 1 workspace</li>
       </ul>
       <button onclick="go('signup')" class="btn bo" style="width:100%">Get Free Key &rarr;</button>
@@ -651,7 +651,7 @@ function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(
   <div style="text-align:center;margin-bottom:36px">
     <div style="font-family:var(--mono);font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Documentation</div>
     <h1 style="font-family:var(--mono);font-weight:800;font-size:1.6rem;margin-bottom:8px">📖 HyperStack Docs</h1>
-    <p style="color:var(--dim);font-size:.9rem">Everything you need to give your AI agent persistent, queryable provenance—timestamped facts and full audit trails.</p>
+    <p style="color:var(--dim);font-size:.9rem">Everything you need to give your AI agent persistent, queryable provenance timestamped facts and full audit trails.</p>
   </div>
   <div style="position:relative;margin-bottom:16px">
     <div style="position:absolute;inset:-1px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.15),rgba(168,85,247,.1));opacity:.2;filter:blur(12px)"></div>
@@ -663,12 +663,12 @@ function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(
       <h2 style="font-family:var(--mono);font-size:1.05rem;font-weight:700;margin-bottom:10px">🃏 What are Cards?</h2>
       <p style="color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:14px">Cards are small, structured chunks of knowledge your agent stores and retrieves. Think of them as index cards for an AI brain. Each card has:</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--accent)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--accent)">slug</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Unique ID — same slug = update, not duplicate</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--accent)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--accent)">slug</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Unique ID – same slug = update, not duplicate</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--text)"><strong style="font-family:var(--mono);font-size:.78rem">title</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Human-readable name for the card</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--blue)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--blue)">keywords</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Tags for exact-match search</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid var(--purple)"><strong style="font-family:var(--mono);font-size:.78rem;color:var(--purple)">stack</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Category folder (projects, people, etc)</p></div>
         <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #fbbf24"><strong style="font-family:var(--mono);font-size:.78rem;color:#fbbf24">cardType</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">person, project, decision, preference, workflow, event, account</p></div>
-        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #f87171"><strong style="font-family:var(--mono);font-size:.78rem;color:#f87171">links</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Connect cards by slug — build a knowledge graph</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 14px;border-left:3px solid #f87171"><strong style="font-family:var(--mono);font-size:.78rem;color:#f87171">links</strong><p style="font-size:.72rem;color:var(--dim);margin-top:2px">Connect cards by slug – build a knowledge graph</p></div>
       </div>
     </div>
   </div>
@@ -690,7 +690,7 @@ function showInstall(id,btn){['mcp','oc','py','rest','docker'].forEach(function(
     <button class="sbtn" onclick="dt('stats')" id="t-stats">📊 Analytics</button>
     <button class="sbtn" onclick="dt('agent')" id="t-agent">🤖 Agent Tokens</button>
     <button class="sbtn" onclick="go('docs')" id="t-docs">📖 Docs</button>
-    <div class="bot"><div class="em" id="d-em">—</div><div id="d-pt" style="margin-top:4px"></div></div>
+    <div class="bot"><div class="em" id="d-em"> </div><div id="d-pt" style="margin-top:4px"></div></div>
   </div>
   <div class="dc" id="dm" style="padding-bottom:80px"></div>
   <div id="d-plan-bar" style="display:none;padding:8px 16px;background:rgba(255,107,43,0.05);border:1px solid rgba(255,107,43,0.15);border-radius:8px;margin:8px 16px;font-family:var(--mono);font-size:.75rem;color:var(--dim);text-align:right"></div>
