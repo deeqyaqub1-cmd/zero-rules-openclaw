@@ -1,5 +1,5 @@
-
-// HyperStack Dashboard v6.1 €” with Graph Explorer
+﻿
+// HyperStack Dashboard v6 — with Graph Explorer
 // Rate limiting
 var _rl={};function rlCheck(key,ms){var now=Date.now();if(_rl[key]&&now-_rl[key]<ms)return false;_rl[key]=now;return true}
 const A="https://hyperstack-cloud.vercel.app";let U=null,T=null,DV="start";
@@ -7,7 +7,7 @@ const ADMINS=["deeq.yaqub1@gmail.com"];
 function adminCheck(){if(U&&ADMINS.includes(U.email))U.plan="PRO";}
 
 const SC={projects:"#3b82f6",people:"#a855f7",decisions:"#ff6b2b",preferences:"#22c55e",workflows:"#eab308"};
-const SE={projects:"ðŸ“¦",people:"ðŸ‘¤",decisions:"âš–ï¸",preferences:"âš™ï¸",workflows:"ðŸ”„",general:"ðŸ“„"};
+const SE={projects:"📦",people:"👤",decisions:"⚖️",preferences:"⚙️",workflows:"🔄",general:"📄"};
 const DEMO=[
   {slug:"project-webapp",title:"WebApp",stack:"projects",keywords:["nextjs","prisma","vercel","clerk"],body:"- Next.js 15 + Prisma + PostgreSQL\n- Auth: Clerk\n- CI: GitHub Actions → Vercel",updated:"2026-02-09",ver:3},
   {slug:"person-alice",title:"Alice Chen",stack:"people",keywords:["backend","postgresql","fastapi"],body:"- Senior Engineer, backend\n- Owns API service\n- EST timezone, morning standups",updated:"2026-02-10",ver:2},
@@ -21,7 +21,10 @@ function go(p){document.querySelectorAll('[id^="p-"]').forEach(e=>e.classList.ad
   document.getElementById("nd").classList.toggle("hidden",!l);
   document.getElementById("no").classList.toggle("hidden",!l);
   document.querySelectorAll('.dash-back-link').forEach(a=>{a.style.display=l?'inline':'none'});
-  if(p==="dash"){if(!U){go("login");return;}DV="start";dt("start")}
+  // On mobile, hide the top nav bar inside the dashboard (bottom nav handles it)
+  const topNav=document.querySelector('nav');
+  if(topNav){topNav.style.display=(p==='dash'&&window.innerWidth<=768)?'none':'';}
+  if(p==="dash"&&U){DV="start";dt("start")}
   if(p==="pricing"&&typeof updatePricingButtons==='function'){updatePricingButtons()}}
 
 function heroSignup(){const e=document.getElementById("hero-email").value;
@@ -82,7 +85,9 @@ async function doReset(){
     setTimeout(()=>go("login"),2000);
   }catch(err){er.textContent="Cannot connect to server.";er.classList.remove("hidden")}}
 
-function out(){U=null;T=null;localStorage.removeItem("hs_t");go("landing")}
+function out(){U=null;T=null;localStorage.removeItem("hs_t");
+  const topNav=document.querySelector('nav');if(topNav)topNav.style.display='';
+  go("landing")}
 
 function dt(t){DV=t;document.querySelectorAll(".sbtn").forEach(b=>b.classList.remove("act"));
   const b=document.getElementById("t-"+t);if(b)b.classList.add("act");
@@ -103,127 +108,95 @@ function showPlatform(p,btn){['mcp','openclaw','claude','python','js','curl'].fo
 
 function renderD(){if(!U)return;
   document.getElementById("d-em").textContent=U.email;
-  var planBadges={BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',PRO:'<span class="badge" style="background:var(--glow);color:var(--accent);border:1px solid rgba(255,107,43,.3)">PRO</span>',TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'};
+  var planBadges={
+    BUSINESS:'<span class="badge" style="background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.3)">BUSINESS</span>',
+    PRO:'<span class="badge" style="background:rgba(68,255,136,.1);color:var(--accent);border:1px solid rgba(68,255,136,.25)">PRO</span>',
+    TEAM:'<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3)">TEAM</span>'
+  };
   var upgradeLink='';
-  if(U.plan==='FREE')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono)">Upgrade</a>';
-  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:#60a5fa;font-family:var(--mono)">→ Team</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
-  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:var(--green);font-family:var(--mono)">→ Business</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage</a>';
-  else if(U.plan==='BUSINESS')upgradeLink=' <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:#ff6b2b;font-family:var(--mono);text-decoration:underline">Manage subscription</a>';
-  document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.1);color:var(--dim);border:1px solid rgba(136,136,160,.2)">FREE</span>')+upgradeLink;
-  // Also show in the visible top plan bar
+  if(U.plan==='FREE')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.65rem;color:var(--accent);font-family:var(--mono);text-decoration:underline">Upgrade →</a>';
+  else if(U.plan==='PRO')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:#60a5fa;font-family:var(--mono)">→ Team</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:var(--orange);font-family:var(--mono);text-decoration:underline">Manage</a>';
+  else if(U.plan==='TEAM')upgradeLink=' <a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-size:.7rem;color:var(--green);font-family:var(--mono)">→ Business</a> · <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:var(--orange);font-family:var(--mono);text-decoration:underline">Manage</a>';
+  else if(U.plan==='BUSINESS')upgradeLink=' <a href="javascript:void(0)" onclick="manageSub()" style="font-size:.7rem;color:var(--orange);font-family:var(--mono);text-decoration:underline">Manage</a>';
+  document.getElementById("d-pt").innerHTML=(planBadges[U.plan]||'<span class="badge" style="background:rgba(136,136,160,.08);color:var(--dim);border:1px solid rgba(136,136,160,.15)">FREE</span>')+upgradeLink;
+  // Show/hide Pro badge on graph sidebar button
+  var graphBadge=document.getElementById('sb-graph-badge');
+  if(graphBadge)graphBadge.style.display=(U.plan==='FREE')?'inline-flex':'none';
+  // Plan bar for non-free plans
   var planBar=document.getElementById("d-plan-bar");
-  if(planBar&&U.plan!=='FREE'){
-    planBar.style.display='block';
-    planBar.innerHTML='Plan: '+(planBadges[U.plan]||U.plan)+upgradeLink;
-  }else if(planBar){planBar.style.display='none'}
+  if(planBar&&U.plan!=='FREE'){planBar.style.display='block';planBar.innerHTML='Plan: '+(planBadges[U.plan]||U.plan)+upgradeLink}
+  else if(planBar){planBar.style.display='none'}
   const m=document.getElementById("dm");
-  if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m);else if(DV==="agent")rAgent(m)}
+  if(DV==="start")rStart(m);else if(DV==="cards")rCards(m);else if(DV==="graph")rGraph(m);else if(DV==="key")rKey(m);else if(DV==="ws")rWs(m);else if(DV==="team")rTeam(m);else if(DV==="stats")rStats(m)}
 
-/* ═══════════════════════════════════════════
-   ðŸš€ GET STARTED €” Premium animated onboarding
-   ═══════════════════════════════════════════ */
+// ── Toast notification ──
+function hsToast(msg,type,dur){
+  var t=document.getElementById('hs-toast');
+  if(!t){t=document.createElement('div');t.id='hs-toast';t.className='hs-toast';document.body.appendChild(t)}
+  t.textContent=msg;t.className='hs-toast '+(type||'ok');
+  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show')})});
+  clearTimeout(t._tid);t._tid=setTimeout(function(){t.classList.remove('show')},dur||2500);
+}
+
+/* ═══════════════════════════════════════════
+   🚀 GET STARTED — Premium animated onboarding
+   ═══════════════════════════════════════════ */
 function rStart(el){
-  // Inject mobile styles once
-  if(!document.getElementById('rstart-mobile-styles')){
-    var s=document.createElement('style');
-    s.id='rstart-mobile-styles';
-    s.textContent=`
-      /* Platform tabs — wrap on mobile */
-      .plat-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px}
-      .plat-tab{background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--dim);font-family:var(--mono);font-size:.72rem;padding:6px 10px;cursor:pointer;transition:all .2s;white-space:nowrap}
-      .plat-tab.act{background:rgba(68,255,136,.1);color:var(--accent);border-color:rgba(68,255,136,.3)}
-      .plat-tab:hover{color:var(--text)}
-
-      /* Code blocks — scroll on mobile, never overflow */
-      .code-block{position:relative;background:#08080c;border:1px solid var(--border);border-radius:10px;padding:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-      .code-block pre{font-family:var(--mono);font-size:.74rem;line-height:1.7;color:#a0a0c0;margin:0;white-space:pre;min-width:0}
-      .cpbtn{position:absolute;top:10px;right:10px;background:rgba(68,255,136,.1);border:1px solid rgba(68,255,136,.2);border-radius:5px;color:var(--accent);font-family:var(--mono);font-size:.65rem;padding:3px 10px;cursor:pointer;transition:all .2s}
-      .cpbtn:hover{background:rgba(68,255,136,.2)}
-
-      /* API key display */
-      .key-display{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:8px;padding:10px 14px}
-      .key-display code{font-family:var(--mono);font-size:.72rem;color:var(--accent);word-break:break-all;flex:1;min-width:0}
-      .key-display button{background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
-
-      /* Onboarding steps */
-      .ob-steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:20px;overflow-x:auto;padding:4px 0}
-      .ob-step{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:70px}
-      .ob-step .stxt{font-family:var(--mono);font-size:.65rem;color:var(--dim)}
-      .ob-step.done .stxt,.ob-step.active .stxt{color:var(--accent)}
-      .ob-step::after{content:'';display:block;position:absolute}
-
-      /* Quick links grid */
-      .ql-grid{display:grid;gap:10px}
-      .ql-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s}
-      .ql-card:hover{border-color:var(--accent);background:rgba(68,255,136,.04)}
-      .ql-icon{font-size:1.3rem;display:block;margin-bottom:4px}
-      .ql-label{font-family:var(--mono);font-size:.7rem;color:var(--dim)}
-      .ql-card:hover .ql-label{color:var(--accent)}
-
-      /* Responsive grid columns */
-      @media(min-width:480px){.ql-grid{grid-template-columns:repeat(4,1fr)}}
-      @media(max-width:479px){.ql-grid{grid-template-columns:repeat(2,1fr)}}
-      @media(max-width:479px){.plat-tab{font-size:.68rem;padding:5px 8px}}
-      @media(max-width:479px){.code-block pre{font-size:.66rem}}
-    `;
-    document.head.appendChild(s);
-  }
-
   el.innerHTML=`
-  <div style="text-align:center;padding:20px 0 20px">
+  <div style="text-align:center;padding:16px 0 20px">
     <div style="font-family:var(--mono);font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px">Welcome to HyperStack</div>
-    <h1 style="font-family:var(--mono);font-size:clamp(1rem,4vw,1.4rem);font-weight:800;margin-bottom:6px">Your agent is about to get a lot smarter</h1>
-    <p style="color:var(--dim);font-size:.88rem">Three steps. Under 30 seconds. Let's go.</p>
+    <h1 style="font-family:var(--mono);font-size:clamp(1.05rem,4vw,1.4rem);font-weight:800;margin-bottom:6px;line-height:1.3">Your agent is about to get a lot smarter</h1>
+    <p style="color:var(--dim);font-size:.85rem">Three steps. Under 30 seconds. Let's go.</p>
   </div>
 
-  <!-- Step indicators -->
+  <!-- Animated step indicators -->
   <div class="ob-steps" id="ob-steps-wrap">
     <div class="ob-step done" id="obs-1"><div class="num">✓</div><div class="stxt">Sign up</div></div>
-    <div style="width:32px;height:1px;background:var(--border);margin-bottom:16px;flex-shrink:0"></div>
     <div class="ob-step active" id="obs-2"><div class="num">2</div><div class="stxt">Copy key</div></div>
-    <div style="width:32px;height:1px;background:var(--border);margin-bottom:16px;flex-shrink:0"></div>
     <div class="ob-step" id="obs-3"><div class="num">3</div><div class="stxt">Paste & go</div></div>
   </div>
 
-  <!-- Step 2: API Key -->
-  <div style="position:relative;margin:8px 0 14px">
+  <!-- Step 2: API Key card -->
+  <div style="position:relative;margin:8px 0 16px">
     <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.3),rgba(168,85,247,.2),rgba(59,130,246,.2));opacity:.3;filter:blur(16px);z-index:0"></div>
-    <div style="position:relative;z-index:1;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:18px">
+    <div style="position:relative;z-index:1;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:16px;overflow:hidden">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0"></div>
         <span style="font-family:var(--mono);font-size:.68rem;color:var(--accent);letter-spacing:.06em;font-weight:600">YOUR API KEY</span>
       </div>
-      <div class="key-display">
-        <code>${U.apiKey}</code>
-        <button onclick="cpKey(this)">Copy</button>
-        <button onclick="rgKey(this)" style="background:transparent;border:1px solid var(--dim);color:var(--dim);font-size:.72rem;padding:5px 10px;border-radius:5px;cursor:pointer;font-family:var(--mono);white-space:nowrap;flex-shrink:0">Regenerate</button>
+      <!-- Key display: fixed layout, key truncates on mobile -->
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:8px;padding:10px 12px;min-width:0">
+        <code style="flex:1;font-family:var(--mono);font-size:.75rem;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">${U.apiKey}</code>
+        <button onclick="cpKey(this)" style="background:var(--accent);color:#000;border:none;border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;flex-shrink:0;white-space:nowrap">Copy</button>
       </div>
-      <p style="font-size:.7rem;color:var(--faint);margin-top:8px;line-height:1.5">Set as <code style="color:var(--accent);font-family:var(--mono);font-size:.7rem">HYPERSTACK_API_KEY</code> in your agent's environment</p>
+      <p style="font-size:.7rem;color:var(--faint);margin-top:8px;word-break:break-all">Set as <code style="color:var(--accent);font-family:var(--mono);font-size:.68rem">HYPERSTACK_API_KEY</code> in your agent's environment</p>
     </div>
   </div>
 
   <!-- Step 3: Setup -->
-  <div style="position:relative;margin-bottom:14px">
-    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:18px;overflow:hidden" id="setup-wrap">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:6px">
+  <div style="position:relative;margin-bottom:16px">
+    <div style="position:relative;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:16px;overflow:hidden;transition:border-color .3s" id="setup-wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:1rem">⚡</span>
-          <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick setup</span>
+          <span style="font-family:var(--mono);font-size:.85rem;font-weight:700">Quick setup</span>
         </div>
         <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">Pick your tool ↓</span>
       </div>
 
-      <div class="plat-tabs">
-        <button class="plat-tab act" onclick="showPlatform('mcp',this)">📌 MCP</button>
-        <button class="plat-tab" onclick="showPlatform('openclaw',this)">🐾 OpenClaw</button>
-        <button class="plat-tab" onclick="showPlatform('claude',this)">🤖 Claude</button>
-        <button class="plat-tab" onclick="showPlatform('python',this)">🐍 Python</button>
-        <button class="plat-tab" onclick="showPlatform('js',this)">⚡ JS</button>
-        <button class="plat-tab" onclick="showPlatform('curl',this)">💻 cURL</button>
+      <!-- Platform tabs: scroll horizontally on mobile -->
+      <div class="plat-tabs" style="overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:4px;margin-bottom:12px">
+        <button class="plat-tab act" onclick="showPlatform('mcp',this)" style="flex-shrink:0">🔌 MCP</button>
+        <button class="plat-tab" onclick="showPlatform('openclaw',this)" style="flex-shrink:0">🐾 OpenClaw</button>
+        <button class="plat-tab" onclick="showPlatform('claude',this)" style="flex-shrink:0">🤖 Claude</button>
+        <button class="plat-tab" onclick="showPlatform('python',this)" style="flex-shrink:0">🐍 Python</button>
+        <button class="plat-tab" onclick="showPlatform('js',this)" style="flex-shrink:0">⚡ JS</button>
+        <button class="plat-tab" onclick="showPlatform('curl',this)" style="flex-shrink:0">💻 cURL</button>
       </div>
 
-      <div id="ob-plat-mcp" class="code-block"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre><span style="color:var(--faint)">// claude_desktop_config.json or .cursor/mcp.json</span>
+      <!-- All code blocks: overflow-x:auto so long lines scroll instead of breaking layout -->
+      <div id="ob-plat-mcp" class="code-block" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0"><span style="color:var(--faint)">// claude_desktop_config.json or .cursor/mcp.json</span>
 {
   "mcpServers": {
     "hyperstack": {
@@ -237,47 +210,46 @@ function rStart(el){
 }
 <span style="color:var(--faint)">// Claude Desktop · Cursor · VS Code · Windsurf</span></pre></div>
 
-      <div id="ob-plat-openclaw" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre><span style="color:var(--faint)"># Add skill + set env</span>
+      <div id="ob-plat-openclaw" class="code-block hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0"><span style="color:var(--faint)"># Add skill + set env</span>
 mkdir -p skills/hyperstack
 export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
 export HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span>
 <span style="color:var(--faint)"># Agent reads SKILL.md and handles the rest</span></pre></div>
 
-      <div id="ob-plat-claude" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre><span style="color:var(--faint)"># Add to .env or shell profile</span>
+      <div id="ob-plat-claude" class="code-block hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0"><span style="color:var(--faint)"># Add to .env or shell profile</span>
 export HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
 export HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span>
 <span style="color:var(--faint)"># Tell Claude: "Use HyperStack for memory"</span></pre></div>
 
-      <div id="ob-plat-python" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre>import requests
+      <div id="ob-plat-python" class="code-block hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0">import requests
 h = {"X-API-Key": "<span style="color:var(--green)">${U.apiKey}</span>"}
 <span style="color:var(--faint)"># Store a card</span>
-requests.post("${A}/api/cards?workspace=default",
-  headers=h, json={"slug":"test","title":"Test",
-  "stack":"general","body":"It works!"})
-<span style="color:var(--faint)"># Search cards</span>
+requests.post(
+  "${A}/api/cards?workspace=default",
+  headers=h,
+  json={"slug":"test","title":"Test",
+        "stack":"general","body":"It works!"})
+<span style="color:var(--faint)"># Search</span>
 r = requests.get(
   "${A}/api/search?workspace=default&q=test",
   headers=h)</pre></div>
 
-      <div id="ob-plat-js" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre>const KEY = "<span style="color:var(--green)">${U.apiKey}</span>"
-await fetch("${A}/api/cards?workspace=default", {
-  method: "POST",
-  headers: {
-    "X-API-Key": KEY,
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    slug:"test", title:"Test",
-    stack:"general", body:"It works!"
-  })
-})</pre></div>
+      <div id="ob-plat-js" class="code-block hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0">const KEY = "<span style="color:var(--green)">${U.apiKey}</span>"
+await fetch(
+  "${A}/api/cards?workspace=default",
+  { method: "POST",
+    headers: {"X-API-Key": KEY,
+              "Content-Type": "application/json"},
+    body: JSON.stringify({slug:"test",
+      title:"Test",stack:"general",
+      body:"It works!"}) })</pre></div>
 
-      <div id="ob-plat-curl" class="code-block hidden"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-<pre>curl -X POST \\
+      <div id="ob-plat-curl" class="code-block hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="cpbtn" onclick="cpBlock(this)">Copy</button>
+<pre style="white-space:pre;min-width:0">curl -X POST \\
   "${A}/api/cards?workspace=default" \\
   -H "X-API-Key: ${U.apiKey}" \\
   -H "Content-Type: application/json" \\
@@ -286,51 +258,60 @@ await fetch("${A}/api/cards?workspace=default", {
     </div>
   </div>
 
-  <!-- Quick links -->
-  <div class="ql-grid">
-    <div class="ql-card" onclick="dt('cards')">
-      <span class="ql-icon">🃏</span>
-      <div class="ql-label">Cards</div>
+  <!-- Quick links grid — 2 cols on mobile -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px" class="ql-grid">
+    <div class="ql-card" onclick="dt('cards')"><span class="ql-icon">🃏</span><div class="ql-label">Cards</div></div>
+    <div class="ql-card" onclick="dt('key')"><span class="ql-icon">🔑</span><div class="ql-label">API Key</div></div>
+    <div class="ql-card" onclick="dt('ws')"><span class="ql-icon">📁</span><div class="ql-label">Workspaces</div></div>
+    <div class="ql-card" onclick="go('docs')"><span class="ql-icon">📖</span><div class="ql-label">Docs</div></div>
+  </div>
+
+  <!-- Plan usage bar -->
+  <div id="start-usage-bar" style="margin-top:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px 18px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap">
+      <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim)">Card usage</span>
+      <span id="start-usage-txt" style="font-family:var(--mono);font-size:.72rem;color:var(--text)">Loading...</span>
     </div>
-    <div class="ql-card" onclick="dt('key')">
-      <span class="ql-icon">🔑</span>
-      <div class="ql-label">API Key</div>
+    <div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden">
+      <div id="start-usage-fill" style="height:100%;width:0%;background:var(--accent);border-radius:3px;transition:width .6s ease"></div>
     </div>
-    <div class="ql-card" onclick="dt('ws')">
-      <span class="ql-icon">📁</span>
-      <div class="ql-label">Workspaces</div>
-    </div>
-    <div class="ql-card" onclick="go('docs')">
-      <span class="ql-icon">📖</span>
-      <div class="ql-label">Docs</div>
-    </div>
-  </div>`;
+    <div id="start-usage-sub" style="font-family:var(--mono);font-size:.65rem;color:var(--faint);margin-top:5px;text-align:right"></div>
+  </div>
+  `;
+  // Load real card count for usage bar
+  fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
+    var count=d.cards?d.cards.length:0;var limit=d.limit||10;var pct=Math.round(count/limit*100);
+    var txt=document.getElementById('start-usage-txt');var fill=document.getElementById('start-usage-fill');var sub=document.getElementById('start-usage-sub');
+    if(txt)txt.textContent=count+' / '+limit+' cards';
+    if(fill){fill.style.width=Math.min(pct,100)+'%';fill.style.background=pct>=90?'var(--red)':pct>=70?'var(--orange)':'var(--accent)'}
+    if(sub)sub.textContent=pct>=90?'Near limit — consider upgrading':pct>=70?'Getting full — '+Math.max(0,limit-count)+' remaining':''+Math.max(0,limit-count)+' cards remaining on '+d.plan+' plan'
+  }).catch(function(){var txt=document.getElementById('start-usage-txt');if(txt)txt.textContent='—'});
 }
 
-/* ═══════════════════════════════════════════
-   ðŸƒ CARDS €” Premium card grid with glow
-   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   🃏 CARDS — Premium card grid with glow
+   ═══════════════════════════════════════════ */
 function rCards(el){
-  if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}.hsc{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .3s;animation:cardIn .4s ease both}.hsc:hover{transform:translateY(-4px)}.hsc-glow{position:absolute;inset:0;opacity:.18;pointer-events:none;transition:opacity .3s;border-radius:16px}.hsc:hover .hsc-glow{opacity:.35}.hsc-border{border-radius:16px;background:linear-gradient(145deg,#1a1a24 0%,#12121a 100%);position:relative;height:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}.hsc:hover .hsc-border{border-color:rgba(255,255,255,.2);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.06)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.8rem;padding:3px 7px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ff6b6b;background:rgba(239,68,68,.15)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.fb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:.75rem;padding:6px 16px;cursor:pointer;transition:all .2s;font-weight:500}.fb:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:var(--mono);font-size:.8rem;padding:8px 16px;outline:none;width:200px;transition:all .2s}.sinput:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}.sinput::placeholder{color:rgba(255,255,255,.3)}.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em}.dh p{color:rgba(255,255,255,.4);font-size:.8rem;margin:5px 0 0}.loading-dots{display:inline-flex;gap:5px;margin-bottom:10px}.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px)}.card-expand-inner{background:#16161f;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;max-width:540px;width:92%;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
-  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸƒ Memory Cards</h1><p>Loading...</p></div><div style="display:flex;gap:6px;align-items:center"><input class="sinput" placeholder="Search cards..." oninput="fCards(this.value)"><button class="btn bp bs" onclick="showCardForm()">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div>Loading cards...</div></div>`;
+  if(!document.getElementById('hsc-styles')){var s=document.createElement('style');s.id='hsc-styles';s.textContent='.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:8px}.hsc{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .3s;animation:cardIn .4s ease both}.hsc:hover{transform:translateY(-4px)}.hsc-glow{position:absolute;inset:0;opacity:.18;pointer-events:none;transition:opacity .3s;border-radius:16px}.hsc:hover .hsc-glow{opacity:.35}.hsc-border{border-radius:16px;background:linear-gradient(145deg,#1a1a24 0%,#12121a 100%);position:relative;height:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}.hsc:hover .hsc-border{border-color:rgba(255,255,255,.2);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.hsc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.06)}.hsc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:.8rem;padding:3px 7px;border-radius:4px;transition:all .15s;z-index:2;line-height:1}.hsc-del:hover{color:#ff6b6b;background:rgba(239,68,68,.15)}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.fb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;color:rgba(255,255,255,.55);font-family:var(--mono);font-size:.75rem;padding:6px 16px;cursor:pointer;transition:all .2s;font-weight:500}.fb:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}.fb.act{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}.sinput{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:var(--mono);font-size:.8rem;padding:8px 16px;outline:none;width:200px;transition:all .2s}.sinput:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}.sinput::placeholder{color:rgba(255,255,255,.3)}.dh{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}.dh h1{font-family:var(--mono);font-size:1.3rem;font-weight:800;margin:0;color:#fff;letter-spacing:-.02em}.dh p{color:rgba(255,255,255,.4);font-size:.8rem;margin:5px 0 0}.loading-dots{display:inline-flex;gap:5px;margin-bottom:10px}.loading-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:ldot .9s ease-in-out infinite}.loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}.card-expand{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);padding:16px}.card-expand-inner{background:#16161f;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:28px;max-width:540px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.7)}@media(max-width:600px){.card-expand{padding:0;align-items:flex-end}.card-expand-inner{border-radius:18px 18px 0 0;max-height:92vh;width:100%;max-width:100%;padding:20px}}@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes ldot{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}';document.head.appendChild(s)}
+  el.innerHTML=`<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🃏 Memory Cards</h1><p id="cards-status">Loading...</p></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><input class="sinput" placeholder="🔍 Search cards..." oninput="fCards(this.value)" style="min-width:150px;flex:1"><button class="btn bp bs" onclick="showCardForm()" style="white-space:nowrap">+ New Card</button></div></div><div id="card-form-wrap"></div><div id="cl"><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div><div style="font-family:var(--mono);font-size:.78rem">Loading cards...</div></div></div>`;
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
     const cards=d.cards||[];
-    document.querySelector('.dh p').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
+    document.getElementById('cards-status').textContent=cards.length+' cards · '+d.plan+' ('+cards.length+'/'+d.limit+')';
     const cl=document.getElementById('cl');
     if(cards.length===0){cl.innerHTML=`<div style="text-align:center;padding:48px 20px">
       <div style="position:relative;display:inline-block;margin-bottom:16px">
         <div style="position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,43,.15),transparent);filter:blur(8px)"></div>
-        <span style="font-size:3rem;position:relative">ðŸƒ</span>
+        <span style="font-size:3rem;position:relative">🃏</span>
       </div>
       <h3 style="font-family:var(--mono);margin:0 0 8px;font-size:1rem">No cards yet</h3>
       <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:360px;margin-left:auto;margin-right:auto">Cards are how your agent remembers. Create one manually or let your agent create them via the API.</p>
       <div style="display:flex;gap:8px;justify-content:center">
         <button class="btn bp bs" onclick="showCardForm()">+ Create First Card</button>
-        <button class="btn bo bs" onclick="dt('start')">â† Setup Guide</button>
+        <button class="btn bo bs" onclick="dt('start')">← Setup Guide</button>
       </div>
     </div>`;return}
     const stacks=[...new Set(cards.map(c=>c.stack))];
-    const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)" style="border-color:${SC[s]||'#555'}30">${SE[s]||'ðŸ“„'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
+    const filtersHtml=`<div class="filters"><button class="fb act" onclick="fStack('all',this)">All (${cards.length})</button>${stacks.map(s=>`<button class="fb" onclick="fStack('${s}',this)" style="border-color:${SC[s]||'#555'}30">${SE[s]||'📄'} ${s} (${cards.filter(c=>c.stack===s).length})</button>`).join('')}</div>`;
     const cardsHtml=`<div class="card-grid">${cards.map((c,i)=>{
       const bc=SC[c.stack]||'#555';
       const kw=(c.keywords||[]).slice(0,3);
@@ -342,7 +323,7 @@ function rCards(el){
           <div class="hsc-header" style="border-color:${bc}25">
             <div style="display:flex;align-items:center;gap:6px">
               <div style="width:7px;height:7px;border-radius:50%;background:${bc};box-shadow:0 0 6px ${bc}"></div>
-              <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:700;text-shadow:0 0 8px ${bc}44">${(SE[c.stack]||'ðŸ“„')} ${(c.stack||'').toUpperCase()}</span>
+              <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:700;text-shadow:0 0 8px ${bc}44">${(SE[c.stack]||'📄')} ${(c.stack||'').toUpperCase()}</span>
             </div>
             <span style="font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.35)">${c.tokens||0}t</span>
           </div>
@@ -369,7 +350,7 @@ function rCards(el){
     document.getElementById('cl').innerHTML=`<div style="text-align:center;padding:30px;color:var(--red)">Failed to load: ${err.message}<br><button class="btn bo bs" style="margin-top:10px" onclick="rCards(document.getElementById('dm'))">Retry</button></div>`;
   })}
 
-function delCard(slug){fetch(A+"/api/cards?workspace=default&id="+slug,{method:"DELETE",headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(()=>rCards(document.getElementById('dm'))).catch(err=>alert("Delete failed: "+err.message))}
+function delCard(slug){fetch(A+"/api/cards?workspace=default&id="+slug,{method:"DELETE",headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(()=>{hsToast('🗑 Card deleted','ok');rCards(document.getElementById('dm'))}).catch(err=>{hsToast('Delete failed: '+err.message,'err')})}
 
 function fStack(s,b){document.querySelectorAll('.fb').forEach(x=>x.classList.remove('act'));b.classList.add('act');
   document.querySelectorAll('.hsc').forEach(e=>{e.style.display=(s==='all'||e.dataset.s===s)?'':'none'})}
@@ -380,51 +361,109 @@ function expandCard(c){const bc=SC[c.stack]||'#555';const kw=(c.keywords||[]);
   ov.innerHTML=`<div class="card-expand-inner" style="border:2px solid ${bc}44;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px ${bc}15">
     <div style="display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid ${bc}25;margin-bottom:14px">
       <div style="width:8px;height:8px;border-radius:50%;background:${bc};box-shadow:0 0 8px ${bc}"></div>
-      <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:600">${SE[c.stack]||'ðŸ“„'} ${(c.stack||'').toUpperCase()}</span>
+      <span style="font-family:var(--mono);font-size:.62rem;color:${bc};letter-spacing:.06em;font-weight:600">${SE[c.stack]||'📄'} ${(c.stack||'').toUpperCase()}</span>
       <span style="margin-left:auto;font-family:var(--mono);font-size:.55rem;color:var(--faint)">~${c.tokens||0} tokens</span>
       <button onclick="this.closest('.card-expand').remove()" style="background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px;margin-left:8px">✕</button>
     </div>
-    <div style="margin-bottom:6px">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">slug</div>
-      <div style="font-family:var(--mono);font-size:.88rem;color:var(--accent);font-weight:600">${c.slug}</div>
-    </div>
-    <div style="margin-bottom:6px">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">title</div>
-      <div style="font-size:1rem;font-weight:600;color:var(--text)">${c.title||c.slug}</div>
-    </div>
-    <div style="display:flex;gap:16px;margin-bottom:10px">
-      <div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">stack</div>
-        <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'ðŸ“„'} ${c.stack}</span>
+    <div id="card-view-mode">
+      <div style="margin-bottom:6px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">slug</div>
+        <div style="font-family:var(--mono);font-size:.88rem;color:var(--accent);font-weight:600">${c.slug}</div>
       </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">keywords</div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">${kw.map(k=>`<span style="font-family:var(--mono);font-size:.62rem;background:${bc}10;color:${bc};padding:2px 8px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}</div>
+      <div style="margin-bottom:6px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">title</div>
+        <div style="font-size:1rem;font-weight:600;color:var(--text)">${c.title||c.slug}</div>
       </div>
-    </div>
-    <div style="margin-bottom:14px">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">body</div>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
-        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap">${(c.body||'').replace(/</g,'&lt;')}</pre>
+      <div style="display:flex;gap:16px;margin-bottom:10px">
+        <div>
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">stack</div>
+          <span style="font-family:var(--mono);font-size:.72rem;background:${bc}12;color:${bc};padding:3px 10px;border-radius:6px;border:1px solid ${bc}25">${SE[c.stack]||'📄'} ${c.stack}</span>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">keywords</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">${kw.map(k=>`<span style="font-family:var(--mono);font-size:.62rem;background:${bc}10;color:${bc};padding:2px 8px;border-radius:4px;border:1px solid ${bc}20">${k}</span>`).join('')}</div>
+        </div>
       </div>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)">
-      <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} · ${c.updated||'just now'}</span>
-      <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3);font-size:.72rem" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">Delete</button>
+      <div style="margin-bottom:14px">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">body</div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px">
+          <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.7;margin:0;white-space:pre-wrap">${(c.body||'').replace(/</g,'&lt;')}</pre>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)">
+        <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint)">v${c.ver||1} · ${c.updated||'just now'}</span>
+        <div style="display:flex;gap:8px">
+          <button class="btn bo bs" style="font-size:.72rem" onclick="_editCardInline(${JSON.stringify(c).replace(/"/g,'&quot;')},this.closest('.card-expand'))">✏️ Edit</button>
+          <button class="btn bo bs" style="color:var(--red);border-color:rgba(239,68,68,.3);font-size:.72rem" onclick="if(confirm('Delete ${c.slug}?')){delCard('${c.slug}');this.closest('.card-expand').remove()}">Delete</button>
+        </div>
+      </div>
     </div>
   </div>`;
   document.body.appendChild(ov)}
 
-function cpKey(btn){navigator.clipboard.writeText(U.apiKey);btn.textContent='✓ Copied';btn.classList.add('copied-btn');
+function _editCardInline(c,modal){
+  var inner=modal.querySelector('#card-view-mode');
+  var bc=SC[c.stack]||'#555';
+  inner.innerHTML=`
+    <div style="margin-bottom:10px">
+      <div style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">slug <span style="color:var(--faint);font-size:.5rem">(read-only)</span></div>
+      <div style="font-family:var(--mono);font-size:.88rem;color:var(--accent);font-weight:600">${c.slug}</div>
+    </div>
+    <div style="margin-bottom:8px">
+      <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">title</label>
+      <input id="ec-title" class="card-edit-field" value="${(c.title||'').replace(/"/g,'&quot;')}">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <div>
+        <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">stack</label>
+        <select id="ec-stack" class="card-edit-field" style="cursor:pointer">
+          ${['projects','people','decisions','preferences','workflows','general'].map(s=>`<option value="${s}"${c.stack===s?' selected':''}>${SE[s]||'📄'} ${s}</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">keywords</label>
+        <input id="ec-kw" class="card-edit-field" value="${(c.keywords||[]).join(', ')}">
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-family:var(--mono);font-size:.58rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:4px">body</label>
+      <textarea id="ec-body" class="card-edit-field" rows="5" style="resize:vertical">${(c.body||'').replace(/</g,'&lt;')}</textarea>
+    </div>
+    <div id="ec-err" style="font-family:var(--mono);font-size:.72rem;color:var(--red);display:none;margin-bottom:8px"></div>
+    <div style="display:flex;gap:8px;padding-top:12px;border-top:1px solid var(--border)">
+      <button class="btn bp bs" style="font-size:.72rem" id="ec-save-btn" onclick="_saveCard('${c.slug}',this.closest('.card-expand'))">💾 Save changes</button>
+      <button class="btn bo bs" style="font-size:.72rem" onclick="this.closest('.card-expand').remove();rCards(document.getElementById('dm'))">Cancel</button>
+    </div>
+  `;}
+
+function _saveCard(slug,modal){
+  var title=document.getElementById('ec-title').value.trim();
+  var stack=document.getElementById('ec-stack').value;
+  var kw=document.getElementById('ec-kw').value.split(',').map(s=>s.trim()).filter(Boolean);
+  var body=document.getElementById('ec-body').value.trim();
+  var err=document.getElementById('ec-err');
+  var btn=document.getElementById('ec-save-btn');
+  if(!title||!body){err.textContent='Title and body are required';err.style.display='block';return}
+  btn.textContent='Saving...';btn.disabled=true;err.style.display='none';
+  fetch(A+"/api/cards?workspace=default",{method:"POST",headers:{"X-API-Key":U.apiKey,"Content-Type":"application/json"},
+    body:JSON.stringify({slug,title,stack,keywords:kw,body})})
+  .then(r=>r.json()).then(d=>{
+    if(d.error){err.textContent=d.error;err.style.display='block';btn.textContent='Save changes';btn.disabled=false;return}
+    modal.remove();rCards(document.getElementById('dm'));hsToast('✓ Card updated','ok');
+  }).catch(e=>{err.textContent='Failed: '+e.message;err.style.display='block';btn.textContent='Save changes';btn.disabled=false})}
+
+
+
+function cpKey(btn){navigator.clipboard.writeText(U.apiKey).then(function(){hsToast('✓ API key copied to clipboard','ok')}).catch(function(){});
+  btn.textContent='✓ Copied';btn.classList.add('copied-btn');
   setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied-btn')},2000);
-function rgKey(btn){if(!confirm("Regenerate your API key? Your old key will stop working immediately."))return;btn.textContent="...";btn.disabled=true;fetch(A+"/api/auth?action=regenerate-key",{method:"POST",headers:{"Authorization":"Bearer "+T}}).then(r=>r.json()).then(d=>{if(d.apiKey){U.apiKey=d.apiKey;document.querySelectorAll("code").forEach(el=>{if(el.textContent.startsWith("hs_"))el.textContent=d.apiKey});btn.textContent="Regenerate";btn.disabled=false;alert("New key: "+d.apiKey)}else{btn.textContent="Regenerate";btn.disabled=false;alert(d.error||"Failed")}}).catch(()=>{btn.textContent="Regenerate";btn.disabled=false;alert("Request failed")})}
   const s2=document.getElementById('obs-2'),s3=document.getElementById('obs-3');
   if(s2){s2.classList.add('done');s2.classList.remove('active');s2.querySelector('.num').textContent='✓'}
   if(s3)s3.classList.add('active')}
 
 function cpBlock(btn){const pre=btn.parentElement.querySelector('pre');
-  navigator.clipboard.writeText(pre.textContent);btn.textContent='✓ Copied';
-  setTimeout(()=>{btn.textContent='Copy'},2000)}
+  navigator.clipboard.writeText(pre.textContent).then(function(){hsToast('✓ Copied to clipboard','ok')}).catch(function(){});
+  btn.textContent='✓ Copied';setTimeout(()=>{btn.textContent='Copy'},2000)}
 
 function showCardForm(){const w=document.getElementById('card-form-wrap');
   if(w.innerHTML){w.innerHTML='';return}
@@ -441,8 +480,8 @@ function showCardForm(){const w=document.getElementById('card-form-wrap');
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div class="fg"><label>Stack</label><select id="cf-stack" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:var(--mono);font-size:.88rem;outline:none">
-          <option value="projects">ðŸ“¦ projects</option><option value="people">ðŸ‘¤ people</option><option value="decisions">âš–ï¸ decisions</option>
-          <option value="preferences">âš™ï¸ preferences</option><option value="workflows">ðŸ”„ workflows</option><option value="general" selected>ðŸ“„ general</option>
+          <option value="projects">📦 projects</option><option value="people">👤 people</option><option value="decisions">⚖️ decisions</option>
+          <option value="preferences">⚙️ preferences</option><option value="workflows">🔄 workflows</option><option value="general" selected>📄 general</option>
         </select></div>
         <div class="fg"><label>Keywords (comma-separated)</label><input id="cf-kw" placeholder="react, vercel, auth"></div>
       </div>
@@ -457,68 +496,123 @@ function createCard(){const slug=document.getElementById('cf-slug').value.trim()
   body=document.getElementById('cf-body').value.trim(),err=document.getElementById('cf-err');
   err.classList.add('hidden');
   if(!slug||!title||!body){err.textContent='Fill in slug, title, and body';err.classList.remove('hidden');return}
+  var btn=document.querySelector('[onclick="createCard()"]');if(btn){btn.textContent='Creating...';btn.disabled=true}
   fetch(A+"/api/cards?workspace=default",{method:"POST",headers:{"X-API-Key":U.apiKey,"Content-Type":"application/json"},
     body:JSON.stringify({slug,title,stack,keywords:kw,body})}).then(r=>r.json()).then(d=>{
-    if(d.error){err.textContent=d.error;err.classList.remove('hidden');return}
-    document.getElementById('card-form-wrap').innerHTML='';rCards(document.getElementById('dm'));
-  }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden')})}
+    if(d.error){err.textContent=d.error;err.classList.remove('hidden');if(btn){btn.textContent='Create Card →';btn.disabled=false}return}
+    document.getElementById('card-form-wrap').innerHTML='';
+    hsToast('✓ Card "'+slug+'" created','ok');
+    rCards(document.getElementById('dm'));
+  }).catch(e=>{err.textContent='Failed: '+e.message;err.classList.remove('hidden');if(btn){btn.textContent='Create Card →';btn.disabled=false}})}
 
-/* ═══════════════════════════════════════════
-   ðŸ”‘ API KEY €” Premium display
-   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   🔑 API KEY — Premium display
+   ═══════════════════════════════════════════ */
 function rKey(el){el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ”‘ API Key</h1><p>Use this key in any agent or integration</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🔑 API Key</h1><p>Use this key in any agent or integration</p></div></div>
 
   <div style="position:relative;margin-bottom:16px">
     <div style="position:absolute;inset:-2px;border-radius:14px;background:linear-gradient(135deg,rgba(255,107,43,.3),rgba(168,85,247,.2));opacity:.25;filter:blur(16px)"></div>
     <div style="position:relative;background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:20px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite"></div>
         <span style="font-family:var(--mono);font-size:.65rem;color:var(--accent);letter-spacing:.06em;font-weight:600">ACTIVE KEY</span>
         <span style="font-family:var(--mono);font-size:.55rem;color:var(--faint);margin-left:auto">workspace: default</span>
       </div>
       <div class="key-display">
         <code>${U.apiKey}</code>
-        <button onclick="navigator.clipboard.writeText('${U.apiKey}');this.textContent='✓ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
-        <button onclick="rgKey(this)" style="margin-left:8px;background:transparent;border:1px solid var(--dim);color:var(--dim);font-size:.75rem;padding:4px 10px;border-radius:6px;cursor:pointer">Regenerate</button>
+        <button onclick="navigator.clipboard.writeText('${U.apiKey}').then(function(){hsToast('✓ API key copied','ok')});this.textContent='✓ Copied';this.classList.add('copied-btn');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied-btn')},2000)">Copy</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;color:var(--faint)"><span style="color:var(--green)">●</span> Never expires</div>
+        <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;color:var(--faint)"><span style="color:var(--green)">●</span> X-API-Key header</div>
+        <div style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;color:var(--faint)"><span style="color:var(--orange)">●</span> Keep secret</div>
       </div>
     </div>
   </div>
 
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">ðŸ“‹</span>
+      <span style="font-size:1rem">📋</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Environment variables</span>
     </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative">
-      <button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-      <pre style="font-family:var(--mono);font-size:.8rem;color:var(--dim);margin:0;line-height:1.8">HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+      <div style="display:flex;justify-content:flex-end;padding:6px 8px;border-bottom:1px solid var(--border)">
+        <button class="cpbtn" style="position:static" onclick="cpBlock(this)">Copy</button>
+      </div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;padding:12px 14px">
+        <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);margin:0;line-height:1.8;white-space:pre">HYPERSTACK_API_KEY=<span style="color:var(--green)">${U.apiKey}</span>
 HYPERSTACK_WORKSPACE=<span style="color:var(--green)">default</span></pre>
+      </div>
     </div>
   </div>
 
-  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">ðŸ§ª</span>
-      <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Quick test</span>
-      <span style="font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-left:auto">paste in terminal</span>
+  <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:1rem">🧪</span>
+        <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Live connection test</span>
+      </div>
+      <button class="btn bo bs" style="font-size:.72rem" id="key-test-btn" onclick="_testApiKey()">Run test</button>
     </div>
-    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative">
-      <button class="cpbtn" onclick="cpBlock(this)">Copy</button>
-      <pre style="font-family:var(--mono);font-size:.78rem;color:var(--dim);line-height:1.8;margin:0"><span style="color:var(--accent)">curl</span> <span style="color:var(--green)">"${A}/api/cards?workspace=default"</span> \\
+    <div id="key-test-result" style="display:none;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:var(--mono);font-size:.75rem;color:var(--dim);line-height:1.8;word-break:break-all"></div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-top:10px">
+      <div style="display:flex;justify-content:flex-end;padding:6px 8px;border-bottom:1px solid var(--border)">
+        <button class="cpbtn" style="position:static" onclick="cpBlock(this)">Copy</button>
+      </div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;padding:12px 14px">
+        <pre style="font-family:var(--mono);font-size:.75rem;color:var(--dim);line-height:1.8;margin:0;white-space:pre"><span style="color:var(--accent)">curl</span> \
+  <span style="color:var(--green)">"${A}/api/cards?workspace=default"</span> \
   -H <span style="color:var(--green)">"X-API-Key: ${U.apiKey}"</span></pre>
+      </div>
     </div>
-  </div>`}
+  </div>
 
-/* ═══════════════════════════════════════════
+  <div style="background:rgba(239,68,68,.03);border:1.5px solid rgba(239,68,68,.15);border-radius:14px;padding:16px 20px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span style="font-size:.9rem">⚠️</span>
+      <span style="font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--red)">Security reminders</span>
+    </div>
+    <div style="font-size:.78rem;color:var(--dim);line-height:1.7">Never commit your key to git · Store in <code style="color:var(--accent);font-family:var(--mono)">.env</code> files (add to <code style="color:var(--accent);font-family:var(--mono)">.gitignore</code>) · The key grants full access to your cards</div>
+  </div>
+  <style>@keyframes pulse{0%,100%{box-shadow:0 0 8px var(--green)}50%{box-shadow:0 0 16px var(--green),0 0 24px rgba(34,197,94,.3)}}</style>`;
+}
+
+function _testApiKey(){
+  var btn=document.getElementById('key-test-btn');
+  var result=document.getElementById('key-test-result');
+  btn.textContent='Testing...';btn.disabled=true;result.style.display='block';
+  result.style.borderColor='var(--border)';result.innerHTML='<span style="color:var(--dim)">Connecting to API...</span>';
+  var t0=Date.now();
+  fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}})
+  .then(function(r){return r.json().then(function(d){return{ok:r.ok,status:r.status,d:d}})})
+  .then(function(res){
+    var ms=Date.now()-t0;
+    if(res.ok){
+      result.style.borderColor='rgba(68,255,136,.3)';
+      result.innerHTML='<span style="color:var(--green)">✓ Connected</span> · '+ms+'ms · '+((res.d.cards||[]).length)+' cards loaded · '+res.d.plan+' plan';
+    }else{
+      result.style.borderColor='rgba(239,68,68,.3)';
+      result.innerHTML='<span style="color:var(--red)">✗ Error '+res.status+'</span> · '+(res.d.error||'Unknown error');
+    }
+    btn.textContent='Run test';btn.disabled=false;
+  })
+  .catch(function(e){
+    result.style.borderColor='rgba(239,68,68,.3)';
+    result.innerHTML='<span style="color:var(--red)">✗ Network error</span> · '+e.message;
+    btn.textContent='Run test';btn.disabled=false;
+  });
+}
+
+/* ═══════════════════════════════════════════
    UNCHANGED TABS (Phase 2)
-   ═══════════════════════════════════════════ */
-/* ═══════════════════════════════════════════
-   ðŸ“ WORKSPACES €” Premium display
-   ═══════════════════════════════════════════ */
+   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   📁 WORKSPACES — Premium display
+   ═══════════════════════════════════════════ */
 function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“ Workspaces</h1><p>${pro?'Unlimited workspaces':'1 workspace'} on ${U.plan} plan</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📁 Workspaces</h1><p>${pro?'Unlimited workspaces':'1 workspace'} on ${U.plan} plan</p></div></div>
 
   <!-- Active workspace card with glow -->
   <div style="position:relative;margin-bottom:16px">
@@ -526,7 +620,7 @@ function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
     <div style="position:relative;background:var(--surface);border:2px solid rgba(34,197,94,.3);border-radius:14px;padding:20px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
         <div style="display:flex;align-items:center;gap:10px">
-          <div style="width:36px;height:36px;border-radius:10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;font-size:18px">ðŸ“</div>
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;font-size:18px">📁</div>
           <div>
             <div style="font-family:var(--mono);font-weight:700;font-size:.95rem">default</div>
             <div style="font-family:var(--mono);font-size:.7rem;color:var(--dim)">Primary workspace</div>
@@ -562,49 +656,43 @@ function rWs(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   </div>`:`
   <div style="position:relative;margin-bottom:16px">
     <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:28px;text-align:center">
-      <div style="font-size:1.8rem;margin-bottom:10px">ðŸ”’</div>
+      <div style="font-size:1.8rem;margin-bottom:10px">🔒</div>
       <h3 style="font-family:var(--mono);font-size:.92rem;font-weight:700;margin-bottom:6px">Multiple workspaces require Pro</h3>
       <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Separate workspaces per project so your agent only sees what's relevant. Zero cross-contamination.</p>
       <div style="display:flex;gap:8px;justify-content:center">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp bs">Upgrade €” $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg bs">Team €” $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp bs">Upgrade — $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg bs">Team — $59/mo</a>
       </div>
     </div>
   </div>`}`}
 
-/* ═══════════════════════════════════════════
-   ðŸ‘¥ TEAM €” Premium display
-   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   👥 TEAM — Premium display
+   ═══════════════════════════════════════════ */
 function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ‘¥ Team</h1><p>Shared memory across your team</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
   <div style="position:relative;margin-bottom:16px">
-    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
-      <div style="font-size:2rem;margin-bottom:12px">ðŸ‘¥</div>
-      <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Team Memory requires Pro</h3>
-      <p style="color:var(--dim);font-size:.85rem;margin-bottom:8px;max-width:400px;margin-left:auto;margin-right:auto">When Alice's agent learns something, Bob's agent knows it too. Shared cards sync instantly across your entire team.</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px auto;max-width:420px">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">ðŸ”„</div>
-          <div style="font-size:.7rem;color:var(--dim)">Instant sync</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">ðŸ”’</div>
-          <div style="font-size:.7rem;color:var(--dim)">Private cards stay private</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center">
-          <div style="font-size:1.2rem;margin-bottom:4px">ðŸ‘¤</div>
-          <div style="font-size:.7rem;color:var(--dim)">Up to 20 members</div>
-        </div>
+    <div style="position:absolute;inset:-2px;border-radius:16px;background:linear-gradient(135deg,rgba(168,85,247,.3),rgba(59,130,246,.2));opacity:.2;filter:blur(20px)"></div>
+    <div style="position:relative;background:var(--surface);border:2px solid rgba(168,85,247,.2);border-radius:14px;padding:32px 24px;text-align:center">
+      <div style="display:flex;justify-content:center;gap:-8px;margin-bottom:16px">
+        ${['A','B','C'].map((l,i)=>`<div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,${['#a855f7','#3b82f6','#22c55e'][i]},${['#7c3aed','#1d4ed8','#16a34a'][i]});display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:.9rem;color:#fff;border:2px solid var(--surface);margin-left:${i>0?'-8px':'0'}">${l}</div>`).join('')}
       </div>
-      <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade €” $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team €” $59/mo</a>
+      <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Team Memory requires Pro</h3>
+      <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:380px;margin-left:auto;margin-right:auto">When Alice's agent learns something, Bob's agent knows it too. Zero sync delay. Zero duplication.</p>
+      <div style="display:flex;gap:24px;justify-content:center;margin-bottom:20px">
+        <div style="text-align:center"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--purple)">∞</div><div style="font-family:var(--mono);font-size:.62rem;color:var(--dim)">Instant sync</div></div>
+        <div style="text-align:center"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:#3b82f6">20</div><div style="font-family:var(--mono);font-size:.62rem;color:var(--dim)">Max members</div></div>
+        <div style="text-align:center"><div style="font-family:var(--mono);font-size:1.3rem;font-weight:800;color:var(--green)">0</div><div style="font-family:var(--mono);font-size:.62rem;color:var(--dim)">LLM calls</div></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center">
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade — $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team — $59/mo</a>
       </div>
     </div>
   </div>`;return}
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ‘¥ Team</h1><p>Shared memory across your team</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">👥 Team</h1><p>Shared memory across your team</p></div></div>
 
   <!-- Team members -->
   <div style="position:relative;margin-bottom:16px">
@@ -628,23 +716,23 @@ function rTeam(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS
 
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:18px;border-left:3px solid var(--accent)">
     <div style="display:flex;align-items:start;gap:10px">
-      <span style="font-size:1rem;flex-shrink:0">ðŸ’¡</span>
+      <span style="font-size:1rem;flex-shrink:0">💡</span>
       <div>
         <div style="font-family:var(--mono);font-size:.82rem;font-weight:600;margin-bottom:4px">How team sharing works</div>
-        <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin:0">Set any card to <strong style="color:var(--text)">shared</strong> and it syncs to every team member's workspace. Private cards stay private €” only you can see them.</p>
+        <p style="color:var(--dim);font-size:.82rem;line-height:1.6;margin:0">Set any card to <strong style="color:var(--text)">shared</strong> and it syncs to every team member's workspace. Private cards stay private — only you can see them.</p>
       </div>
     </div>
   </div>`}
 
-/* ═══════════════════════════════════════════
-   ðŸ“Š ANALYTICS €” Premium display
-   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   📊 ANALYTICS — Premium display
+   ═══════════════════════════════════════════ */
 function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINESS";
   if(!pro){el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Track your agent's memory usage</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Track your agent's memory usage</p></div></div>
   <div style="position:relative;margin-bottom:16px">
     <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
-      <div style="font-size:2rem;margin-bottom:12px">ðŸ“Š</div>
+      <div style="font-size:2rem;margin-bottom:12px">📊</div>
       <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Analytics requires Pro</h3>
       <p style="color:var(--dim);font-size:.85rem;margin-bottom:8px;max-width:400px;margin-left:auto;margin-right:auto">Track token savings, find stale cards, see usage patterns, and measure how much money your agent is saving you.</p>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px auto;max-width:480px">
@@ -657,23 +745,23 @@ function rStats(el){const pro=U.plan==="PRO"||U.plan==="TEAM"||U.plan==="BUSINES
           <div style="font-size:.6rem;color:var(--faint)">Saved/mo</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
-          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">ðŸ“ˆ</div>
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">📈</div>
           <div style="font-size:.6rem;color:var(--faint)">Usage trends</div>
         </div>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
-          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">âš ï¸</div>
+          <div style="font-family:var(--mono);font-weight:800;font-size:1rem">⚠️</div>
           <div style="font-size:.6rem;color:var(--faint)">Stale alerts</div>
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade €” $29/mo</a>
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team €” $59/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade — $29/mo</a>
+        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/00wcN59Ln6Li45b01JeUU06?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bg">Team — $59/mo</a>
       </div>
     </div>
   </div>`;return}
 
   // Fetch real cards from API for analytics
-  el.innerHTML='<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Loading analytics...</p></div></div><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
+  el.innerHTML='<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Loading analytics...</p></div></div><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
   fetch(A+"/api/cards?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(function(r){return r.json()}).then(function(d){
     _renderStats(el,d.cards||[]);
   }).catch(function(){_renderStats(el,[])})}
@@ -701,9 +789,16 @@ function _renderStats(el,cards){
     return (now-updated)>(21*24*60*60*1000);
   });
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">ðŸ“Š Analytics</h1><p>Your agent's memory performance</p></div></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">📊 Analytics</h1><p>Your agent's memory performance</p></div></div>
 
-  <!-- Stats grid with 2D glow €” click any number to see how it's calculated -->
+  ${totalCards===0?`<div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:32px;text-align:center;margin-bottom:16px">
+    <div style="font-size:2rem;margin-bottom:12px">📈</div>
+    <h3 style="font-family:var(--mono);font-size:.95rem;font-weight:700;margin-bottom:8px">No cards yet — add some to see analytics</h3>
+    <p style="color:var(--dim);font-size:.82rem;margin-bottom:16px;max-width:380px;margin-left:auto;margin-right:auto">Once your agent starts creating cards, you'll see token savings, stale card alerts, and usage trends here.</p>
+    <button class="btn bp bs" onclick="dt('cards')">→ Create your first card</button>
+  </div>`:''}
+
+  <!-- Stats grid with 2D glow — click any number to see how it's calculated -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
     <div style="position:relative;cursor:pointer" onclick="toggleExplain('exp-savings')">
       <div style="position:absolute;inset:-2px;border-radius:14px;background:rgba(34,197,94,.2);filter:blur(12px);animation:glowPulse 3s ease-in-out infinite"></div>
@@ -741,15 +836,15 @@ function _renderStats(el,cards){
 
   <!-- Expandable explanation panels -->
   <div id="exp-savings" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--green);margin-bottom:8px">ðŸ“ How Token Savings is calculated</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--green);margin-bottom:8px">📐 How Token Savings is calculated</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Without HyperStack: <strong style="color:var(--red)">~6,000 tokens/msg</strong> (full chat history in context)<br>
-      With HyperStack: <strong style="color:var(--green)">~${tokensWith} tokens/msg</strong> (avg ${avgTokensPerCard} tokens/card Ã— 2 cards retrieved)<br>
-      Savings: <strong style="color:var(--green)">(6,000 - ${tokensWith}) Ã· 6,000 = ${savingsPct}%</strong>
+      With HyperStack: <strong style="color:var(--green)">~${tokensWith} tokens/msg</strong> (avg ${avgTokensPerCard} tokens/card × 2 cards retrieved)<br>
+      Savings: <strong style="color:var(--green)">(6,000 - ${tokensWith}) ÷ 6,000 = ${savingsPct}%</strong>
     </div>
   </div>
   <div id="exp-cards" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(136,136,200,.15);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:8px">ðŸƒ Total Cards</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:8px">🃏 Total Cards</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Cards in your default workspace: <strong>${totalCards}</strong><br>
       Total tokens stored: <strong>${totalTokens.toLocaleString()}</strong><br>
@@ -757,21 +852,21 @@ function _renderStats(el,cards){
     </div>
   </div>
   <div id="exp-saved" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(255,107,43,.15);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--accent);margin-bottom:8px">ðŸ’° How Monthly Savings is calculated</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--accent);margin-bottom:8px">💰 How Monthly Savings is calculated</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Tokens saved per message: <strong style="color:var(--green)">${savedPerMsg.toLocaleString()}</strong><br>
       Estimated messages/day: <strong>30</strong> (typical agent workload)<br>
-      Monthly messages: <strong>30 Ã— 30 = 900</strong><br>
+      Monthly messages: <strong>30 × 30 = 900</strong><br>
       Cost per 1K tokens: <strong>$0.003</strong> (Claude avg input price)<br>
-      Formula: <strong>${savedPerMsg.toLocaleString()} Ã— 900 Ã— $0.003 / 1000 = $${monthlySavings}</strong>
+      Formula: <strong>${savedPerMsg.toLocaleString()} × 900 × $0.003 / 1000 = $${monthlySavings}</strong>
     </div>
   </div>
   <div id="exp-stale" class="stat-explain hidden" style="background:var(--surface);border:1px solid rgba(234,179,8,.15);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--yellow);margin-bottom:8px">âš ï¸ Stale Cards</div>
+    <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--yellow);margin-bottom:8px">⚠️ Stale Cards</div>
     <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);line-height:1.8">
       Cards not updated in <strong>21+ days</strong> may have outdated info.<br>
       Found: <strong>${staleCards.length}</strong> stale card${staleCards.length===1?'':'s'} out of ${totalCards} total.<br>
-      ${staleCards.length>0?'Review them below to keep your agent\'s memory accurate.':'Your memory is fresh €” all cards updated recently.'}
+      ${staleCards.length>0?'Review them below to keep your agent\'s memory accurate.':'Your memory is fresh — all cards updated recently.'}
     </div>
   </div>
 
@@ -784,7 +879,7 @@ function _renderStats(el,cards){
   <!-- Token comparison -->
   <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
-      <span style="font-size:1rem">âš¡</span>
+      <span style="font-size:1rem">⚡</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Token Usage Per Message</span>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
@@ -805,125 +900,20 @@ function _renderStats(el,cards){
   <!-- Stale cards alert -->
   <div style="background:var(--surface);border:2px solid rgba(234,179,8,.2);border-radius:14px;padding:20px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:1rem">âš ï¸</span>
+      <span style="font-size:1rem">⚠️</span>
       <span style="font-family:var(--mono);font-size:.88rem;font-weight:700">Stale Cards</span>
       <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">Cards not updated in 21+ days</span>
     </div>
-    ${staleCards.length===0?'<div style="text-align:center;padding:16px;color:var(--dim);font-size:.82rem">âœ… No stale cards. Your memory is fresh!</div>':staleCards.map(function(c){
+    ${staleCards.length===0?'<div style="text-align:center;padding:16px;color:var(--dim);font-size:.82rem">✅ No stale cards. Your memory is fresh!</div>':staleCards.map(function(c){
       var days=Math.floor((now-new Date(c.updatedAt||c.createdAt||now).getTime())/(24*60*60*1000));
       return '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-bottom:6px"><div style="width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 6px var(--yellow)"></div><div style="flex:1"><span style="font-family:var(--mono);font-size:.82rem;font-weight:600">'+c.slug+'</span><span style="font-size:.78rem;color:var(--dim);margin-left:8px">'+c.title+'</span></div><span style="font-family:var(--mono);font-size:.65rem;background:rgba(234,179,8,.1);color:var(--yellow);padding:3px 10px;border-radius:6px;border:1px solid rgba(234,179,8,.2);font-weight:600">'+days+' days</span></div>'}).join('')}
     <p style="font-size:.72rem;color:var(--faint);margin-top:8px;text-align:center">${staleCards.length>0?'Stale cards may contain outdated info. Consider reviewing or archiving them.':'All cards updated within the last 21 days.'}</p>
   </div>`}
 
 
-
-
-/* ═══════════════════════════════════════════════════
-   🤖 AGENT TOKENS
-   ═══════════════════════════════════════════════════ */
-function rAgent(el){
-  const team=U.plan==="TEAM"||U.plan==="BUSINESS";
-  if(!team){
-    el.innerHTML=`
-    <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agent Tokens</h1><p>Scoped permissions per agent</p></div></div>
-    <div style="background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:36px 28px;text-align:center">
-      <div style="font-size:2rem;margin-bottom:12px">🔐</div>
-      <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">Agent Tokens require Team plan</h3>
-      <p style="color:var(--dim);font-size:.85rem;margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto">Give each agent its own scoped token. Control exactly what each agent can read and write.</p>
-      <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
-        <a href="javascript:void(0)" onclick="window.open('https://buy.stripe.com/dRmfZhcXzc5CgRX4hZeUU07?prefilled_email='+encodeURIComponent(U.email),'_blank')" class="btn bp">Upgrade to Team — $59/mo</a>
-      </div>
-    </div>`;return}
-
-  el.innerHTML='<div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agent Tokens</h1><p>Loading tokens...</p></div></div><div style="text-align:center;padding:40px;color:var(--dim)"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
-  fetch(A+"/api/agent-tokens?workspace=default",{headers:{"X-API-Key":U.apiKey}}).then(r=>r.json()).then(d=>{
-    const tokens=d.tokens||[];
-    el.innerHTML=`
-    <div class="dh">
-      <div><h1 style="display:flex;align-items:center;gap:10px">🤖 Agent Tokens</h1><p>${tokens.length} scoped token${tokens.length!==1?'s':''}</p></div>
-      <button class="btn bp bs" onclick="showAgentTokenForm()">+ New Token</button>
-    </div>
-    <div id="agent-token-form-wrap"></div>
-    <div id="agent-token-list">${tokens.length===0?
-      '<div style="text-align:center;padding:40px;color:var(--dim);font-size:.85rem">No agent tokens yet. Create one to give an agent scoped access.</div>':
-      tokens.map(t=>`
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px">
-          <div style="flex:1">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-              <span style="font-family:var(--mono);font-weight:700;font-size:.88rem">${t.name}</span>
-              <span style="font-family:var(--mono);font-size:.62rem;background:rgba(255,107,43,.1);color:var(--accent);padding:2px 8px;border-radius:4px;border:1px solid rgba(255,107,43,.2)">${t.agentId}</span>
-            </div>
-            <div style="font-family:var(--mono);font-size:.7rem;color:var(--faint);margin-bottom:6px">
-              <code style="color:var(--accent);font-size:.68rem">${t.token}</code>
-            </div>
-            <div style="font-size:.7rem;color:var(--faint)">
-              Read: <span style="color:var(--dim)">${t.canRead.join(', ')}</span> &nbsp;|&nbsp;
-              Write: <span style="color:var(--dim)">${t.canWrite.join(', ')}</span> &nbsp;|&nbsp;
-              Stacks: <span style="color:var(--dim)">${t.allowedStacks.join(', ')}</span>
-            </div>
-          </div>
-          <button onclick="deleteAgentToken('${t.id}')" style="background:none;border:1px solid rgba(239,68,68,.3);color:var(--red);font-family:var(--mono);font-size:.7rem;padding:4px 10px;border-radius:6px;cursor:pointer">Revoke</button>
-        </div>
-      `).join('')
-    }</div>`;
-  }).catch(()=>{})
-}
-
-function showAgentTokenForm(){
-  const wrap=document.getElementById('agent-token-form-wrap');if(!wrap)return;
-  wrap.innerHTML=`
-  <div style="background:var(--surface);border:2px solid rgba(255,107,43,.3);border-radius:14px;padding:20px;margin-bottom:16px">
-    <div style="font-family:var(--mono);font-size:.75rem;font-weight:700;margin-bottom:14px;color:var(--accent)">New Agent Token</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-      <div><label style="font-family:var(--mono);font-size:.7rem;color:var(--dim);display:block;margin-bottom:4px">Name</label>
-        <input id="at-name" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none" placeholder="e.g. Researcher Agent"></div>
-      <div><label style="font-family:var(--mono);font-size:.7rem;color:var(--dim);display:block;margin-bottom:4px">Agent ID</label>
-        <input id="at-agent" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none" placeholder="e.g. researcher"></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
-      <div><label style="font-family:var(--mono);font-size:.7rem;color:var(--dim);display:block;margin-bottom:4px">Can Read</label>
-        <input id="at-read" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none" value="*"></div>
-      <div><label style="font-family:var(--mono);font-size:.7rem;color:var(--dim);display:block;margin-bottom:4px">Can Write</label>
-        <input id="at-write" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none" value="*"></div>
-      <div><label style="font-family:var(--mono);font-size:.7rem;color:var(--dim);display:block;margin-bottom:4px">Stacks</label>
-        <input id="at-stacks" style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:.8rem;outline:none" value="*"></div>
-    </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn bp" onclick="createAgentToken()">Create Token</button>
-      <button class="btn bo" onclick="document.getElementById('agent-token-form-wrap').innerHTML=''">Cancel</button>
-    </div>
-  </div>`;
-}
-
-function createAgentToken(){
-  const name=document.getElementById('at-name').value.trim();
-  const agentId=document.getElementById('at-agent').value.trim();
-  const canRead=document.getElementById('at-read').value.trim();
-  const canWrite=document.getElementById('at-write').value.trim();
-  const allowedStacks=document.getElementById('at-stacks').value.trim();
-  if(!name||!agentId){alert('Name and Agent ID required');return}
-  const toArr=v=>v==='*'?['*']:v.split(',').map(s=>s.trim()).filter(Boolean);
-  fetch(A+"/api/agent-tokens?workspace=default",{method:'POST',headers:{'X-API-Key':U.apiKey,'Content-Type':'application/json'},
-    body:JSON.stringify({name,agentId,canRead:toArr(canRead),canWrite:toArr(canWrite),allowedStacks:toArr(allowedStacks)})
-  }).then(r=>r.json()).then(d=>{
-    if(d.error){alert('Error: '+d.error);return}
-    alert('Token created!\n\n'+d.token+'\n\nStore this securely — it will not be shown again.');
-    dt('agent');
-  }).catch(()=>alert('Network error'))
-}
-
-function deleteAgentToken(id){
-  if(!confirm('Revoke this token? This cannot be undone.'))return;
-  fetch(A+"/api/agent-tokens?workspace=default&id="+id,{method:'DELETE',headers:{'X-API-Key':U.apiKey}})
-    .then(r=>r.json()).then(d=>{if(d.error){alert('Error: '+d.error);return}dt('agent')})
-    .catch(()=>alert('Network error'))
-}
-
-
-
-/* ═══════════════════════════════════════════
-   CONTEXT GRAPH €” Bubblemaps-style interactive
-   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   CONTEXT GRAPH — Bubblemaps-style interactive
+   ═══════════════════════════════════════════ */
 var _graphAnim=null; // animation frame id
 
 var _REL_DESC={
@@ -941,91 +931,112 @@ var _REL_DESC={
 function rGraph(el){
   if(_graphAnim){cancelAnimationFrame(_graphAnim);_graphAnim=null}
   el.innerHTML=`
-  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">\ud83d\udd17 Context Graph</h1><p id="graph-status">Loading cards...</p></div>
+  <div class="dh"><div><h1 style="display:flex;align-items:center;gap:10px">🔗 Context Graph</h1><p id="graph-status">Loading cards...</p></div>
   <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
     <select id="gf-focus" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none;max-width:160px">
       <option value="">All cards</option>
     </select>
     <select id="gf-type" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none">
       <option value="">All types</option>
-      <option value="person">\ud83d\udc64 person</option><option value="project">\ud83d\udce6 project</option><option value="decision">\u2696\ufe0f decision</option>
-      <option value="preference">\u2764\ufe0f preference</option><option value="workflow">\u2699\ufe0f workflow</option><option value="event">\ud83d\udcc5 event</option>
-      <option value="account">\ud83c\udfe2 account</option><option value="general">\ud83d\udcc4 general</option>
+      <option value="person">👤 person</option><option value="project">📦 project</option><option value="decision">⚖️ decision</option>
+      <option value="preference">❤️ preference</option><option value="workflow">⚙️ workflow</option><option value="event">📅 event</option>
+      <option value="account">🏢 account</option><option value="general">📄 general</option>
     </select>
     <select id="gf-rel" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--mono);font-size:.75rem;outline:none">
       <option value="">All relations</option>
-      <option value="related">\ud83d\udd17 related €” general connection</option>
-      <option value="owns">\ud83d\udc51 owns €” ownership</option>
-      <option value="decided">\u2696\ufe0f decided €” made a decision</option>
-      <option value="approved">\u2705 approved €” gave approval</option>
-      <option value="uses">\ud83d\udd27 uses €” depends on</option>
-      <option value="triggers">\u26a1 triggers €” causes</option>
-      <option value="blocks">\ud83d\udeab blocks €” prevents</option>
-      <option value="depends-on">\ud83d\udd04 depends-on €” requires</option>
-      <option value="reviews">\ud83d\udd0d reviews €” evaluates</option>
+      <option value="related">🔗 related — general connection</option>
+      <option value="owns">👑 owns — ownership</option>
+      <option value="decided">⚖️ decided — made a decision</option>
+      <option value="approved">✅ approved — gave approval</option>
+      <option value="uses">🔧 uses — depends on</option>
+      <option value="triggers">⚡ triggers — causes</option>
+      <option value="blocks">🚫 blocks — prevents</option>
+      <option value="depends-on">🔄 depends-on — requires</option>
+      <option value="reviews">🔍 reviews — evaluates</option>
     </select>
-    <button class="btn bo bs" onclick="rGraph(document.getElementById('dm'))" style="font-size:.75rem">\u21bb Refresh</button>
+    <button class="btn bo bs" onclick="rGraph(document.getElementById('dm'))" style="font-size:.75rem">↻ Refresh</button>
   </div></div>
+
+  <!-- ⏱ TIME-TRAVEL BAR -->
+  <div id="tt-bar" style="display:none;background:rgba(168,85,247,.06);border:1.5px solid rgba(168,85,247,.25);border-radius:12px;padding:14px 18px;margin-bottom:14px">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-family:var(--mono);font-size:.65rem;color:#a855f7;font-weight:700;letter-spacing:.06em;white-space:nowrap">⏱ TIME TRAVEL</span>
+      <div style="flex:1;min-width:200px">
+        <input type="range" id="tt-slider" min="0" max="100" value="100"
+          style="width:100%;accent-color:#a855f7;cursor:pointer">
+      </div>
+      <span id="tt-label" style="font-family:var(--mono);font-size:.72rem;color:#a855f7;white-space:nowrap;min-width:160px;text-align:right">Now</span>
+      <button onclick="_ttExit()" style="background:none;border:1px solid rgba(168,85,247,.3);border-radius:6px;color:#a855f7;font-family:var(--mono);font-size:.65rem;padding:4px 10px;cursor:pointer;white-space:nowrap">✕ Exit</button>
+    </div>
+    <div id="tt-info" style="font-family:var(--mono);font-size:.65rem;color:rgba(168,85,247,.6);margin-top:6px">
+      Drag the slider to see your graph as it existed at any point in time. Requires a focused card.
+    </div>
+  </div>
+
   <div id="graph-wrap" style="position:relative;background:#0a0a0c;border:2px solid var(--border);border-radius:14px;overflow:hidden;min-height:400px;touch-action:none">
     <div id="graph-loading" style="text-align:center;padding:60px 20px;color:var(--dim);font-family:var(--mono);font-size:.85rem">Loading graph...</div>
     <canvas id="graph-canvas" style="width:100%;display:none;cursor:grab"></canvas>
     <div id="graph-empty" style="display:none;text-align:center;padding:60px 20px">
-      <div style="font-size:2.5rem;margin-bottom:12px">\ud83d\udd17</div>
+      <div style="font-size:2.5rem;margin-bottom:12px">🔗</div>
       <h3 style="font-family:var(--mono);font-size:1rem;font-weight:700;margin-bottom:8px">No linked cards yet</h3>
       <p style="color:var(--dim);font-size:.85rem;max-width:380px;margin:0 auto 16px">Create cards with <code style="color:var(--accent);font-family:var(--mono)">links</code> and <code style="color:var(--accent);font-family:var(--mono)">cardType</code> to see your knowledge graph.</p>
-      <button class="btn bo bs" onclick="dt('cards')">\u2190 Go to Cards</button>
+      <button class="btn bo bs" onclick="dt('cards')">← Go to Cards</button>
     </div>
     <div id="graph-tooltip" style="display:none;position:absolute;background:rgba(15,15,18,.95);border:1px solid var(--border);border-radius:10px;padding:12px;pointer-events:none;z-index:10;max-width:260px;box-shadow:0 8px 30px rgba(0,0,0,.6);backdrop-filter:blur(12px)"></div>
     <div id="graph-detail" style="display:none;position:absolute;top:12px;right:12px;width:260px;background:rgba(12,12,15,.95);border:2px solid var(--border);border-radius:12px;padding:16px;z-index:10;backdrop-filter:blur(12px);max-height:calc(100% - 24px);overflow-y:auto"></div>
     <div id="graph-legend" style="position:absolute;bottom:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap;z-index:5"></div>
     <div id="graph-stats" style="position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:.6rem;color:var(--faint);z-index:5"></div>
+
+    <!-- Time-travel badge shown on canvas when active -->
+    <div id="tt-badge" style="display:none;position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.4);border-radius:8px;padding:4px 14px;font-family:var(--mono);font-size:.65rem;color:#a855f7;z-index:10;pointer-events:none;white-space:nowrap"></div>
+
     <div id="graph-guide" style="position:absolute;top:12px;right:12px;z-index:6">
       <button onclick="var g=document.getElementById('gg-body');g.style.display=g.style.display==='none'?'block':'none'" style="background:rgba(17,17,20,.9);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:.65rem;backdrop-filter:blur(8px)">? Guide</button>
       <div id="gg-body" style="display:none;background:rgba(10,10,13,.95);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:4px;width:200px;backdrop-filter:blur(12px)">
         <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin-bottom:6px;font-weight:700">CONTROLS</div>
         <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
-          \ud83d\udd18 Drag node \u2192 move &amp; pin<br>
-          \ud83d\udd18 Double-click \u2192 details<br>
-          \ud83d\udd18 Click node \u2192 highlight<br>
-          \ud83d\udd18 Scroll \u2192 zoom<br>
-          \ud83d\udd18 Drag empty \u2192 pan<br>
+          🖱 Drag node → move & pin<br>
+          🖱 Double-click → details<br>
+          🖱 Click node → highlight<br>
+          🖱 Scroll → zoom<br>
+          🖱 Drag empty → pan<br>
         </div>
         <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">MOBILE</div>
         <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
-          \u261d\ufe0f Drag \u2192 move or pan<br>
-          \ud83e\udd0f Pinch \u2192 zoom<br>
-          \ud83d\udc46 Double-tap \u2192 details
+          ☝️ Drag → move or pan<br>
+          🤏 Pinch → zoom<br>
+          👆 Double-tap → details
         </div>
-        <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">FILTERS</div>
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);margin:8px 0 4px;font-weight:700">TIME TRAVEL</div>
         <div style="font-size:.62rem;color:var(--dim);line-height:1.8;font-family:var(--mono)">
-          \ud83c\udfaf Focus \u2192 one card + neighbors<br>
-          \ud83c\udfa8 Type \u2192 persons, projects...<br>
-          \ud83d\udd17 Relation \u2192 owns, triggers...
+          Focus a card, then click<br>
+          ⏱ Time Travel to scrub<br>
+          back through graph history
         </div>
       </div>
     </div>
     <div id="graph-zoom" style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:5">
       <button id="gz-in" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">+</button>
-      <button id="gz-out" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">\u2212</button>
-      <button id="gz-fit" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center">\u25a3</button>
+      <button id="gz-out" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">−</button>
+      <button id="gz-fit" style="background:rgba(17,17,20,.85);border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--text);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center">⊟</button>
     </div>
   </div>
 
-  <!-- How to use the Graph €” collapsible guide -->
+  <!-- How to use the Graph — collapsible guide -->
   <div style="margin-top:16px">
     <button onclick="var g=document.getElementById('graph-howto');g.style.display=g.style.display==='none'?'block':'none';this.querySelector('span').textContent=g.style.display==='none'?'\u25b6':'\u25bc'" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;width:100%;cursor:pointer;display:flex;align-items:center;gap:10px;text-align:left">
       <span style="color:var(--accent);font-size:.7rem">\u25b6</span>
-      <span style="font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text)">ðŸ’¡ How to use the Context Graph</span>
+      <span style="font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--text)">💡 How to use the Context Graph</span>
       <span style="font-family:var(--mono);font-size:.62rem;color:var(--faint);margin-left:auto">click to expand</span>
     </button>
     <div id="graph-howto" style="display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:20px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
 
         <div>
-          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">ðŸš€ GETTING STARTED</div>
+          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">🚀 GETTING STARTED</div>
           <div style="font-size:.78rem;color:var(--dim);line-height:1.7">
             <strong style="color:var(--text)">1. Create cards with types</strong><br>
-            When your agent creates a card, add a <code style="color:var(--accent);font-size:.72rem">cardType</code> €” like "person", "project", or "decision". This tells the graph what shape each node is.<br><br>
+            When your agent creates a card, add a <code style="color:var(--accent);font-size:.72rem">cardType</code> — like "person", "project", or "decision". This tells the graph what shape each node is.<br><br>
             <strong style="color:var(--text)">2. Link cards together</strong><br>
             Add a <code style="color:var(--accent);font-size:.72rem">links</code> array to connect cards. Each link has a target slug and a relation like "owns", "decided", or "triggers".<br><br>
             <strong style="color:var(--text)">3. Explore visually</strong><br>
@@ -1034,21 +1045,21 @@ function rGraph(el){
         </div>
 
         <div>
-          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">ðŸ’¡ REAL-WORLD EXAMPLES</div>
+          <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:10px">💡 REAL-WORLD EXAMPLES</div>
           <div style="font-size:.78rem;color:var(--dim);line-height:1.7">
             <strong style="color:var(--green)">"Why did we choose Stripe?"</strong><br>
-            Focus on the <em>use-stripe</em> decision card €” see who decided, who approved, and why. Full audit trail, one click.<br><br>
+            Focus on the <em>use-stripe</em> decision card — see who decided, who approved, and why. Full audit trail, one click.<br><br>
             <strong style="color:var(--green)">"What breaks if we change auth?"</strong><br>
-            Focus on <em>use-clerk</em> €” the graph shows every project that depends on it. Instant impact analysis.<br><br>
+            Focus on <em>use-clerk</em> — the graph shows every project that depends on it. Instant impact analysis.<br><br>
             <strong style="color:var(--green)">"Who owns the database?"</strong><br>
-            Filter by "owns" relation €” see every ownership connection at a glance. No digging through chat history.
+            Filter by "owns" relation — see every ownership connection at a glance. No digging through chat history.
           </div>
         </div>
 
       </div>
 
       <div style="margin-top:16px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px">
-        <div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);font-weight:700;margin-bottom:6px">âš¡ QUICK API EXAMPLE</div>
+        <div style="font-family:var(--mono);font-size:.68rem;color:var(--accent);font-weight:700;margin-bottom:6px">⚡ QUICK API EXAMPLE</div>
         <pre style="font-family:var(--mono);font-size:.7rem;color:var(--dim);line-height:1.6;margin:0;overflow-x:auto"><span style="color:var(--green)">// Create a decision card with links</span>
 POST /api/cards
 {
@@ -1069,19 +1080,110 @@ POST /api/cards
     var cards=d.cards||[];
     var plan=d.plan||'FREE';
     var planLimits={FREE:50,PRO:500,TEAM:500,BUSINESS:2000};
-    var limit=planLimits[plan]||50;
+    var limit=planLimits[plan]||10;
     var pct=Math.round(cards.length/limit*100);
     var statusEl=document.getElementById('graph-status');
 
+    // FREE users see a live demo graph they can play with
+    if(plan==='FREE'){
+      statusEl.innerHTML='🎮 Demo mode · <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade to use your real cards</a>';
+      document.getElementById('graph-loading').style.display='none';
+
+      // Demo banner
+      var banner=document.createElement('div');
+      banner.style.cssText='position:absolute;top:0;left:0;right:0;background:linear-gradient(90deg,rgba(168,85,247,.12),rgba(59,130,246,.08));border-bottom:1px solid rgba(168,85,247,.2);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;z-index:10;gap:8px;flex-wrap:wrap';
+      banner.innerHTML='<span style="font-family:var(--mono);font-size:.65rem;color:#a855f7;font-weight:700">⚡ INTERACTIVE DEMO — drag nodes, zoom, time-travel</span><a href="javascript:void(0)" onclick="go(\'pricing\')" style="font-family:var(--mono);font-size:.65rem;color:var(--accent);background:rgba(68,255,136,.1);border:1px solid rgba(68,255,136,.25);border-radius:6px;padding:3px 10px;text-decoration:none">Unlock your data → $29/mo</a>';
+      document.getElementById('graph-wrap').appendChild(banner);
+
+      // Rich demo dataset — a realistic SaaS startup memory graph
+      var demoNow=Date.now();
+      var demoCards=[
+        {slug:'alice',title:'Alice (Founder)',cardType:'person',stack:'people',keywords:['founder','ceo','product'],links:[{slug:'saas-mvp',relation:'owns'},{slug:'use-stripe',relation:'decided'},{slug:'launch-q1',relation:'owns'}],tokens:120,reason:'Solo founder, drives all product decisions',updatedAt:new Date(demoNow-30*24*60*60*1000).toISOString()},
+        {slug:'saas-mvp',title:'SaaS MVP',cardType:'project',stack:'projects',keywords:['mvp','launch','saas'],links:[{slug:'use-stripe',relation:'triggers'},{slug:'pref-typescript',relation:'uses'},{slug:'deploy-vercel',relation:'uses'}],tokens:200,reason:'Core product — agent memory for developers',updatedAt:new Date(demoNow-25*24*60*60*1000).toISOString()},
+        {slug:'use-stripe',title:'Use Stripe for Billing',cardType:'decision',stack:'decisions',keywords:['stripe','billing','payments'],links:[{slug:'reject-paddle',relation:'blocks'},{slug:'cto',relation:'approved'}],tokens:95,reason:'Paddle lacks per-seat billing. Stripe has better DX.',updatedAt:new Date(demoNow-20*24*60*60*1000).toISOString()},
+        {slug:'cto',title:'CTO (Advisor)',cardType:'person',stack:'people',keywords:['cto','advisor','backend'],links:[{slug:'deploy-vercel',relation:'decided'}],tokens:80,reason:'Part-time advisor, approves infrastructure decisions',updatedAt:new Date(demoNow-22*24*60*60*1000).toISOString()},
+        {slug:'pref-typescript',title:'TypeScript Everywhere',cardType:'preference',stack:'preferences',keywords:['typescript','dx','types'],links:[],tokens:60,reason:'All SDKs and backend in TypeScript. No exceptions.',updatedAt:new Date(demoNow-28*24*60*60*1000).toISOString()},
+        {slug:'deploy-vercel',title:'Deploy on Vercel',cardType:'decision',stack:'decisions',keywords:['vercel','deploy','serverless'],links:[{slug:'saas-mvp',relation:'related'}],tokens:75,reason:'Edge functions + Neon DB. 12 function slot limit — watch it.',updatedAt:new Date(demoNow-18*24*60*60*1000).toISOString()},
+        {slug:'reject-paddle',title:'Rejected: Paddle',cardType:'decision',stack:'decisions',keywords:['paddle','rejected','billing'],links:[],tokens:55,reason:'No per-seat pricing. Rejected in favour of Stripe.',updatedAt:new Date(demoNow-20*24*60*60*1000).toISOString()},
+        {slug:'launch-q1',title:'Q1 Launch Goal',cardType:'workflow',stack:'workflows',keywords:['launch','q1','milestone'],links:[{slug:'saas-mvp',relation:'depends-on'},{slug:'use-stripe',relation:'depends-on'}],tokens:85,reason:'Ship to 100 paying customers by end of Q1.',updatedAt:new Date(demoNow-5*24*60*60*1000).toISOString()},
+        {slug:'hyperstack-mem',title:'HyperStack Memory',cardType:'preference',stack:'preferences',keywords:['memory','agent','hyperstack'],links:[{slug:'saas-mvp',relation:'uses'}],tokens:70,reason:'All agents use HyperStack for typed graph memory.',updatedAt:new Date(demoNow-2*24*60*60*1000).toISOString()}
+      ];
+
+      var demoNodeMap={},demoEdges=[],demoLinkedSlugs=new Set();
+      demoCards.forEach(function(c){
+        demoNodeMap[c.slug]=c;
+        (c.links||[]).forEach(function(l){
+          var target=typeof l==='string'?l:l.slug;
+          var relation=typeof l==='object'?(l.relation||'related'):'related';
+          if(target){demoLinkedSlugs.add(c.slug);demoLinkedSlugs.add(target);demoEdges.push({from:c.slug,to:target,relation:relation})}
+        });
+      });
+      var demoNodes=Object.values(demoNodeMap);
+
+      // Populate focus dropdown with demo cards
+      var focusSel=document.getElementById('gf-focus');
+      demoCards.forEach(function(c){
+        var o=document.createElement('option');o.value=c.slug;o.textContent=(c.cardType?c.cardType[0].toUpperCase()+': ':'')+c.title;focusSel.appendChild(o);
+      });
+
+      // Wire up time-travel slider for demo
+      var demoTimestamps=[];
+      demoCards.forEach(function(c){if(c.updatedAt)demoTimestamps.push(new Date(c.updatedAt).getTime());});
+      demoTimestamps=Array.from(new Set(demoTimestamps)).sort(function(a,b){return a-b});
+      demoTimestamps.push(demoNow);
+
+      var slider=document.getElementById('tt-slider');
+      var ttLabel=document.getElementById('tt-label');
+      var ttBadge=document.getElementById('tt-badge');
+      var ttBar=document.getElementById('tt-bar');
+      var ttInfo=document.getElementById('tt-info');
+      ttBar.style.display='block';
+      slider.min=0;slider.max=demoTimestamps.length-1;slider.value=demoTimestamps.length-1;
+
+      var _ttDebounce=null;
+      slider.oninput=function(){
+        var idx=parseInt(this.value);
+        var ts=demoTimestamps[idx];
+        var isNow=(idx===demoTimestamps.length-1);
+        if(isNow){
+          ttLabel.textContent='Now';ttBadge.style.display='none';
+          ttInfo.textContent='Drag the slider to see how this graph grew over time.';
+          _gDraw(demoNodes,demoEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value);
+          return;
+        }
+        var d=new Date(ts);
+        var label=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+        ttLabel.textContent=label;
+        ttBadge.textContent='⏱ '+label;ttBadge.style.display='block';
+        ttInfo.textContent='Viewing demo graph as it existed on '+label+'. Cards added after this date are hidden.';
+        clearTimeout(_ttDebounce);
+        _ttDebounce=setTimeout(function(){
+          var pastNodes=demoNodes.filter(function(n){return n.updatedAt&&new Date(n.updatedAt).getTime()<=ts});
+          var pastSlugs=new Set(pastNodes.map(function(n){return n.slug}));
+          var pastEdges=demoEdges.filter(function(e){return pastSlugs.has(e.from)&&pastSlugs.has(e.to)});
+          _gDraw(pastNodes,pastEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value);
+        },200);
+      };
+
+      window._ttExit=function(){slider.value=demoTimestamps.length-1;slider.oninput();};
+
+      var demoRedraw=function(){_gDraw(demoNodes,demoEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value)};
+      document.getElementById('gf-type').onchange=demoRedraw;
+      document.getElementById('gf-rel').onchange=demoRedraw;
+      document.getElementById('gf-focus').onchange=demoRedraw;
+      requestAnimationFrame(function(){setTimeout(function(){_gDraw(demoNodes,demoEdges,'','','')},60)});
+      return;
+    }
 
     if(pct>=70){
-      statusEl.innerHTML=cards.length+'/'+limit+' cards <span style="color:var(--red)">'+pct+'% used</span> \u00b7 '+plan+' \u00b7 <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade</a>';
+      statusEl.innerHTML=cards.length+'/'+limit+' cards <span style="color:var(--red)">'+pct+'% used</span> · '+plan+' · <a href="javascript:void(0)" onclick="go(\'pricing\')" style="color:var(--accent);text-decoration:underline">Upgrade</a>';
     }else{
-      statusEl.textContent=cards.length+'/'+limit+' cards \u00b7 '+plan;
+      statusEl.textContent=cards.length+'/'+limit+' cards · '+plan;
     }
+
     var nodeMap={},edges=[],linkedSlugs=new Set();
     cards.forEach(function(c){
-      nodeMap[c.slug]={slug:c.slug,title:c.title,stack:c.stack,cardType:c.cardType||'general',keywords:c.keywords||[],links:c.links||[],tokens:c.tokens||0,triggeredBy:c.triggeredBy,approvedBy:c.approvedBy,reason:c.reason};
+      nodeMap[c.slug]={slug:c.slug,title:c.title,stack:c.stack,cardType:c.cardType||'general',keywords:c.keywords||[],links:c.links||[],tokens:c.tokens||0,triggeredBy:c.triggeredBy,approvedBy:c.approvedBy,reason:c.reason,updatedAt:c.updatedAt};
       (c.links||[]).forEach(function(l){
         var target=typeof l==='string'?l:l.slug;
         var relation=typeof l==='object'?(l.relation||'related'):'related';
@@ -1096,12 +1198,108 @@ POST /api/cards
       document.getElementById('graph-canvas').style.display='none';
       document.getElementById('graph-empty').style.display='block';return;
     }
+
     // Populate focus dropdown
     var focusSel=document.getElementById('gf-focus');
     cards.forEach(function(c){
       var o=document.createElement('option');o.value=c.slug;o.textContent=(c.cardType?c.cardType[0].toUpperCase()+': ':'')+c.title;focusSel.appendChild(o);
     });
-    var redraw=function(){_gDraw(nodes,edges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value)};
+
+    // ── Build timeline snapshots from updatedAt timestamps ──
+    // Collect all unique timestamps across all cards, sort oldest→newest
+    var _allCards=cards; // keep reference for time-travel
+    var _allNodes=nodes;
+    var _allEdges=edges;
+    var timestamps=[];
+    cards.forEach(function(c){if(c.updatedAt)timestamps.push(new Date(c.updatedAt).getTime());});
+    timestamps=Array.from(new Set(timestamps)).sort(function(a,b){return a-b});
+    // Add "now" as final snapshot
+    timestamps.push(Date.now());
+
+    // ── Wire up slider ──
+    var slider=document.getElementById('tt-slider');
+    var ttLabel=document.getElementById('tt-label');
+    var ttBadge=document.getElementById('tt-badge');
+    var ttInfo=document.getElementById('tt-info');
+    var _ttDebounce=null;
+    var _ttActive=false;
+
+    // Show time-travel bar for Pro+ plans
+    if(plan!=='FREE'){
+      document.getElementById('tt-bar').style.display='block';
+      slider.min=0;
+      slider.max=timestamps.length-1;
+      slider.value=timestamps.length-1;
+    }
+
+    slider.oninput=function(){
+      var idx=parseInt(this.value);
+      var ts=timestamps[idx];
+      var isNow=(idx===timestamps.length-1);
+      _ttActive=!isNow;
+
+      if(isNow){
+        ttLabel.textContent='Now';
+        ttBadge.style.display='none';
+        ttInfo.textContent='Drag the slider to see your graph as it existed at any point in time. Requires a focused card.';
+        // Restore live graph
+        _gDraw(_allNodes,_allEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value);
+        return;
+      }
+
+      var d=new Date(ts);
+      var label=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      ttLabel.textContent=label;
+      ttBadge.textContent='⏱ Viewing: '+label;
+      ttBadge.style.display='block';
+      ttInfo.textContent='Showing graph state at '+label+'. Cards created after this point are hidden.';
+
+      // Debounce API calls while scrubbing
+      clearTimeout(_ttDebounce);
+      _ttDebounce=setTimeout(function(){_ttFetch(ts,d.toISOString())},400);
+    };
+
+    // ── Time-travel fetch using /api/graph?at= ──
+    function _ttFetch(ts,isoStr){
+      var focusSlug=document.getElementById('gf-focus').value;
+      if(!focusSlug){
+        // No focus card — reconstruct client-side by filtering cards by timestamp
+        var pastNodes=_allNodes.filter(function(n){
+          return n.updatedAt&&new Date(n.updatedAt).getTime()<=ts;
+        });
+        var pastSlugs=new Set(pastNodes.map(function(n){return n.slug}));
+        var pastEdges=_allEdges.filter(function(e){return pastSlugs.has(e.from)&&pastSlugs.has(e.to)});
+        if(pastNodes.length===0){
+          document.getElementById('graph-canvas').style.display='none';
+          document.getElementById('graph-empty').style.display='block';
+          return;
+        }
+        document.getElementById('graph-empty').style.display='none';
+        _gDraw(pastNodes,pastEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,'');
+        return;
+      }
+      // Focus card set — use /api/graph?at= for accurate version reconstruction
+      var url=A+'/api/graph?workspace=default&from='+encodeURIComponent(focusSlug)+'&depth=3&at='+encodeURIComponent(isoStr);
+      fetch(url,{headers:{'X-API-Key':U.apiKey}}).then(function(r){return r.json()}).then(function(data){
+        if(data.error){hsToast(data.error,'err');return}
+        var ttNodes=data.nodes||[];
+        var ttEdges=data.edges||[];
+        // Convert API graph response format to visual graph format
+        var visNodes=ttNodes.map(function(n){return{slug:n.slug,title:n.title,stack:n.stack,cardType:n.cardType||'general',keywords:n.keywords||[],links:n.links||[],tokens:n.tokens||0,triggeredBy:n.triggeredBy,approvedBy:n.approvedBy,reason:n.reason}});
+        _gDraw(visNodes,ttEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,focusSlug);
+      }).catch(function(e){hsToast('Time-travel fetch failed: '+e.message,'err')});
+    }
+
+    // Exit time-travel
+    window._ttExit=function(){
+      slider.value=timestamps.length-1;
+      slider.oninput();
+    };
+
+    var redraw=function(){
+      if(_ttActive){slider.oninput()}
+      else{_gDraw(_allNodes,_allEdges,document.getElementById('gf-type').value,document.getElementById('gf-rel').value,document.getElementById('gf-focus').value)}
+    };
     document.getElementById('gf-type').onchange=redraw;
     document.getElementById('gf-rel').onchange=redraw;
     document.getElementById('gf-focus').onchange=redraw;
@@ -1118,7 +1316,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
   var edges=allEdges.slice();
   if(filterRel)edges=edges.filter(function(e){return e.relation===filterRel});
 
-  // Focus mode €” only show cards connected to the focus card (depth 2)
+  // Focus mode — only show cards connected to the focus card (depth 2)
   if(focusSlug){
     var focusSet=new Set([focusSlug]);
     // Depth 1
@@ -1153,9 +1351,9 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
   // Canvas setup
   var canvas=document.getElementById('graph-canvas');
   var wrap=document.getElementById('graph-wrap');
-  var W=wrap.clientWidth||wrap.offsetWidth||Math.min(window.innerWidth-32,800);
-  var H=Math.max(400,Math.min(600,nodes.length*50+200));
-  if(W<100)W=Math.min(window.innerWidth-32,800);
+  var W=wrap.offsetWidth||Math.min(window.innerWidth,800);
+  var H=Math.max(360,Math.min(520,nodes.length*50+200));
+  if(W<100)W=window.innerWidth;
   var dpr=window.devicePixelRatio||1;
   canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';canvas.style.width=W+'px';
   var ctx=canvas.getContext('2d');
@@ -1172,7 +1370,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
     return Math.max(20,Math.min(45,16+(linkCount+inLinks)*3));
   }
 
-  // Initialize positions €” circular with jitter
+  // Initialize positions — circular with jitter
   var pos={};
   nodes.forEach(function(n,i){
     var angle=(i/nodes.length)*Math.PI*2;
@@ -1186,7 +1384,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
 
   // Physics state
   var physics={cooling:1,running:true,tick:0};
-  var pinned={};  // slugs that user dragged €” they stay put
+  var pinned={};  // slugs that user dragged — they stay put
   var hovNode=null,selNode=null,dragNode=null,dragStart=null,isPanning=false,panStart=null,camStart=null;
 
   // Live force simulation
@@ -1217,7 +1415,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
       if(!pinned[e.from]){a.vx+=fx;a.vy+=fy}
       if(!pinned[e.to]){b.vx-=fx;b.vy-=fy}
     });
-    // Very light centering €” only during first 80 ticks, then none
+    // Very light centering — only during first 80 ticks, then none
     var centerForce=physics.tick<80?0.001:0;
     nodes.forEach(function(n){
       var p=pos[n.slug];
@@ -1286,7 +1484,7 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
       ctx.globalAlpha=active?0.9:(dimmed?0.08:0.4);
       ctx.fill();
 
-      // Relation label €” always show, brighter when active
+      // Relation label — always show, brighter when active
       var fs=Math.max(7,(active?11:9)*cam.z);
       ctx.font='600 '+fs+'px "JetBrains Mono"';ctx.textAlign='center';
       ctx.globalAlpha=active?1:(dimmed?0.08:0.4);
@@ -1446,10 +1644,10 @@ function _gDraw(allNodes,allEdges,filterType,filterRel,focusSlug){
       var w=evtToWorld(e);
       var moved=dragStart?Math.hypot(w.x-dragStart.x,w.y-dragStart.y):0;
       if(moved>8){
-        // Real drag €” pin the node where it was dropped
+        // Real drag — pin the node where it was dropped
         pinned[dragNode.slug]=true;
       }else{
-        // Tiny move = click €” toggle selection highlight
+        // Tiny move = click — toggle selection highlight
         selNode=(selNode&&selNode.slug===dragNode.slug)?null:dragNode;
       }
     }
@@ -1592,12 +1790,12 @@ function _gDetail(node,nodes,edges,TC,RC){
 }
 
 // Auto-login
-(async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{"X-API-Key":t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
+(async()=>{const t=localStorage.getItem("hs_t");if(!t)return;try{const r=await fetch(A+"/api/auth",{headers:{Authorization:"Bearer "+t}});if(r.ok){const d=await r.json();U=d.user;T=t;adminCheck()}}catch{}
   const l=!!U;document.getElementById("nl").classList.toggle("hidden",l);document.getElementById("nd").classList.toggle("hidden",!l);document.getElementById("no").classList.toggle("hidden",!l)})();
 
-// ═══════════════════════════════════════════════════════
-// ANIMATED GRAPH TRAVERSAL DEMO €” landing page
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// ANIMATED GRAPH TRAVERSAL DEMO — landing page
+// ═══════════════════════════════════════════════════════
 
 var _demoTimer=null;
 function demoGraphPlay(){
@@ -1762,7 +1960,7 @@ function demoGraphPlay(){
     pEl.style.opacity='1';
   });
 
-  // Step 3: Traverse €” who decided?
+  // Step 3: Traverse — who decided?
   step(3000,function(){
     activeNodes.add('alice');
     activeEdges.add(0); // alice->use-stripe decided
@@ -1831,9 +2029,9 @@ var _demoObserver=null;
   }
 })();
 
-// ═══════════════════════════════════════════════════════
-// STRIPE SUCCESS €” poll for plan upgrade
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// STRIPE SUCCESS — poll for plan upgrade
+// ═══════════════════════════════════════════════════════
 
 function checkSuccess(){
   if(!U||!T)return;
@@ -1854,14 +2052,14 @@ function checkSuccess(){
           // Plan upgraded!
           U=d.user;adminCheck();
           var plan=U.plan;
-          var cardLimits={FREE:50,PRO:500,TEAM:500,BUSINESS:2000};
+          var cardLimits={PRO:100,TEAM:500,BUSINESS:2000};
           planEl.textContent=plan.charAt(0)+plan.slice(1).toLowerCase();
           planEl.style.color=plan==='BUSINESS'?'var(--green)':plan==='TEAM'?'#60a5fa':'var(--accent)';
           cardsEl.textContent=cardLimits[plan]||100;
           loading.style.display='none';
           done.style.display='block';
         }else if(attempts>=maxAttempts){
-          // Timeout €” show fallback
+          // Timeout — show fallback
           loading.style.display='none';
           err.style.display='block';
         }else{
@@ -1889,10 +2087,10 @@ var _pendingSuccess=false;
     _pendingSuccess=true;
     // Clean the URL so refreshes don't re-trigger
     window.history.replaceState({},document.title,window.location.pathname);
-    // Check if we have a token €” if so, auto-login should work
+    // Check if we have a token — if so, auto-login should work
     var hasToken=!!localStorage.getItem("hs_t");
     if(!hasToken){
-      // No token €” user needs to log in, _pendingSuccess will redirect after
+      // No token — user needs to log in, _pendingSuccess will redirect after
       return;
     }
     // Wait for auto-login to complete (it runs on DOMContentLoaded)
@@ -1904,7 +2102,7 @@ var _pendingSuccess=false;
         checkSuccess();
       }
     },300);
-    // Safety timeout €” 10s should be plenty for auto-login
+    // Safety timeout — 10s should be plenty for auto-login
     setTimeout(function(){
       clearInterval(waitForLogin);
       if(U&&T){
@@ -1954,8 +2152,7 @@ function updatePricingButtons(){
     }
   });
 }
-// Ã¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢Â
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CONVERSATIONAL ONBOARDING - Add to end of app.js
 // Shows on first dashboard load, uses Groq API to parse project description
-// Ã¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢ÂÃ¢€¢Â
-
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
